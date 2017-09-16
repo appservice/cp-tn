@@ -1,0 +1,10 @@
+{
+    "tnApp": {
+        "OrderType" : {
+            "null": "",
+            "ESTIMATION": "WYCENA",
+            "SERVICE": "SERWIS",
+            "PRODUCTION": "PRODUKCJA"
+        }
+    }
+}

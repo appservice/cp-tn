@@ -1,0 +1,28 @@
+{
+    "tnApp": {
+        "technologyCard" : {
+            "home": {
+                "title": "Technology Cards",
+                "createLabel": "Dodaj Technology Card",
+                "createOrEditLabel": "Dodaj lub edytuj: Technology Card",
+                "search": "Szukaj Technology Card"
+            },
+            "created": "Utworzono nowy Technology Card z identyfikatorem {{ param }}",
+            "updated": "Uaktualniono Technology Card z identyfikatorem {{ param }}",
+            "deleted": "Usunięto Technology Card z identyfikatorem {{ param }}",
+            "delete": {
+                "question": "Czy na pewno chcesz usunąć Technology Card {{ id }}?"
+            },
+            "detail": {
+                "title": "Technology Card"
+            },
+            "material": "Material",
+            "mass": "Mass",
+            "description": "Description",
+            "createdAt": "Created At",
+            "amount": "Amount",
+            "drawing": "Drawing",
+            "operations": "Operations"
+        }
+    }
+}

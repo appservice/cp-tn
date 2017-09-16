@@ -5,6 +5,7 @@ import { JhiEventManager, JhiPaginationUtil, JhiParseLinks, JhiAlertService } fr
 
 import { ITEMS_PER_PAGE, Principal, User, UserService, ResponseWrapper } from '../../shared';
 import { PaginationConfig } from '../../blocks/config/uib-pagination.config';
+import {Client} from '../../entities/client/client.model';
 
 @Component({
     selector: 'jhi-user-mgmt',
@@ -25,6 +26,7 @@ export class UserMgmtComponent implements OnInit, OnDestroy {
     predicate: any;
     previousPage: any;
     reverse: any;
+    client: Client
 
     constructor(
         private userService: UserService,

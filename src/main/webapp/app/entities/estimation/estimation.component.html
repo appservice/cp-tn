@@ -1,0 +1,106 @@
+<div>
+    <h2>
+        <span jhiTranslate="tnApp.estimation.home.title">Estimations</span>
+        <button class="btn btn-primary float-right jh-create-entity create-estimation" routerLink='/estimation-new'>
+            <span class="fa fa-plus"></span>
+            <span class="hidden-sm-down"  jhiTranslate="tnApp.estimation.home.createLabel">
+            Create new Estimation
+            </span>
+        </button>
+    </h2>
+    <jhi-alert></jhi-alert>
+    <div class="row">
+        <div class="col-sm-12">
+            <form name="searchForm" class="form-inline">
+                <div class="input-group w-100 mt-3">
+                    <input type="text" class="form-control" [(ngModel)]="currentSearch" id="currentSearch" name="currentSearch" placeholder="{{ 'tnApp.estimation.home.search' | translate }}">
+                    <button class="input-group-addon btn btn-info" (click)="search(currentSearch)">
+                        <span class="fa fa-search"></span>
+                    </button>
+                    <button class="input-group-addon btn btn-danger" (click)="clear()" *ngIf="currentSearch">
+                        <span class="fa fa-trash-o"></span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <br/>
+    <div class="table-responsive" *ngIf="estimations">
+        <table class="table table-striped">
+            <thead>
+            <tr jhiSort [(predicate)]="predicate" [(ascending)]="reverse" [callback]="transition.bind(this)">
+            <th jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span> <span class="fa fa-sort"></span></th>
+                <!--<th jhiSortBy="mass"><span jhiTranslate="tnApp.estimation.mass">Mass</span> <span class="fa fa-sort"></span></th>-->
+                <th jhiSortBy="drawing.number"><span >Nr rys.</span> <span class="fa fa-sort"></span></th>
+                <th jhiSortBy="description"><span >Nazwa</span> <span class="fa fa-sort"></span></th>
+                <th jhiSortBy="amount"><span jhiTranslate="tnApp.estimation.amount">Amount</span> <span class="fa fa-sort"></span></th>
+
+                <!--<th jhiSortBy="internalNumber"><span jhiTranslate="tnApp.estimation.internalNumber">Internal Number</span> <span class="fa fa-sort"></span></th>-->
+            <th jhiSortBy="material"><span jhiTranslate="tnApp.estimation.material">Material</span> <span class="fa fa-sort"></span></th>
+            <!--<th jhiSortBy="materialPrice"><span jhiTranslate="tnApp.estimation.materialPrice">Material Price</span> <span class="fa fa-sort"></span></th>-->
+
+            <!--<th jhiSortBy="description"><span jhiTranslate="tnApp.estimation.description">Description</span> <span class="fa fa-sort"></span></th>-->
+            <th jhiSortBy="estimatedCost"><span >Cena [PLN]</span> <span class="fa fa-sort"></span></th>
+            <!--<th jhiSortBy="finalCost"><span jhiTranslate="tnApp.estimation.finalCost">Final Cost</span> <span class="fa fa-sort"></span></th>-->
+            <th jhiSortBy="order.internalNumber"><span jhiTranslate="tnApp.estimation.order">Order</span> <span class="fa fa-sort"></span></th>
+            <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let estimation of estimations ;trackBy: trackId">
+                <td><a [routerLink]="['../estimation', estimation.id ]">{{estimation.id}}</a></td>
+                <td>{{estimation.drawing.number}}</td>
+                <td>{{estimation.description}}</td>
+                <td>{{estimation.amount}}</td>
+                <!--<td>{{estimation.internalNumber}}</td>-->
+                <td>{{estimation.material}}</td>
+                <!--<td>{{estimation.materialPrice}}</td>-->
+                <!--<td>{{estimation.mass}}</td>-->
+
+
+                <td>{{estimation.estimatedCost|currency:'PLN':false}}</td>
+                <!--<td>{{estimation.finalCost}}</td>-->
+                <td>
+                    <div *ngIf="estimation.orderId">
+                        <a [routerLink]="['../order', estimation.orderId  ]" >{{estimation.orderInternalNumber}}</a>
+                    </div>
+                </td>
+                <td class="text-right">
+                    <div class="btn-group flex-btn-group-container">
+                        <button type="submit"
+                                [routerLink]="['../estimation', estimation.id ]"
+                                class="btn btn-info btn-sm">
+                            <span class="fa fa-eye"></span>
+                            <span class="hidden-md-down" jhiTranslate="entity.action.view">View</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/estimation/'+ estimation.id +'/edit']"
+
+                                class="btn btn-primary btn-sm">  <!--replaceUrl="true"-->
+                            <span class="fa fa-pencil"></span>
+                            <span class="hidden-md-down" jhiTranslate="entity.action.edit">Edit</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/', { outlets: { popup: 'estimation/'+ estimation.id + '/delete'} }]"
+                                replaceUrl="true"
+                                class="btn btn-danger btn-sm">
+                            <span class="fa fa-remove"></span>
+                            <span class="hidden-md-down" jhiTranslate="entity.action.delete">Delete</span>
+                        </button>
+                        <button class="btn btn-info btn-sm" (click)="getTechnologyCardPdf(estimation);" type="button"><span class="fa fa-print"></span> Drukuj kartę obiegową
+                        </button>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+        <div *ngIf="estimations && estimations.length">
+            <div class="row justify-content-center">
+                <jhi-item-count [page]="page" [total]="queryCount" [itemsPerPage]="itemsPerPage"></jhi-item-count>
+            </div>
+            <div class="row justify-content-center">
+                <ngb-pagination [collectionSize]="totalItems" [(page)]="page" (pageChange)="loadPage(page)" ></ngb-pagination>
+            </div>
+        </div>
+</div>

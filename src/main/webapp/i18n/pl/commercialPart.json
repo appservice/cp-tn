@@ -1,0 +1,26 @@
+{
+    "tnApp": {
+        "commercialPart" : {
+            "home": {
+                "title": "Commercial Parts",
+                "createLabel": "Dodaj Commercial Part",
+                "createOrEditLabel": "Dodaj lub edytuj: Commercial Part",
+                "search": "Szukaj Commercial Part"
+            },
+            "created": "Utworzono nowy Commercial Part z identyfikatorem {{ param }}",
+            "updated": "Uaktualniono Commercial Part z identyfikatorem {{ param }}",
+            "deleted": "Usunięto Commercial Part z identyfikatorem {{ param }}",
+            "delete": {
+                "question": "Czy na pewno chcesz usunąć Commercial Part {{ id }}?"
+            },
+            "detail": {
+                "title": "Commercial Part"
+            },
+            "name": "Name",
+            "amount": "Amount",
+            "price": "Price",
+            "unit": "Unit",
+            "estimation": "Estimation"
+        }
+    }
+}

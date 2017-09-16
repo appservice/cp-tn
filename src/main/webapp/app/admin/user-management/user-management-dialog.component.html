@@ -87,6 +87,20 @@
                  </small>
             </div>
         </div>
+        <div class="form-group">
+            <label>Klient</label>
+            <!--<input class="form-control" name="client" type="text">-->
+            <select class="form-control" id="client" name="client"
+                    [(ngModel)]="user.clientId"
+                    > <!--[compareWith]="compareMachine" trackBy: clientOpt.id required-->
+                <option [ngValue]="null"></option>
+                <option *ngFor="let clientOpt of clients; "
+                        [ngValue]="clientOpt.id">
+                    {{clientOpt.name}}
+
+                </option>
+            </select>
+        </div>
         <div class="form-check">
             <label class="form-check-label" for="activated">
                 <input class="form-check-input" [disabled]="user.id === null" type="checkbox" id="activated" name="activated" [(ngModel)]="user.activated">

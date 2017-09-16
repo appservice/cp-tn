@@ -7,6 +7,15 @@
             "jhipster-needle-menu-add-element": "JHipster will add additional menu entries here (do not translate!)",
             "entities": {
                 "main": "Encje",
+                "order": "Zlecenie",
+                "estimation": "Wycena",
+                "operation": "Operacja",
+                "machine": "Maszyna",
+                "drawing": "Rysunek techn.",
+                "client": "Klient",
+                "unit": "Jednostka miary",
+                "commercialPart": "Commercial Part",
+                "technologyCard": "Technology Card",
                 "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
             },
             "account": {
@@ -128,5 +137,5 @@
         "emailexists": "Użytkownik z takim adresem email już istnieje!",
         "idexists": "Nowy {{entityName}} nie może jeszcze mieć przypisanego ID"
     },
-    "footer": "To jest stopka"
+    "footer": "Narzędziownia CP-FIP Sp. z O.O."
 }

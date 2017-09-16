@@ -1,0 +1,212 @@
+<div>
+    <h2>
+        <span>Detale aktualnie produkowane</span>
+        <!--<button class="btn btn-primary float-right jh-create-entity create-estimation" routerLink='/estimation-new'>
+            <span class="fa fa-plus"></span>
+            <span class="hidden-sm-down" jhiTranslate="tnApp.estimation.home.createLabel">
+            Create new Estimation
+            </span>
+        </button>-->
+    </h2>
+    <jhi-alert></jhi-alert>
+    <div class="row">
+        <div class="col-sm-12">
+            <form name="searchForm" class="form-inline">
+                <div class="input-group w-100 mt-3">
+                    <input type="text" class="form-control" [(ngModel)]="currentSearch" id="currentSearch"
+                           name="currentSearch" placeholder="Szukaj detal">
+                    <button class="input-group-addon btn btn-info" (click)="search(currentSearch)">
+                        <span class="fa fa-search"></span>
+                    </button>
+                    <button class="input-group-addon btn btn-danger" (click)="clear()" *ngIf="currentSearch">
+                        <span class="fa fa-trash-o"></span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <br/>
+    <div class="table-responsive" *ngIf="estimations">
+        <table class="table table-striped ">
+            <thead>
+            <tr jhiSort [(predicate)]="predicate" [(ascending)]="reverse" [callback]="transition.bind(this)">
+                <th jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span> <span class="fa fa-sort"></span></th>
+                <!--<th jhiSortBy="mass"><span jhiTranslate="tnApp.estimation.mass">Mass</span> <span class="fa fa-sort"></span></th>-->
+                <th jhiSortBy="drawing.number"><span>Nr rys.</span> <span class="fa fa-sort"></span></th>
+                <th jhiSortBy="description"><span>Nazwa</span> <span class="fa fa-sort"></span></th>
+                <th jhiSortBy="amount"><span >Ilość [SZT]</span> <span
+                    class="fa fa-sort"></span></th>
+
+                <!--<th jhiSortBy="internalNumber"><span jhiTranslate="tnApp.estimation.internalNumber">Internal Number</span> <span class="fa fa-sort"></span></th>-->
+                <!--<th jhiSortBy="material"><span jhiTranslate="tnApp.estimation.material">Material</span> <span-->
+                <!--class="fa fa-sort"></span></th>-->
+                <!--<th jhiSortBy="materialPrice"><span jhiTranslate="tnApp.estimation.materialPrice">Material Price</span> <span class="fa fa-sort"></span></th>-->
+
+                <!--<th jhiSortBy="description"><span jhiTranslate="tnApp.estimation.description">Description</span> <span class="fa fa-sort"></span></th>-->
+                <!--<th jhiSortBy="estimatedCost"><span>Cena [PLN]</span> <span class="fa fa-sort"></span></th>-->
+                <!--<th jhiSortBy="finalCost"><span jhiTranslate="tnApp.estimation.finalCost">Final Cost</span> <span class="fa fa-sort"></span></th>-->
+                <th jhiSortBy="order.internalNumber"><span jhiTranslate="tnApp.estimation.order">Order</span> <span
+                    class="fa fa-sort"></span></th>
+                <th>Ukończono [%]</th>
+                <th style="width: 250px">Stanowsko aktualnej operacji</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>1</td>
+                <td>LL2-02-00</td>
+                <td>Koło odbieralnika lakierki</td>
+                <!--<td></td>-->
+                <!--<td></td>-->
+                <td>2</td>
+                <td>12/2017/W</td>
+                <td style="width: 300px;">
+                    <div class="progress  alt">
+                        <div class="progress-bar progress-bar-success text-center" role="progressbar"
+                             aria-valuenow="40" aria-valuemin="0" aria-valuemax="100"
+                             style="width: 50%; height: 30px;font-size:14pt;">
+                            <span style="line-height: 30px">40%</span>
+                        </div>
+                    </div>
+                </td>
+                <td>Tokarka numeryczna</td>
+
+            </tr>
+            <tr>
+                <td>2</td>
+                <td>MD-02-00</td>
+                <td>Marka czołowa</td>
+                <!--<td></td>-->
+                <!--<td></td>-->
+                <td>2</td>
+                <td>12/2017/W</td>
+                <td style="width: 300px;">
+                    <div class="progress  alt">
+                        <div class="progress-bar progress-bar-success " role="progressbar"
+                             aria-valuenow="40" aria-valuemin="0" aria-valuemax="100"
+                             style="width: 20%; height: 30px;font-size:14pt;">
+                            <span style="line-height: 30px">  20%</span>
+                        </div>
+                    </div>
+                </td>
+                <td>Frezarka uniwersalna</td>
+
+            </tr>
+            <tr>
+                <td>3</td>
+                <td>ATX-03-00/A</td>
+                <td>Sworzeń łącznika przegubu</td>
+                <!--<td></td>-->
+                <!--<td></td>-->
+                <td>7</td>
+                <td>16/2017/W</td>
+                <td style="width: 300px;">
+                    <div class="progress  alt">
+                        <div class="progress-bar progress-bar-success " role="progressbar"
+                             aria-valuenow="40" aria-valuemin="0" aria-valuemax="100"
+                             style="width: 94%; height: 30px;font-size:14pt">
+                            <span style="line-height: 30px">   94%</span>
+                        </div>
+                    </div>
+                </td>
+                <td>Kontola jakości</td>
+
+            </tr>
+            <tr>
+                <td>4</td>
+                <td>LT8-03-00/A</td>
+                <td>Koło łańcuchowe</td>
+                <!--<td></td>-->
+                <!--<td></td>-->
+                <td>1</td>
+                <td>12/2017/W</td>
+                <td style="width: 300px;">
+                    <div class="progress  alt">
+                        <div class="progress-bar progress-bar-success " role="progressbar"
+                             aria-valuenow="40" aria-valuemin="0" aria-valuemax="100"
+                             style="width: 78%; height: 30px;font-size:14pt">
+                            <span style="line-height: 30px">   78%</span>
+                        </div>
+                    </div>
+                </td>
+                <td>Obróbka cieplna</td>
+
+            </tr>
+            <tr>
+                <td>5</td>
+                <td>AT-01-00</td>
+                <td>Rolka zamykarki</td>
+                <!--<td></td>-->
+                <!--<td></td>-->
+                <td>12</td>
+                <td>5/2017/W</td>
+                <td style="width: 300px;">
+                    <div class="progress  alt">
+                        <div class="progress-bar progress-bar-success " role="progressbar"
+                             aria-valuenow="40" aria-valuemin="0" aria-valuemax="100"
+                             style="width: 2%; height: 30px;font-size:14pt">
+                            <span style="line-height: 30px">   2%</span>
+                        </div>
+                    </div>
+                </td>
+                <td >Piła taśmowa</td>
+
+            </tr>
+            <!--<tr *ngFor="let estimation of estimations ;trackBy: trackId">
+                <td><a [routerLink]="['../estimation', estimation.id ]">{{estimation.id}}</a></td>
+                <td>{{estimation.drawing.number}}</td>
+                <td>{{estimation.description}}</td>
+                <td>{{estimation.amount}}</td>
+                &lt;!&ndash;<td>{{estimation.internalNumber}}</td>&ndash;&gt;
+                <td>{{estimation.material}}</td>
+                &lt;!&ndash;<td>{{estimation.materialPrice}}</td>&ndash;&gt;
+                &lt;!&ndash;<td>{{estimation.mass}}</td>&ndash;&gt;
+
+
+                <td>{{estimation.estimatedCost|currency:'PLN':false}}</td>
+                &lt;!&ndash;<td>{{estimation.finalCost}}</td>&ndash;&gt;
+                <td>
+                    <div *ngIf="estimation.orderId">
+                        <a [routerLink]="['../order', estimation.orderId  ]" >{{estimation.orderInternalNumber}}</a>
+                    </div>
+                </td>
+                <td class="text-right">
+                    <div class="btn-group flex-btn-group-container">
+                        <button type="submit"
+                                [routerLink]="['../estimation', estimation.id ]"
+                                class="btn btn-info btn-sm">
+                            <span class="fa fa-eye"></span>
+                            <span class="hidden-md-down" jhiTranslate="entity.action.view">View</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/estimation/'+ estimation.id +'/edit']"
+
+                                class="btn btn-primary btn-sm">  &lt;!&ndash;replaceUrl="true"&ndash;&gt;
+                            <span class="fa fa-pencil"></span>
+                            <span class="hidden-md-down" jhiTranslate="entity.action.edit">Edit</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/', { outlets: { popup: 'estimation/'+ estimation.id + '/delete'} }]"
+                                replaceUrl="true"
+                                class="btn btn-danger btn-sm">
+                            <span class="fa fa-remove"></span>
+                            <span class="hidden-md-down" jhiTranslate="entity.action.delete">Delete</span>
+                        </button>
+                        <button class="btn btn-info btn-sm" (click)="getTechnologyCardPdf(estimation);" type="button"><span class="fa fa-print"></span> Drukuj kartę obiegową
+                        </button>
+                    </div>
+                </td>
+            </tr>-->
+            </tbody>
+        </table>
+    </div>
+    <div *ngIf="estimations && estimations.length">
+        <div class="row justify-content-center">
+            <jhi-item-count [page]="page" [total]="queryCount" [itemsPerPage]="itemsPerPage"></jhi-item-count>
+        </div>
+        <div class="row justify-content-center">
+            <ngb-pagination [collectionSize]="totalItems" [(page)]="page"
+                            (pageChange)="loadPage(page)"></ngb-pagination>
+        </div>
+    </div>
+</div>

@@ -1,8 +1,8 @@
 import './vendor.ts';
 
-import { NgModule } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
-import { Ng2Webstorage } from 'ng2-webstorage';
+import {LOCALE_ID, NgModule} from '@angular/core';
+import {BrowserModule} from '@angular/platform-browser';
+import {Ng2Webstorage} from 'ng2-webstorage';
 
 import { TnSharedModule, UserRouteAccessService } from './shared';
 import { TnHomeModule } from './home/home.module';
@@ -10,8 +10,10 @@ import { TnAdminModule } from './admin/admin.module';
 import { TnAccountModule } from './account/account.module';
 import { TnEntityModule } from './entities/entity.module';
 
-import { customHttpProvider } from './blocks/interceptor/http.provider';
-import { PaginationConfig } from './blocks/config/uib-pagination.config';
+import {customHttpProvider} from './blocks/interceptor/http.provider';
+import {PaginationConfig} from './blocks/config/uib-pagination.config';
+import {TnComponentsModule} from './tn-components/tn-components.module';
+
 
 // jhipster-needle-angular-add-module-import JHipster will add new module here
 
@@ -25,6 +27,8 @@ import {
     ActiveMenuDirective,
     ErrorComponent
 } from './layouts';
+import {CurrencyMaskModule} from 'ng2-currency-mask';
+
 
 @NgModule({
     imports: [
@@ -36,6 +40,9 @@ import {
         TnAdminModule,
         TnAccountModule,
         TnEntityModule,
+        TnComponentsModule,
+
+
         // jhipster-needle-angular-add-module JHipster will add new module here
     ],
     declarations: [
@@ -50,7 +57,8 @@ import {
         ProfileService,
         customHttpProvider(),
         PaginationConfig,
-        UserRouteAccessService
+        UserRouteAccessService,
+        { provide: LOCALE_ID, useValue: "pl-PL" }
     ],
     bootstrap: [ JhiMainComponent ]
 })

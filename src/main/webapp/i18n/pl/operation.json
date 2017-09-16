@@ -1,0 +1,28 @@
+{
+    "tnApp": {
+        "operation" : {
+            "home": {
+                "title": "Operations",
+                "createLabel": "Dodaj Operation",
+                "createOrEditLabel": "Dodaj lub edytuj: Operation",
+                "search": "Szukaj Operation"
+            },
+            "created": "Utworzono nowy Operation z identyfikatorem {{ param }}",
+            "updated": "Uaktualniono Operation z identyfikatorem {{ param }}",
+            "deleted": "Usunięto Operation z identyfikatorem {{ param }}",
+            "delete": {
+                "question": "Czy na pewno chcesz usunąć Operation {{ id }}?"
+            },
+            "detail": {
+                "title": "Operation"
+            },
+            "description": "Description",
+            "remark": "Remark",
+            "estimatedTime": "Estimated Time",
+            "realTime": "Real Time",
+            "createdBy": "Created By",
+            "machines": "Machines",
+            "estimation": "Estimation"
+        }
+    }
+}

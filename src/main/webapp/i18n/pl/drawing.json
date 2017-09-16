@@ -1,0 +1,24 @@
+{
+    "tnApp": {
+        "drawing" : {
+            "home": {
+                "title": "Rysunki techniczne",
+                "createLabel": "Dodaj rysunek",
+                "createOrEditLabel": "Dodaj lub edytuj: Rysunek",
+                "search": "Szukaj rysunek"
+            },
+            "created": "Utworzono nowy Rysunek z identyfikatorem {{ param }}",
+            "updated": "Uaktualniono Rysunek z identyfikatorem {{ param }}",
+            "deleted": "Usunięto Rysunek z identyfikatorem {{ param }}",
+            "delete": {
+                "question": "Czy na pewno chcesz usunąć Rysunek {{ id }}?"
+            },
+            "detail": {
+                "title": "Rysunek trechn."
+            },
+            "number": "Number",
+            "data": "Data dodania",
+            "estimation": "Wycena"
+        }
+    }
+}

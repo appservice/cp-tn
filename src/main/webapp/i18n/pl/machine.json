@@ -1,0 +1,25 @@
+{
+    "tnApp": {
+        "machine" : {
+            "home": {
+                "title": "Stanowiska rob.",
+                "createLabel": "Dodaj stanowisko",
+                "createOrEditLabel": "Dodaj lub edytuj: Stanowisko",
+                "search": "Szukaj Stanowksko rob."
+            },
+            "created": "Utworzono nowe Stanowisko rob. z identyfikatorem {{ param }}",
+            "updated": "Uaktualniono Stanowisko rob. z identyfikatorem {{ param }}",
+            "deleted": "Usunięto Stanowisko rob. z identyfikatorem {{ param }}",
+            "delete": {
+                "question": "Czy na pewno chcesz usunąć Stanowisko rob. {{ id }}?"
+            },
+            "detail": {
+                "title": " Stanowisko robocze"
+            },
+            "name": "Nazwa",
+            "shortcut": "Skrót",
+            "workingHourPrice": "Koszt roboczogodziny [PLN]",
+            "operations": "Operacje"
+        }
+    }
+}

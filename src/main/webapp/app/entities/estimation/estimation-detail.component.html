@@ -1,0 +1,59 @@
+
+<div *ngIf="estimation">
+    <h2><span jhiTranslate="tnApp.estimation.detail.title">Estimation</span> {{estimation.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="row-md jh-entity-details">
+        <dt><span jhiTranslate="tnApp.estimation.internalNumber">Internal Number</span></dt>
+        <dd>
+            <span>{{estimation.internalNumber}}</span>
+        </dd>
+        <dt><span jhiTranslate="tnApp.estimation.material">Material</span></dt>
+        <dd>
+            <span>{{estimation.material}}</span>
+        </dd>
+        <dt><span jhiTranslate="tnApp.estimation.materialPrice">Material Price</span></dt>
+        <dd>
+            <span>{{estimation.materialPrice}}</span>
+        </dd>
+        <dt><span jhiTranslate="tnApp.estimation.amount">Amount</span></dt>
+        <dd>
+            <span>{{estimation.amount}}</span>
+        </dd>
+        <dt><span jhiTranslate="tnApp.estimation.mass">Mass</span></dt>
+        <dd>
+            <span>{{estimation.mass}}</span>
+        </dd>
+        <dt><span jhiTranslate="tnApp.estimation.description">Description</span></dt>
+        <dd>
+            <span>{{estimation.description}}</span>
+        </dd>
+        <dt><span jhiTranslate="tnApp.estimation.estimatedCost">Estimated Cost</span></dt>
+        <dd>
+            <span>{{estimation.estimatedCost}}</span>
+        </dd>
+        <dt><span jhiTranslate="tnApp.estimation.finalCost">Final Cost</span></dt>
+        <dd>
+            <span>{{estimation.finalCost}}</span>
+        </dd>
+        <dt><span jhiTranslate="tnApp.estimation.order">Order</span></dt>
+        <dd>
+            <div *ngIf="estimation.orderId">
+                <a [routerLink]="['/order', estimation.orderId]">{{estimation.orderId}}</a>
+            </div>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            (click)="previousState()"
+            class="btn btn-info">
+        <span class="fa fa-arrow-left"></span>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+    </button>
+
+    <button type="button"
+            [routerLink]="['/', { outlets: { popup: 'estimation/'+ estimation.id + '/edit'} }]"
+            replaceUrl="true"
+            class="btn btn-primary">
+        <span class="fa fa-pencil"></span>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+    </button>
+</div>

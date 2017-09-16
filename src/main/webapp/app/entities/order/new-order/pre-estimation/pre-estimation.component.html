@@ -1,0 +1,22 @@
+<td>{{rowIndex+1}}</td>
+<!--<td><input type="text" [(ngModel)]="estimation.id" class="form-control"/></td>-->
+<td>
+    <input type="text" class="form-control" [(ngModel)]="estimation.description" name="estimation_description" required>
+    <div [hidden]="!(editForm.controls.estimation_description?.dirty && editForm.controls.estimation_description?.invalid)">
+        <small class="form-text text-danger"
+               [hidden]="!editForm.controls.estimation_description?.errors?.required"
+               jhiTranslate="entity.validation.required">
+            This field is required.
+        </small>
+    </div>
+</td>
+<td style="max-width: 150px;"><input type="text" class="form-control" name="estimation_name"/></td>
+<td style="max-width: 80px"><input type="text" class="form-control" [(ngModel)]="estimation.amount"
+                                   name="estimation_amount"/></td>
+<td>SZT</td>
+<td><input type="file" class="form-control" multiple value="MD3-09-00" name="estimation_file"/></td>
+<td>
+    <button class="btn" (click)="onDeleteRow();">x</button>
+</td>
+
+

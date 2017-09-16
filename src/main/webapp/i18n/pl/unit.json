@@ -1,0 +1,22 @@
+{
+    "tnApp": {
+        "unit" : {
+            "home": {
+                "title": "Jednostki miary",
+                "createLabel": "Dodaj jednostkę",
+                "createOrEditLabel": "Dodaj lub edytuj: jednostkę",
+                "search": "Wyszukaj jednostkę"
+            },
+            "created": "Utworzono nową jednostkę z identyfikatorem {{ param }}",
+            "updated": "Uaktualniono jednostkę z identyfikatorem {{ param }}",
+            "deleted": "Usunięto jednostkę z identyfikatorem {{ param }}",
+            "delete": {
+                "question": "Czy na pewno chcesz usunąć jednostkę {{ id }}?"
+            },
+            "detail": {
+                "title": "Jednostka miary"
+            },
+            "name": "Nazwa"
+        }
+    }
+}

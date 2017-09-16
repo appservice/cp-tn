@@ -1,0 +1,96 @@
+<form name="editForm" role="form" novalidate (ngSubmit)="save()" #editForm="ngForm">
+
+    <div class="modal-header">
+        <h4 class="modal-title" id="myOrderLabel" jhiTranslate="tnApp.order.home.createOrEditLabel">Create or edit a Order</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
+                (click)="clear()">&times;</button>
+    </div>
+    <div class="modal-body">
+        <jhi-alert-error></jhi-alert-error>
+        <div class="form-group" [hidden]="!order.id">
+            <label for="id" jhiTranslate="global.field.id">ID</label>
+            <input type="text" class="form-control" id="id" name="id"
+                   [(ngModel)]="order.id" readonly />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="tnApp.order.internalNumber" for="field_internalNumber">Internal Number</label>
+            <input type="text" class="form-control" name="internalNumber" id="field_internalNumber"
+                [(ngModel)]="order.internalNumber" required />
+            <div [hidden]="!(editForm.controls.internalNumber?.dirty && editForm.controls.internalNumber?.invalid)">
+                <small class="form-text text-danger"
+                   [hidden]="!editForm.controls.internalNumber?.errors?.required" jhiTranslate="entity.validation.required">
+                   This field is required.
+                </small>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="tnApp.order.sapNumber" for="field_sapNumber">Sap Number</label>
+            <input type="text" class="form-control" name="sapNumber" id="field_sapNumber"
+                [(ngModel)]="order.sapNumber"  />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="tnApp.order.orderType" for="field_orderType">Order Type</label>
+            <select class="form-control" name="orderType" [(ngModel)]="order.orderType" id="field_orderType"  required>
+                <option value="ESTIMATION" jhiTranslate="tnApp.OrderType.ESTIMATION">ESTIMATION</option>
+                <option value="SERVICE" jhiTranslate="tnApp.OrderType.SERVICE">SERVICE</option>
+                <option value="PRODUCTION" jhiTranslate="tnApp.OrderType.PRODUCTION">PRODUCTION</option>
+            </select>
+            <div [hidden]="!(editForm.controls.orderType?.dirty && editForm.controls.orderType?.invalid)">
+                <small class="form-text text-danger"
+                   [hidden]="!editForm.controls.orderType?.errors?.required" jhiTranslate="entity.validation.required">
+                   This field is required.
+                </small>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="tnApp.order.name" for="field_name">Name</label>
+            <input type="text" class="form-control" name="name" id="field_name"
+                [(ngModel)]="order.name" required />
+            <div [hidden]="!(editForm.controls.name?.dirty && editForm.controls.name?.invalid)">
+                <small class="form-text text-danger"
+                   [hidden]="!editForm.controls.name?.errors?.required" jhiTranslate="entity.validation.required">
+                   This field is required.
+                </small>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="tnApp.order.description" for="field_description">Description</label>
+            <input type="text" class="form-control" name="description" id="field_description"
+                [(ngModel)]="order.description"  />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="tnApp.order.closeDate" for="field_closeDate">Close Date</label>
+            <div class="input-group">
+                <input id="field_closeDate" type="text" class="form-control" name="closeDate" ngbDatepicker  #closeDateDp="ngbDatepicker" [(ngModel)]="order.closeDate"
+                />
+                <span class="input-group-btn">
+                    <button type="button" class="btn btn-default" (click)="closeDateDp.toggle()"><i class="fa fa-calendar"></i></button>
+                </span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="tnApp.order.orderStatus" for="field_orderStatus">Order Status</label>
+            <select class="form-control" name="orderStatus" [(ngModel)]="order.orderStatus" id="field_orderStatus" >
+                <option value="FOR_ESTIMATION" jhiTranslate="tnApp.OrderStatus.FOR_ESTIMATION">FOR_ESTIMATION</option>
+                <option value="IN_PROGRESS" jhiTranslate="tnApp.OrderStatus.IN_PROGRESS">IN_PROGRESS</option>
+                <option value="SENT" jhiTranslate="tnApp.OrderStatus.SENT">SENT</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label jhiTranslate="tnApp.order.client" for="field_client">Client</label>
+            <select class="form-control" id="field_client" name="client" [(ngModel)]="order.clientId" >
+                <option [ngValue]="null"></option>
+                <option [ngValue]="clientOption.id" *ngFor="let clientOption of clients; trackBy: trackClientById">{{clientOption.id}}</option>
+            </select>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal" (click)="clear()">
+            <span class="fa fa-ban"></span>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+        </button>
+        <button type="submit" [disabled]="editForm.form.invalid || isSaving" class="btn btn-primary">
+            <span class="fa fa-save"></span>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+        </button>
+    </div>
+</form>

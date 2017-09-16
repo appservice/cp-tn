@@ -1,0 +1,46 @@
+<div *ngIf="drawing">
+    <h2><span jhiTranslate="tnApp.drawing.detail.title">Drawing</span> {{drawing.number}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="row-md jh-entity-details">
+        <dt><span>Id:</span></dt>
+        <dd>
+            <span>{{drawing.id}}</span>
+        </dd>
+
+    </dl>
+    <dl class="row-md jh-entity-details">
+        <dt><span>Numer rys:</span></dt>
+        <dd>
+            <span>{{drawing.number}}</span>
+        </dd>
+
+    </dl>
+    <dl class="row-md jh-entity-details">
+        <dt><span>Nazwa</span></dt>
+        <dd>
+            <span>{{drawing.name}}</span>
+        </dd>
+
+    </dl>
+
+
+    <div >
+        <h4>Pliki:</h4>
+            <tn-file-uploader [isViewOnly]="true"
+                              [attachments]="drawing.attachments"></tn-file-uploader>
+            <!--(notify)="onFileArrayChange($event);"-->
+    </div>
+    <button type="submit"
+            (click)="previousState()"
+            class="btn btn-info">
+        <span class="fa fa-arrow-left"></span>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+    </button>
+
+    <button type="button"
+            [routerLink]="['/', { outlets: { popup: 'drawing/'+ drawing.id + '/edit'} }]"
+            replaceUrl="true"
+            class="btn btn-primary">
+        <span class="fa fa-pencil"></span>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+    </button>
+</div>

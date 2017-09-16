@@ -1,0 +1,47 @@
+
+<div *ngIf="technologyCard">
+    <h2><span jhiTranslate="tnApp.technologyCard.detail.title">Technology Card</span> {{technologyCard.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="row-md jh-entity-details">
+        <dt><span jhiTranslate="tnApp.technologyCard.material">Material</span></dt>
+        <dd>
+            <span>{{technologyCard.material}}</span>
+        </dd>
+        <dt><span jhiTranslate="tnApp.technologyCard.mass">Mass</span></dt>
+        <dd>
+            <span>{{technologyCard.mass}}</span>
+        </dd>
+        <dt><span jhiTranslate="tnApp.technologyCard.description">Description</span></dt>
+        <dd>
+            <span>{{technologyCard.description}}</span>
+        </dd>
+        <dt><span jhiTranslate="tnApp.technologyCard.createdAt">Created At</span></dt>
+        <dd>
+            <span>{{technologyCard.createdAt | date:'medium'}}</span>
+        </dd>
+        <dt><span jhiTranslate="tnApp.technologyCard.amount">Amount</span></dt>
+        <dd>
+            <span>{{technologyCard.amount}}</span>
+        </dd>
+        <dt><span jhiTranslate="tnApp.technologyCard.drawing">Drawing</span></dt>
+        <dd>
+            <div *ngIf="technologyCard.drawingId">
+                <a [routerLink]="['/drawing', technologyCard.drawingId]">{{technologyCard.drawingNumber}}</a>
+            </div>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            (click)="previousState()"
+            class="btn btn-info">
+        <span class="fa fa-arrow-left"></span>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+    </button>
+
+    <button type="button"
+            [routerLink]="['/', { outlets: { popup: 'technology-card/'+ technologyCard.id + '/edit'} }]"
+            replaceUrl="true"
+            class="btn btn-primary">
+        <span class="fa fa-pencil"></span>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+    </button>
+</div>

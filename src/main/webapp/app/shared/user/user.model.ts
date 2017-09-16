@@ -12,22 +12,25 @@ export class User {
     public lastModifiedBy?: string;
     public lastModifiedDate?: Date;
     public password?: string;
+    public clientId?: number;
+    public clientName?: string;
 
-    constructor(
-        id?: any,
-        login?: string,
-        firstName?: string,
-        lastName?: string,
-        email?: string,
-        activated?: Boolean,
-        langKey?: string,
-        authorities?: any[],
-        createdBy?: string,
-        createdDate?: Date,
-        lastModifiedBy?: string,
-        lastModifiedDate?: Date,
-        password?: string
-    ) {
+
+    constructor(id?: any,
+                login?: string,
+                firstName?: string,
+                lastName?: string,
+                email?: string,
+                activated?: Boolean,
+                langKey?: string,
+                authorities?: any[],
+                createdBy?: string,
+                createdDate?: Date,
+                lastModifiedBy?: string,
+                lastModifiedDate?: Date,
+                password?: string,
+                clientId?: number,
+                clientName?: string) {
         this.id = id ? id : null;
         this.login = login ? login : null;
         this.firstName = firstName ? firstName : null;
@@ -41,5 +44,7 @@ export class User {
         this.lastModifiedBy = lastModifiedBy ? lastModifiedBy : null;
         this.lastModifiedDate = lastModifiedDate ? lastModifiedDate : null;
         this.password = password ? password : null;
+        this.clientId = clientId ? clientId : null;
+        this.clientName = clientName ? clientName : null;
     }
 }

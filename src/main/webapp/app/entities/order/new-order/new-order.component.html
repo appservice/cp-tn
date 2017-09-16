@@ -1,0 +1,200 @@
+<form name="editForm" role="form" novalidate (ngSubmit)="onWorkingCopyBtnClick()" #editForm="ngForm">
+
+    <div>
+        <h2>
+            <!--Dodaj/Edytuj Zlecenie-->
+
+            {{title}}
+
+        </h2>
+        <fieldset >
+            <div class="row">
+                <div class="col-lg-2">
+                    <label for="internal_number_field">Nr Wewn.</label>
+                    <input type="text" id="internal_number_field" name="internal_number" class="form-control"
+                           [(ngModel)]="order.internalNumber" disabled/>
+                </div>
+                <div class="col-lg-2">
+                    <label for="title_external_number_field">Nr. ref</label>
+                    <input type="text" id="title_external_number_field" class="form-control" name="title"
+                           [(ngModel)]="order.referenceNumber" [disabled]="isReadOnly"/>
+                </div>
+                <div class="col-lg-2">
+                    <label for="title_field">Tytuł</label>
+                    <input type="text" id="title_field" class="form-control" name="title" [(ngModel)]="order.name" [disabled]="isReadOnly"/>
+                </div>
+                <div class="col-lg-2">
+                    <label for="sap_number_field">Nr SAP</label>
+                    <input type="text" id="sap_number_field" class="form-control" name="sap_number"
+                           [(ngModel)]="order.sapNumber" required [disabled]="isReadOnly"/>
+                    <div [hidden]="!(editForm.controls.sap_number?.dirty && editForm.controls.sap_number?.invalid)">
+                        <small class="form-text text-danger"
+                               [hidden]="!editForm.controls.sap_number?.errors?.required"
+                               jhiTranslate="entity.validation.required">
+                            This field is required.
+                        </small>
+                    </div>
+                </div>
+                <div class="form-group col-lg-2">
+                    <label for="field_client">Klient</label>
+                    <select class="form-control" id="field_client" name="client" [(ngModel)]="order.clientId" required [disabled]="isReadOnly">
+                        <!--<option [ngValue]="null"></option>-->
+                        <option [ngValue]="clientOption.id"
+                                *ngFor="let clientOption of clients; trackBy: trackClientById">
+                            {{clientOption.shortcut}}
+                        </option>
+                    </select>
+                    <div [hidden]="!(editForm.controls.client?.dirty && editForm.controls.client?.invalid)">
+                        <small class="form-text text-danger"
+                               [hidden]="!editForm.controls.client?.errors?.required"
+                               jhiTranslate="entity.validation.required">
+                            This field is required.
+                        </small>
+                    </div>
+                </div>
+                <div class="col-lg-2">
+                    <label for="description_field">Opis dod.</label>
+                    <input type="text" id="description_field" name="description" [(ngModel)]="order.description"
+                           class="form-control" [disabled]="isReadOnly"/>
+                </div>
+
+            </div>
+            <br/>
+
+
+            <ngb-tabset>
+                <ngb-tab title="Pozycje wyceny" id="1">
+                    <ng-template ngbTabContent>
+
+                        <table class="table table-striped">
+                            <thead>
+                            <tr>
+                                <th>LP</th>
+                                <th>Nazwa:</th>
+                                <th>Nr rys:</th>
+                                <th>Ilość:</th>
+                                <th>Jedn:</th>
+                                <th style="width: 180px">Proponowana data realizacji:</th>
+                                <th>Pliki:</th>
+                                <th></th>
+
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <!--            <tr *ngFor="let item of order.estimations;let i = index" tn-pre-estimation [estimation]="item"
+                                            (deleteRow)="onDeleteRow($event,i)" [rowIndex]="i" [editForm]="editForm"></tr>-->
+                            <tr *ngFor="let estimation of order.estimations;let rowIndex = index">
+                                <td>{{rowIndex+1}}</td>
+                                <!--<td><input type="text" [(ngModel)]="estimation.id" class="form-control"/></td>-->
+                                <td>
+                                    <input type="text" class="form-control" [(ngModel)]="estimation.description"
+
+                                           name="estimation_description_{{rowIndex}}" required [disabled]="isReadOnly">
+                                    <div
+                                        [hidden]="!(editForm.controls.estimation_description_0?.dirty && editForm.controls.estimation_description?.invalid)">
+                                        <small class="form-text text-danger"
+                                               [hidden]="!editForm.controls.estimation_description?.errors?.required"
+                                               jhiTranslate="entity.validation.required">
+                                            This field is required.
+                                        </small>
+                                    </div>
+                                </td>
+                                <td style="max-width: 150px;">
+                                    <input type="text" class="form-control" name="estimation_drawing_{{rowIndex}}"
+                                           [(ngModel)]="estimation.drawing.number" [disabled]="isReadOnly"/>
+                                </td>
+                                <td style="max-width: 80px">
+                                    <input type="text" class="form-control" [(ngModel)]="estimation.amount"
+                                           name="estimation_amount_{{rowIndex}}" required [disabled]="isReadOnly"/>
+                                    <div
+                                        [hidden]="!(editForm.controls.estimation_amount?.dirty && editForm.controls.estimation_amount?.invalid)">
+                                        <small class="form-text text-danger"
+                                               [hidden]="!editForm.controls.estimation_amount?.errors?.required"
+                                               jhiTranslate="entity.validation.required">
+                                            This field is required.
+                                        </small>
+                                    </div>
+                                </td>
+                                <td> SZT</td>
+                                <td style="max-width: 150px">
+                                    <div class="form-group">
+                                        <!--<label class="form-control-label" jhiTranslate="tnApp.order.closeDate" for="field_closeDate">Close Date</label>-->
+                                        <div class="input-group">
+                                            <input id="field_closeDate" type="text" class="form-control"
+                                                   name="estimation_realization_date_{{rowIndex}}"
+                                                   ngbDatepicker #realizationDateDp="ngbDatepicker"
+                                                   [(ngModel)]="estimation.neededRealizationDate" [disabled]="isReadOnly"/>
+                                            <span class="input-group-btn">
+                    <button type="button" class="btn btn-default" (click)="realizationDateDp.toggle()"
+                            (keyup)="realizationDateDp.toggle()" [disabled]="isReadOnly"><i class="fa fa-calendar"></i></button>
+                </span>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td style="width: 100px">
+
+                                    <!--</ss-multiselect-dropdown>-->
+                                    <button class="btn" type="button" (click)="openModal(content,rowIndex)">
+                                        <strong>{{estimation.drawing.attachments.length}}</strong>
+                                        <i class="fa fa-paperclip"></i>
+                                    </button>
+
+                                </td>
+                                <td>
+                                    <button type="button" class="btn" (click)="onDeleteRow(rowIndex);" [disabled]="isReadOnly">x</button>
+                                </td>
+                            </tr>
+
+
+                            </tbody>
+
+                        </table>
+
+
+                        <button type="button" class="btn" (click)="addEstimation();" [disabled]="isReadOnly">Dodaj do wyceny</button>
+                    </ng-template>
+                </ngb-tab>
+                <!--<ngb-tab title="Pliki" id="2">
+                    <ng-template ngbTabContent>
+                        <tn-file-uploader (notify)="onFileArrayChange($event);"
+                                          [attachments]="attachments"></tn-file-uploader>
+                    </ng-template>
+
+                </ngb-tab>-->
+            </ngb-tabset>
+        </fieldset>
+
+        <div class="text-center">
+
+            <button class="btn btn-info " type="submit" [disabled]="editForm.form.invalid || isSaving" *ngIf="order.orderStatus =='WORKING_COPY' || order.orderStatus==null">
+                <span class="fa fa-save"></span>&nbsp;Kopia robocza
+                <!--<span jhiTranslate="entity.action.save">Save</span>-->
+            </button>
+            <button type="button" class="btn btn-danger" (click)="previousState()">Powrót</button>
+
+            <button class="btn btn-info" (click)="sendToEstimation();" *ngIf="order.orderStatus =='WORKING_COPY' || order.orderStatus==null">
+                <span class="fa fa-play"></span> Wyślij do wyceny
+            </button>
+        </div>
+    </div>
+
+</form>
+
+
+<ng-template #content let-c="close" let-d="dismiss">
+    <div class="modal-header">
+        <h4 class="modal-title">Załączniki</h4>
+
+        <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <tn-file-uploader (notify)="onFileArrayChange($event);"
+                          [attachments]="order.estimations[clickedRow].drawing.attachments" [isViewOnly]="isReadOnly"></tn-file-uploader>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="c('Close click')">Close</button>
+    </div>
+</ng-template>
+<!--<p-chips [(ngModel)]="myValues">test</p-chips>-->

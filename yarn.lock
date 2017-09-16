@@ -2,6 +2,12 @@
 # yarn lockfile v1
 
 
+"@angular/animations@^4.4.1":
+  version "4.4.1"
+  resolved "https://registry.yarnpkg.com/@angular/animations/-/animations-4.4.1.tgz#578d8951a273ee95936ab7f6cd933ff019ce0ffe"
+  dependencies:
+    tslib "^1.7.1"
+
 "@angular/cli@1.2.6":
   version "1.2.6"
   resolved "https://registry.yarnpkg.com/@angular/cli/-/cli-1.2.6.tgz#76ee20f72342d9b61e1a2554f567c99e67dcf14b"
@@ -2815,6 +2821,10 @@ file-loader@^0.8.1:
   dependencies:
     loader-utils "~0.2.5"
 
+file-saver@^1.3.3:
+  version "1.3.3"
+  resolved "https://registry.yarnpkg.com/file-saver/-/file-saver-1.3.3.tgz#cdd4c44d3aa264eac2f68ec165bc791c34af1232"
+
 filename-regex@^2.0.0:
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/filename-regex/-/filename-regex-2.0.1.tgz#c1c4b9bee3e09725ddb106b75c1e301fe2f18b26"
@@ -5393,6 +5403,14 @@ ng-jhipster@0.2.12:
   dependencies:
     "@ngx-translate/core" "7.0.0"
     "@ngx-translate/http-loader" "0.1.0"
+
+ng2-currency-mask@^4.3.4:
+  version "4.3.4"
+  resolved "https://registry.yarnpkg.com/ng2-currency-mask/-/ng2-currency-mask-4.3.4.tgz#f52203ab1f1cc21db956a85778f1e4014de6e7cc"
+
+ng2-file-upload@^1.2.1:
+  version "1.2.1"
+  resolved "https://registry.yarnpkg.com/ng2-file-upload/-/ng2-file-upload-1.2.1.tgz#5563c5dfd6f43fbfbe815c206e343464a0a6a197"
 
 ng2-webstorage@1.8.0:
   version "1.8.0"

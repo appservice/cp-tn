@@ -1,0 +1,32 @@
+{
+    "tnApp": {
+        "estimation" : {
+            "home": {
+                "title": "Wyceny",
+                "createLabel": "Dodaj wycenę",
+                "createOrEditLabel": "Dodaj lub edytuj: Wycenę",
+                "search": "Szukaj Wycenę"
+            },
+            "created": "Utworzono nową Wycenę z identyfikatorem {{ param }}",
+            "updated": "Uaktualniono Wycenę z identyfikatorem {{ param }}",
+            "deleted": "Usunięto Wycenę z identyfikatorem {{ param }}",
+            "delete": {
+                "question": "Czy na pewno chcesz usunąć Wycenę {{ id }}?"
+            },
+            "detail": {
+                "title": "Wycena"
+            },
+            "internalNumber": "Numer wewnętrzny",
+            "material": "Materiał",
+            "materialPrice": "Cena materiału",
+            "amount": "Ilość",
+            "mass": "Masa",
+            "description": "Opis",
+            "estimatedCost": "Szacowany koszt",
+            "finalCost": "Koszt finalny",
+            "drawings": "Rysunki",
+            "operations": "Operacje",
+            "order": "Zlecenie"
+        }
+    }
+}

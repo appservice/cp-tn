@@ -1,0 +1,67 @@
+<form name="editForm" role="form" novalidate (ngSubmit)="save()" #editForm="ngForm">
+
+    <div class="modal-header">
+        <h4 class="modal-title" id="myDrawingLabel" jhiTranslate="tnApp.drawing.home.createOrEditLabel">Create or edit a Drawing</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
+                (click)="clear()">&times;</button>
+    </div>
+    <div class="modal-body">
+        <jhi-alert-error></jhi-alert-error>
+        <div class="form-group" [hidden]="!drawing.id">
+            <label for="id" jhiTranslate="global.field.id">ID</label>
+            <input type="text" class="form-control" id="id" name="id"
+                   [(ngModel)]="drawing.id" readonly />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="tnApp.drawing.number" for="field_number">Number</label>
+            <input type="text" class="form-control" name="number" id="field_number"
+                [(ngModel)]="drawing.number" required />
+            <div [hidden]="!(editForm.controls.number?.dirty && editForm.controls.number?.invalid)">
+                <small class="form-text text-danger"
+                   [hidden]="!editForm.controls.number?.errors?.required" jhiTranslate="entity.validation.required">
+                   This field is required.
+                </small>
+            </div>
+        </div>
+        <!--<div class="form-group">
+            <label class="form-control-label" jhiTranslate="tnApp.drawing.data" for="field_data">Data</label>
+            <div>
+                <div *ngIf="drawing.data" class="form-text text-danger clearfix">
+                    <a class="pull-left" (click)="openFile(drawing.dataContentType, drawing.data)" jhiTranslate="entity.action.open">open</a><br>
+                    <span class="pull-left">{{drawing.dataContentType}}, {{byteSize(drawing.data)}}</span>
+                    <button type="button" (click)="drawing.data=null;drawing.dataContentType=null;"
+                            class="btn btn-default btn-xs pull-right">
+                        <span class="fa fa-times"></span>
+                    </button>
+                </div>
+                <input type="file" (change)="setFileData($event, drawing, 'data', false)" jhiTranslate="entity.action.addblob"/>
+            </div>
+            <input type="hidden" class="form-control" name="data" id="field_data"
+                [(ngModel)]="drawing.data" required />
+            <input type="hidden" class="form-control" name="dataContentType" id="field_dataContentType"
+                [(ngModel)]="drawing.dataContentType" />
+            <div [hidden]="!(editForm.controls.data?.dirty && editForm.controls.data?.invalid)">
+                <small class="form-text text-danger"
+                   [hidden]="!editForm.controls.data?.errors?.required" jhiTranslate="entity.validation.required">
+                   This field is required.
+                </small>
+            </div>
+        </div>-->
+
+        <!--<div class="form-group">
+            <label jhiTranslate="tnApp.drawing.estimation" for="field_estimation">Estimation</label>
+            <select class="form-control" id="field_estimation" name="estimation" [(ngModel)]="drawing.estimationId" >
+                <option [ngValue]="null"></option>
+                <option [ngValue]="estimationOption.id" *ngFor="let estimationOption of estimations; trackBy: trackEstimationById">{{estimationOption.id}}</option>
+            </select>
+        </div>-->
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal" (click)="clear()">
+            <span class="fa fa-ban"></span>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+        </button>
+        <button type="submit" [disabled]="editForm.form.invalid || isSaving" class="btn btn-primary">
+            <span class="fa fa-save"></span>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+        </button>
+    </div>
+</form>

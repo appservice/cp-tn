@@ -1,0 +1,13 @@
+{
+    "tnApp": {
+        "OrderStatus" : {
+            "null": "",
+            "WORKING_COPY": "KOPA ROBOCZA",
+            "SENT_TO_ESTIMATION": "PRZEKAZANE DO WYCENY",
+            "IN_ESTIMATION": "W TRAKCIE WYCENY",
+            "IN_PRODUCTION": "PRZEKAZANE DO PRODUKCJI",
+            "SENT_OFFER_TO_CLIENT":"OFERTA UKOŃCZONA",
+            "FINISHED":"UKOŃCZONO"
+        }
+    }
+}

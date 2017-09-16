@@ -1,0 +1,45 @@
+
+<div *ngIf="commercialPart">
+    <h2><span jhiTranslate="tnApp.commercialPart.detail.title">Commercial Part</span> {{commercialPart.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="row-md jh-entity-details">
+        <dt><span jhiTranslate="tnApp.commercialPart.name">Name</span></dt>
+        <dd>
+            <span>{{commercialPart.name}}</span>
+        </dd>
+        <dt><span jhiTranslate="tnApp.commercialPart.amount">Amount</span></dt>
+        <dd>
+            <span>{{commercialPart.amount}}</span>
+        </dd>
+        <dt><span jhiTranslate="tnApp.commercialPart.price">Price</span></dt>
+        <dd>
+            <span>{{commercialPart.price}}</span>
+        </dd>
+        <dt><span jhiTranslate="tnApp.commercialPart.unit">Unit</span></dt>
+        <dd>
+            <div *ngIf="commercialPart.unitId">
+                <a [routerLink]="['/unit', commercialPart.unitId]">{{commercialPart.unitName}}</a>
+            </div>
+        </dd>
+        <dt><span jhiTranslate="tnApp.commercialPart.estimation">Estimation</span></dt>
+        <dd>
+            <div *ngIf="commercialPart.estimationId">
+                <a [routerLink]="['/estimation', commercialPart.estimationId]">{{commercialPart.estimationName}}</a>
+            </div>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            (click)="previousState()"
+            class="btn btn-info">
+        <span class="fa fa-arrow-left"></span>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+    </button>
+
+    <button type="button"
+            [routerLink]="['/', { outlets: { popup: 'commercial-part/'+ commercialPart.id + '/edit'} }]"
+            replaceUrl="true"
+            class="btn btn-primary">
+        <span class="fa fa-pencil"></span>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+    </button>
+</div>

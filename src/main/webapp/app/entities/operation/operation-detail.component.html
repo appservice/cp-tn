@@ -1,0 +1,47 @@
+
+<div *ngIf="operation">
+    <h2><span jhiTranslate="tnApp.operation.detail.title">Operation</span> {{operation.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="row-md jh-entity-details">
+        <dt><span jhiTranslate="tnApp.operation.description">Description</span></dt>
+        <dd>
+            <span>{{operation.description}}</span>
+        </dd>
+        <dt><span jhiTranslate="tnApp.operation.remark">Remark</span></dt>
+        <dd>
+            <span>{{operation.remark}}</span>
+        </dd>
+        <dt><span jhiTranslate="tnApp.operation.estimatedTime">Estimated Time</span></dt>
+        <dd>
+            <span>{{operation.estimatedTime}}</span>
+        </dd>
+        <dt><span jhiTranslate="tnApp.operation.realTime">Real Time</span></dt>
+        <dd>
+            <span>{{operation.realTime}}</span>
+        </dd>
+        <dt><span jhiTranslate="tnApp.operation.createdBy">Created By</span></dt>
+        <dd>
+            <span>{{operation.createdBy}}</span>
+        </dd>
+        <dt><span jhiTranslate="tnApp.operation.estimation">Estimation</span></dt>
+        <dd>
+            <div *ngIf="operation.estimationId">
+                <a [routerLink]="['/estimation', operation.estimationId]">{{operation.estimationId}}</a>
+            </div>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            (click)="previousState()"
+            class="btn btn-info">
+        <span class="fa fa-arrow-left"></span>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+    </button>
+
+    <button type="button"
+            [routerLink]="['/', { outlets: { popup: 'operation/'+ operation.id + '/edit'} }]"
+            replaceUrl="true"
+            class="btn btn-primary">
+        <span class="fa fa-pencil"></span>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+    </button>
+</div>

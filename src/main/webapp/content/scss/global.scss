@@ -69,6 +69,14 @@ Generic styles
 
 .footer {
     border-top: 1px solid rgba(0,0,0,.125);
+    position:relative;
+    bottom:0;
+    left:0;
+    width: 100%;
+}
+
+.content-min {
+  min-height: calc(100vh - 125px);
 }
 
 /* ==========================================================================
@@ -202,3 +210,12 @@ ui bootstrap tweaks
 }
 
 /* jhipster-needle-scss-add-main JHipster will add new css style */
+.alt {
+    background-color: #aaa;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+}
+
+.tn-checkbox{
+    transform: scale(1.5);
+}

@@ -6,6 +6,8 @@ import { JhiEventManager } from 'ng-jhipster';
 
 import { UserModalService } from './user-modal.service';
 import { JhiLanguageHelper, User, UserService } from '../../shared';
+import {ClientService} from '../../entities/client/client.service';
+import {Client} from '../../entities/client/client.model';
 
 @Component({
     selector: 'jhi-user-mgmt-dialog',
@@ -17,12 +19,14 @@ export class UserMgmtDialogComponent implements OnInit {
     languages: any[];
     authorities: any[];
     isSaving: Boolean;
+    clients: Client[];
 
     constructor(
         public activeModal: NgbActiveModal,
         private languageHelper: JhiLanguageHelper,
         private userService: UserService,
-        private eventManager: JhiEventManager
+        private eventManager: JhiEventManager,
+        private clientService: ClientService
     ) {}
 
     ngOnInit() {
@@ -31,6 +35,12 @@ export class UserMgmtDialogComponent implements OnInit {
         this.userService.authorities().subscribe((authorities) => {
             this.authorities = authorities;
         });
+
+        this.clientService.query().subscribe((responseWrapper) => {
+            this.clients = responseWrapper.json;
+        });
+
+
         this.languageHelper.getAll().then((languages) => {
             this.languages = languages;
         });

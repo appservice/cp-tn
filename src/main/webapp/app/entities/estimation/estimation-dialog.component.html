@@ -1,0 +1,122 @@
+<form name="editForm" role="form" novalidate (ngSubmit)="save()" #editForm="ngForm">
+
+    <div class="modal-header">
+        <h4 class="modal-title" id="myEstimationLabel" jhiTranslate="tnApp.estimation.home.createOrEditLabel">Create or edit a Estimation</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
+                (click)="clear()">&times;</button>
+    </div>
+    <div class="modal-body">
+        <jhi-alert-error></jhi-alert-error>
+        <div class="form-group" [hidden]="!estimation.id">
+            <label for="id" jhiTranslate="global.field.id">ID</label>
+            <input type="text" class="form-control" id="id" name="id"
+                   [(ngModel)]="estimation.id" readonly />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="tnApp.estimation.internalNumber" for="field_internalNumber">Internal Number</label>
+            <input type="text" class="form-control" name="internalNumber" id="field_internalNumber"
+                [(ngModel)]="estimation.internalNumber" required />
+            <div [hidden]="!(editForm.controls.internalNumber?.dirty && editForm.controls.internalNumber?.invalid)">
+                <small class="form-text text-danger"
+                   [hidden]="!editForm.controls.internalNumber?.errors?.required" jhiTranslate="entity.validation.required">
+                   This field is required.
+                </small>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="tnApp.estimation.material" for="field_material">Material</label>
+            <input type="text" class="form-control" name="material" id="field_material"
+                [(ngModel)]="estimation.material"  />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="tnApp.estimation.materialPrice" for="field_materialPrice">Material Price</label>
+            <input type="number" class="form-control" name="materialPrice" id="field_materialPrice"
+                [(ngModel)]="estimation.materialPrice" min="0" />
+            <div [hidden]="!(editForm.controls.materialPrice?.dirty && editForm.controls.materialPrice?.invalid)">
+                <small class="form-text text-danger"
+                    [hidden]="!editForm.controls.materialPrice?.errors?.min" jhiTranslate="entity.validation.min" translateValues="{ min: 0 }">
+                    This field should be at least 0.
+                </small>
+                <small class="form-text text-danger"
+                    [hidden]="!editForm.controls.materialPrice?.errors?.number" jhiTranslate="entity.validation.number">
+                    This field should be a number.
+                </small>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="tnApp.estimation.amount" for="field_amount">Amount</label>
+            <input type="number" class="form-control" name="amount" id="field_amount"
+                [(ngModel)]="estimation.amount" required min="0" />
+            <div [hidden]="!(editForm.controls.amount?.dirty && editForm.controls.amount?.invalid)">
+                <small class="form-text text-danger"
+                   [hidden]="!editForm.controls.amount?.errors?.required" jhiTranslate="entity.validation.required">
+                   This field is required.
+                </small>
+                <small class="form-text text-danger"
+                    [hidden]="!editForm.controls.amount?.errors?.min" jhiTranslate="entity.validation.min" translateValues="{ min: 0 }">
+                    This field should be at least 0.
+                </small>
+                <small class="form-text text-danger"
+                    [hidden]="!editForm.controls.amount?.errors?.number" jhiTranslate="entity.validation.number">
+                    This field should be a number.
+                </small>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="tnApp.estimation.mass" for="field_mass">Mass</label>
+            <input type="number" class="form-control" name="mass" id="field_mass"
+                [(ngModel)]="estimation.mass"  />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="tnApp.estimation.description" for="field_description">Description</label>
+            <input type="text" class="form-control" name="description" id="field_description"
+                [(ngModel)]="estimation.description"  />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="tnApp.estimation.estimatedCost" for="field_estimatedCost">Estimated Cost</label>
+            <input type="number" class="form-control" name="estimatedCost" id="field_estimatedCost"
+                [(ngModel)]="estimation.estimatedCost" min="0" />
+            <div [hidden]="!(editForm.controls.estimatedCost?.dirty && editForm.controls.estimatedCost?.invalid)">
+                <small class="form-text text-danger"
+                    [hidden]="!editForm.controls.estimatedCost?.errors?.min" jhiTranslate="entity.validation.min" translateValues="{ min: 0 }">
+                    This field should be at least 0.
+                </small>
+                <small class="form-text text-danger"
+                    [hidden]="!editForm.controls.estimatedCost?.errors?.number" jhiTranslate="entity.validation.number">
+                    This field should be a number.
+                </small>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="tnApp.estimation.finalCost" for="field_finalCost">Final Cost</label>
+            <input type="number" class="form-control" name="finalCost" id="field_finalCost"
+                [(ngModel)]="estimation.finalCost" min="0" />
+            <div [hidden]="!(editForm.controls.finalCost?.dirty && editForm.controls.finalCost?.invalid)">
+                <small class="form-text text-danger"
+                    [hidden]="!editForm.controls.finalCost?.errors?.min" jhiTranslate="entity.validation.min" translateValues="{ min: 0 }">
+                    This field should be at least 0.
+                </small>
+                <small class="form-text text-danger"
+                    [hidden]="!editForm.controls.finalCost?.errors?.number" jhiTranslate="entity.validation.number">
+                    This field should be a number.
+                </small>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label jhiTranslate="tnApp.estimation.order" for="field_order">Order</label>
+            <select class="form-control" id="field_order" name="order" [(ngModel)]="estimation.orderId" >
+                <option [ngValue]="null"></option>
+                <option [ngValue]="orderOption.id" *ngFor="let orderOption of orders; trackBy: trackOrderById">{{orderOption.id}}</option>
+            </select>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal" (click)="clear()">
+            <span class="fa fa-ban"></span>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+        </button>
+        <button type="submit" [disabled]="editForm.form.invalid || isSaving" class="btn btn-primary">
+            <span class="fa fa-save"></span>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+        </button>
+    </div>
+</form>
