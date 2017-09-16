@@ -1,5 +1,6 @@
 package eu.canpack.fip.service.dto;
 
+import eu.canpack.fip.bo.client.Client;
 import eu.canpack.fip.config.Constants;
 
 import eu.canpack.fip.domain.Authority;
@@ -53,6 +54,10 @@ public class UserDTO {
 
     private Set<String> authorities;
 
+    private Long clientId;
+
+    private String clientName;
+
     public UserDTO() {
         // Empty constructor needed for Jackson.
     }
@@ -62,13 +67,13 @@ public class UserDTO {
             user.getEmail(), user.getActivated(), user.getImageUrl(), user.getLangKey(),
             user.getCreatedBy(), user.getCreatedDate(), user.getLastModifiedBy(), user.getLastModifiedDate(),
             user.getAuthorities().stream().map(Authority::getName)
-                .collect(Collectors.toSet()));
+                .collect(Collectors.toSet()), user.getClient());
     }
 
     public UserDTO(Long id, String login, String firstName, String lastName,
         String email, boolean activated, String imageUrl, String langKey,
         String createdBy, Instant createdDate, String lastModifiedBy, Instant lastModifiedDate,
-        Set<String> authorities) {
+        Set<String> authorities, Client client) {
 
         this.id = id;
         this.login = login;
@@ -83,6 +88,10 @@ public class UserDTO {
         this.lastModifiedBy = lastModifiedBy;
         this.lastModifiedDate = lastModifiedDate;
         this.authorities = authorities;
+        if(client!=null){
+            this.clientId=client.getId();
+            this.clientName=client.getName();
+        }
     }
 
     public Long getId() {
@@ -147,6 +156,22 @@ public class UserDTO {
 
     public Set<String> getAuthorities() {
         return authorities;
+    }
+
+    public String getClientName() {
+        return clientName;
+    }
+
+    public void setClientName(String clientName) {
+        this.clientName = clientName;
+    }
+
+    public Long getClientId() {
+        return clientId;
+    }
+
+    public void setClientId(Long clientId) {
+        this.clientId = clientId;
     }
 
     @Override

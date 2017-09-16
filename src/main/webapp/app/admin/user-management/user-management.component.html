@@ -28,7 +28,7 @@
                 <td><a [routerLink]="['../user-management', user.login]">{{user.id}}</a></td>
                 <td>{{user.login}}</td>
                 <td>{{user.email}}</td>
-                <td>{{user.clientName}}</td>
+                <td>{{user.drawingNumber}}</td>
                 <td>
                     <button class="btn btn-danger btn-sm" (click)="setActive(user, true)" *ngIf="!user.activated"
                             jhiTranslate="userManagement.deactivated">Deactivated</button>

@@ -1,0 +1,20 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+    <changeSet author="lukasz.mochel (generated)" id="1502816287021-1">
+        <addColumn tableName="operation">
+            <column name="machine_id" type="bigint"/>
+        </addColumn>
+    </changeSet>
+    <changeSet author="lukasz.mochel (generated)" id="1502816287021-2">
+        <addForeignKeyConstraint baseColumnNames="machine_id" baseTableName="operation" constraintName="FKlgdsq61pa8cctjap315cdgmaj" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="machine"/>
+    </changeSet>
+    <changeSet author="lukasz.mochel (generated)" id="1502816287021-3">
+        <dropForeignKeyConstraint baseTableName="machine" constraintName="fk_machine_operations_id"/>
+    </changeSet>
+    <changeSet author="lukasz.mochel (generated)" id="1502816287021-4">
+        <dropColumn columnName="operations_id" tableName="machine"/>
+    </changeSet>
+    <changeSet author="lukasz.mochel (generated)" id="1502816287021-5">
+        <dropColumn columnName="created_by" tableName="operation"/>
+    </changeSet>
+</databaseChangeLog>

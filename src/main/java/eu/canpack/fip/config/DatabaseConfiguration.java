@@ -7,6 +7,7 @@ import liquibase.integration.spring.SpringLiquibase;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.boot.autoconfigure.liquibase.LiquibaseProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -20,10 +21,11 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 import javax.sql.DataSource;
 
 @Configuration
-@EnableJpaRepositories("eu.canpack.fip.repository")
+@EnableJpaRepositories(basePackages = {"eu.canpack.fip.repository","eu.canpack.fip.bo"})
 @EnableJpaAuditing(auditorAwareRef = "springSecurityAuditorAware")
 @EnableTransactionManagement
-@EnableElasticsearchRepositories("eu.canpack.fip.repository.search")
+@EnableElasticsearchRepositories({"eu.canpack.fip.repository.search","eu.canpack.fip.bo.*.search"})
+@EntityScan(basePackages = {"eu.canpack.fip.domain","eu.canpack.fip.bo"})
 public class DatabaseConfiguration {
 
     private final Logger log = LoggerFactory.getLogger(DatabaseConfiguration.class);

@@ -1,5 +1,6 @@
 package eu.canpack.fip.service;
 
+import eu.canpack.fip.bo.client.Client;
 import eu.canpack.fip.domain.Authority;
 import eu.canpack.fip.domain.User;
 import eu.canpack.fip.repository.AuthorityRepository;
@@ -11,6 +12,7 @@ import eu.canpack.fip.security.SecurityUtils;
 import eu.canpack.fip.service.util.RandomUtil;
 import eu.canpack.fip.service.dto.UserDTO;
 
+import eu.canpack.fip.web.rest.errors.CustomParameterizedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.cache.CacheManager;
@@ -193,6 +195,14 @@ public class UserService {
                 userDTO.getAuthorities().stream()
                     .map(authorityRepository::findOne)
                     .forEach(managedAuthorities::add);
+                if(userDTO.getClientId()!=null){
+                    Client client=new Client();
+                    client.setId(userDTO.getClientId());
+                    user.setClient(client);
+                }else{
+                    user.setClient(null);
+                }
+
                 userSearchRepository.save(user);
                 cacheManager.getCache("users").evict(user.getLogin());
                 log.debug("Changed Information for User: {}", user);
@@ -244,7 +254,7 @@ public class UserService {
      * <p>
      * This is scheduled to get fired everyday, at 01:00 (am).
      */
-    @Scheduled(cron = "0 0 1 * * ?")
+//    @Scheduled(cron = "0 0 1 * * ?")
     public void removeNotActivatedUsers() {
         List<User> users = userRepository.findAllByActivatedIsFalseAndCreatedDateBefore(Instant.now().minus(3, ChronoUnit.DAYS));
         for (User user : users) {
@@ -261,4 +271,16 @@ public class UserService {
     public List<String> getAuthorities() {
         return authorityRepository.findAll().stream().map(Authority::getName).collect(Collectors.toList());
     }
+
+    public User getLoggedUser() {
+        Optional<User> currentUserOpt = userRepository.findOneByLogin(SecurityUtils.getCurrentUserLogin());
+        if (currentUserOpt.isPresent()) {
+            return currentUserOpt.get();
+        } else {
+            throw new CustomParameterizedException("Nie odnaleziono użytkownika w bazie danych");
+
+        }
+    }
+
+
 }

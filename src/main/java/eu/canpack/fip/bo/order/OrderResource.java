@@ -1,0 +1,263 @@
+package eu.canpack.fip.bo.order;
+
+import com.codahale.metrics.annotation.Timed;
+import eu.canpack.fip.bo.order.dto.OrderCriteria;
+import eu.canpack.fip.bo.order.dto.OrderDTO;
+import eu.canpack.fip.bo.order.dto.OrderListDTO;
+import eu.canpack.fip.bo.order.dto.OrderSimpleDTO;
+import eu.canpack.fip.bo.pdf.Order2PdfCreator;
+import eu.canpack.fip.web.rest.util.HeaderUtil;
+import eu.canpack.fip.web.rest.util.PaginationUtil;
+import io.swagger.annotations.ApiParam;
+import io.github.jhipster.web.util.ResponseUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URI;
+import java.net.URISyntaxException;
+
+import java.util.List;
+import java.util.Optional;
+
+/**
+ * REST controller for managing Order.
+ */
+@RestController
+@RequestMapping("/api")
+public class OrderResource {
+
+    private final Logger log = LoggerFactory.getLogger(OrderResource.class);
+
+    private static final String ENTITY_NAME = "order";
+
+    private final OrderService orderService;
+
+    private final OrderMapper orderMapper;
+
+    private final Order2PdfCreator order2PdfCreator;
+
+    private final OrderQueryService orderQueryService;
+
+
+    public OrderResource(OrderService orderService, OrderMapper orderMapper, Order2PdfCreator order2PdfCreator, OrderQueryService orderQueryService) {
+        this.orderService = orderService;
+        this.orderMapper = orderMapper;
+        this.order2PdfCreator = order2PdfCreator;
+        this.orderQueryService = orderQueryService;
+    }
+
+    /**
+     * POST  /orders : Create a new order.
+     *
+     * @param orderDTO the orderDTO to create
+     * @return the ResponseEntity with status 201 (Created) and with body the new orderDTO, or with status 400 (Bad Request) if the order has already an ID
+     * @throws URISyntaxException if the Location URI syntax is incorrect
+     */
+    @PostMapping("/orders")
+    @Timed
+    public ResponseEntity<OrderListDTO> createOrder(@Valid @RequestBody OrderDTO orderDTO) throws URISyntaxException {
+        log.debug("REST request to save Order : {}", orderDTO);
+        if (orderDTO.getId() != null) {
+            return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert(ENTITY_NAME, "idexists", "A new order cannot already have an ID")).body(null);
+        }
+        OrderListDTO result = orderMapper.toDto(orderService.createOrder(orderDTO));
+        return ResponseEntity.created(new URI("/api/orders/" + result.getId()))
+            .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
+            .body(result);
+    }
+
+    /**
+     * PUT  /orders : Updates an existing order.
+     *
+     * @param orderDTO the orderListDTO to update
+     * @return the ResponseEntity with status 200 (OK) and with body the updated orderListDTO,
+     * or with status 400 (Bad Request) if the orderListDTO is not valid,
+     * or with status 500 (Internal Server Error) if the orderListDTO couldn't be updated
+     * @throws URISyntaxException if the Location URI syntax is incorrect
+     */
+    @PutMapping("/orders")
+    @Timed
+    public ResponseEntity<OrderListDTO> updateOrder(@Valid @RequestBody OrderDTO orderDTO) throws URISyntaxException {
+        log.debug("REST request to update Order : {}", orderDTO);
+        if (orderDTO.getId() == null) {
+            return createOrder(orderDTO);
+        }
+        OrderListDTO result = orderService.updateOrder(orderDTO);
+        return ResponseEntity.ok()
+            .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, orderDTO.getId().toString()))
+            .body(result);
+    }
+
+    /**
+     * GET  /orders : get all the orders.
+     *
+     * @param pageable the pagination information
+     * @return the ResponseEntity with status 200 (OK) and the list of orders in body
+     */
+    @GetMapping("/orders")
+    @Timed
+    public ResponseEntity<List<OrderListDTO>> getAllOrders(@ApiParam Pageable pageable) {
+        log.debug("REST request to get a page of Orders");
+        Page<OrderListDTO> page = orderService.findAll(pageable);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/orders");
+        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+    }
+
+    /**
+     * GET  /orders : get all the orders.
+     *
+     * @param pageable the pagination information
+     * @return the ResponseEntity with status 200 (OK) and the list of orders in body
+     */
+    @GetMapping("/orders/filtered")
+    @Timed
+    public ResponseEntity<List<OrderListDTO>> getAllOrdersFiltered(OrderCriteria orderCriteria,@ApiParam Pageable pageable) {
+        log.debug("REST request to get a page of Orders");
+        Page<OrderListDTO> page =orderQueryService.findByCriteria(orderCriteria,pageable);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/orders/filtered");
+        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+    }
+
+    /**
+     * GET  /orders/:id : get the "id" order.
+     *
+     * @param id the id of the orderDTO to retrieve
+     * @return the ResponseEntity with status 200 (OK) and with body the orderDTO, or with status 404 (Not Found)
+     */
+    @GetMapping("/orders/{id}")
+    @Timed
+    public ResponseEntity<OrderDTO> getOrder(@PathVariable Long id) {
+        log.debug("REST request to get Order : {}", id);
+        OrderDTO order = orderService.getOrder(id);
+        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(order));
+    }
+
+    /**
+     * DELETE  /orders/:id : delete the "id" order.
+     *
+     * @param id the id of the orderDTO to delete
+     * @return the ResponseEntity with status 200 (OK)
+     */
+    @DeleteMapping("/orders/{id}")
+    @Timed
+    public ResponseEntity<Void> deleteOrder(@PathVariable Long id) {
+        log.debug("REST request to delete Order : {}", id);
+        orderService.delete(id);
+        return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
+    }
+
+    /**
+     * SEARCH  /_search/orders?query=:query : search for the order corresponding
+     * to the query.
+     *
+     * @param query the query of the order search
+     * @param pageable the pagination information
+     * @return the result of the search
+     */
+    @GetMapping("/_search/orders")
+    @Timed
+    public ResponseEntity<List<OrderListDTO>> searchOrders(@RequestParam String query, @ApiParam Pageable pageable) {
+        log.debug("REST request to search for a page of Orders for query {}", query);
+        Page<OrderListDTO> page = orderService.search(query, pageable);
+        HttpHeaders headers = PaginationUtil.generateSearchPaginationHttpHeaders(query, page, "/api/_search/orders");
+        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+    }
+
+
+
+    /**
+     * GET  /orders/simple-dto/:id : get the "id" order.
+     *
+     * @param id the id of the orderDTO to retrieve
+     * @return the ResponseEntity with status 200 (OK) and with body the orderDTO, or with status 404 (Not Found)
+     */
+    @GetMapping("/orders/simple-dto/{id}")
+    @Timed
+    public ResponseEntity<OrderSimpleDTO> getOrderSimpleDto(@PathVariable Long id) {
+        log.debug("REST request to get Order : {}", id);
+        OrderSimpleDTO order = orderService.getSimpleOrderDtoData(id);
+        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(order));
+    }
+
+    /**
+     * GET  /orders/simple-dto/:id : get the "id" order.
+     *
+     * @param pageable the id of the orderDTO to retrieve
+     * @return the ResponseEntity with status 200 (OK) and with body the orderDTO, or with status 404 (Not Found)
+     */
+    @GetMapping("/orders/not-estimated/")
+    @Timed
+    public ResponseEntity<List<OrderListDTO>> findOrderToClaimEstimation(@ApiParam Pageable pageable) {
+        log.debug("REST request to get Orders to estimation : {}");
+
+        Page<OrderListDTO> page = orderService.findOrderToClaimEstimation(pageable);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/orders/not-estimated");
+
+        return  new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+
+    }
+
+    /**
+     * GET  /orders/simple-dto/:id : get the "id" order.
+     *
+     * @param pageable the id of the orderDTO to retrieve
+     * @return the ResponseEntity with status 200 (OK) and with body the orderDTO, or with status 404 (Not Found)
+     */
+    @GetMapping("/orders/in-estimation")
+    @Timed
+    public ResponseEntity<List<OrderListDTO>> findOrderToEstimation(@ApiParam Pageable pageable) {
+        log.debug("REST request to get Orders to estimation : {}");
+
+        Page<OrderListDTO> page = orderService.findOrderToEstimationByUser(pageable).map(orderMapper::toDto);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/orders/in-estimation");
+
+        return  new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+
+    }
+
+    @PutMapping("/orders/{id}/claim-to-estimator")
+    @Timed
+    public ResponseEntity<Void>claimToEstimator(@PathVariable Long id){
+        orderService.claimByEstimatior(id);
+        return ResponseEntity.ok().build();
+    }
+
+
+    @PostMapping("/orders/create-pdf-offer")
+    public ResponseEntity<InputStreamResource> getTechnologyCard(@RequestBody OrderDTO orderDTO) throws IOException {
+        ByteArrayOutputStream os = new ByteArrayOutputStream();
+
+       order2PdfCreator.createPdf(orderDTO,os);
+
+        InputStream inputStream = new ByteArrayInputStream(os.toByteArray());
+        InputStreamResource inputStreamResource = new InputStreamResource(inputStream);
+        os.close();
+        inputStream.close();
+
+
+        return ResponseEntity.ok().header(HttpHeaders.CONTENT_DISPOSITION, "attachment;filename=" + "oferta.pdf")
+            .contentType(MediaType.APPLICATION_PDF).body(inputStreamResource);
+
+    }
+
+    @PutMapping("/orders/{id}/move-to-archive")
+    public ResponseEntity<Void> moveOrderToArchive(@PathVariable Long id){
+        log.debug("REST request to move order to archive: {}",id);
+
+        orderService.moveOrderToArchive(id);
+        return ResponseEntity.ok().build();
+    }
+}

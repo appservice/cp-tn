@@ -1,5 +1,6 @@
 package eu.canpack.fip.domain;
 
+import eu.canpack.fip.bo.client.Client;
 import eu.canpack.fip.config.Constants;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -95,6 +96,9 @@ public class User extends AbstractAuditingEntity implements Serializable {
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     @BatchSize(size = 20)
     private Set<Authority> authorities = new HashSet<>();
+
+    @ManyToOne
+    private Client client;
 
     public Long getId() {
         return id;
@@ -199,6 +203,16 @@ public class User extends AbstractAuditingEntity implements Serializable {
     public void setAuthorities(Set<Authority> authorities) {
         this.authorities = authorities;
     }
+
+    public Client getClient() {
+        return client;
+    }
+
+    public void setClient(Client client) {
+        this.client = client;
+    }
+
+
 
     @Override
     public boolean equals(Object o) {

@@ -1,0 +1,333 @@
+package eu.canpack.fip.bo.order;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import eu.canpack.fip.bo.order.enumeration.OrderStatus;
+import eu.canpack.fip.bo.order.enumeration.OrderType;
+import eu.canpack.fip.bo.client.Client;
+import eu.canpack.fip.bo.estimation.Estimation;
+import eu.canpack.fip.domain.User;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.springframework.data.elasticsearch.annotations.Document;
+
+import javax.persistence.*;
+import javax.validation.constraints.*;
+import java.io.Serializable;
+import java.time.LocalDate;
+import java.time.ZonedDateTime;
+import java.util.*;
+
+/**
+ * A Order.
+ */
+@Entity
+@Table(name = "jhi_order")
+@Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+@Document(indexName = "order")
+public class Order implements Serializable {
+
+    private static final long serialVersionUID = 1L;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @NotNull
+    @Column(name = "internal_number", nullable = false)
+    private String internalNumber;
+
+    @Column(name="number")
+    private Integer number;
+
+    @Column(name="year")
+    private Integer year;
+
+    @Column(name = "sap_number")
+    private String sapNumber;
+
+    @NotNull
+    @Enumerated(EnumType.STRING)
+    @Column(name = "order_type", nullable = false)
+    private OrderType orderType;
+
+    @Column(name = "reference_number")
+    private String referenceNumber;
+
+    @NotNull
+    @Column(name = "name", nullable = false)
+    private String name;
+
+
+    @Column(name = "description")
+    private String description;
+
+    @Column(name = "close_date")
+    private LocalDate closeDate;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "order_status")
+    private OrderStatus orderStatus;
+
+    @OneToMany(mappedBy = "order", orphanRemoval = true,cascade = CascadeType.ALL)
+    @JsonIgnore
+    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+    private List<Estimation> estimations = new ArrayList<>();
+
+    @ManyToOne
+    private Client client;
+
+    @ManyToOne(optional = false)
+    @NotNull
+    private User createdBy;
+
+    @ManyToOne
+//    @NotNull
+    private User estimationMaker;
+
+    @Column(name="created_at",nullable = false)
+    @NotNull
+    private ZonedDateTime createdAt;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getInternalNumber() {
+        return internalNumber;
+    }
+
+    public Order internalNumber(String internalNumber) {
+        this.internalNumber = internalNumber;
+        return this;
+    }
+
+    public void setInternalNumber(String internalNumber) {
+        this.internalNumber = internalNumber;
+    }
+
+    public String getSapNumber() {
+        return sapNumber;
+    }
+
+    public Order sapNumber(String sapNumber) {
+        this.sapNumber = sapNumber;
+        return this;
+    }
+
+    public void setSapNumber(String sapNumber) {
+        this.sapNumber = sapNumber;
+    }
+
+    public OrderType getOrderType() {
+        return orderType;
+    }
+
+    public Order orderType(OrderType orderType) {
+        this.orderType = orderType;
+        return this;
+    }
+
+    public void setOrderType(OrderType orderType) {
+        this.orderType = orderType;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public Order name(String name) {
+        this.name = name;
+        return this;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public Order description(String description) {
+        this.description = description;
+        return this;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public LocalDate getCloseDate() {
+        return closeDate;
+    }
+
+    public Order closeDate(LocalDate closeDate) {
+        this.closeDate = closeDate;
+        return this;
+    }
+
+    public void setCloseDate(LocalDate closeDate) {
+        this.closeDate = closeDate;
+    }
+
+    public OrderStatus getOrderStatus() {
+        return orderStatus;
+    }
+
+    public Order orderStatus(OrderStatus orderStatus) {
+        this.orderStatus = orderStatus;
+        return this;
+    }
+
+    public void setOrderStatus(OrderStatus orderStatus) {
+        this.orderStatus = orderStatus;
+    }
+
+    public List<Estimation> getEstimations() {
+        return estimations;
+    }
+
+    public Order estimations(List<Estimation> estimations) {
+        this.estimations = estimations;
+        return this;
+    }
+
+    public Order addEstimations(Estimation estimation) {
+        this.estimations.add(estimation);
+        estimation.setOrder(this);
+        return this;
+    }
+
+    public Order removeEstimations(Estimation estimation) {
+        this.estimations.remove(estimation);
+        estimation.setOrder(null);
+        return this;
+    }
+
+
+    public String getReferenceNumber() {
+        return referenceNumber;
+    }
+
+    public void setReferenceNumber(String referenceNumber) {
+        this.referenceNumber = referenceNumber;
+    }
+
+    public Order referenceNumber(String referenceNumber) {
+        this.referenceNumber = referenceNumber;
+        return this;
+    }
+
+    public void setEstimations(List<Estimation> estimations) {
+        this.estimations = estimations;
+    }
+
+    public Client getClient() {
+        return client;
+    }
+
+    public Order client(Client client) {
+        this.client = client;
+        return this;
+    }
+
+    public void setClient(Client client) {
+        this.client = client;
+    }
+
+    public User getCreatedBy() {
+        return createdBy;
+    }
+
+    public void setCreatedBy(User createdBy) {
+        this.createdBy = createdBy;
+    }
+
+    public ZonedDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(ZonedDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public User getEstimationMaker() {
+        return estimationMaker;
+    }
+
+    public void setEstimationMaker(User estimationMaker) {
+        this.estimationMaker = estimationMaker;
+    }
+
+    public Integer getNumber() {
+        return number;
+    }
+
+    public void setNumber(Integer number) {
+        this.number = number;
+    }
+
+    public Integer getYear() {
+        return year;
+    }
+
+    public void setYear(Integer year) {
+        this.year = year;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        Order order = (Order) o;
+        if (order.getId() == null || getId() == null) {
+            return false;
+        }
+        return Objects.equals(getId(), order.getId());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(getId());
+    }
+
+    @Override
+    public String toString() {
+        return "Order{" +
+            "id=" + getId() +
+            ", internalNumber='" + getInternalNumber() + "'" +
+            ", sapNumber='" + getSapNumber() + "'" +
+            ", orderType='" + getOrderType() + "'" +
+            ", name='" + getName() + "'" +
+            ", description='" + getDescription() + "'" +
+            ", closeDate='" + getCloseDate() + "'" +
+            ", orderStatus='" + getOrderStatus() + "'" +
+            ", estimationMaker='" + estimationMaker + "'" +
+            ", createdBy='" + getCreatedBy() + "'" +
+            ", createdAt='" + getCreatedAt() + "'" +
+            "}";
+    }
+
+    public Order createdBy(User createdBy) {
+        this.createdBy = createdBy;
+        return this;
+    }
+
+    public Order createdAt(ZonedDateTime crdatedAt) {
+        this.createdAt = crdatedAt;
+        return this;
+    }
+
+    public Order estimationMaker(User estimationMaker) {
+        this.estimationMaker = estimationMaker;
+        return this;
+    }
+}
