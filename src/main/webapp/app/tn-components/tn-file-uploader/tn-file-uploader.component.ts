@@ -47,12 +47,11 @@ export class TnFileUploaderComponent implements OnInit {
     }
 
 
-
     public fileOverBase(e: any): void {
         this.hasBaseDropZoneOver = e;
     }
 
-     onDeleteItem(index: number, attachment: Attachemnt) {
+    onDeleteItem(index: number, attachment: Attachemnt) {
         this.attachments.splice(index, 1);
 
         this.attachmentService.delete(attachment.id).subscribe((response) => {
@@ -63,7 +62,7 @@ export class TnFileUploaderComponent implements OnInit {
     }
 
     private onUploadItem() {
-        this.errorMessage='';
+        this.errorMessage = '';
         this.uploader.onCompleteItem = (item: any, response: any, status: any, headers: any) => {
 
             if (status === 200) {
@@ -80,7 +79,7 @@ export class TnFileUploaderComponent implements OnInit {
         }
     }
 
-     onDownloadAttachment(attachment: Attachemnt) {
+    onDownloadAttachment(attachment: Attachemnt) {
         this.attachmentService.download(attachment);
     }
 
@@ -88,7 +87,7 @@ export class TnFileUploaderComponent implements OnInit {
         switch (filter.name) {
             case 'fileSize':
                 console.log("file size to big", item, filter, options);
-                this.errorMessage = `Plik ${item.name} o rozmiarze: ${(item.size/1024/1024).toFixed(2)} MB jest za duzy. Dozwolona wilkość to ${options.maxFileSize / 1024 / 1024} MB`;
+                this.errorMessage = `Plik ${item.name} o rozmiarze: ${(item.size / 1024 / 1024).toFixed(2)} MB jest za duzy. Dozwolona wilkość to ${options.maxFileSize / 1024 / 1024} MB`;
 
                 break;
             case 'mimeType':

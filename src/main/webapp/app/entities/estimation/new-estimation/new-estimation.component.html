@@ -6,116 +6,124 @@
 
         </h4>
 
+        <a class="btn btn-sm" (click)="isCollapsed = !isCollapsed" style="height: 14px;width: 10px;padding: 2px"
+           [attr.aria-expanded]="!isCollapsed" aria-controls="collapseExample">
+            <span *ngIf="isCollapsed" class="fa fa-expand"></span><span *ngIf="!isCollapsed"
+                                                                        class="fa fa-compress"></span>
+        </a>
+        <div [ngbCollapse]="isCollapsed" id="collapseExample">
+            <div class="row" style="margin-top: 10px">
+                <div class="col-md-4">
+                    <div class="card bg-light">
+                        <div class="card-body">
+                            <h5 class="card-title">Dane zlecenia</h5>
 
-        <div class="row" style="margin-top: 30px">
-            <div class="col-4">
-                <div class="card ">
-                    <div class="card-body">
-                        <h5 class="card-title">Dane zlecenia</h5>
-
-                        <div class="row">
-                            <div class="col-12">Nr zlecenia: <strong>{{order.internalNumber}}</strong></div>
-
-                        </div>
-                        <div class="row">
-                            <div class="col-12">
-                                Utworzone przez: <strong>{{order.createdBy}}</strong>
+                            <div class="row">
+                                <div class="col-12">Nr zlecenia: <strong>{{order.internalNumber}}</strong></div>
 
                             </div>
-                        </div>
-                        <!--<div class="row">-->
-                        <!--<div class="col-12">{{order.referenceNumber}} <strong></strong></div>-->
-                        <!--</div>-->
-                        <div class="row">
-                            <div class="col-12">
-                                <i class="fa fa-calendar"></i> <strong>{{order.createdAt|date:'dd-MMMM-yyyy'}}</strong>
-                                &nbsp; &nbsp;
-                                <i class="fa fa-clock-o"></i> <strong>{{order.createdAt|date:'HH:mm'}}</strong>
+                            <div class="row">
+                                <div class="col-12">
+                                    Utworzone przez: <strong>{{order.createdBy}}</strong>
+
+                                </div>
+                            </div>
+                            <!--<div class="row">-->
+                            <!--<div class="col-12">{{order.referenceNumber}} <strong></strong></div>-->
+                            <!--</div>-->
+                            <div class="row">
+                                <div class="col-12">
+                                    <i class="fa fa-calendar"></i>
+                                    <strong>{{order.createdAt|date:'dd-MMMM-yyyy'}}</strong>
+                                    &nbsp; &nbsp;
+                                    <i class="fa fa-clock-o"></i> <strong>{{order.createdAt|date:'HH:mm'}}</strong>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="col-4">
-                <div class="card ">
-                    <div class="card-body">
-                        <h5>Dane detalu</h5>
+                <div class="col-md-4">
+                    <div class="card bg-light">
+                        <div class="card-body">
+                            <h5>Dane detalu</h5>
 
-                        <div class="row">
-                            <div class="col-12">
-                                Rysunek: <a (click)="openModal(content)"><strong>{{estimation.drawing.number}}</strong></a>
+                            <div class="row">
+                                <div class="col-12">
+                                    Rysunek: <a
+                                    (click)="openModal(content)"><strong>{{estimation.drawing.number}}</strong></a>
+
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12">
+                                    Nazwa: <strong>{{estimation.description}}</strong>
+
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12">Ilość zam: <strong>{{estimation.amount}} szt</strong></div>
 
                             </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-12">
-                                Nazwa: <strong>{{estimation.description}}</strong>
-
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-12">Ilość zam: <strong>{{estimation.amount}} szt</strong></div>
 
                         </div>
-
                     </div>
                 </div>
+                <div class="col-md-4">
+                    <div class="card bg-light">
+                        <div class="card-body">
+                            <h5>Dane wyceny</h5>
+
+                            <div class="row">
+                                <div class="col-12">
+                                    Utworzył: <a (click)="openModal(content)"><strong>{{estimation.createdBy}}</strong></a>
+
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12">
+                                    <!--Nazwa: <strong>{{estimation.description}}</strong>-->
+
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12">
+                                    <i class="fa fa-calendar"></i>
+                                    <strong>{{estimation.createdAt|date:'dd-MMMM-yyyy'}}</strong>
+                                    &nbsp; &nbsp;
+                                    <i class="fa fa-clock-o"></i> <strong>{{estimation.createdAt|date:'HH:mm'}}</strong>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+
             </div>
-            <div class="col-4">
-                <div class="card ">
-                    <div class="card-body">
-                        <h5>Dane wyceny</h5>
-
+            <div class="row" style="margin-top: 20px">
+                <div class="col-12">
+                    <div class="card card-body">
                         <div class="row">
-                            <div class="col-12">
-                                Utworzył: <a (click)="openModal(content)"><strong>{{estimation.createdBy}}</strong></a>
 
+                            <div class="col-md-4">
+                                <label>Materiał</label>
+                                <input class="form-control" name="material" [(ngModel)]="estimation.material"/>
                             </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-12">
-                                <!--Nazwa: <strong>{{estimation.description}}</strong>-->
+                            <div class="col-md-4"><label>Cena materiału [PLN]</label>
+                                <input class="form-control" name="material_price" [(ngModel)]="estimation.materialPrice"
+                                       currencyMask
+                                       [options]="currencyMaskOpt"/>
+                            </div><!-- currencyMask  -->
+                            <div class="col-md-4"><label>Masa [kg]</label>
+                                <input name="weight" class="form-control" type="number" [(ngModel)]="estimation.mass"/>
+                            </div>
 
-                            </div>
                         </div>
-                        <div class="row">
-                            <div class="col-12">
-                                <i class="fa fa-calendar"></i>
-                                <strong>{{estimation.createdAt|date:'dd-MMMM-yyyy'}}</strong>
-                                &nbsp; &nbsp;
-                                <i class="fa fa-clock-o"></i> <strong>{{estimation.createdAt|date:'HH:mm'}}</strong>
-                            </div>
-                        </div>
-
                     </div>
                 </div>
             </div>
 
         </div>
-    </div>
-    <div class="row" style="margin-top: 20px">
-        <div class="col-12">
-            <div class="card card-body">
-                <div class="row">
-
-                    <div class="col-4">
-                        <label>Materiał</label>
-                        <input class="form-control" name="material" [(ngModel)]="estimation.material"/>
-                    </div>
-                    <div class="col-4"><label>Cena materiału [PLN]</label>
-                        <input class="form-control" name="material_price" [(ngModel)]="estimation.materialPrice"
-                               currencyMask
-                               [options]="currencyMaskOpt"/>
-                    </div><!-- currencyMask  -->
-                    <div class="col-4"><label>Masa [kg]</label>
-                        <input name="weight" class="form-control" type="number" [(ngModel)]="estimation.mass"/></div>
-
-                </div>
-            </div>
-        </div>
-    </div>
-
-
     </div>
     <br/>
 
@@ -203,12 +211,13 @@
                     </tfoot>
 
                 </table>
-                <button type="button" class="btn" (click)="addOperation();" style="width: 200px"><i
+                <button type="button" class="btn btn-outline-dark" (click)="addOperation();" style="width: 200px"><i
                     class="fa fa-plus"></i>
                     Dodaj operację
                 </button>
                 <span class="pull-right">
-                    <button type="button" class="btn" (click)="exportToTechnologyCard()"  [disabled]="editForm.form.invalid || isExporting"
+                    <button type="button" class="btn btn-outline-dark" (click)="exportToTechnologyCard()"
+                            [disabled]="editForm.form.invalid || isExporting"
                             style="width: 200px"><i class="fa fa-save"></i> Eksportuj kartę techn.</button>
                 </span>
             </ng-template>
