@@ -1,0 +1,17 @@
+id;name;shortcut;working_hour_price
+1;Szlifierka do płaszczyzn;Sz.P;120
+2;Szlifierka do otworów;Sz.O;120
+3;Szlifierka do wałków;Sz.W;120
+4;Tokarka uniwersalna;T.U;120
+5;Tokarka numeryczna;T.N;120
+6;Frezarka uniwersalna;F.U;120
+7;Frezarka numeryczna;F.Num;120
+8;Dłutownica;Dłut.;120
+9;Ślusarz;Ślus.;120
+10;Obróbka ciepla;OC;120
+11;Spawalnia;Spaw.;120
+12;Kontola jakości;K.J;120
+13;Trasa;Trasa;120
+14;Wypalarka;Wypal;120
+15;Laser/koop;Laser;120
+16;Piła taśmowa;P.T;120

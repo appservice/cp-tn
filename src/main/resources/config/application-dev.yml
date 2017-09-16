@@ -28,7 +28,7 @@ spring:
         type: com.zaxxer.hikari.HikariDataSource
         url: jdbc:mysql://localhost:3306/tn?useUnicode=true&characterEncoding=utf8&useSSL=false
         username: root
-        password:
+        password: Start123!
         hikari:
             data-source-properties:
                 cachePrepStmts: true
@@ -146,4 +146,7 @@ jhipster:
 # http://www.jhipster.tech/common-application-properties/
 # ===================================================================
 
+
 application:
+    drawingDirectoryPath: D://uploaded_from_tn
+
