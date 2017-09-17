@@ -45,18 +45,18 @@ public class TechnologyCardResource {
     /**
      * POST  /technology-cards : Create a new technologyCard.
      *
-     * @param technologyCardDTO the technologyCardDTO to create
-     * @return the ResponseEntity with status 201 (Created) and with body the new technologyCardDTO, or with status 400 (Bad Request) if the technologyCard has already an ID
+     * @param technologyCardListDTO the technologyCardListDTO to create
+     * @return the ResponseEntity with status 201 (Created) and with body the new technologyCardListDTO, or with status 400 (Bad Request) if the technologyCard has already an ID
      * @throws URISyntaxException if the Location URI syntax is incorrect
      */
     @PostMapping("/technology-cards")
     @Timed
-    public ResponseEntity<TechnologyCardDTO> createTechnologyCard(@Valid @RequestBody TechnologyCardDTO technologyCardDTO) throws URISyntaxException {
-        log.debug("REST request to save TechnologyCard : {}", technologyCardDTO);
-        if (technologyCardDTO.getId() != null) {
+    public ResponseEntity<TechnologyCardListDTO> createTechnologyCard(@Valid @RequestBody TechnologyCardListDTO technologyCardListDTO) throws URISyntaxException {
+        log.debug("REST request to save TechnologyCard : {}", technologyCardListDTO);
+        if (technologyCardListDTO.getId() != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert(ENTITY_NAME, "idexists", "A new technologyCard cannot already have an ID")).body(null);
         }
-        TechnologyCardDTO result = technologyCardService.save(technologyCardDTO);
+        TechnologyCardListDTO result = technologyCardService.save(technologyCardListDTO);
         return ResponseEntity.created(new URI("/api/technology-cards/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
             .body(result);
@@ -65,22 +65,22 @@ public class TechnologyCardResource {
     /**
      * PUT  /technology-cards : Updates an existing technologyCard.
      *
-     * @param technologyCardDTO the technologyCardDTO to update
-     * @return the ResponseEntity with status 200 (OK) and with body the updated technologyCardDTO,
-     * or with status 400 (Bad Request) if the technologyCardDTO is not valid,
-     * or with status 500 (Internal Server Error) if the technologyCardDTO couldn't be updated
+     * @param technologyCardListDTO the technologyCardListDTO to update
+     * @return the ResponseEntity with status 200 (OK) and with body the updated technologyCardListDTO,
+     * or with status 400 (Bad Request) if the technologyCardListDTO is not valid,
+     * or with status 500 (Internal Server Error) if the technologyCardListDTO couldn't be updated
      * @throws URISyntaxException if the Location URI syntax is incorrect
      */
     @PutMapping("/technology-cards")
     @Timed
-    public ResponseEntity<TechnologyCardDTO> updateTechnologyCard(@Valid @RequestBody TechnologyCardDTO technologyCardDTO) throws URISyntaxException {
-        log.debug("REST request to update TechnologyCard : {}", technologyCardDTO);
-        if (technologyCardDTO.getId() == null) {
-            return createTechnologyCard(technologyCardDTO);
+    public ResponseEntity<TechnologyCardListDTO> updateTechnologyCard(@Valid @RequestBody TechnologyCardListDTO technologyCardListDTO) throws URISyntaxException {
+        log.debug("REST request to update TechnologyCard : {}", technologyCardListDTO);
+        if (technologyCardListDTO.getId() == null) {
+            return createTechnologyCard(technologyCardListDTO);
         }
-        TechnologyCardDTO result = technologyCardService.save(technologyCardDTO);
+        TechnologyCardListDTO result = technologyCardService.save(technologyCardListDTO);
         return ResponseEntity.ok()
-            .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, technologyCardDTO.getId().toString()))
+            .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, technologyCardListDTO.getId().toString()))
             .body(result);
     }
 
@@ -92,9 +92,9 @@ public class TechnologyCardResource {
      */
     @GetMapping("/technology-cards")
     @Timed
-    public ResponseEntity<List<TechnologyCardDTO>> getAllTechnologyCards(@ApiParam Pageable pageable) {
+    public ResponseEntity<List<TechnologyCardListDTO>> getAllTechnologyCards(@ApiParam Pageable pageable) {
         log.debug("REST request to get a page of TechnologyCards");
-        Page<TechnologyCardDTO> page = technologyCardService.findAll(pageable);
+        Page<TechnologyCardListDTO> page = technologyCardService.findAll(pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/technology-cards");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
@@ -107,9 +107,9 @@ public class TechnologyCardResource {
      */
     @GetMapping("/technology-cards/filtered")
     @Timed
-    public ResponseEntity<List<TechnologyCardDTO>> getAllTechnologyCardsFiltered(TechnologyCardCriteria technologyCardCriteria, @ApiParam Pageable pageable) {
+    public ResponseEntity<List<TechnologyCardListDTO>> getAllTechnologyCardsFiltered(TechnologyCardCriteria technologyCardCriteria, @ApiParam Pageable pageable) {
         log.debug("REST request to get a page of TechnologyCards");
-        Page<TechnologyCardDTO> page = technologyCardQueryService.findByCriteria(technologyCardCriteria,pageable);
+        Page<TechnologyCardListDTO> page = technologyCardQueryService.findByCriteria(technologyCardCriteria, pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/technology-cards/filtered");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
@@ -122,10 +122,10 @@ public class TechnologyCardResource {
      */
     @GetMapping("/technology-cards/{id}")
     @Timed
-    public ResponseEntity<TechnologyCardDTO> getTechnologyCard(@PathVariable Long id) {
+    public ResponseEntity<TechnologyCardListDTO> getTechnologyCard(@PathVariable Long id) {
         log.debug("REST request to get TechnologyCard : {}", id);
-        TechnologyCardDTO technologyCardDTO = technologyCardService.findOne(id);
-        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(technologyCardDTO));
+        TechnologyCardListDTO technologyCardListDTO = technologyCardService.findOne(id);
+        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(technologyCardListDTO));
     }
 
     /**
@@ -152,9 +152,9 @@ public class TechnologyCardResource {
      */
     @GetMapping("/_search/technology-cards")
     @Timed
-    public ResponseEntity<List<TechnologyCardDTO>> searchTechnologyCards(@RequestParam String query, @ApiParam Pageable pageable) {
+    public ResponseEntity<List<TechnologyCardListDTO>> searchTechnologyCards(@RequestParam String query, @ApiParam Pageable pageable) {
         log.debug("REST request to search for a page of TechnologyCards for query {}", query);
-        Page<TechnologyCardDTO> page = technologyCardService.search(query, pageable);
+        Page<TechnologyCardListDTO> page = technologyCardService.search(query, pageable);
         HttpHeaders headers = PaginationUtil.generateSearchPaginationHttpHeaders(query, page, "/api/_search/technology-cards");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }

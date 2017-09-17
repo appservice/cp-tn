@@ -4,17 +4,16 @@ package eu.canpack.fip.bo.technologyCard;
 import eu.canpack.fip.bo.drawing.DrawingDTO;
 import eu.canpack.fip.bo.operation.Operation;
 
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
-import java.io.Serializable;
 import java.time.ZonedDateTime;
+import javax.validation.constraints.*;
+import java.io.Serializable;
 import java.util.List;
 import java.util.Objects;
 
 /**
  * A DTO for the TechnologyCard entity.
  */
-public class TechnologyCardDTO implements Serializable {
+public class TechnologyCardListDTO implements Serializable {
 
     private Long id;
 
@@ -29,15 +28,32 @@ public class TechnologyCardDTO implements Serializable {
     @NotNull
     private ZonedDateTime createdAt;
 
+    private String createdByName;
+
+    private String createdById;
     private Integer amount;
-
-    private DrawingDTO drawing;
-
+    //    private DrawingDTO drawing;
+//
     private String drawingNumber;
+    private Long drawingId;
 
-    private List<Operation> operations;
+    public TechnologyCardListDTO() {
+    }
 
-    public TechnologyCardDTO() {
+    public String getCreatedByName() {
+        return createdByName;
+    }
+
+    public void setCreatedByName(String createdByName) {
+        this.createdByName = createdByName;
+    }
+
+    public String getCreatedById() {
+        return createdById;
+    }
+
+    public void setCreatedById(String createdById) {
+        this.createdById = createdById;
     }
 
     public Long getId() {
@@ -97,21 +113,22 @@ public class TechnologyCardDTO implements Serializable {
         this.drawingNumber = drawingNumber;
     }
 
-    public List<Operation> getOperations() {
-        return operations;
+    public Long getDrawingId() {
+        return drawingId;
     }
 
-    public DrawingDTO getDrawing() {
-        return drawing;
+    public void setDrawingId(Long drawingId) {
+        this.drawingId = drawingId;
     }
 
-    public void setDrawing(DrawingDTO drawing) {
-        this.drawing = drawing;
-    }
+    //    public DrawingDTO getDrawing() {
+//        return drawing;
+//    }
+//
+//    public void setDrawing(DrawingDTO drawing) {
+//        this.drawing = drawing;
+//    }
 
-    public void setOperations(List<Operation> operations) {
-        this.operations = operations;
-    }
 
     @Override
     public boolean equals(Object o) {
@@ -122,8 +139,8 @@ public class TechnologyCardDTO implements Serializable {
             return false;
         }
 
-        TechnologyCardDTO technologyCardListDTO = (TechnologyCardDTO) o;
-        if(technologyCardListDTO.getId() == null || getId() == null) {
+        TechnologyCardListDTO technologyCardListDTO = (TechnologyCardListDTO) o;
+        if (technologyCardListDTO.getId() == null || getId() == null) {
             return false;
         }
         return Objects.equals(getId(), technologyCardListDTO.getId());

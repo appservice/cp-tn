@@ -3,7 +3,6 @@
     <div>
         <h2>
             <!--Dodaj/Edytuj Zlecenie-->
-
             Zapytanie ofertowe: <strong>{{order.internalNumber}}</strong>
         </h2>
         <br/>
@@ -13,37 +12,34 @@
                 <div class="col-lg-2">
                     <label for="title_external_number_field">Nr ref. klienta</label>
                     <input type="text" id="title_external_number_field" class="form-control" name="title"
-                           [(ngModel)]="order.description" [disabled]="isReadOnly"/>
+                           value="{{order.referenceNumber}}" disabled/>
                 </div>
                 <div class="col-lg-2">
                     <label for="title_field">Tytuł</label>
-                    <input type="text" id="title_field" class="form-control" name="title" [(ngModel)]="order.name"
-                           [disabled]="isReadOnly"/>
+                    <input type="text" id="title_field" class="form-control" name="title" value="{{order.name}}"
+                          disabled/>
                 </div>
                 <div class="col-lg-2">
                     <label for="sap_number_field">Nr SAP</label>
                     <input type="text" id="sap_number_field" class="form-control" name="sap_number"
-                           [(ngModel)]="order.sapNumber"  [disabled]="isReadOnly"/>
-                    <div [hidden]="!(editForm.controls.sap_number?.dirty && editForm.controls.sap_number?.invalid)">
+                           value="{{order.sapNumber}}" disabled/>
 
-                    </div>
                 </div>
                 <div class="form-group col-lg-2">
                     <label for="field_client">Klient</label>
                     <input type="text" id="field_client" class="form-control" name="sap_number"
-                           [(ngModel)]="order.clientShortcut"  [disabled]="isReadOnly"/>
+                           value="{{order.clientShortcut}}" disabled/>
 
                 </div>
                 <div class="col-lg-2">
                     <label for="description_field">Opis dod.</label>
-                    <input type="text" id="description_field" name="description" [(ngModel)]="order.description"
-                           class="form-control" [disabled]="isReadOnly"/>
+                    <input type="text" id="description_field" name="description" value="{{order.description}}"
+                           class="form-control" disabled/>
                 </div>
 
             </div>
             <br/>
             <br/>
-
 
             <ngb-tabset>
                 <ngb-tab title="Pozycje wyceny" id="1">
@@ -66,8 +62,7 @@
                             </tr>
                             </thead>
                             <tbody>
-                            <!--            <tr *ngFor="let item of order.estimations;let i = index" tn-pre-estimation [estimation]="item"
-                                            (deleteRow)="onDeleteRow($event,i)" [rowIndex]="i" [editForm]="editForm"></tr>-->
+
                             <tr *ngFor="let estimation of order.estimations;let rowIndex = index">
                                 <td>{{rowIndex+1}}</td>
                                 <!--<td><input type="text" [(ngModel)]="estimation.id" class="form-control"/></td>-->
@@ -94,9 +89,10 @@
                                 <td>{{estimation.estimatedRealizationDate|date:'dd-MM-yyyy'}}</td>
                                 <td class="right">
                                     <button type="button" class="btn btn-outline-secondary" placement="left"
-                                            ngbPopover="{{estimation.description}}" popoverTitle="Uwagi" [triggers]="'hover'" >
-                                    <span class="fa fa-question"></span>
-                                </button>
+                                            ngbPopover="{{estimation.description}}" popoverTitle="Uwagi"
+                                            [triggers]="'hover'">
+                                        <span class="fa fa-question"></span>
+                                    </button>
                                 </td>
                             </tr>
 
@@ -115,7 +111,9 @@
         <div class="text-center">
 
             <button type="button" class="btn btn-outline-danger" (click)="previousState()">Powrót</button>
-          <button  *ngIf="isProductionCreateBtnDisabled()" type="button" class="btn btn-outline-primary" (click)="previousState()">Utwórz zamówienie</button>
+            <button *ngIf="isProductionCreateBtnDisabled()" type="button" class="btn btn-outline-primary"
+                    [routerLink]="['/new-purchase-order',{'inquiryId':order.id}]"  >
+            Utwórz zamówienie</button>
 
 
         </div>

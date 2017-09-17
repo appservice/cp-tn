@@ -49,14 +49,14 @@ public class TechnologyCardService {
     /**
      * Save a technologyCard.
      *
-     * @param technologyCardDTO the entity to save
+     * @param technologyCardListDTO the entity to save
      * @return the persisted entity
      */
-    public TechnologyCardDTO save(TechnologyCardDTO technologyCardDTO) {
-        log.debug("Request to save TechnologyCard : {}", technologyCardDTO);
-        TechnologyCard technologyCard = technologyCardMapper.toEntity(technologyCardDTO);
+    public TechnologyCardListDTO save(TechnologyCardListDTO technologyCardListDTO) {
+        log.debug("Request to save TechnologyCard : {}", technologyCardListDTO);
+        TechnologyCard technologyCard = technologyCardMapper.toEntity(technologyCardListDTO);
         technologyCard = technologyCardRepository.save(technologyCard);
-        TechnologyCardDTO result = technologyCardMapper.toDto(technologyCard);
+        TechnologyCardListDTO result = technologyCardMapper.toDto(technologyCard);
         technologyCardSearchRepository.save(technologyCard);
         return result;
     }
@@ -68,7 +68,7 @@ public class TechnologyCardService {
      * @return the list of entities
      */
     @Transactional(readOnly = true)
-    public Page<TechnologyCardDTO> findAll(Pageable pageable) {
+    public Page<TechnologyCardListDTO> findAll(Pageable pageable) {
         log.debug("Request to get all TechnologyCards");
         return technologyCardRepository.findAll(pageable)
             .map(technologyCardMapper::toDto);
@@ -81,7 +81,7 @@ public class TechnologyCardService {
      * @return the entity
      */
     @Transactional(readOnly = true)
-    public TechnologyCardDTO findOne(Long id) {
+    public TechnologyCardListDTO findOne(Long id) {
         log.debug("Request to get TechnologyCard : {}", id);
         TechnologyCard technologyCard = technologyCardRepository.findOne(id);
         return technologyCardMapper.toDto(technologyCard);
@@ -106,7 +106,7 @@ public class TechnologyCardService {
      * @return the list of entities
      */
     @Transactional(readOnly = true)
-    public Page<TechnologyCardDTO> search(String query, Pageable pageable) {
+    public Page<TechnologyCardListDTO> search(String query, Pageable pageable) {
         log.debug("Request to search for a page of TechnologyCards for query {}", query);
         Page<TechnologyCard> result = technologyCardSearchRepository.search(queryStringQuery(query), pageable);
         return result.map(technologyCardMapper::toDto);

@@ -65,10 +65,10 @@ export class NewOrderComponent implements OnInit, OnDestroy {
             if (params['id']) {
                 console.log('params exiest');
                 this.load(params['id']);
-                this.title = 'Edytuj zlecenie';
+                this.title = 'Edytuj zapytanie ofertowe';
 
             } else {
-                this.title = 'Nowe zlecenie';
+                this.title = 'Nowe zapytanie ofertowe';
             }
 
         });

@@ -3,21 +3,24 @@ import {Client} from '../../client/client.model';
 import {ClientService} from '../../client/client.service';
 import {ResponseWrapper} from '../../../shared/model/response-wrapper.model';
 import {JhiAlertService, JhiEventManager} from 'ng-jhipster';
-import {Order, OrderStatus, OrderType} from '../order.model';
+import {Order, OrderType, OrderStatus} from '../order.model';
 import {Attachment} from '../../../tn-components/tn-file-uploader/attachment.model';
 import {OrderService} from '../order.service';
 import {Observable} from 'rxjs/Rx';
 import {ActivatedRoute, Router} from '@angular/router';
 import {Subscription} from 'rxjs/Subscription';
+import {isDefined} from '@angular/compiler/src/util';
+import {Drawing} from '../../drawing/drawing.model';
 import {ModalDismissReasons, NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import {Estimation} from '../../estimation/estimation.model';
 
 @Component({
-    selector: 'tn-order-detail',
-    templateUrl: './order-detail.component.html',
+    selector: 'tn-new-purchase-order',
+    templateUrl: './new-purchase-order.component.html',
     styles: [],
 
 })
-export class OrderDetailComponent implements OnInit, OnDestroy {
+export class NewPurchaseOrderComponent implements OnInit, OnDestroy {
 
     title: string;
     clients: Client[];
@@ -57,11 +60,16 @@ export class OrderDetailComponent implements OnInit, OnDestroy {
 
         this.order.orderType = OrderType.ESTIMATION;
 
+
         this.subscription = this.route.params.subscribe((params) => {
             console.log(params);
-            if (params['id']) {
-                this.load(params['id']);
+            if (params['inquiryId']) {
+                console.log('params exiest');
+                this.load(params['inquiryId']);
+                this.title = 'Edytuj zamówienie';
 
+            } else {
+                this.title = 'Nowe zamówienie';
             }
 
         });
@@ -75,7 +83,19 @@ export class OrderDetailComponent implements OnInit, OnDestroy {
         return item.id;
     }
 
+    addEstimation() {
+        const drawing: Drawing = {id: null, attachments: []}
+        this.order.estimations.push({
+            id: null, amount: null,
+            drawing: drawing
+        });
+    }
 
+    onDeleteRow(index: number) {
+        // console.log(event);
+        console.log(index);
+        this.order.estimations.splice(index, 1);
+    }
 
     onWorkingCopyBtnClick() {
         console.log('save is cliccked');
@@ -88,6 +108,10 @@ export class OrderDetailComponent implements OnInit, OnDestroy {
         window.history.back();
     }
 
+    onFileChange() {
+        console.log(this.optionsModel);
+        // this.save();
+    }
 
     onFileArrayChange(event: Attachment[]) {
         this.attachments = event;
@@ -140,7 +164,6 @@ export class OrderDetailComponent implements OnInit, OnDestroy {
             console.log('order status: ',order.orderStatus.toString());
             console.log('enum status: ',OrderStatus['WORKING_COPY']);
             console.log('enum 3', order.orderStatus.constructor.name);
-            console.log('order ', order)
        //     console.log('enum 3', ]);
              this.isReadOnly =order.orderStatus != null && order.orderStatus != 'WORKING_COPY';
 
@@ -152,6 +175,9 @@ export class OrderDetailComponent implements OnInit, OnDestroy {
         // this.eventManager.destroy(this.eventSubscriber);
     }
 
+    getOptions(index: number): number[] {
+        return this.optionsMap.get(index);
+    }
 
     openModal(content, row: number) {
         console.log('clickedRow: ', row);
@@ -173,21 +199,10 @@ export class OrderDetailComponent implements OnInit, OnDestroy {
         }
     }
 
+    sendToEstimation() {
+        console.log('Sent to estimation');
 
-
-    convertToDate(ngBootstrapDate: any): Date {
-        if (typeof ngBootstrapDate === 'string') {
-            return null;
-            // return new Date( ngBootstrapDate);
-        }
-        return new Date(ngBootstrapDate.year, ngBootstrapDate.month, ngBootstrapDate.day);
-    }
-
-    isProductionCreateBtnDisabled(): boolean {
-        let isDisabled=false;
-        for(let estimation of this.order.estimations){
-            isDisabled= isDisabled|| estimation.estimatedCost!==null
-        }
-        return isDisabled;
+        this.order.orderStatus = 'SENT_TO_ESTIMATION';//OrderStatus.SENT_TO_ESTIMATION;
+        this.save();
     }
 }

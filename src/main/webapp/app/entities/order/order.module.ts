@@ -26,6 +26,7 @@ import {
     MoveToArchiveDialogComponent,
     MoveToArchivePopupComponent
 } from './estimated-order/move-to-archive-dialog.component';
+import {NewPurchaseOrderComponent} from './new-purchase-order/new-purchase-order.component';
 
 
 
@@ -56,6 +57,7 @@ const ENTITY_STATES = [
         EstimatedOrderComponent,
         MoveToArchiveDialogComponent,
         MoveToArchivePopupComponent,
+        NewPurchaseOrderComponent,
 
 
     ],

@@ -30,28 +30,26 @@
             <thead>
             <tr jhiSort [(predicate)]="predicate" [(ascending)]="reverse" [callback]="transition.bind(this)">
             <th jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span> <span class="fa fa-sort"></span></th>
-            <th jhiSortBy="material"><span jhiTranslate="tnApp.technologyCard.material">Material</span> <span class="fa fa-sort"></span></th>
-            <th jhiSortBy="mass"><span jhiTranslate="tnApp.technologyCard.mass">Mass</span> <span class="fa fa-sort"></span></th>
-            <th jhiSortBy="description"><span jhiTranslate="tnApp.technologyCard.description">Description</span> <span class="fa fa-sort"></span></th>
-            <th jhiSortBy="createdAt"><span jhiTranslate="tnApp.technologyCard.createdAt">Created At</span> <span class="fa fa-sort"></span></th>
-            <th jhiSortBy="amount"><span jhiTranslate="tnApp.technologyCard.amount">Amount</span> <span class="fa fa-sort"></span></th>
-            <th jhiSortBy="drawingNumber"><span jhiTranslate="tnApp.technologyCard.drawing">Drawing</span> <span class="fa fa-sort"></span></th>
+                <th jhiSortBy="drawingNumber"><span >Nr rys.</span> <span class="fa fa-sort"></span></th>
+                <th jhiSortBy="description"><span >Nazwa</span> <span class="fa fa-sort"></span></th>
+                <th jhiSortBy="mass"><span >Masa[kg]</span> <span class="fa fa-sort"></span></th>
+                <th jhiSortBy="createdAt"><span >Data utworzenia</span> <span class="fa fa-sort"></span></th>
+                <th jhiSortBy="createdAt"><span >Utworzył</span> <span class="fa fa-sort"></span></th>
             <th></th>
             </tr>
             </thead>
             <tbody>
             <tr *ngFor="let technologyCard of technologyCards ;trackBy: trackId">
                 <td><a [routerLink]="['../technology-card', technologyCard.id ]">{{technologyCard.id}}</a></td>
-                <td>{{technologyCard.material}}</td>
-                <td>{{technologyCard.mass}}</td>
-                <td>{{technologyCard.description}}</td>
-                <td>{{technologyCard.createdAt | date:'medium'}}</td>
-                <td>{{technologyCard.amount}}</td>
                 <td>
                     <div *ngIf="technologyCard.drawingId">
                         <a [routerLink]="['../drawing', technologyCard.drawingId  ]" >{{technologyCard.drawingNumber}}</a>
                     </div>
                 </td>
+                <td>{{technologyCard.description}}</td>
+                <td>{{technologyCard.mass}}</td>
+                <td>{{technologyCard.createdAt | date:'medium'}}</td>
+                <td>{{technologyCard.createdByName}}</td>
                 <td class="text-right">
                     <div class="btn-group flex-btn-group-container">
                         <button type="submit"

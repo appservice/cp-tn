@@ -14,6 +14,7 @@ import {OrderToEstimationComponent} from "./orders-to-estimation/order-to-estima
 import {OrderInEstimationComponent} from './orders-in-estimation/order-in-estimation.component';
 import {EstimatedOrderComponent} from './estimated-order/estimated-order.component';
 import {OrderDetailComponent} from './order-detail/order-detail.component';
+import {NewPurchaseOrderComponent} from './new-purchase-order/new-purchase-order.component';
 
 
 @Injectable()
@@ -65,6 +66,15 @@ export const orderRoute: Routes = [
     {
         path: 'new-order',
         component: NewOrderComponent, // OrderPopupComponent,
+        data: {
+            authorities: ['ROLE_USER'],
+            pageTitle: 'tnApp.order.home.title'
+        },
+        canActivate: [UserRouteAccessService]
+    },
+    {
+        path: 'new-purchase-order',
+        component: NewPurchaseOrderComponent, // OrderPopupComponent,
         data: {
             authorities: ['ROLE_USER'],
             pageTitle: 'tnApp.order.home.title'

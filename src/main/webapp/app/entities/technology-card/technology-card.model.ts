@@ -9,6 +9,8 @@ export class TechnologyCard implements BaseEntity {
         public createdAt?: any,
         public amount?: number,
         public drawingId?: number,
+        public drawingNumber?: string,
+        public createdByName?: string,
         public operations?: BaseEntity[],
     ) {
     }

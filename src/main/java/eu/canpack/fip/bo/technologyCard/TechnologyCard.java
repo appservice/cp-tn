@@ -187,6 +187,13 @@ public class TechnologyCard implements Serializable {
         return this;
     }
 
+
+    public String getCreatorName(){
+        if(this.createdBy!=null)
+            return this.createdBy.getFirstName()+" "+this.createdBy.getLastName();
+        return null;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {

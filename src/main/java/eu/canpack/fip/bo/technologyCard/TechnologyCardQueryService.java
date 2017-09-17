@@ -17,7 +17,7 @@ import java.util.List;
  * Service for executing complex queries for TechnologyCard entities in the database.
  * The main input is a {@link TechnologyCardCriteria} which get's converted to {@link Specifications},
  * in a way that all the filters must apply.
- * It returns a {@link List} of {%link TechnologyCardDTO} or a {@link Page} of {%link TechnologyCardDTO} which fulfills the criterias
+ * It returns a {@link List} of {%link TechnologyCardListDTO} or a {@link Page} of {%link TechnologyCardListDTO} which fulfills the criterias
  */
 @Service
 @Transactional(readOnly = true)
@@ -36,25 +36,25 @@ public class TechnologyCardQueryService extends QueryService<TechnologyCard> {
     }
 
     /**
-     * Return a {@link List} of {%link TechnologyCardDTO} which matches the criteria from the database
+     * Return a {@link List} of {%link TechnologyCardListDTO} which matches the criteria from the database
      * @param criteria The object which holds all the filters, which the entities should match.
      * @return the matching entities.
      */
     @Transactional(readOnly = true)
-    public List<TechnologyCardDTO> findByCriteria(TechnologyCardCriteria criteria) {
+    public List<TechnologyCardListDTO> findByCriteria(TechnologyCardCriteria criteria) {
         log.debug("find by criteria : {}", criteria);
         final Specifications<TechnologyCard> specification = createSpecification(criteria);
         return TechnologyCardMapper.toDto(TechnologyCardRepository.findAll(specification));
     }
 
     /**
-     * Return a {@link Page} of {%link TechnologyCardDTO} which matches the criteria from the database
+     * Return a {@link Page} of {%link TechnologyCardListDTO} which matches the criteria from the database
      * @param criteria The object which holds all the filters, which the entities should match.
      * @param page The page, which should be returned.
      * @return the matching entities.
      */
     @Transactional(readOnly = true)
-    public Page<TechnologyCardDTO> findByCriteria(TechnologyCardCriteria criteria, Pageable page) {
+    public Page<TechnologyCardListDTO> findByCriteria(TechnologyCardCriteria criteria, Pageable page) {
         log.debug("find by criteria : {}, page: {}", criteria, page);
         final Specifications<TechnologyCard> specification = createSpecification(criteria);
         final Page<TechnologyCard> result = TechnologyCardRepository.findAll(specification, page);
