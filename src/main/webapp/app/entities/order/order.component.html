@@ -47,7 +47,7 @@
             <tr *ngFor="let order of orders ;trackBy: trackId">
                 <td><a [routerLink]="['../order', order.id ]">{{order.id}}</a></td>
                 <td><a [routerLink]="['../order', order.id ]">{{order.internalNumber}}</a></td>
-                <td>{{order.description}}</td>
+                <td>{{order.referenceNumber}}</td>
                 <td>{{order.sapNumber}}</td>
                 <!--<td jhiTranslate="{{'tnApp.OrderType.' + order.orderType}}">{{order.orderType}}</td>-->
                 <td>{{order.name}}</td>
