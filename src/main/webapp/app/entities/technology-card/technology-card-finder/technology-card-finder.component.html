@@ -1,0 +1,70 @@
+<div class="modal-header">
+    <h4 class="modal-title">Wyszukaj kartę technologiczną</h4>
+    <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+<div class="modal-body">
+    <div class="row">
+        <div class="col-4">
+            <!--<label for="drawing_number_field">Nr rysunku</label>-->
+            <input type="text" class="form-control" id="drawing_number_field" name="drawing_number"
+                   placeholder="Nr rysunku" [(ngModel)]="drawingNumberFilter">
+
+        </div>
+        <div class="col-5">
+            <!--<label for="drawing_name_field">Nazwa</label>-->
+            <input type="text" class="form-control" id="drawing_name_field" name="drawing_name" placeholder="Nazwa"  [(ngModel)]="nameFilter" >
+
+        </div>
+        <div class="col-3"><span class="btn-group">
+
+            <button class="btn  btn-outline-primary" (click)="findTechnologyCard()">Szukaj</button>
+            <button class="btn  btn-outline-danger" (click)="clearFilter()">Resetuj</button>
+
+        </span></div>
+        <!--<div class="col-3">-->
+        <!--<label for="drawing_number_field">Nr rysunku</label>-->
+        <!--<input type="text" class="form-control" id="drawing_number_field" name="drawing_number">-->
+
+        <!--</div>-->
+
+    </div>
+
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>Lp</th>
+            <th>Nr rys</th>
+            <th>Nazwa</th>
+            <th>Data uwtorz.</th>
+            <th>Utworzył</th>
+            <th></th>
+
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let technologyCard of technologyCards;let rowIndex=index">
+            <td>{{rowIndex+1}}</td>
+            <td>{{technologyCard.drawingNumber}}</td>
+            <td>{{technologyCard.description}}</td>
+            <td>{{technologyCard.createdAt|date:'dd-MM-yyyy'}}</td>
+            <td>{{technologyCard.createdByName}}</td>
+            <td>
+                <button class="btn btn-outline-dark" (click)="onChooseRow(technologyCard)">OK</button>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <div *ngIf="technologyCards && technologyCards.length">
+        <div class="row justify-content-center">
+            <jhi-item-count [page]="page" [total]="queryCount" [itemsPerPage]="itemsPerPage"></jhi-item-count>
+        </div>
+        <div class="row justify-content-center">
+            <ngb-pagination [collectionSize]="totalItems" [(page)]="page" (pageChange)="loadPage(page)" [pageSize]="itemsPerPage" ></ngb-pagination><!---->
+        </div>
+    </div>
+</div>
+<!--<div class="modal-footer">-->
+    <!--<button type="button" class="btn btn-outline-dark" (click)="activeModal.close('Close click')">Zamknij</button>-->
+<!--</div>-->
