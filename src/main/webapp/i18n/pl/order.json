@@ -5,7 +5,7 @@
                 "title": "Zlecenia",
                 "createLabel": "Dodaj Zlecenie",
                 "createOrEditLabel": "Dodaj lub edytuj: Zlecenie",
-                "search": "Szukaj Zlecenie"
+                "search": "Szukaj"
             },
             "created": "Utworzono nowy Zlecenie z identyfikatorem {{ param }}",
             "updated": "Uaktualniono Zlecenie z identyfikatorem {{ param }}",

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Http, Response } from '@angular/http';
+import {Http, Response, URLSearchParams} from '@angular/http';
 import { Observable } from 'rxjs/Rx';
 import { JhiDateUtils } from 'ng-jhipster';
 
@@ -40,9 +40,13 @@ export class TechnologyCardService {
         });
     }
 
-    query(req?: any): Observable<ResponseWrapper> {
+    query(req?: any,urlSearchParams?: URLSearchParams): Observable<ResponseWrapper> {
         const options = createRequestOption(req);
-        return this.http.get(this.resourceUrl, options)
+        if(urlSearchParams){
+            options.params.appendAll(urlSearchParams);
+        }
+        console.log('options', options);
+        return this.http.get(this.resourceUrl+"/filtered", options)
             .map((res: Response) => this.convertResponse(res));
     }
 
@@ -72,7 +76,7 @@ export class TechnologyCardService {
     private convert(technologyCard: TechnologyCard): TechnologyCard {
         const copy: TechnologyCard = Object.assign({}, technologyCard);
 
-        copy.createdAt = this.dateUtils.toDate(technologyCard.createdAt);
+        // copy.createdAt = this.dateUtils.toDate(technologyCard.createdAt);
         return copy;
     }
 }

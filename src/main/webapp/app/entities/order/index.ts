@@ -8,3 +8,5 @@ export * from './order.route';
 export * from './order-detail/order-detail.component';
 export * from './estimated-order/move-to-archive-dialog.component';
 export * from './new-purchase-order/new-purchase-order.component';
+export * from './purchase-order/purchase-order.component';
+export * from './archive-orders/archive-orders.component';

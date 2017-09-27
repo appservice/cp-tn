@@ -4,6 +4,10 @@ import eu.canpack.fip.bo.drawing.Drawing;
 import eu.canpack.fip.bo.estimation.EstimationDTO;
 import eu.canpack.fip.bo.operation.Operation;
 import eu.canpack.fip.bo.operation.OperationMapper;
+import eu.canpack.fip.bo.technologyCard.mapper.TechnologyCardDTO;
+import eu.canpack.fip.bo.technologyCard.mapper.TechnologyCardListDTO;
+import eu.canpack.fip.bo.technologyCard.mapper.TechnologyCardListMapper;
+import eu.canpack.fip.bo.technologyCard.mapper.TechnologyCardMapper;
 import eu.canpack.fip.repository.search.TechnologyCardSearchRepository;
 import eu.canpack.fip.service.UserService;
 import org.slf4j.Logger;
@@ -30,34 +34,41 @@ public class TechnologyCardService {
 
     private final TechnologyCardRepository technologyCardRepository;
 
-    private final TechnologyCardMapper technologyCardMapper;
+    private final TechnologyCardListMapper technologyCardListMapper;
 
     private final TechnologyCardSearchRepository technologyCardSearchRepository;
 
     private final OperationMapper operationMapper;
 
+    private final TechnologyCardMapper technologyCardMapper;
+
     private final UserService userService;
 
-    public TechnologyCardService(TechnologyCardRepository technologyCardRepository, TechnologyCardMapper technologyCardMapper, TechnologyCardSearchRepository technologyCardSearchRepository, OperationMapper operationMapper, UserService userService) {
+    public TechnologyCardService(TechnologyCardRepository technologyCardRepository, TechnologyCardListMapper technologyCardListMapper, TechnologyCardSearchRepository technologyCardSearchRepository, OperationMapper operationMapper, TechnologyCardMapper technologyCardMapper, UserService userService) {
         this.technologyCardRepository = technologyCardRepository;
-        this.technologyCardMapper = technologyCardMapper;
+        this.technologyCardListMapper = technologyCardListMapper;
         this.technologyCardSearchRepository = technologyCardSearchRepository;
         this.operationMapper = operationMapper;
+        this.technologyCardMapper = technologyCardMapper;
         this.userService = userService;
     }
 
     /**
      * Save a technologyCard.
      *
-     * @param technologyCardListDTO the entity to save
+     * @param technologyCardDTO the entity to save
      * @return the persisted entity
      */
-    public TechnologyCardListDTO save(TechnologyCardListDTO technologyCardListDTO) {
-        log.debug("Request to save TechnologyCard : {}", technologyCardListDTO);
-        TechnologyCard technologyCard = technologyCardMapper.toEntity(technologyCardListDTO);
+    public TechnologyCardDTO save(TechnologyCardDTO technologyCardDTO) {
+        log.debug("Request to save TechnologyCard : {}", technologyCardDTO);
+        TechnologyCard technologyCard = technologyCardMapper.toEntity(technologyCardDTO);
+        log.debug("technologyCard form mapper {}",technologyCard);
         technologyCard = technologyCardRepository.save(technologyCard);
-        TechnologyCardListDTO result = technologyCardMapper.toDto(technologyCard);
-        technologyCardSearchRepository.save(technologyCard);
+        technologyCard.createdAt(ZonedDateTime.now());
+        technologyCard.createdBy(userService.getLoggedUser());
+
+        TechnologyCardDTO result = technologyCardMapper.toDto(technologyCard);
+//        technologyCardSearchRepository.save(technologyCard);
         return result;
     }
 
@@ -71,7 +82,7 @@ public class TechnologyCardService {
     public Page<TechnologyCardListDTO> findAll(Pageable pageable) {
         log.debug("Request to get all TechnologyCards");
         return technologyCardRepository.findAll(pageable)
-            .map(technologyCardMapper::toDto);
+            .map(technologyCardListMapper::toDto);
     }
 
     /**
@@ -81,7 +92,7 @@ public class TechnologyCardService {
      * @return the entity
      */
     @Transactional(readOnly = true)
-    public TechnologyCardListDTO findOne(Long id) {
+    public TechnologyCardDTO findOne(Long id) {
         log.debug("Request to get TechnologyCard : {}", id);
         TechnologyCard technologyCard = technologyCardRepository.findOne(id);
         return technologyCardMapper.toDto(technologyCard);
@@ -109,7 +120,7 @@ public class TechnologyCardService {
     public Page<TechnologyCardListDTO> search(String query, Pageable pageable) {
         log.debug("Request to search for a page of TechnologyCards for query {}", query);
         Page<TechnologyCard> result = technologyCardSearchRepository.search(queryStringQuery(query), pageable);
-        return result.map(technologyCardMapper::toDto);
+        return result.map(technologyCardListMapper::toDto);
     }
 
     public TechnologyCard createFromEstimation(EstimationDTO estimationDTO) {

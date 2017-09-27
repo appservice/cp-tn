@@ -1,13 +1,19 @@
 package eu.canpack.fip.bo.client;
 
+import eu.canpack.fip.domain.User;
 import eu.canpack.fip.repository.search.ClientSearchRepository;
+import eu.canpack.fip.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.elasticsearch.index.query.QueryBuilders.*;
 
@@ -27,10 +33,13 @@ public class ClientService {
 
     private final ClientSearchRepository clientSearchRepository;
 
-    public ClientService(ClientRepository clientRepository, ClientMapper clientMapper, ClientSearchRepository clientSearchRepository) {
+    private final UserService userService;
+
+    public ClientService(ClientRepository clientRepository, ClientMapper clientMapper, ClientSearchRepository clientSearchRepository, UserService userService) {
         this.clientRepository = clientRepository;
         this.clientMapper = clientMapper;
         this.clientSearchRepository = clientSearchRepository;
+        this.userService = userService;
     }
 
     /**
@@ -49,10 +58,10 @@ public class ClientService {
     }
 
     /**
-     *  Get all the clients.
+     * Get all the clients.
      *
-     *  @param pageable the pagination information
-     *  @return the list of entities
+     * @param pageable the pagination information
+     * @return the list of entities
      */
     @Transactional(readOnly = true)
     public Page<ClientDTO> findAll(Pageable pageable) {
@@ -62,10 +71,31 @@ public class ClientService {
     }
 
     /**
-     *  Get one client by id.
+     * Get all the clients.
      *
-     *  @param id the id of the entity
-     *  @return the entity
+     * @param pageable the pagination information
+     * @return the list of entities
+     */
+    @Transactional(readOnly = true)
+    public Page<ClientDTO> findAllToTypeahead(Pageable pageable) {
+        User loggedUser = userService.getLoggedUser();
+        if (loggedUser.getClient() != null) {
+            List<ClientDTO> clientDTOS = new ArrayList<>();
+            ClientDTO clientDTO = clientMapper.toDto(loggedUser.getClient());
+            clientDTOS.add(clientDTO);
+            return new PageImpl<ClientDTO>(clientDTOS, pageable, 1);
+
+        }
+        log.debug("Request to get all Clients");
+        return clientRepository.findAll(pageable)
+            .map(clientMapper::toDto);
+    }
+
+    /**
+     * Get one client by id.
+     *
+     * @param id the id of the entity
+     * @return the entity
      */
     @Transactional(readOnly = true)
     public ClientDTO findOne(Long id) {
@@ -75,9 +105,9 @@ public class ClientService {
     }
 
     /**
-     *  Delete the  client by id.
+     * Delete the  client by id.
      *
-     *  @param id the id of the entity
+     * @param id the id of the entity
      */
     public void delete(Long id) {
         log.debug("Request to delete Client : {}", id);
@@ -88,9 +118,9 @@ public class ClientService {
     /**
      * Search for the client corresponding to the query.
      *
-     *  @param query the query of the search
-     *  @param pageable the pagination information
-     *  @return the list of entities
+     * @param query    the query of the search
+     * @param pageable the pagination information
+     * @return the list of entities
      */
     @Transactional(readOnly = true)
     public Page<ClientDTO> search(String query, Pageable pageable) {

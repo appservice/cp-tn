@@ -10,6 +10,7 @@ export class Operation implements BaseEntity {
         public realTime?: number,
         public createdBy?: string,
         public machine?: Machine,
+        public sequenceNumber ?: number,
         // public machineCost?: number,
         public estimationId?: number,
     ) {

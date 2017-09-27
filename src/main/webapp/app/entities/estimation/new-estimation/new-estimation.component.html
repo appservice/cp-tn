@@ -153,7 +153,10 @@
 
                     <tbody>
                     <tr *ngFor="let operation of estimation.operations;let rowIndex=index">
-                        <td><input class="form-control" value="{{(rowIndex+1)*5}}" disabled style="width: 50px;"/></td>
+                        <td>
+                            <input type=number class="form-control" [(ngModel)]="operation.sequenceNumber"
+                                   name="operation_sequence_nb_{{rowIndex}}" style="width: 70px;"/><!---->
+                        </td>
 
                         <td style="width: 160px;">               <!-- <input class="form-control" />-->
                             <select class="form-control" id="field_machine_{{rowIndex}}" name="machine_{{rowIndex}}"
@@ -193,7 +196,8 @@
                         </td>
 
                         <td>
-                            <button type="button" class="btn" (click)="onDeleteRow(rowIndex);">x</button>
+                            <button type="button" class="btn btn-outline-dark" (click)="onDeleteRow(rowIndex);"><span
+                                class="fa fa-remove"></span></button>
                         </td>
                     </tr>
 
@@ -211,15 +215,24 @@
                     </tfoot>
 
                 </table>
-                <button type="button" class="btn btn-outline-dark" (click)="addOperation();" style="width: 200px"><i
-                    class="fa fa-plus"></i>
-                    Dodaj operację
-                </button>
-                <span class="pull-right">
+                <div >
+                    <button type="button" class="btn btn-outline-dark" (click)="addOperation();" style="width: 200px"><i
+                        class="fa fa-plus"></i>
+                        Dodaj operację
+                    </button>
+                </div>
+                <div style="margin-top:10px">
+                    <button type="button" class="btn btn-outline-dark" (click)="openTechnologyCardModal();"
+                            style="width: 200px"><i
+                        class="fa fa-plus"></i>
+                        Wczytaj z karty techn.
+                    </button>
+                    <span class="pull-right">
                     <button type="button" class="btn btn-outline-dark" (click)="exportToTechnologyCard()"
                             [disabled]="editForm.form.invalid || isExporting"
                             style="width: 200px"><i class="fa fa-save"></i> Eksportuj kartę techn.</button>
                 </span>
+                </div>
             </ng-template>
         </ngb-tab>
         <ngb-tab title="Części handlowe ({{estimation.commercialParts.length}})" id="2">
@@ -377,6 +390,86 @@
                                     <!--<label class="form-control-label" jhiTranslate="tnApp.order.closeDate" for="field_closeDate">Close Date</label>-->
                                     <div class="input-group">
                                         <input id="field_closeDate" type="text" class="form-control"
+                                               name="estimation_realization_date_{{rowIndex}}"
+                                               ngbDatepicker #realizationDateDp="ngbDatepicker"
+                                               [(ngModel)]="estimation.estimatedRealizationDate"
+                                               [disabled]="isReadOnly"/>
+                                        <span class="input-group-btn">
+                    <button type="button" class="btn btn-default" (click)="realizationDateDp.toggle()"
+                            (keyup)="realizationDateDp.toggle()" [disabled]="isReadOnly"><i class="fa fa-calendar"></i></button>
+                </span>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </ng-template>
+        </ngb-tab>
+        <ngb-tab title="Uwagi " id="4">
+            <ng-template ngbTabContent>
+
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <table class="table table-striped">
+                            <thead>
+                            </thead>
+
+                            <tbody>
+                            <tr *ngFor="let remark of estimation.estimationRemarks">
+                                <td>
+                                    <div><strong>{{remark.remark}}</strong></div>
+                                    <div class="small">{{remark.createdByName}} {{remark.createdAt|date:'dd-MM-yyyy
+                                        HH:mm'}}
+                                    </div>
+
+                                </td>
+                                <!--         <th>LP.</th>
+                                         <th>Nazwa:</th>
+                                         <th>Wartość [PLN]</th>-->
+
+                            </tr>
+                            </tbody>
+                            </tfoot>
+
+                        </table>
+                        <div class="row">
+                            <div class="col-12">
+                                <label for="estimation_remark_field">Dodaj uwagę:</label>
+                                <textarea class="form-control text-area" name="estimation_remark"
+                                          id="estimation_remark_field" [(ngModel)]="estimation.remark"></textarea>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6" style="margin-top: 20px">
+
+                        <div class="row">
+                            <div class="col-12">
+                                <label>Upust [%]</label>
+                                <input type="number" class="form-control" [(ngModel)]="estimation.discount"
+                                       name="final_discount" (ngModelChange)="calculateOperationsTotalCost()"/>
+                            </div>
+                        </div>
+                        <div class="row" style="margin-top: 20px">
+                            <div class="col-12">
+                                <label>Cena dla klienta</label>
+                                <input class="form-control" currencyMask [options]="currencyMaskOpt"
+                                       [(ngModel)]="estimation.estimatedCost" name="final_cost"/>
+
+                            </div>
+                        </div>
+                        <div class="row" style="margin-top: 20px">
+                            <div class="col-12">
+
+                                <label>Szacowana data realizacji</label>
+                                <div class="form-group">
+                                    <!--<label class="form-control-label" jhiTranslate="tnApp.order.closeDate" for="field_closeDate">Close Date</label>-->
+                                    <div class="input-group">
+                                        <input id="field_closeDate2" type="text" class="form-control"
                                                name="estimation_realization_date_{{rowIndex}}"
                                                ngbDatepicker #realizationDateDp="ngbDatepicker"
                                                [(ngModel)]="estimation.estimatedRealizationDate"

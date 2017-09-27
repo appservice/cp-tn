@@ -1,5 +1,6 @@
 package eu.canpack.fip.bo.attachment;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import eu.canpack.fip.bo.drawing.Drawing;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
@@ -23,19 +24,20 @@ public class Attachment {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "path",nullable = false)
+    @Column(name = "path", nullable = false)
     private String path;
 
-    @Column(name="name",nullable = false)
+    @Column(name = "name", nullable = false)
     private String name;
 
     @Column(name = "data_content_type", nullable = false)
     private String dataContentType;
 
-    @Column(name = "upload_date",nullable = false)
+    @Column(name = "upload_date", nullable = false)
     private ZonedDateTime uploadDate;
 
     @ManyToOne
+    @JsonBackReference
     private Drawing drawing;
 
 
@@ -58,7 +60,6 @@ public class Attachment {
         this.dataContentType = dataContentType;
         return this;
     }
-
 
 
     public Attachment drawing(Drawing drawing) {

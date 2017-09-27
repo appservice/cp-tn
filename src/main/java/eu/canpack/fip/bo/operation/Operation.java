@@ -7,6 +7,7 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.springframework.data.elasticsearch.annotations.Document;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -26,6 +27,10 @@ public class Operation implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @NotNull
+    @Column(name="sequence_number",nullable = false)
+    private Integer sequenceNumber;
 
     @Size(max = 1024)
     @Column(name = "description", length = 1024)
@@ -133,6 +138,20 @@ public class Operation implements Serializable {
         return this;
     }
 
+    public Integer getSequenceNumber() {
+        return sequenceNumber;
+    }
+
+    public void setSequenceNumber(Integer sequenceNumber) {
+        this.sequenceNumber = sequenceNumber;
+    }
+
+    public Operation sequenceNumber(final Integer sequenceNumber) {
+        this.sequenceNumber = sequenceNumber;
+        return this;
+    }
+
+
     public void setEstimation(Estimation estimation) {
         this.estimation = estimation;
     }
@@ -165,6 +184,7 @@ public class Operation implements Serializable {
             ", remark='" + getRemark() + "'" +
             ", estimatedTime='" + getEstimatedTime() + "'" +
             ", realTime='" + getRealTime() + "'" +
+            ", sequenceNumber='" + getSequenceNumber() + "'" +
             "}";
     }
 }

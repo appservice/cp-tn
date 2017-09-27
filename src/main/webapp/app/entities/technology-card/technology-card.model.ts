@@ -1,4 +1,6 @@
 import { BaseEntity } from './../../shared';
+import {Drawing} from '../drawing/drawing.model';
+import {Operation} from '../operation/operation.model';
 
 export class TechnologyCard implements BaseEntity {
     constructor(
@@ -8,10 +10,11 @@ export class TechnologyCard implements BaseEntity {
         public description?: string,
         public createdAt?: any,
         public amount?: number,
-        public drawingId?: number,
+        public drawing?: Drawing,
         public drawingNumber?: string,
         public createdByName?: string,
-        public operations?: BaseEntity[],
+        public operations?: Operation[],
+        public sequenceNumber ?: number,
     ) {
     }
 }

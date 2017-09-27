@@ -58,4 +58,9 @@ export class ClientService {
         const copy: Client = Object.assign({}, client);
         return copy;
     }
+
+    findAllToTypeahead(): Observable<ResponseWrapper>{
+        return this.http.get(this.resourceUrl+'/to-typeahead')
+            .map((res: Response) => this.convertResponse(res));
+    }
 }

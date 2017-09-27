@@ -76,6 +76,7 @@
                                 <th>Jedn:</th>
                                 <th style="width: 180px">Proponowana data realizacji:</th>
                                 <th>Pliki:</th>
+                                <th>Uwagi:</th>
                                 <th></th>
 
                             </tr>
@@ -134,14 +135,15 @@
                                 <td style="width: 100px">
 
                                     <!--</ss-multiselect-dropdown>-->
-                                    <button class="btn" type="button" (click)="openModal(content,rowIndex)">
+                                    <button class="btn btn-outline-dark" type="button" (click)="openModal(content,rowIndex)">
                                         <strong>{{estimation.drawing.attachments.length}}</strong>
                                         <i class="fa fa-paperclip"></i>
                                     </button>
 
                                 </td>
+                                <td><textarea class="form-control text-area" rows="1" [(ngModel)]="estimation.remark" name="estimation_remarks_{{rowIndex}}"></textarea></td>
                                 <td>
-                                    <button type="button" class="btn" (click)="onDeleteRow(rowIndex);" [disabled]="isReadOnly">x</button>
+                                    <button type="button" class="btn btn-outline-dark" (click)="onDeleteRow(rowIndex);" [disabled]="isReadOnly"><span class="fa fa-remove"></span></button>
                                 </td>
                             </tr>
 
@@ -151,7 +153,7 @@
                         </table>
 
 
-                        <button type="button" class="btn" (click)="addEstimation();" [disabled]="isReadOnly">Dodaj do wyceny</button>
+                        <button type="button" class="btn btn-outline-dark" (click)="addEstimation();" [disabled]="isReadOnly">Dodaj do wyceny</button>
                     </ng-template>
                 </ngb-tab>
                 <!--<ngb-tab title="Pliki" id="2">
@@ -166,13 +168,13 @@
 
         <div class="text-center">
 
-            <button class="btn btn-info " type="submit" [disabled]="editForm.form.invalid || isSaving" *ngIf="order.orderStatus =='WORKING_COPY' || order.orderStatus==null">
+            <button class="btn btn-outline-primary " type="submit" [disabled]="editForm.form.invalid || isSaving" *ngIf="order.orderStatus =='WORKING_COPY' || order.orderStatus==null">
                 <span class="fa fa-save"></span>&nbsp;Kopia robocza
                 <!--<span jhiTranslate="entity.action.save">Save</span>-->
             </button>
-            <button type="button" class="btn btn-danger" (click)="previousState()">Powrót</button>
+            <button type="button" class="btn btn-outline-danger" (click)="previousState()">Powrót</button>
 
-            <button class="btn btn-info" (click)="sendToEstimation();" *ngIf="order.orderStatus =='WORKING_COPY' || order.orderStatus==null">
+            <button class="btn btn-outline-primary" (click)="sendToEstimation();" *ngIf="order.orderStatus =='WORKING_COPY' || order.orderStatus==null">
                 <span class="fa fa-play"></span> Wyślij do wyceny
             </button>
         </div>

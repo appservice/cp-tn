@@ -1,5 +1,6 @@
 package eu.canpack.fip.bo.technologyCard;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import eu.canpack.fip.bo.drawing.Drawing;
 import eu.canpack.fip.bo.operation.Operation;
 import eu.canpack.fip.domain.User;
@@ -56,7 +57,7 @@ public class TechnologyCard implements Serializable {
     private List<Operation> operations = new ArrayList<>();
 
     @ManyToOne
-    @JoinColumn(name = "user_id")
+//    @JoinColumn(name = "user_id")
     private User createdBy;
 
 

@@ -38,7 +38,7 @@ const ENTITY_STATES = [
 
     ],
     providers: [
-        EstimationService,
+        EstimationService
         ,
         EstimationResolvePagingParams,
     ],

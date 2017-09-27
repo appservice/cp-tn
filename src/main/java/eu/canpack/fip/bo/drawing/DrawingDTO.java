@@ -2,6 +2,7 @@ package eu.canpack.fip.bo.drawing;
 
 
 import eu.canpack.fip.bo.attachment.AttachmentDTO;
+import eu.canpack.fip.bo.estimation.EstimationDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -26,7 +27,9 @@ public class DrawingDTO implements Serializable {
 
     private String name;
 
-    private Long estimationId;
+//    private List<EstimationDTO> estimations;
+
+//    private Long estimationId;
 
     private List<AttachmentDTO> attachments = new ArrayList<>();
 
@@ -38,7 +41,7 @@ public class DrawingDTO implements Serializable {
         log.debug("Drawing in DTO: {}", drawing);
         this.id = drawing.getId();
         this.number = drawing.getNumber();
-        this.estimationId = drawing.getEstimation().getId();
+//        this.estimationId = drawing.getEstimation().getId();
         log.debug("size of attachments: {}",drawing.getAttachments().size());
         this.attachments = drawing.getAttachments().stream()
             .map(AttachmentDTO::new).collect(Collectors.toList());
@@ -70,13 +73,21 @@ public class DrawingDTO implements Serializable {
         this.attachments = attachments;
     }
 
-    public Long getEstimationId() {
-        return estimationId;
-    }
+//    public List<EstimationDTO> getEstimations() {
+//        return estimations;
+//    }
+//
+//    public void setEstimations(List<EstimationDTO> estimations) {
+//        this.estimations = estimations;
+//    }
 
-    public void setEstimationId(Long estimationId) {
-        this.estimationId = estimationId;
-    }
+    //    public Long getEstimationId() {
+//        return estimationId;
+//    }
+//
+//    public void setEstimationId(Long estimationId) {
+//        this.estimationId = estimationId;
+//    }
 
     public String getName() {
         return name;

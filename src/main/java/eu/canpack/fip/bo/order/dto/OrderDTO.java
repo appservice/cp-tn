@@ -43,6 +43,8 @@ public class OrderDTO implements Serializable {
 
     private String clientShortcut;
 
+    private Long inquiryId;
+
     private List<EstimationCreateDTO> estimations = new ArrayList<>();
 
     public OrderDTO() {
@@ -50,6 +52,7 @@ public class OrderDTO implements Serializable {
     }
 
     public OrderDTO(Order o) {
+
         this.id = o.getId();
         this.internalNumber = o.getInternalNumber();
         this.sapNumber = o.getSapNumber();
@@ -160,6 +163,14 @@ public class OrderDTO implements Serializable {
         this.clientShortcut = clientShortcut;
     }
 
+    public Long getInquiryId() {
+        return inquiryId;
+    }
+
+    public void setInquiryId(Long inquiryId) {
+        this.inquiryId = inquiryId;
+    }
+
     @Override
     public String toString() {
         return "OrderDTO{" +
@@ -173,6 +184,7 @@ public class OrderDTO implements Serializable {
             ", orderStatus=" + orderStatus +
             ", clientId=" + clientId +
             ", estimations=" + estimations +
+            ", inquiryId=" + inquiryId +
             '}';
     }
 }

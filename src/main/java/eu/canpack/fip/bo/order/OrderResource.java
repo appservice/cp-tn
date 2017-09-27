@@ -5,6 +5,8 @@ import eu.canpack.fip.bo.order.dto.OrderCriteria;
 import eu.canpack.fip.bo.order.dto.OrderDTO;
 import eu.canpack.fip.bo.order.dto.OrderListDTO;
 import eu.canpack.fip.bo.order.dto.OrderSimpleDTO;
+import eu.canpack.fip.bo.order.enumeration.OrderStatus;
+import eu.canpack.fip.bo.order.enumeration.OrderType;
 import eu.canpack.fip.bo.pdf.Order2PdfCreator;
 import eu.canpack.fip.web.rest.util.HeaderUtil;
 import eu.canpack.fip.web.rest.util.PaginationUtil;
@@ -107,11 +109,26 @@ public class OrderResource {
      * @param pageable the pagination information
      * @return the ResponseEntity with status 200 (OK) and the list of orders in body
      */
-    @GetMapping("/orders")
+    @GetMapping("/orders/inquiries")
     @Timed
-    public ResponseEntity<List<OrderListDTO>> getAllOrders(@ApiParam Pageable pageable) {
+    public ResponseEntity<List<OrderListDTO>> getAllInquiries(@ApiParam Pageable pageable) {
         log.debug("REST request to get a page of Orders");
-        Page<OrderListDTO> page = orderService.findAll(pageable);
+        Page<OrderListDTO> page = orderService.findAllByClientAndOrderType(pageable, OrderType.ESTIMATION);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/orders");
+        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+    }
+
+    /**
+     * GET  /orders : get all the orders.
+     *
+     * @param pageable the pagination information
+     * @return the ResponseEntity with status 200 (OK) and the list of orders in body
+     */
+    @GetMapping("/orders/production")
+    @Timed
+    public ResponseEntity<List<OrderListDTO>> getAllProductionOrders(@ApiParam Pageable pageable) {
+        log.debug("REST request to get a page of Orders");
+        Page<OrderListDTO> page = orderService.findAllByClientAndOrderType(pageable, OrderType.PRODUCTION);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/orders");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
@@ -142,6 +159,20 @@ public class OrderResource {
     public ResponseEntity<OrderDTO> getOrder(@PathVariable Long id) {
         log.debug("REST request to get Order : {}", id);
         OrderDTO order = orderService.getOrder(id);
+        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(order));
+    }
+
+    /**
+     * GET  /orders/:id/estimated : get the "id" order.
+     *
+     * @param id the id of the orderDTO to retrieve
+     * @return the ResponseEntity with status 200 (OK) and with body the orderDTO, or with status 404 (Not Found)
+     */
+    @GetMapping("/orders/{id}/estimated")
+    @Timed
+    public ResponseEntity<OrderDTO> getOrderEstimated(@PathVariable Long id) {
+        log.debug("REST request to get Order : {}", id);
+        OrderDTO order = orderService.getOrderEstimated(id);
         return ResponseUtil.wrapOrNotFound(Optional.ofNullable(order));
     }
 
@@ -254,10 +285,41 @@ public class OrderResource {
     }
 
     @PutMapping("/orders/{id}/move-to-archive")
+    @Timed
     public ResponseEntity<Void> moveOrderToArchive(@PathVariable Long id){
         log.debug("REST request to move order to archive: {}",id);
 
         orderService.moveOrderToArchive(id);
         return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/purchase-orders")
+    @Timed
+    public ResponseEntity<OrderListDTO> createPurchaseOrder(@RequestBody OrderDTO orderDTO){
+        log.debug("REST request to  createPurchaseOrder by with OrderDTO : {}",orderDTO);
+
+        Order order= orderService.createPurchaseOrder(orderDTO);
+        OrderListDTO response = orderMapper.toDto(order);
+        return ResponseEntity.created(URI.create("/orders/"+order.getId())).body(response);
+    }
+
+
+    /**
+     * GET  /orders : get all the orders.
+     *
+     * @param pageable the pagination information
+     * @return the ResponseEntity with status 200 (OK) and the list of orders in body
+     */
+    @GetMapping("/orders/archived")
+    @Timed
+    public ResponseEntity<List<OrderListDTO>> getAllArchivedOrder(OrderCriteria orderCriteria,@ApiParam Pageable pageable) {
+        log.debug("REST request to get a page of Orders with criteria {}",orderCriteria);
+        if(orderCriteria.getOrderStatus()==null){
+            orderCriteria.setOrderStatus(new OrderCriteria.OrderStatusFilter());
+        }
+        orderCriteria.getOrderStatus().setEquals(OrderStatus.SENT_OFFER_TO_CLIENT);
+        Page<OrderListDTO> page =orderQueryService.findByCriteria(orderCriteria,pageable);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/orders/filtered");
+        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
 }

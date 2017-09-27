@@ -12,10 +12,10 @@ import org.mapstruct.*;
 @Mapper(componentModel = "spring", uses = {EstimationMapper.class, AttachmentMapper.class })
 public interface DrawingMapper extends EntityMapper<DrawingDTO, Drawing> {
 
-    @Mapping(source = "estimation.id", target = "estimationId")
+//    @Mapping(source = "estimation.id", target = "estimationId")
     DrawingDTO toDto(Drawing drawing);
 
-    @Mapping(source = "estimationId", target = "estimation")
+//    @Mapping(source = "estimationId", target = "estimation")
     Drawing toEntity(DrawingDTO drawingDTO);
     default Drawing fromId(Long id) {
         if (id == null) {

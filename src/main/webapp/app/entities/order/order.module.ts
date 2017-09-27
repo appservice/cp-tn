@@ -27,6 +27,8 @@ import {
     MoveToArchivePopupComponent
 } from './estimated-order/move-to-archive-dialog.component';
 import {NewPurchaseOrderComponent} from './new-purchase-order/new-purchase-order.component';
+import {PurchaseOrderComponent} from './purchase-order/purchase-order.component';
+import {ArchiveOrdersComponent} from './archive-orders/archive-orders.component';
 
 
 
@@ -58,6 +60,8 @@ const ENTITY_STATES = [
         MoveToArchiveDialogComponent,
         MoveToArchivePopupComponent,
         NewPurchaseOrderComponent,
+        PurchaseOrderComponent,
+        ArchiveOrdersComponent,
 
 
     ],
@@ -69,6 +73,8 @@ const ENTITY_STATES = [
         OrderDeletePopupComponent,
         MoveToArchivePopupComponent,
         MoveToArchiveDialogComponent,
+        PurchaseOrderComponent,
+        ArchiveOrdersComponent
 
     ],
     providers: [

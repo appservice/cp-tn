@@ -1,16 +1,22 @@
 package eu.canpack.fip.bo.technologyCard;
 
+import eu.canpack.fip.bo.drawing.Drawing;
 import eu.canpack.fip.bo.drawing.Drawing_;
+import eu.canpack.fip.bo.technologyCard.mapper.TechnologyCardListDTO;
+import eu.canpack.fip.bo.technologyCard.mapper.TechnologyCardListMapper;
 import eu.canpack.fip.domain.User_;
 import io.github.jhipster.service.QueryService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.domain.Specifications;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.criteria.*;
+import javax.persistence.metamodel.SingularAttribute;
 import java.util.List;
 
 /**
@@ -28,15 +34,16 @@ public class TechnologyCardQueryService extends QueryService<TechnologyCard> {
 
     private final TechnologyCardRepository TechnologyCardRepository;
 
-    private final TechnologyCardMapper TechnologyCardMapper;
+    private final TechnologyCardListMapper TechnologyCardListMapper;
 
-    public TechnologyCardQueryService(TechnologyCardRepository TechnologyCardRepository, TechnologyCardMapper TechnologyCardMapper) {
+    public TechnologyCardQueryService(TechnologyCardRepository TechnologyCardRepository, eu.canpack.fip.bo.technologyCard.mapper.TechnologyCardListMapper TechnologyCardListMapper) {
         this.TechnologyCardRepository = TechnologyCardRepository;
-        this.TechnologyCardMapper = TechnologyCardMapper;
+        this.TechnologyCardListMapper = TechnologyCardListMapper;
     }
 
     /**
      * Return a {@link List} of {%link TechnologyCardListDTO} which matches the criteria from the database
+     *
      * @param criteria The object which holds all the filters, which the entities should match.
      * @return the matching entities.
      */
@@ -44,13 +51,14 @@ public class TechnologyCardQueryService extends QueryService<TechnologyCard> {
     public List<TechnologyCardListDTO> findByCriteria(TechnologyCardCriteria criteria) {
         log.debug("find by criteria : {}", criteria);
         final Specifications<TechnologyCard> specification = createSpecification(criteria);
-        return TechnologyCardMapper.toDto(TechnologyCardRepository.findAll(specification));
+        return TechnologyCardListMapper.toDto(TechnologyCardRepository.findAll(specification));
     }
 
     /**
      * Return a {@link Page} of {%link TechnologyCardListDTO} which matches the criteria from the database
+     *
      * @param criteria The object which holds all the filters, which the entities should match.
-     * @param page The page, which should be returned.
+     * @param page     The page, which should be returned.
      * @return the matching entities.
      */
     @Transactional(readOnly = true)
@@ -58,7 +66,7 @@ public class TechnologyCardQueryService extends QueryService<TechnologyCard> {
         log.debug("find by criteria : {}, page: {}", criteria, page);
         final Specifications<TechnologyCard> specification = createSpecification(criteria);
         final Page<TechnologyCard> result = TechnologyCardRepository.findAll(specification, page);
-        return result.map(TechnologyCardMapper::toDto);
+        return result.map(TechnologyCardListMapper::toDto);
     }
 
     /**
@@ -71,7 +79,7 @@ public class TechnologyCardQueryService extends QueryService<TechnologyCard> {
                 specification = specification.and(buildSpecification(criteria.getId(), eu.canpack.fip.bo.technologyCard.TechnologyCard_.id));
             }
             if (criteria.getDescription() != null) {
-                specification = specification.and(buildSpecification(criteria.getDescription(), eu.canpack.fip.bo.technologyCard.TechnologyCard_.description));
+                specification = specification.and(buildStringSpecification(criteria.getDescription(), eu.canpack.fip.bo.technologyCard.TechnologyCard_.description));
             }
 
             if (criteria.getCreatedAt() != null) {
@@ -81,9 +89,9 @@ public class TechnologyCardQueryService extends QueryService<TechnologyCard> {
             if (criteria.getCreatedById() != null) {
                 specification = specification.and(buildReferringEntitySpecification(criteria.getCreatedById(), eu.canpack.fip.bo.technologyCard.TechnologyCard_.createdBy, User_.id));
             }
-            if (criteria.getDrawingNumber() != null) {
-                specification = specification.and(buildReferringEntitySpecification(criteria.getDrawingNumber(), eu.canpack.fip.bo.technologyCard.TechnologyCard_.drawing, Drawing_.number));
-            }
+//            if (criteria.getDrawingNumber() != null) {
+//                specification = specification.and(buildReferringEntitySpecification(criteria.getDrawingNumber(), eu.canpack.fip.bo.technologyCard.TechnologyCard_.drawing, Drawing_.number));
+//            }
             if (criteria.getDrawingName() != null) {
                 specification = specification.and(buildReferringEntitySpecification(criteria.getDrawingName(), eu.canpack.fip.bo.technologyCard.TechnologyCard_.drawing, Drawing_.name));
             }
@@ -93,8 +101,18 @@ public class TechnologyCardQueryService extends QueryService<TechnologyCard> {
             if (criteria.getCreatedByFirstName() != null) {
                 specification = specification.and(buildReferringEntitySpecification(criteria.getCreatedByFirstName(), eu.canpack.fip.bo.technologyCard.TechnologyCard_.createdBy, User_.firstName));
             }
+            if (criteria.getDrawingNumber()!=null) {
+                log.debug("drawingNumber {}",criteria.getDrawingNumber().getContains());
+                Specification<TechnologyCard> spec = (root, query, builder) -> {
+                    Join<TechnologyCard,Drawing> joinToDrawing=root.join(eu.canpack.fip.bo.technologyCard.TechnologyCard_.drawing,JoinType.INNER);
+                   return builder.like(joinToDrawing.get(Drawing_.number), "%"+criteria.getDrawingNumber().getContains().trim()+"%" );
+                };
+                specification=specification.and(spec);
+
+            }
         }
         return specification;
     }
+
 
 }

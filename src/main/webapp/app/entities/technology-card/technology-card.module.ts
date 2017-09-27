@@ -14,7 +14,12 @@ import {
     technologyCardRoute,
     technologyCardPopupRoute,
     TechnologyCardResolvePagingParams,
+
 } from './';
+import {NewTechnologyCardComponent} from './new-technology-card/new-technology-card.component';
+import {TnComponentsModule} from '../../tn-components/tn-components.module';
+import {TechnologyCardFinderComponent} from './technology-card-finder/technology-card-finder.component';
+
 
 const ENTITY_STATES = [
     ...technologyCardRoute,
@@ -24,7 +29,9 @@ const ENTITY_STATES = [
 @NgModule({
     imports: [
         TnSharedModule,
-        RouterModule.forRoot(ENTITY_STATES, { useHash: true })
+        RouterModule.forRoot(ENTITY_STATES, { useHash: true }),
+        TnComponentsModule,
+
     ],
     declarations: [
         TechnologyCardComponent,
@@ -33,6 +40,8 @@ const ENTITY_STATES = [
         TechnologyCardDeleteDialogComponent,
         TechnologyCardPopupComponent,
         TechnologyCardDeletePopupComponent,
+        NewTechnologyCardComponent,
+        TechnologyCardFinderComponent,
     ],
     entryComponents: [
         TechnologyCardComponent,
@@ -40,6 +49,9 @@ const ENTITY_STATES = [
         TechnologyCardPopupComponent,
         TechnologyCardDeleteDialogComponent,
         TechnologyCardDeletePopupComponent,
+        NewTechnologyCardComponent,
+        TechnologyCardDialogComponent,
+
     ],
     providers: [
         TechnologyCardService,

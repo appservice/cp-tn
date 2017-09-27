@@ -154,10 +154,11 @@ public class OrderCriteria implements Serializable {
 
     @Override
     public String toString() {
-        return "EntTestCriteria{" +
+        return "OrderCriteria{" +
                 (id != null ? "=" + id + ", " : "") +
                 (referenceNumber != null ? "referenceNumber=" + referenceNumber + ", " : "") +
                 (createdAt != null ? "createdAt=" + createdAt + ", " : "") +
+                (orderStatus != null ? "orderStatus=" + orderStatus + ", " : "") +
 
 
             "}";

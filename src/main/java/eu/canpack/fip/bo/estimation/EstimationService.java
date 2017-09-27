@@ -3,7 +3,9 @@ package eu.canpack.fip.bo.estimation;
 import eu.canpack.fip.bo.operation.Operation;
 import eu.canpack.fip.bo.operation.OperationMapper;
 import eu.canpack.fip.bo.commercialPart.CommercialPart;
+import eu.canpack.fip.bo.order.Order;
 import eu.canpack.fip.bo.pdf.TechnologyCardPdfCreator;
+import eu.canpack.fip.bo.remark.EstimationRemark;
 import eu.canpack.fip.domain.User;
 import eu.canpack.fip.repository.UserRepository;
 import eu.canpack.fip.repository.search.EstimationSearchRepository;
@@ -72,9 +74,11 @@ public class EstimationService {
         List<Operation> operations = operationMapper.toEntity(estimationDTO.getOperations());
         log.debug("operations DTO: {}",estimationDTO.getOperations());
         log.debug("operations list: {}",operations);
+
         Estimation finalEstimation = estimation;
         operations.forEach(operation -> operation.setEstimation(finalEstimation));
         estimation.setOperations(operations);
+
         List<CommercialPart> commercialParts = commercialPartMapper.toEntity(estimationDTO.getCommercialParts());
         commercialParts.forEach(cp -> cp.setEstimation(finalEstimation));
         estimation.setCommercialParts(commercialParts);
@@ -84,11 +88,28 @@ public class EstimationService {
         User currentUser=userService.getLoggedUser();
         estimation.setCreatedBy(currentUser);
 
+        if(estimationDTO.getRemark()!=null && !estimationDTO.getRemark().isEmpty()){
+            EstimationRemark remark = createRemark(estimationDTO.getRemark(), estimation);
+            estimation.getEstimationRemarks().add(remark);
+        }
+
+
+        Order order=estimation.getOrder();
+
         estimation = estimationRepository.save(estimation);
         estimationSearchRepository.save(estimation);
         EstimationDTO result = estimationMapper.toDto(estimation);
 
         return result;
+    }
+
+    private EstimationRemark createRemark(String remakr,Estimation estimation){
+        EstimationRemark estimationRemark = new EstimationRemark();
+        estimationRemark.setCreatedAt(ZonedDateTime.now());
+        estimationRemark.setCreatedBy(userService.getLoggedUser());
+        estimationRemark.setEstimation(estimation);
+        estimationRemark.setRemark(remakr);
+        return estimationRemark;
     }
 
 //    /**
@@ -129,7 +150,7 @@ public class EstimationService {
     public EstimationDTO findOne(Long id) {
         log.debug("Request to get Estimation : {}", id);
         Estimation estimation = estimationRepository.findOne(id);
-        estimation.getOperations().sort(Comparator.comparing(Operation::getId));
+        estimation.getOperations().sort(Comparator.comparing(Operation::getSequenceNumber));
         return estimationMapper.toDto(estimation);
     }
 

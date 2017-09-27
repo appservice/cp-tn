@@ -7,13 +7,31 @@ import {Autosize} from './autosize.directive';
 import {PlnCurrencyPipe} from './pln-currency.pipe';
 import {FileSizePipe} from './file-size-pipe';
 import {TnAlert} from './tn-alert';
+import {TnEstimationRemarkComponent} from './tn-estimation-remark-component/tn-estimation-remark-component';
+import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
     imports: [
-        CommonModule,FileUploadModule
+        CommonModule, FileUploadModule,NgbModule
     ],
-    declarations: [TnOkCancleAlertComponent, TnFileUploaderComponent,Autosize,PlnCurrencyPipe,FileSizePipe,TnAlert],
-    exports: [TnFileUploaderComponent,Autosize,PlnCurrencyPipe, FileSizePipe,TnAlert]
+    declarations:
+        [
+            TnOkCancleAlertComponent,
+            TnFileUploaderComponent,
+            Autosize,
+            PlnCurrencyPipe,
+            FileSizePipe,
+            TnAlert,
+            TnEstimationRemarkComponent,
+        ],
+    exports:
+        [
+            TnFileUploaderComponent,
+            Autosize, PlnCurrencyPipe,
+            FileSizePipe,
+            TnAlert,
+            TnEstimationRemarkComponent,
+        ]
 })
 export class TnComponentsModule {
 }

@@ -26,9 +26,11 @@ spring:
         serialization.indent_output: true
     datasource:
         type: com.zaxxer.hikari.HikariDataSource
-        url: jdbc:mysql://localhost:3306/tn?useUnicode=true&characterEncoding=utf8&useSSL=false
+        url: jdbc:p6spy:mysql://localhost:3306/tn?useUnicode=true&characterEncoding=utf8&useSSL=false
         username: root
         password: Start123!
+        driverClassName: com.p6spy.engine.spy.P6SpyDriver
+
         hikari:
             data-source-properties:
                 cachePrepStmts: true
@@ -41,6 +43,7 @@ spring:
         show-sql: true
         properties:
             hibernate.id.new_generator_mappings: true
+           # hibernate.format_sql: true
             hibernate.cache.use_second_level_cache: true
             hibernate.cache.use_query_cache: false
             hibernate.generate_statistics: true

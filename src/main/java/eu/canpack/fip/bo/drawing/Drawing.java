@@ -1,5 +1,7 @@
 package eu.canpack.fip.bo.drawing;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import eu.canpack.fip.bo.estimation.Estimation;
 import eu.canpack.fip.bo.attachment.Attachment;
 import eu.canpack.fip.bo.technologyCard.TechnologyCard;
@@ -35,16 +37,23 @@ public class Drawing implements Serializable {
     private String name;
 
 
-    @OneToOne
-    private Estimation estimation;
+    @OneToMany(mappedBy = "drawing")//@ManyToOne
+    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+    @JsonIgnore
+    private List<Estimation> estimations = new ArrayList<>();
 
     @OneToMany(cascade = {CascadeType.PERSIST,CascadeType.MERGE,CascadeType.REFRESH,CascadeType.DETACH}, orphanRemoval = false)
     @JoinColumn(name = "drawing_id",referencedColumnName = "id")
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+    @JsonManagedReference
     private List<Attachment> attachments = new ArrayList<>();
 
     @OneToMany(mappedBy = "drawing")
-    private List<TechnologyCard> technologyCard = new ArrayList<>();
+    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+    @JsonIgnore
+    private List<TechnologyCard> technologyCards = new ArrayList<>();
+
+
 
     public Drawing() {
     }
@@ -69,12 +78,12 @@ public class Drawing implements Serializable {
         this.number = number;
     }
 
-    public Estimation getEstimation() {
-        return estimation;
+    public List<Estimation> getEstimations() {
+        return estimations;
     }
 
-    public void setEstimation(Estimation estimation) {
-        this.estimation = estimation;
+    public void setEstimations(List<Estimation> estimations) {
+        this.estimations = estimations;
     }
 
     public List<Attachment> getAttachments() {
@@ -93,12 +102,12 @@ public class Drawing implements Serializable {
         this.name = name;
     }
 
-    public List<TechnologyCard> getTechnologyCard() {
-        return technologyCard;
+    public List<TechnologyCard> getTechnologyCards() {
+        return technologyCards;
     }
 
-    public void setTechnologyCard(List<TechnologyCard> technologyCard) {
-        this.technologyCard = technologyCard;
+    public void setTechnologyCards(List<TechnologyCard> technologyCards) {
+        this.technologyCards = technologyCards;
     }
 
     @Override
@@ -135,13 +144,14 @@ public class Drawing implements Serializable {
         return this;
     }
 
-    public Drawing estimation(Estimation estimation) {
-        this.estimation = estimation;
-        return this;
-    }
-
     public Drawing attachments(List<Attachment> attachments) {
         this.attachments = attachments;
         return this;
     }
+
+    public Drawing estimations(final List<Estimation> estimations) {
+        this.estimations = estimations;
+        return this;
+    }
+
 }

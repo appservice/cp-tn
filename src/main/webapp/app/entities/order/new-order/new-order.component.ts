@@ -13,6 +13,7 @@ import {isDefined} from '@angular/compiler/src/util';
 import {Drawing} from '../../drawing/drawing.model';
 import {ModalDismissReasons, NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {Estimation} from '../../estimation/estimation.model';
+import {EstimationRemark} from '../../estimation-remark/estimation-remark.model';
 
 @Component({
     selector: 'jhi-new-order',
@@ -53,9 +54,12 @@ export class NewOrderComponent implements OnInit, OnDestroy {
     ngOnInit() {
         this.isSaving = false;
 
-        this.clientService.query()
+        this.clientService.findAllToTypeahead()
             .subscribe((res: ResponseWrapper) => {
                 this.clients = res.json;
+                if(this.clients.length==1){
+                    this.order.clientId=this.clients[0].id;
+                }
             }, (res: ResponseWrapper) => this.onError(res.json));
 
         this.order.orderType = OrderType.ESTIMATION;
@@ -86,7 +90,8 @@ export class NewOrderComponent implements OnInit, OnDestroy {
         const drawing: Drawing = {id: null, attachments: []}
         this.order.estimations.push({
             id: null, amount: null,
-            drawing: drawing
+            drawing: drawing,
+            estimationRemarks:[]
         });
     }
 

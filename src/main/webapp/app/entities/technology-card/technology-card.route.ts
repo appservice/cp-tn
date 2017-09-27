@@ -8,6 +8,8 @@ import { TechnologyCardComponent } from './technology-card.component';
 import { TechnologyCardDetailComponent } from './technology-card-detail.component';
 import { TechnologyCardPopupComponent } from './technology-card-dialog.component';
 import { TechnologyCardDeletePopupComponent } from './technology-card-delete-dialog.component';
+import {NewTechnologyCardComponent} from './new-technology-card/new-technology-card.component';
+import {TechnologyCardFinderComponent} from './technology-card-finder/technology-card-finder.component';
 
 @Injectable()
 export class TechnologyCardResolvePagingParams implements Resolve<any> {
@@ -37,9 +39,19 @@ export const technologyCardRoute: Routes = [
             pageTitle: 'tnApp.technologyCard.home.title'
         },
         canActivate: [UserRouteAccessService]
-    }, {
+    }
+    ,{
         path: 'technology-card/:id',
-        component: TechnologyCardDetailComponent,
+        component: NewTechnologyCardComponent,
+        data: {
+            authorities: ['ROLE_USER'],
+            pageTitle: 'tnApp.technologyCard.home.title'
+        },
+        canActivate: [UserRouteAccessService]
+    }
+    ,{
+        path: 'technology-card/:id/edit',
+        component: NewTechnologyCardComponent,
         data: {
             authorities: ['ROLE_USER'],
             pageTitle: 'tnApp.technologyCard.home.title'
@@ -60,6 +72,16 @@ export const technologyCardPopupRoute: Routes = [
         outlet: 'popup'
     },
     {
+        path: 'technology-card-finder',
+        component: TechnologyCardFinderComponent,
+        data: {
+            authorities: ['ROLE_USER'],
+            pageTitle: 'tnApp.technologyCard.home.title'
+        },
+        canActivate: [UserRouteAccessService],
+        outlet: 'popup'
+    },
+    /*{
         path: 'technology-card/:id/edit',
         component: TechnologyCardPopupComponent,
         data: {
@@ -68,7 +90,7 @@ export const technologyCardPopupRoute: Routes = [
         },
         canActivate: [UserRouteAccessService],
         outlet: 'popup'
-    },
+    },*/
     {
         path: 'technology-card/:id/delete',
         component: TechnologyCardDeletePopupComponent,

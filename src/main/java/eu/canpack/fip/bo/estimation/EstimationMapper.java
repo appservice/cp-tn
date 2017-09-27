@@ -6,6 +6,7 @@ import eu.canpack.fip.bo.order.OrderMapper;
 
 import eu.canpack.fip.bo.drawing.DrawingMapper;
 import eu.canpack.fip.bo.commercialPart.CommercialPartMapper;
+import eu.canpack.fip.bo.remark.EstimationRemarkMapper;
 import eu.canpack.fip.service.mapper.EntityMapper;
 import org.mapstruct.*;
 
@@ -14,7 +15,7 @@ import javax.persistence.ManyToOne;
 /**
  * Mapper for the entity Estimation and its DTO EstimationDTO.
  */
-@Mapper(componentModel = "spring", uses = {OrderMapper.class, DrawingMapper.class, OperationMapper.class, CommercialPartMapper.class})
+@Mapper(componentModel = "spring", uses = {OrderMapper.class, DrawingMapper.class, OperationMapper.class, CommercialPartMapper.class, EstimationRemarkMapper.class})
 public interface EstimationMapper extends EntityMapper<EstimationDTO, Estimation> {
 
     @Mapping(source = "order.id", target = "orderId")

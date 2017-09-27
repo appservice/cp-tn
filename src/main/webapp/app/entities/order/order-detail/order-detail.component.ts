@@ -10,11 +10,13 @@ import {Observable} from 'rxjs/Rx';
 import {ActivatedRoute, Router} from '@angular/router';
 import {Subscription} from 'rxjs/Subscription';
 import {ModalDismissReasons, NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import {EstimationRemark} from '../../estimation-remark/estimation-remark.model';
 
 @Component({
     selector: 'tn-order-detail',
     templateUrl: './order-detail.component.html',
-    styles: [],
+    // styles: [],
+    styleUrls: ['./order-detail.component.css'],
 
 })
 export class OrderDetailComponent implements OnInit, OnDestroy {
@@ -143,6 +145,7 @@ export class OrderDetailComponent implements OnInit, OnDestroy {
             console.log('order ', order)
        //     console.log('enum 3', ]);
              this.isReadOnly =order.orderStatus != null && order.orderStatus != 'WORKING_COPY';
+
 
         });
     }

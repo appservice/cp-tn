@@ -1,9 +1,11 @@
 package eu.canpack.fip.bo.estimation;
 
 
+import eu.canpack.fip.bo.remark.EstimationRemark;
 import eu.canpack.fip.bo.drawing.DrawingDTO;
 import eu.canpack.fip.bo.operation.OperationDTO;
 import eu.canpack.fip.bo.commercialPart.CommercialPartDTO;
+import eu.canpack.fip.bo.remark.EstimationRemarkDTO;
 
 import javax.validation.constraints.*;
 import java.io.Serializable;
@@ -61,6 +63,10 @@ public class EstimationDTO implements Serializable {
     private ZonedDateTime createdAt;
 
     private String createdBy;
+
+    private List<EstimationRemarkDTO> estimationRemarks;
+
+    private String remark;
 
 
     public DrawingDTO getDrawing() {
@@ -210,6 +216,22 @@ public class EstimationDTO implements Serializable {
         this.estimatedRealizationDate = estimatedRealizationDate;
     }
 
+    public List<EstimationRemarkDTO> getEstimationRemarks() {
+        return estimationRemarks;
+    }
+
+    public void setEstimationRemarks(List<EstimationRemarkDTO> estimationRemarks) {
+        this.estimationRemarks = estimationRemarks;
+    }
+
+    public String getRemark() {
+        return remark;
+    }
+
+    public void setRemark(String remark) {
+        this.remark = remark;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -248,6 +270,7 @@ public class EstimationDTO implements Serializable {
             ", commercialParts=" + commercialParts +
             ", neededRealizationDate=" + neededRealizationDate +
             ", estimatedRealizationDate=" + estimatedRealizationDate +
+            ", remark=" + remark +
             '}';
     }
 }

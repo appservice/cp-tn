@@ -1,6 +1,7 @@
 package eu.canpack.fip.bo.estimation;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import eu.canpack.fip.bo.remark.EstimationRemark;
 import eu.canpack.fip.bo.drawing.Drawing;
 import eu.canpack.fip.bo.order.Order;
 import eu.canpack.fip.bo.operation.Operation;
@@ -62,9 +63,7 @@ public class Estimation implements Serializable {
     @Column(name = "final_cost", precision = 10, scale = 2)
     private BigDecimal finalCost;
 
-    @OneToOne(mappedBy = "estimation", orphanRemoval = true, cascade = CascadeType.ALL)
-    @JsonIgnore
-    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+    @ManyToOne
     private Drawing drawing;
 
     @OneToMany(mappedBy = "estimation", orphanRemoval = true, cascade = CascadeType.ALL)
@@ -83,10 +82,15 @@ public class Estimation implements Serializable {
     private LocalDate estimatedRealizationDate;
 
 
-    @OneToMany(mappedBy = "estimation", orphanRemoval = true, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "estimation", cascade = CascadeType.ALL)/*orphanRemoval = true, */
     @JsonIgnore
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private List<CommercialPart> commercialParts = new ArrayList<>();
+
+    @OneToMany(mappedBy = "estimation",/* orphanRemoval = true,*/ cascade = CascadeType.ALL)
+    @JsonIgnore
+    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+    private List<EstimationRemark> estimationRemarks = new ArrayList<>();
 
 
     @Column(name = "discount", precision = 8, scale = 2)
@@ -334,6 +338,13 @@ public class Estimation implements Serializable {
         return this;
     }
 
+    public List<EstimationRemark> getEstimationRemarks() {
+        return estimationRemarks;
+    }
+
+    public void setEstimationRemarks(List<EstimationRemark> estimationRemarks) {
+        this.estimationRemarks = estimationRemarks;
+    }
 
     @Override
     public boolean equals(Object o) {

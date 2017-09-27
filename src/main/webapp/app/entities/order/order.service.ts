@@ -51,6 +51,18 @@ export class OrderService {
             .map((res: Response) => this.convertResponse(res));
     }
 
+    getAllInquiries(req?: any): Observable<ResponseWrapper> {
+        const options = createRequestOption(req);
+        return this.http.get(this.resourceUrl+'/inquiries', options)
+            .map((res: Response) => this.convertResponse(res));
+    }
+
+    getAllProductionOrders(req?: any): Observable<ResponseWrapper> {
+        const options = createRequestOption(req);
+        return this.http.get(this.resourceUrl+'/production', options)
+            .map((res: Response) => this.convertResponse(res));
+    }
+
     delete(id: number): Observable<Response> {
         return this.http.delete(`${this.resourceUrl}/${id}`);
     }
@@ -139,6 +151,16 @@ export class OrderService {
 
     }
 
+    archivedOrders(req?: any) {
+        const options = createRequestOption(req);
+
+        return this.http
+            .get(`${this.resourceUrl}/archived`, options).map((res: Response) => {
+                return this.convertResponse(res)
+            });
+
+    }
+
     claimToEstimator(id: number): Observable<void> {
         return this.http.put(`${this.resourceUrl}/${id}/claim-to-estimator/`, {id: id}).map((res: Response) => {
 
@@ -181,4 +203,23 @@ export class OrderService {
        return this.http.put(`${this.resourceUrl}/${id}/move-to-archive`, null);
     }
 
+
+    findEstimated(id: number): Observable<Order> {
+        return this.http.get(`${this.resourceUrl}/${id}/estimated`).map((res: Response) => {
+            const jsonResponse = res.json();
+            this.convertItemFromServer(jsonResponse);
+            return jsonResponse;
+        });
+    }
+
+
+
+    createNewPurchaseOrder(order: Order): Observable<Order> {
+        const copy = this.convert(order);
+        return this.http.post("api/purchase-orders", copy).map((res: Response) => {
+            const jsonResponse = res.json();
+            this.convertItemFromServer(jsonResponse);
+            return jsonResponse;
+        });
+    }
 }

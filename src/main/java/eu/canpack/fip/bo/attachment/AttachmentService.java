@@ -63,14 +63,6 @@ public class AttachmentService {
         attachmentRepository.delete(attachmentId);
     }
 
-//    public Path downloadFile(Long attachmentId) throws IOException {
-//        Attachment attachment = attachmentRepository.findOne(attachmentId);
-//        log.debug("attachment: ", attachment);
-//        Path path = Paths.get(attachment.getPath());
-//        log.debug("Path: {}", path);
-//
-////        return Files.readAllBytes(path);
-//        return path;
 
-//    }
+
 }

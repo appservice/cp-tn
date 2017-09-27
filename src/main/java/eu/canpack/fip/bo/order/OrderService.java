@@ -1,22 +1,25 @@
 package eu.canpack.fip.bo.order;
 
 import eu.canpack.fip.bo.attachment.Attachment;
+import eu.canpack.fip.bo.attachment.AttachmentRepository;
 import eu.canpack.fip.bo.client.Client;
 import eu.canpack.fip.bo.drawing.Drawing;
+import eu.canpack.fip.bo.drawing.DrawingRepository;
 import eu.canpack.fip.bo.estimation.Estimation;
 import eu.canpack.fip.bo.estimation.EstimationCreateDTO;
+import eu.canpack.fip.bo.estimation.EstimationRepository;
 import eu.canpack.fip.bo.order.dto.OrderDTO;
 import eu.canpack.fip.bo.order.dto.OrderListDTO;
 import eu.canpack.fip.bo.order.dto.OrderSimpleDTO;
 import eu.canpack.fip.bo.order.enumeration.OrderStatus;
+import eu.canpack.fip.bo.order.enumeration.OrderType;
+import eu.canpack.fip.bo.remark.EstimationRemark;
 import eu.canpack.fip.domain.User;
-import eu.canpack.fip.bo.attachment.AttachmentRepository;
-import eu.canpack.fip.bo.estimation.EstimationRepository;
 import eu.canpack.fip.repository.UserRepository;
 import eu.canpack.fip.repository.search.OrderSearchRepository;
-import eu.canpack.fip.security.SecurityUtils;
 import eu.canpack.fip.service.UserService;
-import eu.canpack.fip.web.rest.errors.CustomParameterizedException;
+import org.hibernate.Hibernate;
+import org.hibernate.internal.util.SerializationHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -24,14 +27,21 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-
+import javax.persistence.EntityManager;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.ZonedDateTime;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
+import java.util.Map;
 import java.util.stream.Collectors;
 
-import static org.elasticsearch.index.query.QueryBuilders.*;
+import static org.elasticsearch.index.query.QueryBuilders.queryStringQuery;
 
 /**
  * Service Implementation for managing Order.
@@ -50,19 +60,25 @@ public class OrderService {
 
     private final UserRepository userRepository;
 
+    private final DrawingRepository drawingRepository;
+
     private final AttachmentRepository attachmentRepository;
     private final EstimationRepository estimationRepository;
+
+    private final EntityManager entityManager;
 
 
     private final UserService userService;
 
-    public OrderService(OrderRepository orderRepository, OrderMapper orderMapper, OrderSearchRepository orderSearchRepository, UserRepository userRepository, AttachmentRepository attachmentRepository, EstimationRepository estimationRepository,  UserService userService) {
+    public OrderService(OrderRepository orderRepository, OrderMapper orderMapper, OrderSearchRepository orderSearchRepository, UserRepository userRepository, DrawingRepository drawingRepository, AttachmentRepository attachmentRepository, EstimationRepository estimationRepository, EntityManager entityManager, UserService userService) {
         this.orderRepository = orderRepository;
         this.orderMapper = orderMapper;
         this.orderSearchRepository = orderSearchRepository;
         this.userRepository = userRepository;
+        this.drawingRepository = drawingRepository;
         this.attachmentRepository = attachmentRepository;
         this.estimationRepository = estimationRepository;
+        this.entityManager = entityManager;
         this.userService = userService;
     }
 
@@ -85,25 +101,39 @@ public class OrderService {
     public Order createOrder(OrderDTO orderDTO) {
         log.debug("Request to create Order : {}", orderDTO);
         Order order = orderMapper.toEntity(orderDTO);
+        User loggedUser = userService.getLoggedUser();
 
         List<Estimation> estimations = orderDTO.getEstimations().stream().map(estDTO -> {
             Estimation estimation = new Estimation()
                 .order(order)
                 .description(estDTO.getDescription())
                 .neededRealizationDate(estDTO.getNeededRealizationDate())
-                .amount(estDTO.getAmount());
+                .amount(estDTO.getAmount())
+                .estimatedCost(estDTO.getEstimatedCost())
+                .estimatedRealizationDate(estDTO.getEstimatedRealizationDate());
+
+            updateRemark(loggedUser,estDTO,estimation);
+
+
 
             estimation.setId(estDTO.getId());
 
+            Drawing drawing;
+            if (estDTO.getDrawing().getId() != null) {
+                drawing = drawingRepository.findOne(estDTO.getDrawing().getId());
 
-            Drawing drawing = new Drawing();
-            drawing.setEstimation(estimation);
-            drawing.setNumber(estDTO.getDrawing().getNumber());
-            drawing.setName(estDTO.getDescription());
-            drawing.setId(estDTO.getDrawing().getId());
-            List<Attachment> attahcments = estDTO.getDrawing().getAttachments().stream()
-                .map(a -> attachmentRepository.findOne(a.getId())).collect(Collectors.toList());
-            drawing.setAttachments(attahcments);
+            } else {
+                drawing = new Drawing();
+                drawing.getEstimations().add(estimation);
+                drawing.setNumber(estDTO.getDrawing().getNumber());
+                drawing.setName(estDTO.getDescription());
+                List<Attachment> attahcments = estDTO.getDrawing().getAttachments().stream()
+                    .map(a -> attachmentRepository.findOne(a.getId())).collect(Collectors.toList());
+                drawing.setAttachments(attahcments);
+                drawing = drawingRepository.save(drawing);
+            }
+
+
             estimation.setDrawing(drawing);
 
             return estimation;
@@ -111,13 +141,9 @@ public class OrderService {
         }).collect(Collectors.toList());
         order.setEstimations(estimations);
 
-        Optional<User> currentUserOpt = userRepository.findOneByLogin(SecurityUtils.getCurrentUserLogin());
-        if (currentUserOpt.isPresent()) {
-            order.setCreatedBy(currentUserOpt.get());
-        } else {
-            throw new CustomParameterizedException("Nie odnaleziono użytkownika w bazie danych");
-        }
+
         order.createdAt(ZonedDateTime.now());
+        order.setCreatedBy(loggedUser);
         prepareDocumentNumber(order);
 
 //        order.setOrderStatus(OrderStatus.WORKING_COPY);
@@ -128,10 +154,13 @@ public class OrderService {
     }
 
     public OrderListDTO updateOrder(OrderDTO orderDTO) {
+        User loggedUser = userService.getLoggedUser();
+
         log.debug("Request to update Order : {}", orderDTO);
         Order orderFromDb = orderRepository.findOne(orderDTO.getId());
         Order order = orderMapper.toEntity(orderDTO);
-
+        order.setYear(orderFromDb.getYear());
+        order.setNumber(orderFromDb.getNumber());
         List<Estimation> newEstimations = orderDTO.getEstimations().stream()
             .filter(es -> es.getId() == null)
             .map(estDTO -> {
@@ -141,11 +170,15 @@ public class OrderService {
                     .neededRealizationDate(estDTO.getNeededRealizationDate())
                     .amount(estDTO.getAmount());
 
+
+                updateRemark(loggedUser, estDTO, estimation);
+
+
                 estimation.setId(estDTO.getId());
 
 
                 Drawing drawing = new Drawing();
-                drawing.setEstimation(estimation);
+                drawing.getEstimations().add(estimation);
                 drawing.setNumber(estDTO.getDrawing().getNumber());
                 drawing.setId(estDTO.getDrawing().getId());
                 List<Attachment> attahcments = estDTO.getDrawing().getAttachments().stream()
@@ -166,6 +199,11 @@ public class OrderService {
                 estimation.setNeededRealizationDate(estDTO.getNeededRealizationDate());
                 estimation.getDrawing().setNumber(estDTO.getDrawing().getNumber());
                 estimation.setDescription(estDTO.getDescription());
+
+                updateRemark(loggedUser, estDTO, estimation);
+
+                estimation.setId(estDTO.getId());
+
                 List<Attachment> attachments = estDTO.getDrawing().getAttachments().stream()
                     .map(a -> attachmentRepository.findOne(a.getId())).collect(Collectors.toList());
                 estimation.getDrawing().setAttachments(attachments);
@@ -176,12 +214,8 @@ public class OrderService {
         order.getEstimations().addAll(newEstimations);
 
 
-        Optional<User> currentUserOpt = userRepository.findOneByLogin(SecurityUtils.getCurrentUserLogin());
-        if (currentUserOpt.isPresent()) {
-            order.setCreatedBy(currentUserOpt.get());
-        } else {
-            throw new CustomParameterizedException("Nie odnaleziono użytkownika w bazie danych");
-        }
+        order.setCreatedBy(loggedUser);
+
         order.createdAt(ZonedDateTime.now());
 //        prepareDocumentNumber(order);
 
@@ -192,6 +226,18 @@ public class OrderService {
 
     }
 
+    private void updateRemark(User loggedUser, EstimationCreateDTO estDTO, Estimation estimation) {
+        if (estDTO.getRemark() != null && !estDTO.getRemark().isEmpty()) {
+
+            EstimationRemark remark = new EstimationRemark();
+            remark.setRemark(estDTO.getRemark());
+            remark.setCreatedAt(ZonedDateTime.now());
+            remark.setCreatedBy(loggedUser);
+            remark.setEstimation(estimation);
+            estimation.getEstimationRemarks().add(remark);
+        }
+    }
+
 
     /**
      * Get all the orders.
@@ -200,14 +246,14 @@ public class OrderService {
      * @return the list of entities
      */
     @Transactional(readOnly = true)
-    public Page<OrderListDTO> findAll(Pageable pageable) {
+    public Page<OrderListDTO> findAllByClientAndOrderType(Pageable pageable, OrderType orderType) {
         log.debug("Request to get all Orders");
         User user = userService.getLoggedUser();
         Client client = user.getClient();
         if (client != null) {
-            return orderRepository.findAllByClient(client, pageable).map(orderMapper::toDto);
+            return orderRepository.findAllByClientAndOrderType(client, orderType, pageable).map(orderMapper::toDto);
         }
-        return orderRepository.findAll(pageable)
+        return orderRepository.findAllByOrderType(orderType, pageable)
             .map(orderMapper::toDto);
     }
 
@@ -234,6 +280,35 @@ public class OrderService {
     public OrderDTO getOrder(Long id) {
         log.debug("Request to get Order : {}", id);
         Order order = orderRepository.findOne(id);
+        OrderDTO orderDTO = new OrderDTO(order);
+
+        order.getEstimations().size();
+
+        List<EstimationCreateDTO> estimationCreateDTOS = order.getEstimations().stream()
+            .map(EstimationCreateDTO::new)
+            .collect(Collectors.toList());
+        orderDTO.setEstimations(estimationCreateDTOS);
+        return orderDTO;
+
+    }
+
+    /**
+     * Get one order by id.
+     *
+     * @param id the id of the entity
+     * @return the entity
+     */
+    @Transactional(readOnly = true)
+    public OrderDTO getOrderEstimated(Long id) {
+        log.debug("Request to get Order estimated : {}", id);
+        Order order = orderRepository.findOne(id);
+        List<Estimation> estimations = order.getEstimations().stream()
+            .filter(e -> e.getEstimatedCost() != null && e.getEstimatedCost().compareTo(BigDecimal.ZERO) > 0)
+//            .peek(est -> est.getOperations().forEach(o -> o.setId(null)))
+//            .peek(e -> e.setId(null))
+            .collect(Collectors.toList());
+        order.setEstimations(estimations);
+
         OrderDTO orderDTO = new OrderDTO(order);
 
         order.getEstimations().size();
@@ -300,14 +375,72 @@ public class OrderService {
         order.setOrderStatus(OrderStatus.IN_ESTIMATION);
     }
 
-    Page<Order> findOrderToEstimationByUser(Pageable pageable){
+    Page<Order> findOrderToEstimationByUser(Pageable pageable) {
         User logedUser = userService.getLoggedUser();
-        return orderRepository.findOrderToEstimationByUser(logedUser.getId(),pageable);
+        return orderRepository.findOrderToEstimationByUser(logedUser.getId(), pageable);
     }
 
-    void moveOrderToArchive(Long id){
+    void moveOrderToArchive(Long id) {
         Order order = orderRepository.findOne(id);
         order.setOrderStatus(OrderStatus.SENT_OFFER_TO_CLIENT);
         orderRepository.save(order);
+    }
+
+    @Transactional
+    public Order createPurchaseOrder(OrderDTO orderDTO) {
+
+        log.debug("createPurchaseOrder orderDTO: {}", orderDTO);
+        Order order = orderMapper.toEntity(orderDTO);
+
+
+        List<Estimation> estimations = orderDTO.getEstimations().stream()
+            .map(eDTO -> estimationRepository.findOne(eDTO.getId()))
+            .peek(e -> e.getCommercialParts().size())
+            .peek(e -> e.getOperations().size())
+            .map(e -> (Estimation) deepCopy(e))
+            .peek(estim -> estim.getCommercialParts()
+                .forEach(cp -> {
+                    cp.setId(null);
+                    cp.setEstimation(estim);
+                }))
+            .peek(e -> e.getOperations().forEach(o -> {
+                o.setId(null);
+                o.setEstimation(e);}
+            ))
+            .peek((e -> e.setOrder(order)))
+            .peek(e->e.setEstimationRemarks(Collections.emptyList()))
+//            .peek(entityManager::detach)
+            .peek(estimation -> estimation.setId(null))
+            .collect(Collectors.toList());
+        log.debug("size of estimations: {}", estimations.size());
+
+        order.setEstimations(estimations);
+
+        order.setCreatedAt(ZonedDateTime.now());
+        order.createdBy(userService.getLoggedUser());
+        prepareDocumentNumber(order);
+        return orderRepository.save(order);
+
+    }
+
+    public Object deepCopy(Object input) {
+
+        Object output = null;
+        try {
+            // Writes the object
+            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+            ObjectOutputStream objectOutputStream = new ObjectOutputStream(byteArrayOutputStream);
+            objectOutputStream.writeObject(input);
+
+            // Reads the object
+            ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(byteArrayOutputStream.toByteArray());
+            ObjectInputStream objectInputStream = new ObjectInputStream(byteArrayInputStream);
+            output = objectInputStream.readObject();
+
+        } catch (Exception e) {
+            log.error("Can not deep copied object", e);
+            e.printStackTrace();
+        }
+        return output;
     }
 }

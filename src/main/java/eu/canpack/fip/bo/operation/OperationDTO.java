@@ -26,6 +26,8 @@ public class OperationDTO implements Serializable {
 
     private Long estimationId;
 
+    private Integer sequenceNumber;
+
     private MachineDTO machine;
 
     public Long getId() {
@@ -84,6 +86,14 @@ public class OperationDTO implements Serializable {
         this.machine = machine;
     }
 
+    public Integer getSequenceNumber() {
+        return sequenceNumber;
+    }
+
+    public void setSequenceNumber(Integer sequenceNumber) {
+        this.sequenceNumber = sequenceNumber;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -113,6 +123,7 @@ public class OperationDTO implements Serializable {
             ", remark='" + getRemark() + "'" +
             ", estimatedTime='" + getEstimatedTime() + "'" +
             ", realTime='" + getRealTime() + "'" +
+            ", sequenceNumber='" + getSequenceNumber() + "'" +
             "}";
     }
 }

@@ -18,6 +18,8 @@ import {OrderService} from '../../order/order.service';
 import {Order} from '../../order/order.model';
 import {OrderSimpleDTO} from '../../order/order-simpleDTO.model';
 import {TnAlert} from '../../../tn-components/tn-alert';
+import {TechnologyCardFinderComponent} from '../../technology-card/technology-card-finder/technology-card-finder.component';
+import {TechnologyCard} from '../../technology-card/technology-card.model';
 
 @Component({
     selector: 'new-estimation',
@@ -36,6 +38,7 @@ export class NewEstimationComponent implements OnInit, OnDestroy {
     subscription: Subscription;
     closeResult: string;
     clickedRow: number;
+    isCollapsed:boolean=false;
     model = 1;
     machines: Machine[] = [];
     private searchingUnit = false;
@@ -97,6 +100,9 @@ export class NewEstimationComponent implements OnInit, OnDestroy {
             precision: 2
         };
         this.calculateCommercialPartsTotalCost();
+
+
+
     }
 
     private onError(error) {
@@ -109,7 +115,8 @@ export class NewEstimationComponent implements OnInit, OnDestroy {
 
     addOperation() {
         this.estimation.operations.push({
-            id: null
+            id: null,
+            sequenceNumber: (this.estimation.operations.length+1)*5
 
         });
     }
@@ -124,11 +131,13 @@ export class NewEstimationComponent implements OnInit, OnDestroy {
     onDeleteRow(index: number) {
         console.log(index);
         this.estimation.operations.splice(index, 1);
+        this.calculateOperationsTotalCost();
     }
 
     onDeleteCommercialPart(index: number) {
         console.log(index);
         this.estimation.commercialParts.splice(index, 1);
+        this.calculateCommercialPartsTotalCost();
     }
 
     onSaveBtnClick() {
@@ -193,6 +202,7 @@ export class NewEstimationComponent implements OnInit, OnDestroy {
 
             this.orderService.findOrderSimpleDto(estimation.orderId).subscribe((order => {
                 this.order = order;
+
             }));
 
 
@@ -321,4 +331,26 @@ export class NewEstimationComponent implements OnInit, OnDestroy {
         );
         //  console.log(response());
     }
+
+    openTechnologyCardModal() {
+
+        const modalRef = this.modalService.open(TechnologyCardFinderComponent,{size:'lg'});
+
+        console.log(modalRef.result);
+       modalRef.result.then(result=>{
+           this.insertOperationFromTechnologyCard(result)
+       },(reason:any)=>{console.log(reason)});
+       // modalRef.componentInstance.name = 'World';
+    }
+   // promisetechnologyCard: Promise<TechnologyCard>;
+
+    private insertOperationFromTechnologyCard(technologyCard:TechnologyCard):void{
+        console.log(technologyCard);
+        for(let operation of technologyCard.operations){
+            operation.id=null;
+            this.estimation.operations.push(operation);
+            this.calculateOperationsTotalCost();
+        }
+    }
+
 }

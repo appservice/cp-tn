@@ -2,6 +2,8 @@ package eu.canpack.fip.bo.technologyCard;
 
 import com.codahale.metrics.annotation.Timed;
 import eu.canpack.fip.bo.estimation.EstimationDTO;
+import eu.canpack.fip.bo.technologyCard.mapper.TechnologyCardDTO;
+import eu.canpack.fip.bo.technologyCard.mapper.TechnologyCardListDTO;
 import eu.canpack.fip.web.rest.util.HeaderUtil;
 import eu.canpack.fip.web.rest.util.PaginationUtil;
 import io.swagger.annotations.ApiParam;
@@ -45,18 +47,18 @@ public class TechnologyCardResource {
     /**
      * POST  /technology-cards : Create a new technologyCard.
      *
-     * @param technologyCardListDTO the technologyCardListDTO to create
+     * @param technologyCardDTO the technologyCardListDTO to create
      * @return the ResponseEntity with status 201 (Created) and with body the new technologyCardListDTO, or with status 400 (Bad Request) if the technologyCard has already an ID
      * @throws URISyntaxException if the Location URI syntax is incorrect
      */
     @PostMapping("/technology-cards")
     @Timed
-    public ResponseEntity<TechnologyCardListDTO> createTechnologyCard(@Valid @RequestBody TechnologyCardListDTO technologyCardListDTO) throws URISyntaxException {
-        log.debug("REST request to save TechnologyCard : {}", technologyCardListDTO);
-        if (technologyCardListDTO.getId() != null) {
+    public ResponseEntity<TechnologyCardDTO> createTechnologyCard(@Valid @RequestBody TechnologyCardDTO technologyCardDTO) throws URISyntaxException {
+        log.debug("REST request to save TechnologyCard : {}", technologyCardDTO);
+        if (technologyCardDTO.getId() != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert(ENTITY_NAME, "idexists", "A new technologyCard cannot already have an ID")).body(null);
         }
-        TechnologyCardListDTO result = technologyCardService.save(technologyCardListDTO);
+        TechnologyCardDTO result = technologyCardService.save(technologyCardDTO);
         return ResponseEntity.created(new URI("/api/technology-cards/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
             .body(result);
@@ -73,12 +75,12 @@ public class TechnologyCardResource {
      */
     @PutMapping("/technology-cards")
     @Timed
-    public ResponseEntity<TechnologyCardListDTO> updateTechnologyCard(@Valid @RequestBody TechnologyCardListDTO technologyCardListDTO) throws URISyntaxException {
+    public ResponseEntity<TechnologyCardDTO> updateTechnologyCard(@Valid @RequestBody TechnologyCardDTO technologyCardListDTO) throws URISyntaxException {
         log.debug("REST request to update TechnologyCard : {}", technologyCardListDTO);
         if (technologyCardListDTO.getId() == null) {
             return createTechnologyCard(technologyCardListDTO);
         }
-        TechnologyCardListDTO result = technologyCardService.save(technologyCardListDTO);
+        TechnologyCardDTO result = technologyCardService.save(technologyCardListDTO);
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, technologyCardListDTO.getId().toString()))
             .body(result);
@@ -122,10 +124,10 @@ public class TechnologyCardResource {
      */
     @GetMapping("/technology-cards/{id}")
     @Timed
-    public ResponseEntity<TechnologyCardListDTO> getTechnologyCard(@PathVariable Long id) {
+    public ResponseEntity<TechnologyCardDTO> getTechnologyCard(@PathVariable Long id) {
         log.debug("REST request to get TechnologyCard : {}", id);
-        TechnologyCardListDTO technologyCardListDTO = technologyCardService.findOne(id);
-        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(technologyCardListDTO));
+        TechnologyCardDTO technologyCardDTO = technologyCardService.findOne(id);
+        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(technologyCardDTO));
     }
 
     /**

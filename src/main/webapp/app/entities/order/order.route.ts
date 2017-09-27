@@ -15,6 +15,9 @@ import {OrderInEstimationComponent} from './orders-in-estimation/order-in-estima
 import {EstimatedOrderComponent} from './estimated-order/estimated-order.component';
 import {OrderDetailComponent} from './order-detail/order-detail.component';
 import {NewPurchaseOrderComponent} from './new-purchase-order/new-purchase-order.component';
+import {OrderType} from './order.model';
+import {PurchaseOrderComponent} from './purchase-order/purchase-order.component';
+import {ArchiveOrdersComponent} from './archive-orders/archive-orders.component';
 
 
 @Injectable()
@@ -42,15 +45,30 @@ export const orderRoute: Routes = [
         },
         data: {
             authorities: ['ROLE_USER'],
-            pageTitle: 'tnApp.order.home.title'
+            pageTitle: 'Zapytania ofertowe',
+            orderType: OrderType.ESTIMATION
         },
         canActivate: [UserRouteAccessService]
-    }, {
+    },
+    {
+        path: 'purchase-order',
+        component: PurchaseOrderComponent,
+        resolve: {
+            'pagingParams': OrderResolvePagingParams
+        },
+        data: {
+            authorities: ['ROLE_USER'],
+            pageTitle: 'Zmówienia',
+            orderType:OrderType.PRODUCTION
+        },
+        canActivate: [UserRouteAccessService]
+    },
+    {
         path: 'order/:id',
         component: OrderDetailComponent,
         data: {
             authorities: ['ROLE_USER'],
-            pageTitle: 'tnApp.order.home.title'
+            pageTitle: 'Zapyptanie ofertowe'
         },
         canActivate: [UserRouteAccessService]
     },
@@ -59,7 +77,7 @@ export const orderRoute: Routes = [
         component: NewOrderComponent,
         data: {
             authorities: ['ROLE_USER'],
-            pageTitle: 'tnApp.order.home.title'
+            pageTitle: 'Zapytanie ofertowe'
         },
         canActivate: [UserRouteAccessService]
     },
@@ -74,6 +92,15 @@ export const orderRoute: Routes = [
     },
     {
         path: 'new-purchase-order',
+        component: NewPurchaseOrderComponent, // OrderPopupComponent,
+        data: {
+            authorities: ['ROLE_USER'],
+            pageTitle: 'tnApp.order.home.title'
+        },
+        canActivate: [UserRouteAccessService]
+    },
+    {
+        path: 'purchase-order/:id/edit',
         component: NewPurchaseOrderComponent, // OrderPopupComponent,
         data: {
             authorities: ['ROLE_USER'],
@@ -114,6 +141,17 @@ export const orderRoute: Routes = [
         data: {
             authorities: ['ROLE_USER'],
             pageTitle: 'Zlecenia aktualnie wyceniane'
+        },
+        canActivate: [UserRouteAccessService]
+    },    {
+        path: 'archived-orders',
+        component: ArchiveOrdersComponent,
+        resolve: {
+            'pagingParams': OrderResolvePagingParams
+        },
+        data: {
+            authorities: ['ROLE_USER'],
+            pageTitle: 'Zlecenia archivalnee'
         },
         canActivate: [UserRouteAccessService]
     },

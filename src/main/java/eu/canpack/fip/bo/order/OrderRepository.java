@@ -3,6 +3,7 @@ package eu.canpack.fip.bo.order;
 import eu.canpack.fip.bo.client.Client;
 import eu.canpack.fip.bo.order.dto.OrderDTO;
 import eu.canpack.fip.bo.order.dto.OrderSimpleDTO;
+import eu.canpack.fip.bo.order.enumeration.OrderType;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -38,10 +39,14 @@ public interface OrderRepository extends JpaRepository<Order,Long>,JpaSpecificat
         "and o.orderStatus<>eu.canpack.fip.bo.order.enumeration.OrderStatus.WORKING_COPY")
     Page<Order> findOrdersClaimToEstimation(Pageable pageable);
 
-    Page<Order> findAllByClient(Client client, Pageable pageable);
+    Page<Order> findAllByClientAndOrderType(Client client, OrderType orderType, Pageable pageable);
+
+    Page<Order> findAllByOrderType(OrderType orderType, Pageable pageable);
 
     @Query("select o from Order o " +
         "where o.estimationMaker.id=:currentUserId " +
         "and o.orderStatus=eu.canpack.fip.bo.order.enumeration.OrderStatus.IN_ESTIMATION")
     Page<Order> findOrderToEstimationByUser(@Param("currentUserId") Long currentUserId, Pageable pageable);
+
+
 }
