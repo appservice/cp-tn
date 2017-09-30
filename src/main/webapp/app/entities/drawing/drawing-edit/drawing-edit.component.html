@@ -1,0 +1,63 @@
+<form name="editForm" role="form" novalidate (ngSubmit)="save()" #editForm="ngForm">
+
+    <div *ngIf="drawing">
+        <h2><span jhiTranslate="tnApp.drawing.detail.title">Drawing</span> {{drawing.number}}</h2>
+        <hr>
+        <jhi-alert-error></jhi-alert-error>
+        <dl class="row-md jh-entity-details">
+            <dt><span>Id:</span></dt>
+            <dd>
+                <span>{{drawing.id}}</span>
+            </dd>
+
+        </dl>
+        <dl class="row-md jh-entity-details">
+            <dt><span>Numer rys:</span></dt>
+            <dd>
+            <span>
+                <input class="form-control" type="text" name="drawingNumber" [(ngModel)]="drawing.number" required/>
+                <div [hidden]="!(editForm.controls.drawingNumber?.dirty && editForm.controls.drawingNumber?.invalid)">
+                        <small class="form-text text-danger"
+                               [hidden]="!editForm.controls.drawingNumber?.errors?.required"
+                               jhiTranslate="entity.validation.required">
+                            This field is required.
+                        </small>
+                    </div>
+            </span>
+            </dd>
+
+        </dl>
+        <dl class="row-md jh-entity-details">
+            <dt><span>Nazwa</span></dt>
+            <dd>
+            <span>
+                <input class="form-control" type="text" name="drawingName" [(ngModel)]="drawing.name" required=""/>
+                                <div [hidden]="!(editForm.controls.drawingName?.dirty && editForm.controls.drawingName?.invalid)">
+                        <small class="form-text text-danger"
+                               [hidden]="!editForm.controls.drawingName?.errors?.required"
+                               jhiTranslate="entity.validation.required">
+                            This field is required.
+                        </small>
+                    </div>
+            </span>
+            </dd>
+
+        </dl>
+
+
+        <div>
+            <h4>Pliki:</h4>
+            <tn-file-uploader [isViewOnly]="false"
+                              [attachments]="drawing.attachments"></tn-file-uploader>
+            <!--(notify)="onFileArrayChange($event);"-->
+        </div>
+        <button type="button"
+                (click)="previousState()"
+                class="btn btn-outline-info">
+            <span class="fa fa-arrow-left"></span>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+        </button>
+        <button type="submit" class="btn btn-outline-danger" [disabled]="editForm.form.invalid || isSaving" >Zapisz</button>
+
+
+    </div>
+</form>
