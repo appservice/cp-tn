@@ -3,11 +3,14 @@ package eu.canpack.fip.bo.order;
 import eu.canpack.fip.bo.attachment.Attachment;
 import eu.canpack.fip.bo.attachment.AttachmentRepository;
 import eu.canpack.fip.bo.client.Client;
+import eu.canpack.fip.bo.commercialPart.CommercialPart;
 import eu.canpack.fip.bo.drawing.Drawing;
 import eu.canpack.fip.bo.drawing.DrawingRepository;
 import eu.canpack.fip.bo.estimation.Estimation;
 import eu.canpack.fip.bo.estimation.EstimationCreateDTO;
+import eu.canpack.fip.bo.estimation.EstimationDTO;
 import eu.canpack.fip.bo.estimation.EstimationRepository;
+import eu.canpack.fip.bo.operation.Operation;
 import eu.canpack.fip.bo.order.dto.OrderDTO;
 import eu.canpack.fip.bo.order.dto.OrderListDTO;
 import eu.canpack.fip.bo.order.dto.OrderSimpleDTO;
@@ -18,8 +21,6 @@ import eu.canpack.fip.domain.User;
 import eu.canpack.fip.repository.UserRepository;
 import eu.canpack.fip.repository.search.OrderSearchRepository;
 import eu.canpack.fip.service.UserService;
-import org.hibernate.Hibernate;
-import org.hibernate.internal.util.SerializationHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -28,17 +29,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.ZonedDateTime;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 import static org.elasticsearch.index.query.QueryBuilders.queryStringQuery;
@@ -393,28 +387,70 @@ public class OrderService {
         Order order = orderMapper.toEntity(orderDTO);
 
 
-        List<Estimation> estimations = orderDTO.getEstimations().stream()
-            .map(eDTO -> estimationRepository.findOne(eDTO.getId()))
-            .peek(e -> e.getCommercialParts().size())
-            .peek(e -> e.getOperations().size())
-            .map(e -> (Estimation) deepCopy(e))
-            .peek(estim -> estim.getCommercialParts()
-                .forEach(cp -> {
-                    cp.setId(null);
-                    cp.setEstimation(estim);
-                }))
-            .peek(e -> e.getOperations().forEach(o -> {
-                o.setId(null);
-                o.setEstimation(e);}
-            ))
-            .peek((e -> e.setOrder(order)))
-            .peek(e->e.setEstimationRemarks(Collections.emptyList()))
-//            .peek(entityManager::detach)
-            .peek(estimation -> estimation.setId(null))
-            .collect(Collectors.toList());
-        log.debug("size of estimations: {}", estimations.size());
+//        PropertyFilter filter = PropertyFilters.getAnnotationFilter(Id.class);
 
-        order.setEstimations(estimations);
+        for(EstimationCreateDTO estDTO:orderDTO.getEstimations()){
+            Estimation est= estimationRepository.findOne(estDTO.getId());
+            est.getCommercialParts().size();
+            est.getOperations().size();
+
+            Estimation newEstimation=new Estimation();
+            newEstimation.setAmount(estDTO.getAmount());
+            newEstimation.setEstimatedRealizationDate(est.getEstimatedRealizationDate());
+            newEstimation.setEstimatedCost(est.getEstimatedCost());
+            newEstimation.setDrawing(est.getDrawing());
+            newEstimation.setDescription(est.getDescription());
+
+            for (Operation op : est.getOperations()) {
+                Operation newOperation = new Operation();
+                newOperation.setEstimation(est);
+                newOperation.setDescription(op.getDescription());
+                newOperation.setRealTime(op.getRealTime());
+                newOperation.setMachine(op.getMachine());
+                newOperation.setSequenceNumber(op.getSequenceNumber());
+                newOperation.setRemark(op.getRemark());
+                newOperation.setEstimatedTime(op.getEstimatedTime());
+                newEstimation.getOperations().add(newOperation);
+            }
+
+            for (CommercialPart cp : est.getCommercialParts()) {
+                CommercialPart newCp = new CommercialPart();
+                newCp.setEstimation(est);
+                newCp.setAmount(cp.getAmount());
+                newCp.setPrice(cp.getPrice());
+                newCp.setName(cp.getName());
+                newCp.setUnit(cp.getUnit());
+                est.getCommercialParts().add(newCp);
+            }
+            newEstimation.setOrder(order);
+            order.getEstimations().add(newEstimation);
+        }
+
+//            .map(SerializationUtils::clone)
+
+
+
+////            .peek(session::evict)
+//
+//            .peek(estim -> estim.getCommercialParts()
+//                .forEach(cp -> {
+////                    session.evict(cp);
+//                    cp.setId(null);
+//                    cp.setEstimation(estim);
+//                }))
+//            .peek(e -> e.getOperations().forEach(o -> {
+////                session.evict(o);
+//                o.setId(null);
+//                o.setEstimation(e);}
+//            ))
+//            .peek((e -> e.setOrder(order)))
+//            .peek(e->e.setEstimationRemarks(Collections.emptyList()))
+////            .peek(entityManager::detach)
+//            .peek(estimation -> estimation.setId(null))
+//            .collect(Collectors.toList());
+//        log.debug("size of estimations: {}", estimations.size());
+//
+//        order.setEstimations(estimations);
 
         order.setCreatedAt(ZonedDateTime.now());
         order.createdBy(userService.getLoggedUser());
@@ -423,24 +459,24 @@ public class OrderService {
 
     }
 
-    public Object deepCopy(Object input) {
-
-        Object output = null;
-        try {
-            // Writes the object
-            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-            ObjectOutputStream objectOutputStream = new ObjectOutputStream(byteArrayOutputStream);
-            objectOutputStream.writeObject(input);
-
-            // Reads the object
-            ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(byteArrayOutputStream.toByteArray());
-            ObjectInputStream objectInputStream = new ObjectInputStream(byteArrayInputStream);
-            output = objectInputStream.readObject();
-
-        } catch (Exception e) {
-            log.error("Can not deep copied object", e);
-            e.printStackTrace();
-        }
-        return output;
-    }
+//    public Object deepCopy(Object input) {
+//
+//        Object output = null;
+//        try {
+//            // Writes the object
+//            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+//            ObjectOutputStream objectOutputStream = new ObjectOutputStream(byteArrayOutputStream);
+//            objectOutputStream.writeObject(input);
+//
+//            // Reads the object
+//            ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(byteArrayOutputStream.toByteArray());
+//            ObjectInputStream objectInputStream = new ObjectInputStream(byteArrayInputStream);
+//            output = objectInputStream.readObject();
+//
+//        } catch (Exception e) {
+//            log.error("Can not deep copied object", e);
+//            e.printStackTrace();
+//        }
+//        return output;
+//    }
 }

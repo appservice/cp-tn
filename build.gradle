@@ -211,6 +211,8 @@ dependencies {
     }
     //compile group: 'org.hibernate', name: 'hibernate-jpamodelgen', version: '5.2.10.Final'
     compile group: 'p6spy', name: 'p6spy', version: '3.0.0'
+// https://mvnrepository.com/artifact/com.github.nociar/jpa-cloner
+    compile group: 'com.github.nociar', name: 'jpa-cloner', version: '1.0.3'
 
 
     testCompile "org.awaitility:awaitility:${awaitility_version}"

@@ -2,27 +2,27 @@
     "tnApp": {
         "technologyCard" : {
             "home": {
-                "title": "Technology Cards",
-                "createLabel": "Dodaj Technology Card",
-                "createOrEditLabel": "Dodaj lub edytuj: Technology Card",
+                "title": "Karty technologiczne",
+                "createLabel": "Dodaj Kartę techn.",
+                "createOrEditLabel": "Dodaj lub edytuj: Kartę techn.",
                 "search": "Szukaj Technology Card"
             },
-            "created": "Utworzono nowy Technology Card z identyfikatorem {{ param }}",
-            "updated": "Uaktualniono Technology Card z identyfikatorem {{ param }}",
-            "deleted": "Usunięto Technology Card z identyfikatorem {{ param }}",
+            "created": "Utworzono nowy Kartę techn.z identyfikatorem {{ param }}",
+            "updated": "Uaktualniono Kartę techn. z identyfikatorem {{ param }}",
+            "deleted": "Usunięto Kartę techn. z identyfikatorem {{ param }}",
             "delete": {
-                "question": "Czy na pewno chcesz usunąć Technology Card {{ id }}?"
+                "question": "Czy na pewno chcesz usunąć Kartę techn.{{ id }}?"
             },
             "detail": {
-                "title": "Technology Card"
+                "title": "Karta technologiczna"
             },
-            "material": "Material",
-            "mass": "Mass",
-            "description": "Description",
-            "createdAt": "Created At",
-            "amount": "Amount",
-            "drawing": "Drawing",
-            "operations": "Operations"
+            "material": "Materiał",
+            "mass": "Masa",
+            "description": "Opis",
+            "createdAt": "Data utworzenia",
+            "amount": "Ilość",
+            "drawing": "Rysunek techn.",
+            "operations": "Operacje"
         }
     }
 }

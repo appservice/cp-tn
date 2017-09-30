@@ -215,7 +215,7 @@
                     </tfoot>
 
                 </table>
-                <div >
+                <div>
                     <button type="button" class="btn btn-outline-dark" (click)="addOperation();" style="width: 200px"><i
                         class="fa fa-plus"></i>
                         Dodaj operację
@@ -240,6 +240,8 @@
 
                 <table class="table table-striped">
                     <thead>
+
+
                     <tr>
                         <th>Poz.</th>
                         <!--<th>Id:</th>-->
@@ -422,8 +424,7 @@
                             <tr *ngFor="let remark of estimation.estimationRemarks">
                                 <td>
                                     <div><strong>{{remark.remark}}</strong></div>
-                                    <div class="small">{{remark.createdByName}} {{remark.createdAt|date:'dd-MM-yyyy
-                                        HH:mm'}}
+                                    <div class="small">{{remark.createdByName}} {{remark.createdAt|date:'dd-MM-yyyy HH:mm'}}
                                     </div>
 
                                 </td>

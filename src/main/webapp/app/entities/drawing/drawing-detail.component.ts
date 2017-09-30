@@ -58,4 +58,6 @@ export class DrawingDetailComponent implements OnInit, OnDestroy {
             (response) => this.load(this.drawing.id)
         );
     }
+
+
 }

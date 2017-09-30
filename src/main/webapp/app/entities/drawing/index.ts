@@ -6,3 +6,4 @@ export * from './drawing-delete-dialog.component';
 export * from './drawing-detail.component';
 export * from './drawing.component';
 export * from './drawing.route';
+export * from './drawing-edit/drawing-edit.component';

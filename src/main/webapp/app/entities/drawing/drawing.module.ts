@@ -16,6 +16,7 @@ import {
     DrawingResolvePagingParams,
 } from './';
 import {TnComponentsModule} from '../../tn-components/tn-components.module';
+import {DrawingEditComponent} from './drawing-edit/drawing-edit.component';
 
 const ENTITY_STATES = [
     ...drawingRoute,
@@ -35,6 +36,8 @@ const ENTITY_STATES = [
         DrawingDeleteDialogComponent,
         DrawingPopupComponent,
         DrawingDeletePopupComponent,
+        DrawingEditComponent
+
     ],
     entryComponents: [
         DrawingComponent,

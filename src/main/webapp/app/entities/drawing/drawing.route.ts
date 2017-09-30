@@ -8,6 +8,7 @@ import { DrawingComponent } from './drawing.component';
 import { DrawingDetailComponent } from './drawing-detail.component';
 import { DrawingPopupComponent } from './drawing-dialog.component';
 import { DrawingDeletePopupComponent } from './drawing-delete-dialog.component';
+import {DrawingEditComponent} from './drawing-edit/drawing-edit.component';
 
 @Injectable()
 export class DrawingResolvePagingParams implements Resolve<any> {
@@ -45,6 +46,14 @@ export const drawingRoute: Routes = [
             pageTitle: 'tnApp.drawing.home.title'
         },
         canActivate: [UserRouteAccessService]
+    }, {
+        path: 'drawing/:id/edit',
+        component: DrawingEditComponent,
+        data: {
+            authorities: ['ROLE_USER'],
+            pageTitle: 'tnApp.drawing.home.title'
+        },
+        canActivate: [UserRouteAccessService]
     }
 ];
 
@@ -59,16 +68,16 @@ export const drawingPopupRoute: Routes = [
         canActivate: [UserRouteAccessService],
         outlet: 'popup'
     },
-    {
-        path: 'drawing/:id/edit',
-        component: DrawingPopupComponent,
-        data: {
-            authorities: ['ROLE_USER'],
-            pageTitle: 'tnApp.drawing.home.title'
-        },
-        canActivate: [UserRouteAccessService],
-        outlet: 'popup'
-    },
+    // {
+    //     path: 'drawing/:id/edit',
+    //     component: DrawingPopupComponent,
+    //     data: {
+    //         authorities: ['ROLE_USER'],
+    //         pageTitle: 'tnApp.drawing.home.title'
+    //     },
+    //     canActivate: [UserRouteAccessService],
+    //     outlet: 'popup'
+    // },
     {
         path: 'drawing/:id/delete',
         component: DrawingDeletePopupComponent,

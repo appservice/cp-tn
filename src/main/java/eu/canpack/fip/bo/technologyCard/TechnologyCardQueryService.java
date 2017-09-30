@@ -15,8 +15,8 @@ import org.springframework.data.jpa.domain.Specifications;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.criteria.*;
-import javax.persistence.metamodel.SingularAttribute;
+import javax.persistence.criteria.Join;
+import javax.persistence.criteria.JoinType;
 import java.util.List;
 
 /**

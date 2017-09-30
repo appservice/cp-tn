@@ -9,7 +9,7 @@ import {ITEMS_PER_PAGE, Principal, ResponseWrapper} from '../../../shared';
 import {PaginationConfig} from '../../../blocks/config/uib-pagination.config';
 
 @Component({
-    selector: 'jhi-order',
+    selector: 'purchase-order',
     templateUrl: './purchase-order.component.html'
 })
 export class PurchaseOrderComponent implements OnInit, OnDestroy {

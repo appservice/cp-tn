@@ -45,7 +45,7 @@ export const orderRoute: Routes = [
         },
         data: {
             authorities: ['ROLE_USER'],
-            pageTitle: 'Zapytania ofertowe',
+            pageTitle: 'tnApp.order.inquiries',
             orderType: OrderType.ESTIMATION
         },
         canActivate: [UserRouteAccessService]
@@ -58,7 +58,7 @@ export const orderRoute: Routes = [
         },
         data: {
             authorities: ['ROLE_USER'],
-            pageTitle: 'Zmówienia',
+            pageTitle: 'tnApp.order.purchaseOrders',
             orderType:OrderType.PRODUCTION
         },
         canActivate: [UserRouteAccessService]
@@ -77,7 +77,7 @@ export const orderRoute: Routes = [
         component: NewOrderComponent,
         data: {
             authorities: ['ROLE_USER'],
-            pageTitle: 'Zapytanie ofertowe'
+            pageTitle: 'tn.order.purchaseOrder'
         },
         canActivate: [UserRouteAccessService]
     },

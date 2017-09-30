@@ -1,9 +1,10 @@
 <div>
     <h2>
         <span jhiTranslate="tnApp.drawing.home.title">Drawings</span>
-        <button class="btn btn-primary float-right jh-create-entity create-drawing" [routerLink]="['/', { outlets: { popup: ['drawing-new'] } }]">
+        <button class="btn btn-primary float-right jh-create-entity create-drawing"
+                [routerLink]="['/', { outlets: { popup: ['drawing-new'] } }]">
             <span class="fa fa-plus"></span>
-            <span class="hidden-sm-down"  jhiTranslate="tnApp.drawing.home.createLabel">
+            <span class="hidden-sm-down" jhiTranslate="tnApp.drawing.home.createLabel">
             Create new Drawing
             </span>
         </button>
@@ -13,7 +14,8 @@
         <div class="col-sm-12">
             <form name="searchForm" class="form-inline">
                 <div class="input-group w-100 mt-3">
-                    <input type="text" class="form-control" [(ngModel)]="currentSearch" id="currentSearch" name="currentSearch" placeholder="{{ 'tnApp.drawing.home.search' | translate }}">
+                    <input type="text" class="form-control" [(ngModel)]="currentSearch" id="currentSearch"
+                           name="currentSearch" placeholder="{{ 'tnApp.drawing.home.search' | translate }}">
                     <button class="input-group-addon btn btn-info" (click)="search(currentSearch)">
                         <span class="fa fa-search"></span>
                     </button>
@@ -29,10 +31,10 @@
         <table class="table table-striped">
             <thead>
             <tr jhiSort [(predicate)]="predicate" [(ascending)]="reverse" [callback]="transition.bind(this)">
-            <th jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span> <span class="fa fa-sort"></span></th>
-            <th jhiSortBy="number"><span>Numer rys.</span> <span class="fa fa-sort"></span></th>
-            <th jhiSortBy="name"><span>Nazwa</span> <span class="fa fa-sort"></span></th>
-            <th></th>
+                <th jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span> <span class="fa fa-sort"></span></th>
+                <th jhiSortBy="number"><span>Numer rys.</span> <span class="fa fa-sort"></span></th>
+                <th jhiSortBy="name"><span>Nazwa</span> <span class="fa fa-sort"></span></th>
+                <th></th>
             </tr>
             </thead>
             <tbody>
@@ -50,8 +52,7 @@
                             <span class="hidden-md-down" jhiTranslate="entity.action.view">View</span>
                         </button>
                         <button type="submit"
-                                [routerLink]="['/', { outlets: { popup: 'drawing/'+ drawing.id + '/edit'} }]"
-                                replaceUrl="true"
+                                [routerLink]="['../drawing', drawing.id , 'edit' ]"
                                 class="btn btn-primary btn-sm">
                             <span class="fa fa-pencil"></span>
                             <span class="hidden-md-down" jhiTranslate="entity.action.edit">Edit</span>
@@ -69,12 +70,13 @@
             </tbody>
         </table>
     </div>
-        <div *ngIf="drawings && drawings.length">
-            <div class="row justify-content-center">
-                <jhi-item-count [page]="page" [total]="queryCount" [itemsPerPage]="itemsPerPage"></jhi-item-count>
-            </div>
-            <div class="row justify-content-center">
-                <ngb-pagination [collectionSize]="totalItems" [(page)]="page" (pageChange)="loadPage(page)"></ngb-pagination>
-            </div>
+    <div *ngIf="drawings && drawings.length">
+        <div class="row justify-content-center">
+            <jhi-item-count [page]="page" [total]="queryCount" [itemsPerPage]="itemsPerPage"></jhi-item-count>
         </div>
+        <div class="row justify-content-center">
+            <ngb-pagination [collectionSize]="totalItems" [(page)]="page"
+                            (pageChange)="loadPage(page)"></ngb-pagination>
+        </div>
+    </div>
 </div>

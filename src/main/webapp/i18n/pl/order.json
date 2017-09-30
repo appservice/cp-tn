@@ -24,7 +24,9 @@
             "closeDate": "Data zamknięcia",
             "orderStatus": "Status",
             "estimations": "Kalkulacja",
-            "client": "Klient"
+            "client": "Klient",
+            "purchaseOrders": "Zamówienia",
+            "inquiries": "Zapytania ofertowe"
         }
     }
 }
