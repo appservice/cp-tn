@@ -17,7 +17,7 @@ export class DrawingResolvePagingParams implements Resolve<any> {
 
     resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
         const page = route.queryParams['page'] ? route.queryParams['page'] : '1';
-        const sort = route.queryParams['sort'] ? route.queryParams['sort'] : 'id,asc';
+        const sort = route.queryParams['sort'] ? route.queryParams['sort'] : 'id,desc';
         return {
             page: this.paginationUtil.parsePage(page),
             predicate: this.paginationUtil.parsePredicate(sort),
@@ -54,20 +54,28 @@ export const drawingRoute: Routes = [
             pageTitle: 'tnApp.drawing.home.title'
         },
         canActivate: [UserRouteAccessService]
-    }
-];
-
-export const drawingPopupRoute: Routes = [
-    {
+    }, {
         path: 'drawing-new',
-        component: DrawingPopupComponent,
+        component: DrawingEditComponent,
         data: {
             authorities: ['ROLE_USER'],
             pageTitle: 'tnApp.drawing.home.title'
         },
-        canActivate: [UserRouteAccessService],
-        outlet: 'popup'
-    },
+        canActivate: [UserRouteAccessService]
+    }
+];
+
+export const drawingPopupRoute: Routes = [
+    // {
+    //     path: 'drawing-new',
+    //     component: DrawingPopupComponent,
+    //     data: {
+    //         authorities: ['ROLE_USER'],
+    //         pageTitle: 'tnApp.drawing.home.title'
+    //     },
+    //     canActivate: [UserRouteAccessService],
+    //     outlet: 'popup'
+    // },
     // {
     //     path: 'drawing/:id/edit',
     //     component: DrawingPopupComponent,

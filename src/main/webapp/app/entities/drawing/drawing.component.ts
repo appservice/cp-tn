@@ -7,6 +7,9 @@ import { Drawing } from './drawing.model';
 import { DrawingService } from './drawing.service';
 import { ITEMS_PER_PAGE, Principal, ResponseWrapper } from '../../shared';
 import { PaginationConfig } from '../../blocks/config/uib-pagination.config';
+import {DrawingFilter} from './drawing-filter.model';
+import {URLSearchParams} from '@angular/http';
+
 
 @Component({
     selector: 'jhi-drawing',
@@ -29,6 +32,7 @@ currentAccount: any;
     predicate: any;
     previousPage: any;
     reverse: any;
+    drawingFilter: DrawingFilter;
 
     constructor(
         private drawingService: DrawingService,
@@ -50,27 +54,40 @@ currentAccount: any;
             this.predicate = data['pagingParams'].predicate;
         });
         this.currentSearch = activatedRoute.snapshot.params['search'] ? activatedRoute.snapshot.params['search'] : '';
+        this.drawingFilter=new DrawingFilter();
     }
+
 
     loadAll() {
         if (this.currentSearch) {
+
             this.drawingService.search({
                 query: this.currentSearch,
                 size: this.itemsPerPage,
-                sort: this.sort()}).subscribe(
+                sort: this.sort()},).subscribe(
                     (res: ResponseWrapper) => this.onSuccess(res.json, res.headers),
                     (res: ResponseWrapper) => this.onError(res.json)
                 );
             return;
         }
+        let urlSearchParams=new URLSearchParams();
+        urlSearchParams.append('number.contains', this.drawingFilter.number);
+        urlSearchParams.append('name.contains', this.drawingFilter.name);
         this.drawingService.query({
             page: this.page - 1,
             size: this.itemsPerPage,
-            sort: this.sort()}).subscribe(
+            sort: this.sort()},urlSearchParams).subscribe(
             (res: ResponseWrapper) => this.onSuccess(res.json, res.headers),
             (res: ResponseWrapper) => this.onError(res.json)
         );
     }
+
+    clearFilterAndLoadAll(){
+        this.drawingFilter.name=null;
+        this.drawingFilter.number=null;
+        this.loadAll();
+    }
+
     loadPage(page: number) {
         if (page !== this.previousPage) {
             this.previousPage = page;

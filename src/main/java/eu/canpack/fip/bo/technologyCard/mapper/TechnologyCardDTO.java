@@ -1,7 +1,7 @@
 package eu.canpack.fip.bo.technologyCard.mapper;
 
 
-import eu.canpack.fip.bo.drawing.DrawingDTO;
+import eu.canpack.fip.bo.drawing.dto.DrawingDTO;
 import eu.canpack.fip.bo.operation.Operation;
 
 import javax.validation.constraints.NotNull;

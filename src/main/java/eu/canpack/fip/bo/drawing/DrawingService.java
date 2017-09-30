@@ -1,5 +1,8 @@
 package eu.canpack.fip.bo.drawing;
 
+import eu.canpack.fip.bo.attachment.Attachment;
+import eu.canpack.fip.bo.attachment.AttachmentRepository;
+import eu.canpack.fip.bo.drawing.dto.DrawingDTO;
 import eu.canpack.fip.repository.search.DrawingSearchRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -8,6 +11,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 import static org.elasticsearch.index.query.QueryBuilders.*;
 
@@ -26,10 +32,13 @@ public class DrawingService {
 
     private final DrawingSearchRepository drawingSearchRepository;
 
-    public DrawingService(DrawingRepository drawingRepository, DrawingMapper drawingMapper, DrawingSearchRepository drawingSearchRepository) {
+    private final AttachmentRepository attachmentRepository;
+
+    public DrawingService(DrawingRepository drawingRepository, DrawingMapper drawingMapper, DrawingSearchRepository drawingSearchRepository, AttachmentRepository attachmentRepository) {
         this.drawingRepository = drawingRepository;
         this.drawingMapper = drawingMapper;
         this.drawingSearchRepository = drawingSearchRepository;
+        this.attachmentRepository = attachmentRepository;
     }
 
     /**
@@ -48,10 +57,31 @@ public class DrawingService {
     }
 
     /**
-     *  Get all the drawings.
+     * Save a drawing.
      *
-     *  @param pageable the pagination information
-     *  @return the list of entities
+     * @param drawingDTO the entity to save
+     * @return the persisted entity
+     */
+    public DrawingDTO create(DrawingDTO drawingDTO) {
+        log.debug("Request to save Drawing : {}", drawingDTO);
+        Drawing drawing = drawingMapper.toEntity(drawingDTO);
+
+//        drawing.getAttachments().forEach(a -> a.setDrawing(drawing));
+        List<Attachment> attachments = drawing.getAttachments().stream()
+            .map(a -> attachmentRepository.findOne(a.getId()))
+            .peek(a -> a.setDrawing(drawing)).collect(Collectors.toList());
+        drawing.setAttachments(attachments);
+        Drawing response = drawingRepository.save(drawing);
+        DrawingDTO result = drawingMapper.toDto(response);
+        drawingSearchRepository.save(response);
+        return result;
+    }
+
+    /**
+     * Get all the drawings.
+     *
+     * @param pageable the pagination information
+     * @return the list of entities
      */
     @Transactional(readOnly = true)
     public Page<DrawingDTO> findAll(Pageable pageable) {
@@ -61,10 +91,10 @@ public class DrawingService {
     }
 
     /**
-     *  Get one drawing by id.
+     * Get one drawing by id.
      *
-     *  @param id the id of the entity
-     *  @return the entity
+     * @param id the id of the entity
+     * @return the entity
      */
     @Transactional(readOnly = true)
     public DrawingDTO findOne(Long id) {
@@ -74,9 +104,9 @@ public class DrawingService {
     }
 
     /**
-     *  Delete the  drawing by id.
+     * Delete the  drawing by id.
      *
-     *  @param id the id of the entity
+     * @param id the id of the entity
      */
     public void delete(Long id) {
         log.debug("Request to delete Drawing : {}", id);
@@ -87,9 +117,9 @@ public class DrawingService {
     /**
      * Search for the drawing corresponding to the query.
      *
-     *  @param query the query of the search
-     *  @param pageable the pagination information
-     *  @return the list of entities
+     * @param query    the query of the search
+     * @param pageable the pagination information
+     * @return the list of entities
      */
     @Transactional(readOnly = true)
     public Page<DrawingDTO> search(String query, Pageable pageable) {

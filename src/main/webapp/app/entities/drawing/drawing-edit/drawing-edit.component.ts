@@ -27,7 +27,13 @@ export class DrawingEditComponent implements OnInit, OnDestroy {
 
     ngOnInit() {
         this.subscription = this.route.params.subscribe((params) => {
-            this.load(params['id']);
+            if(params['id']){
+                this.load(params['id']);
+
+            }else{
+                this.drawing=new Drawing();
+                this.drawing.attachments=[];
+            }
         });
         this.registerChangeInDrawings();
     }
@@ -36,14 +42,6 @@ export class DrawingEditComponent implements OnInit, OnDestroy {
         this.drawingService.find(id).subscribe((drawing) => {
             this.drawing = drawing;
         });
-    }
-
-    byteSize(field) {
-        return this.dataUtils.byteSize(field);
-    }
-
-    openFile(contentType, field) {
-        return this.dataUtils.openFile(contentType, field);
     }
 
     previousState() {
@@ -65,15 +63,32 @@ export class DrawingEditComponent implements OnInit, OnDestroy {
     save() {
         console.log('save is clicked');
         console.log(this.drawing);
-        this.isSaving=true;
-        this.drawingService.update(this.drawing).subscribe((drawing: Drawing) => {
-            console.log("updated: ", drawing);
-            this.onSaveSuccess(drawing);
+        for(let attachment of this.drawing.attachments){
+            attachment.drawingId=this.drawing.id;
+        }
 
-        }, (error: any) => {
-            console.log("error occured");
-            this.onSaveError(error);
-        });
+        this.isSaving=true;
+
+        if (this.drawing.id !== undefined && this.drawing.id !== null) {
+
+            this.drawingService.update(this.drawing).subscribe((drawing: Drawing) => {
+                console.log("updated: ", drawing);
+                this.onSaveSuccess(drawing);
+
+            }, (error: any) => {
+                console.log("error occured");
+                this.onSaveError(error);
+            });
+        }else{
+            this.drawingService.create(this.drawing).subscribe((drawing: Drawing) => {
+                console.log("updated: ", drawing);
+                this.onSaveSuccess(drawing);
+
+            }, (error: any) => {
+                console.log("error occured");
+                this.onSaveError(error);
+            });
+        }
     }
 
 

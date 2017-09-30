@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Http, Response } from '@angular/http';
+import { Http, Response, URLSearchParams } from '@angular/http';
 import { Observable } from 'rxjs/Rx';
 
 import { Drawing } from './drawing.model';
@@ -33,8 +33,11 @@ export class DrawingService {
         });
     }
 
-    query(req?: any): Observable<ResponseWrapper> {
+    query(req?: any,urlSearchParams?: URLSearchParams): Observable<ResponseWrapper> {
         const options = createRequestOption(req);
+        if(urlSearchParams){
+            options.params.appendAll(urlSearchParams);
+        }
         return this.http.get(this.resourceUrl, options)
             .map((res: Response) => this.convertResponse(res));
     }

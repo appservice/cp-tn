@@ -36,7 +36,7 @@ const ENTITY_STATES = [
         DrawingDeleteDialogComponent,
         DrawingPopupComponent,
         DrawingDeletePopupComponent,
-        DrawingEditComponent
+        DrawingEditComponent,
 
     ],
     entryComponents: [

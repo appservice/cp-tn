@@ -70,7 +70,7 @@ export class NewPurchaseOrderComponent implements OnInit, OnDestroy {
                 this.title = 'Nowe zamówienie';
 
             }
-            if(params['id']){
+            if (params['id']) {
                 console.log('edit purcahse order');
                 this.loadEditedPurchaseOrder(params['id']);
             }
@@ -85,7 +85,6 @@ export class NewPurchaseOrderComponent implements OnInit, OnDestroy {
     trackClientById(index: number, item: Client) {
         return item.id;
     }
-
 
 
     onDeleteRow(index: number) {
@@ -117,13 +116,12 @@ export class NewPurchaseOrderComponent implements OnInit, OnDestroy {
     }
 
 
-
     save() {
         this.isSaving = true;
         // for(let estimation of this.order.estimations){
         //     estimation.drawing.name=estimation.description;
         // }
-        if (this.order.id !== undefined && this.order.id!== null) {
+        if (this.order.id !== undefined && this.order.id !== null) {
             this.subscribeToSaveResponse(
                 this.orderService.update(this.order));
         } else {
@@ -159,32 +157,32 @@ export class NewPurchaseOrderComponent implements OnInit, OnDestroy {
             this.order = order;
             console.log(order);
 
-            console.log('order status: ',order.orderStatus.toString());
-            console.log('enum status: ',OrderStatus['WORKING_COPY']);
+            console.log('order status: ', order.orderStatus.toString());
+            console.log('enum status: ', OrderStatus['WORKING_COPY']);
             console.log('enum 3', order.orderStatus.constructor.name);
-       //     console.log('enum 3', ]);
-             this.isReadOnly =order.orderStatus != null && order.orderStatus != 'WORKING_COPY';
-             order.internalNumber=null;
-             order.inquiryId=order.id;
-             order.id=null;
-             order.name='zamówienie';
-             order.orderType=OrderType.PRODUCTION;
-             order.sapNumber=null;
-             order.orderStatus=null;
-             order.createdAt=null;
-             order.description=null;
-             order.referenceNumber=null;
+            //     console.log('enum 3', ]);
+            this.isReadOnly = order.orderStatus != null && order.orderStatus != 'WORKING_COPY';
+            order.internalNumber = null;
+            order.inquiryId = order.id;
+            order.id = null;
+            order.name = 'zamówienie';
+            order.orderType = OrderType.PRODUCTION;
+            order.sapNumber = null;
+            order.orderStatus = null;
+            order.createdAt = null;
+            order.description = null;
+            order.referenceNumber = null;
 
 
         });
     }
 
-    loadEditedPurchaseOrder(id){
+    loadEditedPurchaseOrder(id) {
 
-        this.orderService.find(id).subscribe((order)=>{
-            this.order=order;
+        this.orderService.find(id).subscribe((order) => {
+            this.order = order;
         });
-        this.title='Edytuj Zamówienie'
+        this.title = 'Edytuj Zamówienie'
     }
 
     ngOnDestroy() {
@@ -223,15 +221,15 @@ export class NewPurchaseOrderComponent implements OnInit, OnDestroy {
         this.save();
     }
 
-    calculateTotalValue():number {
-        let total=0;
-        for(let estimation of this.order.estimations){
-            total=total+estimation.estimatedCost*estimation.amount;
+    calculateTotalValue(): number {
+        let total = 0;
+        for (let estimation of this.order.estimations) {
+            total = total + estimation.estimatedCost * estimation.amount;
         }
         return total;
     }
 
-    createNewPurchaseOrder(order:Order){
+    createNewPurchaseOrder(order: Order) {
 
     }
 }

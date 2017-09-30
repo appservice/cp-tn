@@ -1,5 +1,6 @@
 package eu.canpack.fip.bo.drawing;
 
+import eu.canpack.fip.bo.drawing.dto.DrawingDTO;
 import eu.canpack.fip.bo.estimation.EstimationMapper;
 
 import eu.canpack.fip.bo.attachment.AttachmentMapper;

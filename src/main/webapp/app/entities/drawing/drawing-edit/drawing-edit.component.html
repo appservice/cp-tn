@@ -1,6 +1,6 @@
 <form name="editForm" role="form" novalidate (ngSubmit)="save()" #editForm="ngForm">
 
-    <div *ngIf="drawing">
+    <div *ngIf="drawing"><!--*ngIf="drawing"-->
         <h2><span jhiTranslate="tnApp.drawing.detail.title">Drawing</span> {{drawing.number}}</h2>
         <hr>
         <jhi-alert-error></jhi-alert-error>
@@ -12,7 +12,7 @@
 
         </dl>
         <dl class="row-md jh-entity-details">
-            <dt><span>Numer rys:</span></dt>
+            <dt><span>Numer rys.</span></dt>
             <dd>
             <span>
                 <input class="form-control" type="text" name="drawingNumber" [(ngModel)]="drawing.number" required/>

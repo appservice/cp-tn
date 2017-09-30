@@ -1,6 +1,8 @@
 package eu.canpack.fip.bo.drawing;
 
 import com.codahale.metrics.annotation.Timed;
+import eu.canpack.fip.bo.drawing.dto.DrawingCriteria;
+import eu.canpack.fip.bo.drawing.dto.DrawingDTO;
 import eu.canpack.fip.web.rest.util.HeaderUtil;
 import eu.canpack.fip.web.rest.util.PaginationUtil;
 import io.swagger.annotations.ApiParam;
@@ -34,8 +36,11 @@ public class DrawingResource {
 
     private final DrawingService drawingService;
 
-    public DrawingResource(DrawingService drawingService) {
+    private final DrawingQueryService drawingQueryService;
+
+    public DrawingResource(DrawingService drawingService, DrawingQueryService drawingQueryService) {
         this.drawingService = drawingService;
+        this.drawingQueryService = drawingQueryService;
     }
 
     /**
@@ -52,7 +57,7 @@ public class DrawingResource {
         if (drawingDTO.getId() != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert(ENTITY_NAME, "idexists", "A new drawing cannot already have an ID")).body(null);
         }
-        DrawingDTO result = drawingService.save(drawingDTO);
+        DrawingDTO result = drawingService.create(drawingDTO);
         return ResponseEntity.created(new URI("/api/drawings/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
             .body(result);
@@ -88,9 +93,9 @@ public class DrawingResource {
      */
     @GetMapping("/drawings")
     @Timed
-    public ResponseEntity<List<DrawingDTO>> getAllDrawings(@ApiParam Pageable pageable) {
+    public ResponseEntity<List<DrawingDTO>> getAllDrawings(DrawingCriteria drawingCriteria,@ApiParam Pageable pageable) {
         log.debug("REST request to get a page of Drawings");
-        Page<DrawingDTO> page = drawingService.findAll(pageable);
+        Page<DrawingDTO> page = drawingQueryService.findByCriteria(drawingCriteria,pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/drawings");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }

@@ -2,7 +2,7 @@
     <h2>
         <span jhiTranslate="tnApp.drawing.home.title">Drawings</span>
         <button class="btn btn-primary float-right jh-create-entity create-drawing"
-                [routerLink]="['/', { outlets: { popup: ['drawing-new'] } }]">
+                [routerLink]="['/drawing-new']">
             <span class="fa fa-plus"></span>
             <span class="hidden-sm-down" jhiTranslate="tnApp.drawing.home.createLabel">
             Create new Drawing
@@ -10,7 +10,7 @@
         </button>
     </h2>
     <jhi-alert></jhi-alert>
-    <div class="row">
+    <!--<div class="row">
         <div class="col-sm-12">
             <form name="searchForm" class="form-inline">
                 <div class="input-group w-100 mt-3">
@@ -24,6 +24,22 @@
                     </button>
                 </div>
             </form>
+        </div>
+    </div>-->
+    <div class="row">
+        <div class="col-md-4">
+            <!--<label>Numer rys.</label>-->
+            <input type="text" class="form-control" name="filterDrawingNumber" [(ngModel)]="drawingFilter.number" placeholder="Numer rys.">
+
+        </div>
+        <div class="col-md-4">
+            <!--<label>Nazwa</label>-->
+            <input type="text" class="form-control" name="filterDrawingName" [(ngModel)]="drawingFilter.name" placeholder="Nazwa">
+        </div>
+        <div class="col-md-4">
+            <label>&nbsp;</label>
+            <button class="btn btn-outline-dark" type="button" (click)="loadAll()"><span class="fa fa-search"></span> Filtruj</button>
+            <button class="btn btn-outline-dark" type="button" (click)="clearFilterAndLoadAll()"><span class="fa fa-trash-o"></span> Wyczyść filtr</button>
         </div>
     </div>
     <br/>
