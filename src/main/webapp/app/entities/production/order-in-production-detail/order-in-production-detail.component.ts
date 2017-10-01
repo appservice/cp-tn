@@ -3,25 +3,24 @@ import {Client} from '../../client/client.model';
 import {ClientService} from '../../client/client.service';
 import {ResponseWrapper} from '../../../shared/model/response-wrapper.model';
 import {JhiAlertService, JhiEventManager} from 'ng-jhipster';
-import {Order, OrderType, OrderStatus} from '../order.model';
 import {Attachment} from '../../../tn-components/tn-file-uploader/attachment.model';
-import {OrderService} from '../order.service';
 import {Observable} from 'rxjs/Rx';
 import {ActivatedRoute, Router} from '@angular/router';
 import {Subscription} from 'rxjs/Subscription';
-import {isDefined} from '@angular/compiler/src/util';
-import {Drawing} from '../../drawing/drawing.model';
 import {ModalDismissReasons, NgbModal} from '@ng-bootstrap/ng-bootstrap';
-import {Estimation} from '../../estimation/estimation.model';
 import {EstimationRemark} from '../../estimation-remark/estimation-remark.model';
+import {Drawing} from '../../drawing/drawing.model';
+import {Order, OrderStatus, OrderType} from '../../order/order.model';
+import {OrderService} from '../../order/order.service';
 
 @Component({
-    selector: 'jhi-new-order',
-    templateUrl: './new-order.component.html',
+    selector: 'tn-order-in-production-detail',
+    templateUrl: './order-in-production-detail.component.html',
     styles: [],
+    // styleUrls: ['./order-detail.component.css'],
 
 })
-export class NewOrderComponent implements OnInit, OnDestroy {
+export class OrderInProductionDetailComponent implements OnInit, OnDestroy {
 
     title: string;
     clients: Client[];
@@ -54,12 +53,9 @@ export class NewOrderComponent implements OnInit, OnDestroy {
     ngOnInit() {
         this.isSaving = false;
 
-        this.clientService.findAllToTypeahead()
+        this.clientService.query()
             .subscribe((res: ResponseWrapper) => {
                 this.clients = res.json;
-                if(this.clients.length==1){
-                    this.order.clientId=this.clients[0].id;
-                }
             }, (res: ResponseWrapper) => this.onError(res.json));
 
         this.order.orderType = OrderType.ESTIMATION;
@@ -67,12 +63,8 @@ export class NewOrderComponent implements OnInit, OnDestroy {
         this.subscription = this.route.params.subscribe((params) => {
             console.log(params);
             if (params['id']) {
-                console.log('params exiest');
                 this.load(params['id']);
-                this.title = 'Edytuj zapytanie ofertowe';
 
-            } else {
-                this.title = 'Nowe zapytanie ofertowe';
             }
 
         });
@@ -86,20 +78,6 @@ export class NewOrderComponent implements OnInit, OnDestroy {
         return item.id;
     }
 
-    addEstimation() {
-       // const drawing: Drawing = {id: null, attachments: []}
-        this.order.estimations.push({
-            id: null, amount: null,
-       //     drawing: drawing,
-            estimationRemarks:[]
-        });
-    }
-
-    onDeleteRow(index: number) {
-        // console.log(event);
-        console.log(index);
-        this.order.estimations.splice(index, 1);
-    }
 
     onWorkingCopyBtnClick() {
         console.log('save is cliccked');
@@ -112,17 +90,12 @@ export class NewOrderComponent implements OnInit, OnDestroy {
         window.history.back();
     }
 
-    onFileChange() {
-        console.log(this.optionsModel);
-        // this.save();
-    }
 
     onFileArrayChange(event: Attachment[]) {
         this.attachments = event;
         console.log('event from parent object: ', event);
 
     }
-
 
 
     save() {
@@ -165,11 +138,13 @@ export class NewOrderComponent implements OnInit, OnDestroy {
         this.orderService.find(id).subscribe((order) => {
             this.order = order;
 
-            console.log('order status: ',order.orderStatus.toString());
-            console.log('enum status: ',OrderStatus['WORKING_COPY']);
+            console.log('order status: ', order.orderStatus.toString());
+            console.log('enum status: ', OrderStatus['WORKING_COPY']);
             console.log('enum 3', order.orderStatus.constructor.name);
-       //     console.log('enum 3', ]);
-             this.isReadOnly =order.orderStatus != null && order.orderStatus != 'WORKING_COPY';
+            console.log('order ', order)
+            //     console.log('enum 3', ]);
+            this.isReadOnly = order.orderStatus != null && order.orderStatus != 'WORKING_COPY';
+
 
         });
     }
@@ -179,9 +154,6 @@ export class NewOrderComponent implements OnInit, OnDestroy {
         // this.eventManager.destroy(this.eventSubscriber);
     }
 
-    getOptions(index: number): number[] {
-        return this.optionsMap.get(index);
-    }
 
     openModal(content, row: number) {
         if (!this.order.estimations[row].drawing) {
@@ -207,10 +179,24 @@ export class NewOrderComponent implements OnInit, OnDestroy {
         }
     }
 
-    sendToEstimation() {
-        console.log('Sent to estimation');
 
-        this.order.orderStatus = 'SENT_TO_ESTIMATION';//OrderStatus.SENT_TO_ESTIMATION;
-        this.save();
+    convertToDate(ngBootstrapDate: any): Date {
+        if (typeof ngBootstrapDate === 'string') {
+            return null;
+            // return new Date( ngBootstrapDate);
+        }
+        return new Date(ngBootstrapDate.year, ngBootstrapDate.month, ngBootstrapDate.day);
+    }
+
+    isProductionCreateBtnDisabled(): boolean {
+        let isDisabled = false;
+        for (let estimation of this.order.estimations) {
+            isDisabled = isDisabled || estimation.estimatedCost !== null
+        }
+        return isDisabled;
+    }
+
+    printTechnologyCard(){
+        this.orderService.createTechnologyCardPdf(this.order);
     }
 }

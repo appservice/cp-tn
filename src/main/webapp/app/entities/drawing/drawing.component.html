@@ -29,12 +29,12 @@
     <div class="row">
         <div class="col-md-4">
             <!--<label>Numer rys.</label>-->
-            <input type="text" class="form-control" name="filterDrawingNumber" [(ngModel)]="drawingFilter.number" placeholder="Numer rys.">
+            <input type="text" class="form-control" name="filterDrawingNumber" [(ngModel)]="drawingFilter.number" placeholder="Numer rys." (keydown)="onEnterClickFilter($event)">
 
         </div>
         <div class="col-md-4">
             <!--<label>Nazwa</label>-->
-            <input type="text" class="form-control" name="filterDrawingName" [(ngModel)]="drawingFilter.name" placeholder="Nazwa">
+            <input type="text" class="form-control" name="filterDrawingName" [(ngModel)]="drawingFilter.name" placeholder="Nazwa" (keydown)="onEnterClickFilter($event)">
         </div>
         <div class="col-md-4">
             <label>&nbsp;</label>

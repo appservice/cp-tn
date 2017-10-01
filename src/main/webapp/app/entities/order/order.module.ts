@@ -29,6 +29,7 @@ import {
 import {NewPurchaseOrderComponent} from './new-purchase-order/new-purchase-order.component';
 import {PurchaseOrderComponent} from './purchase-order/purchase-order.component';
 import {ArchiveOrdersComponent} from './archive-orders/archive-orders.component';
+import {PurchaseOrderDetailComponent} from './purchase-order-detail/purchase-order-detail.component';
 
 
 
@@ -62,6 +63,7 @@ const ENTITY_STATES = [
         NewPurchaseOrderComponent,
         PurchaseOrderComponent,
         ArchiveOrdersComponent,
+        PurchaseOrderDetailComponent,
 
 
     ],

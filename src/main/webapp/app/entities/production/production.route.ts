@@ -5,6 +5,9 @@ import {UserRouteAccessService} from '../../shared';
 import {JhiPaginationUtil} from 'ng-jhipster';
 
 import {ProductionStanComponent} from './production.component';
+import {OrdersInProductionComponent} from './orders-in-production/orders-in-production.component';
+import {OrderInProductionDetailComponent} from './order-in-production-detail/order-in-production-detail.component';
+import {TechnologyEditComponent} from './technology-edit/technology-edit.component';
 
 @Injectable()
 export class EstimationResolvePagingParams implements Resolve<any> {
@@ -22,13 +25,46 @@ export class EstimationResolvePagingParams implements Resolve<any> {
     }
 }
 
-export const estimationRoute: Routes = [
+export const productionRoute: Routes = [
     {
         path: 'production',
         component: ProductionStanComponent,
         resolve: {
             'pagingParams': EstimationResolvePagingParams
         },
+        data: {
+            authorities: ['ROLE_USER'],
+            pageTitle: 'tnApp.estimation.home.title'
+        },
+        canActivate: [UserRouteAccessService]
+    },
+    {
+        path: 'orders-in-production',
+        component: OrdersInProductionComponent,
+        resolve: {
+            'pagingParams': EstimationResolvePagingParams
+        },
+        data: {
+            authorities: ['ROLE_USER'],
+            pageTitle: 'tnApp.orders.home.title'
+        },
+        canActivate: [UserRouteAccessService]
+    },
+    {
+        path: 'orders-in-production/:id/detail',
+        component: OrderInProductionDetailComponent,
+        resolve: {
+            'pagingParams': EstimationResolvePagingParams
+        },
+        data: {
+            authorities: ['ROLE_USER'],
+            pageTitle: 'tnApp.orders.home.title'
+        },
+        canActivate: [UserRouteAccessService]
+    },
+    {
+        path: 'orders-in-production/technology/:id/edit',
+        component: TechnologyEditComponent,
         data: {
             authorities: ['ROLE_USER'],
             pageTitle: 'tnApp.estimation.home.title'

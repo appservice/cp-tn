@@ -3,7 +3,7 @@
     <div>
         <h2>
             <!--Dodaj/Edytuj Zlecenie-->
-            Zapytanie ofertowe: <strong>{{order.internalNumber}}</strong>
+            Zamówienie: <strong>{{order.internalNumber}}</strong>
         </h2>
         <br/>
         <fieldset>
@@ -55,7 +55,6 @@
                                         <th>Nr rys:</th>
                                         <th>Ilość:</th>
                                         <th>Jedn:</th>
-                                        <th style="width: 180px">Prop. data realiz.:</th>
                                         <th>Pliki:</th>
                                         <th>Cena/Szt</th>
                                         <th>Termin wyk.</th>
@@ -74,14 +73,13 @@
                                         </td>
                                         <td style="max-width: 80px">{{estimation.amount}}</td>
                                         <td> SZT</td>
-                                        <td style="max-width: 150px">
-                                            {{convertToDate(estimation.neededRealizationDate)|date:'dd-MM-yyyy'}}
-                                        </td>
+
                                         <td style="width: 100px">
 
 
                                             <!--</ss-multiselect-dropdown>-->
-                                            <button class="btn btn-outline-dark" type="button" (click)="openModal(content,rowIndex)">
+                                            <button class="btn btn-outline-dark" type="button"
+                                                    (click)="openModal(content,rowIndex)">
                                                 <strong>{{estimation.drawing.attachments.length}}</strong>
                                                 <i class="fa fa-paperclip"></i>
                                             </button>
@@ -90,11 +88,6 @@
                                         <td>{{estimation.estimatedCost|currency:'PLN'}}</td>
                                         <td>{{estimation.estimatedRealizationDate|date:'dd-MM-yyyy'}}</td>
                                         <td class="right">
-        <!--                                    <button type="button" class="btn btn-outline-secondary" placement="left"
-                                                    [ngbPopover]="popContent" popoverTitle="Uwagi"
-                                            >&lt;!&ndash; [triggers]="'hover'"&ndash;&gt;
-                                                <span class="fa fa-question"></span>
-                                            </button>-->
 
                                             <tn-estimation-remark [estimationRemarks]="estimation.estimationRemarks"
                                                                   *ngIf="estimation.estimationRemarks!=null && estimation.estimationRemarks.length>0"></tn-estimation-remark>
@@ -106,13 +99,7 @@
 
                                 </table>
                             </div>
-                            <!--<div class="col-md-2" style="margin-top:50px">
-                                <div class="card">
-                                    <div class="card-header text-center "><strong>Uwagi</strong></div>
 
-                                    <div class="card-body">To jest jakaś pierwsza uwaga i nie nie wiem co napisać ale krótka ta uwaga to nie jest</div>
-                                </div>
-                            </div>-->
 
                         </div>
                     </ng-template>
@@ -124,12 +111,6 @@
         <div class="text-center">
 
             <button type="button" class="btn btn-outline-danger" (click)="previousState()">Powrót</button>
-            <button *ngIf="isProductionCreateBtnDisabled()" type="button" class="btn btn-outline-primary"
-                    [routerLink]="['/new-purchase-order',{'inquiryId':order.id}]">
-                Utwórz zamówienie
-            </button>
-
-
         </div>
     </div>
 

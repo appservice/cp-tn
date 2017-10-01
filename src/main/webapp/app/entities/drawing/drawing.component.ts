@@ -173,4 +173,11 @@ currentAccount: any;
     private onError(error) {
         this.alertService.error(error.message, null, null);
     }
+
+    onEnterClickFilter(event:any){
+        if(event.keyCode==13){
+            this.loadAll();
+        }
+
+    }
 }

@@ -3,7 +3,7 @@
     <div>
         <h2>
             <!--Dodaj/Edytuj Zlecenie-->
-            Zapytanie ofertowe: <strong>{{order.internalNumber}}</strong>
+            Zamówienie: <strong>{{order.internalNumber}}</strong>
         </h2>
         <br/>
         <fieldset>
@@ -55,11 +55,12 @@
                                         <th>Nr rys:</th>
                                         <th>Ilość:</th>
                                         <th>Jedn:</th>
-                                        <th style="width: 180px">Prop. data realiz.:</th>
                                         <th>Pliki:</th>
                                         <th>Cena/Szt</th>
                                         <th>Termin wyk.</th>
                                         <th>Uwagi</th>
+                                        <th></th>
+                                        <th></th>
 
                                     </tr>
                                     </thead>
@@ -74,14 +75,13 @@
                                         </td>
                                         <td style="max-width: 80px">{{estimation.amount}}</td>
                                         <td> SZT</td>
-                                        <td style="max-width: 150px">
-                                            {{convertToDate(estimation.neededRealizationDate)|date:'dd-MM-yyyy'}}
-                                        </td>
+
                                         <td style="width: 100px">
 
 
                                             <!--</ss-multiselect-dropdown>-->
-                                            <button class="btn btn-outline-dark" type="button" (click)="openModal(content,rowIndex)">
+                                            <button class="btn btn-outline-dark" type="button"
+                                                    (click)="openModal(content,rowIndex)">
                                                 <strong>{{estimation.drawing.attachments.length}}</strong>
                                                 <i class="fa fa-paperclip"></i>
                                             </button>
@@ -90,15 +90,24 @@
                                         <td>{{estimation.estimatedCost|currency:'PLN'}}</td>
                                         <td>{{estimation.estimatedRealizationDate|date:'dd-MM-yyyy'}}</td>
                                         <td class="right">
-        <!--                                    <button type="button" class="btn btn-outline-secondary" placement="left"
-                                                    [ngbPopover]="popContent" popoverTitle="Uwagi"
-                                            >&lt;!&ndash; [triggers]="'hover'"&ndash;&gt;
-                                                <span class="fa fa-question"></span>
-                                            </button>-->
 
                                             <tn-estimation-remark [estimationRemarks]="estimation.estimationRemarks"
                                                                   *ngIf="estimation.estimationRemarks!=null && estimation.estimationRemarks.length>0"></tn-estimation-remark>
                                         </td>
+                                        <td>
+                                            <label class="custom-control custom-checkbox mb-3 mr-sm-3 mb-sm-0 tn-checkbox">
+                                                <input type="checkbox" class="custom-control-input" name="checked_{{rowIndex}}" [(ngModel)]="estimation.checked">
+                                                <span class="custom-control-indicator"></span>
+                                            </label>
+                                            <!--<input type="checkbox" [(ngModel)]="estimation.checked" name="checked_{{idx}}" class="form-control checkbox"></td>-->
+                                        <td>
+                                        <td>
+                                        <a type="button" class="btn btn-outline-dark" [routerLink]="['/orders-in-production/technology', estimation.id,'edit']"
+                                                >Edytuj technologię</a>
+
+                                        <!--<button class="btn btn-primary float-right jh-create-entity create-estimation" routerLink='/estimation-new'>-->
+
+                                    </td>
                                     </tr>
 
 
@@ -106,13 +115,7 @@
 
                                 </table>
                             </div>
-                            <!--<div class="col-md-2" style="margin-top:50px">
-                                <div class="card">
-                                    <div class="card-header text-center "><strong>Uwagi</strong></div>
 
-                                    <div class="card-body">To jest jakaś pierwsza uwaga i nie nie wiem co napisać ale krótka ta uwaga to nie jest</div>
-                                </div>
-                            </div>-->
 
                         </div>
                     </ng-template>
@@ -124,12 +127,9 @@
         <div class="text-center">
 
             <button type="button" class="btn btn-outline-danger" (click)="previousState()">Powrót</button>
-            <button *ngIf="isProductionCreateBtnDisabled()" type="button" class="btn btn-outline-primary"
-                    [routerLink]="['/new-purchase-order',{'inquiryId':order.id}]">
-                Utwórz zamówienie
-            </button>
-
-
+            <button type="button" class="btn btn-outline-primary" (click)="printTechnologyCard()" >
+                <span class="fa fa-print"></span>
+                Drukuj karty obiegowe</button>
         </div>
     </div>
 
@@ -153,33 +153,3 @@
         <button type="button" class="btn btn-secondary" (click)="c('Close click')">Close</button>
     </div>
 </ng-template>
-<!--<p-chips [(ngModel)]="myValues">test</p-chips>-->
-<!--
-<ng-template #popContent>
-    <table class="table table-striped">
-        <tr>
-            <td>To jest jakaś uwaga, Szlachetne zdrowie nikt się nie dowie jako smakujesz aż się zepsujesz<br/><strong>Piotr
-                Skoczek 14-09-2017 22:15</strong></td>
-        </tr>
-        <tr>
-            <td>To jakaś inna uwaga<br/><strong>Piotr Skoczek 14-09-2017 12:18</strong></td>
-        </tr>
-        <tr>
-            <td>A to trzecia uwaga<br/><strong>Bogusław Tyboń 14-09-2017 11:15</strong></td>
-        </tr>
-
-    </table>
-    <div class="row">
-        <div class="col-12">
-            <textarea class="form-control text-area"></textarea>
-
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-12 text-center">
-            <button type="button" class="btn btn-outline-dark" style="margin-top: 10px">Dodaj uwagę</button>
-        </div>
-    </div>
-
-</ng-template>
--->

@@ -31,6 +31,9 @@ public class EstimationCreateDTO implements Serializable {
 
     private DrawingDTO drawing;
 
+    private String itemNumber;
+    private String itemName;
+
     private LocalDate neededRealizationDate;
 
     private BigDecimal estimatedCost;
@@ -42,6 +45,22 @@ public class EstimationCreateDTO implements Serializable {
     private String remark;
 
     private List<EstimationRemarkDTO> estimationRemarks;
+
+    public String getItemNumber() {
+        return itemNumber;
+    }
+
+    public void setItemNumber(String itemNumber) {
+        this.itemNumber = itemNumber;
+    }
+
+    public String getItemName() {
+        return itemName;
+    }
+
+    public void setItemName(String itemName) {
+        this.itemName = itemName;
+    }
 
     public EstimationCreateDTO() {
     }
@@ -73,7 +92,11 @@ public class EstimationCreateDTO implements Serializable {
             return erDTO;
         }).collect(Collectors.toList());
         this.estimatedRealizationDate = estimation.getEstimatedRealizationDate();
+
+        this.itemName=estimation.getItemName();
+        this.itemNumber=estimation.getItemNumber();
     }
+
 
     public DrawingDTO getDrawing() {
         return drawing;
@@ -192,6 +215,8 @@ public class EstimationCreateDTO implements Serializable {
             ", description='" + description + '\'' +
             ", orderId=" + orderId +
             ", drawing=" + drawing +
+            ", itemNumber='" + itemNumber + '\'' +
+            ", itemName='" + itemName + '\'' +
             ", neededRealizationDate=" + neededRealizationDate +
             ", estimatedCost=" + estimatedCost +
             ", checked=" + checked +

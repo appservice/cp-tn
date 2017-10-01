@@ -8,6 +8,8 @@ export class Estimation implements BaseEntity {
     constructor(
         public id?: number,
         public internalNumber?: string,
+        public itemNumber?: string,
+        public itemName?: string,
         public material?: string,
         public materialPrice?: number,
         public amount?: number,

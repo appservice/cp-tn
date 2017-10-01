@@ -91,10 +91,10 @@
                                 <td>{{rowIndex+1}}</td>
                                 <!--<td><input type="text" [(ngModel)]="estimation.id" class="form-control"/></td>-->
                                 <td>
-                                  <a  (click)="openModal(content,rowIndex)"> {{estimation.description}}</a>
+                                  <a  (click)="openModal(content,rowIndex)"> {{estimation.itemName}}</a>
                                 </td>
                                 <td style="max-width: 150px;">
-                                  {{estimation.drawing.number}}
+                                  {{estimation.itemNumber}}
                                 </td>
                                 <td style="max-width: 80px">{{estimation.amount}}</td>
                                 <td> SZT</td>

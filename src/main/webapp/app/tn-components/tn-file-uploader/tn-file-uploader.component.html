@@ -23,11 +23,11 @@
                     <td>{{attachment.uploadDate|date:'dd-MM-yyyy HH:mm'}}</td>
                     <td>
                         <span *ngIf="!isViewOnly">
-                        <button class="btn  btn-danger" type="button" (click)="onDeleteItem(idx,attachment)">
+                        <button class="btn  btn-outline-danger" type="button" (click)="onDeleteItem(idx,attachment)">
                             <i
                                 class="fa fa-remove"></i> Usuń
                         </button>&nbsp;</span>
-                        <button class="btn  btn-default" type="button"
+                        <button class="btn  btn-outline-dark" type="button"
                                 (click)="onDownloadAttachment(attachment)"><i
                             class="fa fa-save"></i> Pobierz
                         </button>

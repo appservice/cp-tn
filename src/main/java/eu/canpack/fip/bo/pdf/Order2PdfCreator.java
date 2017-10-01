@@ -4,10 +4,7 @@ import com.lowagie.text.*;
 import com.lowagie.text.Font;
 import com.lowagie.text.Image;
 import com.lowagie.text.Rectangle;
-import com.lowagie.text.pdf.BaseFont;
-import com.lowagie.text.pdf.PdfPCell;
-import com.lowagie.text.pdf.PdfPTable;
-import com.lowagie.text.pdf.PdfWriter;
+import com.lowagie.text.pdf.*;
 import eu.canpack.fip.bo.estimation.Estimation;
 import eu.canpack.fip.bo.estimation.EstimationCreateDTO;
 import eu.canpack.fip.bo.order.Order;
@@ -204,8 +201,8 @@ public class Order2PdfCreator {
             }
 
             table.addCell(createValueCell(String.valueOf(lp),Element.ALIGN_CENTER));
-            table.addCell(createValueCell(estimation.getDescription(),Element.ALIGN_LEFT));
-            table.addCell(createValueCell(estimation.getDrawing().getNumber(),Element.ALIGN_CENTER));
+            table.addCell(createValueCell(estimation.getItemName(),Element.ALIGN_LEFT));
+            table.addCell(createValueCell(estimation.getItemNumber(),Element.ALIGN_CENTER));
             table.addCell(createValueCell(String.valueOf(estimation.getAmount()),Element.ALIGN_CENTER));
             table.addCell(createValueCell(getFormattedPrice(estimation.getEstimatedCost().setScale(2, BigDecimal.ROUND_HALF_UP)),Element.ALIGN_RIGHT));
 
@@ -213,7 +210,6 @@ public class Order2PdfCreator {
             table.addCell(createValueCell(formatDate(estimation.getEstimatedRealizationDate()),Element.ALIGN_CENTER));//
             lp++;
         }
-
 
         // empty Rows
 //        for (int i = lp; i < 15; i++) {

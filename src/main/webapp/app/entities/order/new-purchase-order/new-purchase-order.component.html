@@ -74,21 +74,21 @@
                                 <td>{{rowIndex+1}}</td>
                                 <!--<td><input type="text" [(ngModel)]="estimation.id" class="form-control"/></td>-->
                                 <td>
-                                    <input type="text" class="form-control" [(ngModel)]="estimation.description"
+                                    <input type="text" class="form-control" [(ngModel)]="estimation.itemName"
 
-                                           name="estimation_description_{{rowIndex}}" required [disabled]="isReadOnly">
+                                           name="estimation_itemName_{{rowIndex}}" required [disabled]="isReadOnly">
                                     <div
-                                        [hidden]="!(editForm.controls.estimation_description_0?.dirty && editForm.controls.estimation_description?.invalid)">
+                                        [hidden]="!(editForm.controls.estimation_itemName_0?.dirty && editForm.controls.estimation_itemName?.invalid)">
                                         <small class="form-text text-danger"
-                                               [hidden]="!editForm.controls.estimation_description?.errors?.required"
+                                               [hidden]="!editForm.controls.estimation_itemName?.errors?.required"
                                                jhiTranslate="entity.validation.required">
                                             This field is required.
                                         </small>
                                     </div>
                                 </td>
                                 <td style="max-width: 150px;">
-                                    <input type="text" class="form-control" name="estimation_drawing_{{rowIndex}}"
-                                           [(ngModel)]="estimation.drawing.number" disabled/>
+                                    <input type="text" class="form-control" name="estimation_itemNumber_{{rowIndex}}"
+                                           [(ngModel)]="estimation.itemNumber" disabled/>
                                 </td>
                                 <td style="max-width: 80px">
                                     <input type="text" class="form-control" [(ngModel)]="estimation.amount"
@@ -163,7 +163,7 @@
             <button type="button" class="btn btn-outline-danger" (click)="previousState()">Powrót</button>
 
             <button class="btn btn-outline-primary" (click)="sendToEstimation();" *ngIf="order.orderStatus =='WORKING_COPY' || order.orderStatus==null">
-                <span class="fa fa-play"></span> Wyślij do wyceny
+                <span class="fa fa-play"></span> Wyślij do realizacji
             </button>
         </div>
     </div>

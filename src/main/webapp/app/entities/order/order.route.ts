@@ -18,6 +18,7 @@ import {NewPurchaseOrderComponent} from './new-purchase-order/new-purchase-order
 import {OrderType} from './order.model';
 import {PurchaseOrderComponent} from './purchase-order/purchase-order.component';
 import {ArchiveOrdersComponent} from './archive-orders/archive-orders.component';
+import {PurchaseOrderDetailComponent} from './purchase-order-detail/purchase-order-detail.component';
 
 
 @Injectable()
@@ -69,6 +70,15 @@ export const orderRoute: Routes = [
         data: {
             authorities: ['ROLE_USER'],
             pageTitle: 'Zapyptanie ofertowe'
+        },
+        canActivate: [UserRouteAccessService]
+    },
+    {
+        path: 'purchase-order/:id',
+        component: PurchaseOrderDetailComponent,
+        data: {
+            authorities: ['ROLE_USER'],
+            pageTitle: 'tnApp.order.purchaseOrder'
         },
         canActivate: [UserRouteAccessService]
     },

@@ -41,5 +41,6 @@
     <include file="config/liquibase/changelog/20170917231915_added_estitmation_remark.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20170920204424_changed_relation_between_estimation_and_drawing.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20170923232109_added_sequence_number.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20171001002432_extended_estimation.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-constraints-changelog - JHipster will add liquibase constraints changelogs here -->
 </databaseChangeLog>

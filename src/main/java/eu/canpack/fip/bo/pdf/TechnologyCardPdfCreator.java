@@ -43,7 +43,7 @@ public class TechnologyCardPdfCreator {
         Document doc = new Document(PageSize.A4);
         try {
             PdfWriter writer = PdfWriter.getInstance(doc, os);
-            PageNumeration event = new PageNumeration(estimation.getDrawing().getNumber());
+            PageNumeration event = new PageNumeration(estimation.getItemNumber());
             writer.setPageEvent(event);
 
             doc.open();
@@ -71,7 +71,12 @@ public class TechnologyCardPdfCreator {
 
             PdfPTable pdfPTable = new PdfPTable(new float[]{1,1});
             pdfPTable.setWidthPercentage(100);
-            pdfPTable.addCell(createTechnologyCreatorCells("Autor technologi: "+estimation.getCreatedBy().getFirstName()+" "+estimation.getCreatedBy().getLastName()));
+            if(estimation.getCreatedBy()!=null){
+                pdfPTable.addCell(createTechnologyCreatorCells("Autor technologi: "+estimation.getCreatedBy().getFirstName()+" "+estimation.getCreatedBy().getLastName()));
+
+            }else{
+                pdfPTable.addCell(createTechnologyCreatorCells("Autor technologi:"));
+            }
 
             pdfPTable.addCell(createTechnologyCreatorCells2("Data opracowania: "+formatDate(estimation.getCreatedAt())));
             doc.add(pdfPTable);
@@ -86,7 +91,7 @@ public class TechnologyCardPdfCreator {
             Paragraph titleParagraph = new Paragraph("Karta obiegowa", fontTitle);
             titleParagraph.setAlignment(Element.ALIGN_CENTER);
 
-            Paragraph drawingNumberParagraph = new Paragraph("Nr rysunku: " + estimation.getDrawing().getNumber(), fontTitle);
+            Paragraph drawingNumberParagraph = new Paragraph("Nr rysunku: " + estimation.getItemNumber(), fontTitle);
             drawingNumberParagraph.setAlignment(Element.ALIGN_CENTER);
             addEmptyLine(drawingNumberParagraph, 2);
 
@@ -112,7 +117,7 @@ public class TechnologyCardPdfCreator {
         table.setWidths(new float[]{4f,7f, 4f, 3f});
 
         table.addCell(createLabelCell("Przedmiot:"));
-        table.addCell(createValue2Cell(estimation.getDescription()));
+        table.addCell(createValue2Cell(estimation.getItemName()));
 
         table.addCell(createLabelCell("Ilość:"));
         table.addCell(createValue2Cell(String.valueOf(estimation.getAmount())));
@@ -124,8 +129,8 @@ public class TechnologyCardPdfCreator {
         table.addCell(createValue2Cell(""));
 
         table.addCell(createLabelCell("Termin realizacji:"));
-        if (estimation.getNeededRealizationDate() != null) {
-            table.addCell(createValue2Cell(formatDate(estimation.getNeededRealizationDate())));
+        if (estimation.getEstimatedRealizationDate() != null) {
+            table.addCell(createValue2Cell(formatDate(estimation.getEstimatedRealizationDate())));
         } else {
             table.addCell(createValue2Cell(""));
         }

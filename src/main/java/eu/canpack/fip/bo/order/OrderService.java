@@ -98,37 +98,43 @@ public class OrderService {
         User loggedUser = userService.getLoggedUser();
 
         List<Estimation> estimations = orderDTO.getEstimations().stream().map(estDTO -> {
+            log.debug("osdDTO: {}", estDTO);
             Estimation estimation = new Estimation()
                 .order(order)
                 .description(estDTO.getDescription())
                 .neededRealizationDate(estDTO.getNeededRealizationDate())
                 .amount(estDTO.getAmount())
                 .estimatedCost(estDTO.getEstimatedCost())
-                .estimatedRealizationDate(estDTO.getEstimatedRealizationDate());
+                .estimatedRealizationDate(estDTO.getEstimatedRealizationDate())
+                .itemName(estDTO.getItemName())
+                .itemNumber(estDTO.getItemNumber());
 
-            updateRemark(loggedUser,estDTO,estimation);
-
+            updateRemark(loggedUser, estDTO, estimation);
 
 
             estimation.setId(estDTO.getId());
 
-            Drawing drawing;
-            if (estDTO.getDrawing().getId() != null) {
-                drawing = drawingRepository.findOne(estDTO.getDrawing().getId());
+            if (estDTO.getDrawing() != null) {
 
-            } else {
-                drawing = new Drawing();
-                drawing.getEstimations().add(estimation);
-                drawing.setNumber(estDTO.getDrawing().getNumber());
-                drawing.setName(estDTO.getDescription());
-                List<Attachment> attahcments = estDTO.getDrawing().getAttachments().stream()
-                    .map(a -> attachmentRepository.findOne(a.getId())).collect(Collectors.toList());
-                drawing.setAttachments(attahcments);
-                drawing = drawingRepository.save(drawing);
+
+                Drawing drawing;
+                if (estDTO.getDrawing().getId() != null) {
+                    drawing = drawingRepository.findOne(estDTO.getDrawing().getId());
+
+                } else {
+                    drawing = new Drawing();
+                    drawing.getEstimations().add(estimation);
+                    drawing.setNumber(estDTO.getItemNumber());
+                    drawing.setName(estDTO.getItemName());
+                    List<Attachment> attahcments = estDTO.getDrawing().getAttachments().stream()
+                        .map(a -> attachmentRepository.findOne(a.getId())).collect(Collectors.toList());
+                    drawing.setAttachments(attahcments);
+                    drawing = drawingRepository.save(drawing);
+                }
+
+
+                estimation.setDrawing(drawing);
             }
-
-
-            estimation.setDrawing(drawing);
 
             return estimation;
 
@@ -162,7 +168,9 @@ public class OrderService {
                     .order(order)
                     .description(estDTO.getDescription())
                     .neededRealizationDate(estDTO.getNeededRealizationDate())
-                    .amount(estDTO.getAmount());
+                    .amount(estDTO.getAmount())
+                    .itemName(estDTO.getItemName())
+                    .itemNumber(estDTO.getItemNumber());
 
 
                 updateRemark(loggedUser, estDTO, estimation);
@@ -171,15 +179,18 @@ public class OrderService {
                 estimation.setId(estDTO.getId());
 
 
-                Drawing drawing = new Drawing();
-                drawing.getEstimations().add(estimation);
-                drawing.setNumber(estDTO.getDrawing().getNumber());
-                drawing.setId(estDTO.getDrawing().getId());
-                List<Attachment> attahcments = estDTO.getDrawing().getAttachments().stream()
-                    .map(a -> attachmentRepository.findOne(a.getId())).collect(Collectors.toList());
-                drawing.setAttachments(attahcments);
-                estimation.setDrawing(drawing);
+                if (estDTO.getDrawing() != null) {
 
+                    Drawing drawing = new Drawing();
+                    drawing.getEstimations().add(estimation);
+                    drawing.setNumber(estDTO.getItemNumber());
+                    drawing.setName(estDTO.getItemName());
+                    drawing.setId(estDTO.getDrawing().getId());
+                    List<Attachment> attahcments = estDTO.getDrawing().getAttachments().stream()
+                        .map(a -> attachmentRepository.findOne(a.getId())).collect(Collectors.toList());
+                    drawing.setAttachments(attahcments);
+                    estimation.setDrawing(drawing);
+                }
                 return estimation;
 
             }).collect(Collectors.toList());
@@ -191,16 +202,37 @@ public class OrderService {
                 estimation.setDescription(estDTO.getDescription());
                 estimation.setAmount(estDTO.getAmount());
                 estimation.setNeededRealizationDate(estDTO.getNeededRealizationDate());
-                estimation.getDrawing().setNumber(estDTO.getDrawing().getNumber());
+
                 estimation.setDescription(estDTO.getDescription());
+                estimation.setItemName(estDTO.getItemName());
+                estimation.setItemNumber(estDTO.getItemNumber());
 
                 updateRemark(loggedUser, estDTO, estimation);
 
                 estimation.setId(estDTO.getId());
 
-                List<Attachment> attachments = estDTO.getDrawing().getAttachments().stream()
-                    .map(a -> attachmentRepository.findOne(a.getId())).collect(Collectors.toList());
-                estimation.getDrawing().setAttachments(attachments);
+                if (estDTO.getDrawing() != null) {
+                    List<Attachment> attachments = estDTO.getDrawing().getAttachments().stream()
+                        .map(a -> attachmentRepository.findOne(a.getId())).collect(Collectors.toList());
+
+                    if(estimation.getDrawing()!=null){
+                        estimation.getDrawing().setNumber(estDTO.getItemNumber());
+                        estimation.getDrawing().setName(estDTO.getItemName());
+                        estimation.getDrawing().setAttachments(attachments);
+
+
+                    }else{
+                        Drawing drawing=new Drawing();
+                        drawing.setName(estDTO.getItemName());
+                        drawing.setNumber(estDTO.getItemNumber());
+                        drawing.setAttachments(attachments);
+                        drawing.getEstimations().add(estimation);
+                        estimation.setDrawing(drawing);
+                        drawingRepository.save(drawing);
+                    }
+
+                }
+
 
                 return estimation;
             }).collect(Collectors.toList());
@@ -385,25 +417,34 @@ public class OrderService {
 
         log.debug("createPurchaseOrder orderDTO: {}", orderDTO);
         Order order = orderMapper.toEntity(orderDTO);
+        order.setId(null);
 
 
 //        PropertyFilter filter = PropertyFilters.getAnnotationFilter(Id.class);
 
-        for(EstimationCreateDTO estDTO:orderDTO.getEstimations()){
-            Estimation est= estimationRepository.findOne(estDTO.getId());
+        for (EstimationCreateDTO estDTO : orderDTO.getEstimations()) {
+            Estimation est = estimationRepository.findOne(estDTO.getId());
             est.getCommercialParts().size();
             est.getOperations().size();
 
-            Estimation newEstimation=new Estimation();
+            Estimation newEstimation = new Estimation();
             newEstimation.setAmount(estDTO.getAmount());
             newEstimation.setEstimatedRealizationDate(est.getEstimatedRealizationDate());
             newEstimation.setEstimatedCost(est.getEstimatedCost());
             newEstimation.setDrawing(est.getDrawing());
             newEstimation.setDescription(est.getDescription());
+            newEstimation.setItemNumber(est.getItemNumber());
+            newEstimation.setItemName(est.getItemName());
+            newEstimation.setCreatedBy(est.getCreatedBy());
+            newEstimation.setCreatedAt(est.getCreatedAt());
+            newEstimation.setMass(est.getMass());
+            newEstimation.setMaterial(est.getMaterial());
+            newEstimation.setNeededRealizationDate(est.getNeededRealizationDate());
+            newEstimation.setMaterialPrice(est.getMaterialPrice());
 
             for (Operation op : est.getOperations()) {
                 Operation newOperation = new Operation();
-                newOperation.setEstimation(est);
+                newOperation.setEstimation(newEstimation);
                 newOperation.setDescription(op.getDescription());
                 newOperation.setRealTime(op.getRealTime());
                 newOperation.setMachine(op.getMachine());
@@ -415,19 +456,18 @@ public class OrderService {
 
             for (CommercialPart cp : est.getCommercialParts()) {
                 CommercialPart newCp = new CommercialPart();
-                newCp.setEstimation(est);
+                newCp.setEstimation(newEstimation);
                 newCp.setAmount(cp.getAmount());
                 newCp.setPrice(cp.getPrice());
                 newCp.setName(cp.getName());
                 newCp.setUnit(cp.getUnit());
-                est.getCommercialParts().add(newCp);
+                newEstimation.getCommercialParts().add(newCp);
             }
             newEstimation.setOrder(order);
             order.getEstimations().add(newEstimation);
         }
 
 //            .map(SerializationUtils::clone)
-
 
 
 ////            .peek(session::evict)

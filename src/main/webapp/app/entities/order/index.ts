@@ -10,3 +10,4 @@ export * from './estimated-order/move-to-archive-dialog.component';
 export * from './new-purchase-order/new-purchase-order.component';
 export * from './purchase-order/purchase-order.component';
 export * from './archive-orders/archive-orders.component';
+export * from './purchase-order-detail/purchase-order-detail.component';

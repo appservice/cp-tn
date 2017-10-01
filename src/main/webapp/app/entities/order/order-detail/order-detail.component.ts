@@ -11,6 +11,7 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {Subscription} from 'rxjs/Subscription';
 import {ModalDismissReasons, NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {EstimationRemark} from '../../estimation-remark/estimation-remark.model';
+import {Drawing} from '../../drawing/drawing.model';
 
 @Component({
     selector: 'tn-order-detail',
@@ -78,7 +79,6 @@ export class OrderDetailComponent implements OnInit, OnDestroy {
     }
 
 
-
     onWorkingCopyBtnClick() {
         console.log('save is cliccked');
         console.log(this.order);
@@ -96,7 +96,6 @@ export class OrderDetailComponent implements OnInit, OnDestroy {
         console.log('event from parent object: ', event);
 
     }
-
 
 
     save() {
@@ -139,12 +138,12 @@ export class OrderDetailComponent implements OnInit, OnDestroy {
         this.orderService.find(id).subscribe((order) => {
             this.order = order;
 
-            console.log('order status: ',order.orderStatus.toString());
-            console.log('enum status: ',OrderStatus['WORKING_COPY']);
+            console.log('order status: ', order.orderStatus.toString());
+            console.log('enum status: ', OrderStatus['WORKING_COPY']);
             console.log('enum 3', order.orderStatus.constructor.name);
             console.log('order ', order)
-       //     console.log('enum 3', ]);
-             this.isReadOnly =order.orderStatus != null && order.orderStatus != 'WORKING_COPY';
+            //     console.log('enum 3', ]);
+            this.isReadOnly = order.orderStatus != null && order.orderStatus != 'WORKING_COPY';
 
 
         });
@@ -157,6 +156,10 @@ export class OrderDetailComponent implements OnInit, OnDestroy {
 
 
     openModal(content, row: number) {
+        if (!this.order.estimations[row].drawing) {
+            const drawing: Drawing = {id: null, attachments: []};
+            this.order.estimations[row].drawing = drawing;
+        }
         console.log('clickedRow: ', row);
         this.clickedRow = row;
         this.modalService.open(content, {size: 'lg'}).result.then((result) => {
@@ -177,7 +180,6 @@ export class OrderDetailComponent implements OnInit, OnDestroy {
     }
 
 
-
     convertToDate(ngBootstrapDate: any): Date {
         if (typeof ngBootstrapDate === 'string') {
             return null;
@@ -187,9 +189,9 @@ export class OrderDetailComponent implements OnInit, OnDestroy {
     }
 
     isProductionCreateBtnDisabled(): boolean {
-        let isDisabled=false;
-        for(let estimation of this.order.estimations){
-            isDisabled= isDisabled|| estimation.estimatedCost!==null
+        let isDisabled = false;
+        for (let estimation of this.order.estimations) {
+            isDisabled = isDisabled || estimation.estimatedCost !== null
         }
         return isDisabled;
     }

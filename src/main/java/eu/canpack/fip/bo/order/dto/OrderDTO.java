@@ -177,14 +177,16 @@ public class OrderDTO implements Serializable {
             "id=" + id +
             ", internalNumber='" + internalNumber + '\'' +
             ", sapNumber='" + sapNumber + '\'' +
+            ", referenceNumber='" + referenceNumber + '\'' +
             ", orderType=" + orderType +
             ", name='" + name + '\'' +
             ", description='" + description + '\'' +
             ", closeDate=" + closeDate +
             ", orderStatus=" + orderStatus +
             ", clientId=" + clientId +
-            ", estimations=" + estimations +
+            ", clientShortcut='" + clientShortcut + '\'' +
             ", inquiryId=" + inquiryId +
+            ", estimations=" + estimations +
             '}';
     }
 }

@@ -49,6 +49,12 @@ public class Estimation implements Serializable {
     @Column(name = "mass")
     private Double mass;
 
+    @NotNull
+    @Column(name = "item_name", nullable = false)
+    private String itemName;
+
+    @Column(name = "item_number")
+    private String itemNumber;
 
     @Lob
     //max 65,535 letters
@@ -78,7 +84,7 @@ public class Estimation implements Serializable {
     @Column(name = "needed_realization_date")
     private LocalDate neededRealizationDate;
 
-    @Column(name="estimated_realization_date")
+    @Column(name = "estimated_realization_date")
     private LocalDate estimatedRealizationDate;
 
 
@@ -102,6 +108,21 @@ public class Estimation implements Serializable {
     @Column(name = "createdAt")
     private ZonedDateTime createdAt;
 
+    public String getItemName() {
+        return itemName;
+    }
+
+    public void setItemName(String itemName) {
+        this.itemName = itemName;
+    }
+
+    public String getItemNumber() {
+        return itemNumber;
+    }
+
+    public void setItemNumber(String itemNumber) {
+        this.itemNumber = itemNumber;
+    }
 
     public Long getId() {
         return id;
@@ -314,9 +335,9 @@ public class Estimation implements Serializable {
     }
 
 
-    public String getCreatorName(){
-        if(this.createdBy!=null)
-        return this.createdBy.getFirstName()+" "+this.createdBy.getLastName();
+    public String getCreatorName() {
+        if (this.createdBy != null)
+            return this.createdBy.getFirstName() + " " + this.createdBy.getLastName();
         return null;
     }
 
@@ -345,6 +366,17 @@ public class Estimation implements Serializable {
     public void setEstimationRemarks(List<EstimationRemark> estimationRemarks) {
         this.estimationRemarks = estimationRemarks;
     }
+
+    public Estimation itemName(final String itemName) {
+        this.itemName = itemName;
+        return this;
+    }
+
+    public Estimation itemNumber(final String itemNumber) {
+        this.itemNumber = itemNumber;
+        return this;
+    }
+
 
     @Override
     public boolean equals(Object o) {

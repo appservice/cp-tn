@@ -186,7 +186,22 @@ export class OrderService {
         this.http.post(`${this.resourceUrl}/create-pdf-offer`, copy, options)
             .map((res: Response) => res.blob())
             .subscribe((data: any) => {
-                this.saveDownload(data, order.internalNumber, 'application/pdf');
+                this.saveDownload(data, 'Oferta_'+order.internalNumber, 'application/pdf');
+
+            });
+    }
+
+
+    createTechnologyCardPdf(order: Order): void {
+        const copy = this.convert(order);
+
+        let headers = new Headers({'Content-Type': 'application/json'});
+        let options = new RequestOptions({responseType: ResponseContentType.Blob, headers});
+
+        this.http.post(`api/production/create-technology-card-pdf`, copy, options)
+            .map((res: Response) => res.blob())
+            .subscribe((data: any) => {
+                this.saveDownload(data, 'Karta_techn_zam_'+order.internalNumber, 'application/pdf');
 
             });
     }
@@ -196,8 +211,10 @@ export class OrderService {
 
         const disableAutoBOM = true;
 
-        FileSaver.saveAs(data, 'Oferta_' + fileName + '.pdf', disableAutoBOM);
+        FileSaver.saveAs(data, fileName + '.pdf', disableAutoBOM);
     }
+
+
 
     moveOrderToArchive(id: number):  Observable<Response>{
        return this.http.put(`${this.resourceUrl}/${id}/move-to-archive`, null);

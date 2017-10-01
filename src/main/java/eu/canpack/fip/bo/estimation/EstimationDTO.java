@@ -47,6 +47,11 @@ public class EstimationDTO implements Serializable {
 
     private String orderInternalNumber;
 
+    @NotNull
+    private String itemName;
+
+    private String itemNumber;
+
     private DrawingDTO drawing;
 
     private List<OperationDTO> operations;
@@ -67,6 +72,21 @@ public class EstimationDTO implements Serializable {
 
     private String remark;
 
+    public String getItemName() {
+        return itemName;
+    }
+
+    public void setItemName(String itemName) {
+        this.itemName = itemName;
+    }
+
+    public String getItemNumber() {
+        return itemNumber;
+    }
+
+    public void setItemNumber(String itemNumber) {
+        this.itemNumber = itemNumber;
+    }
 
     public DrawingDTO getDrawing() {
         return drawing;

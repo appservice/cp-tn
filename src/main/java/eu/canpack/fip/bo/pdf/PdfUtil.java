@@ -51,8 +51,14 @@ public class PdfUtil {
 
     static String formatDate(ZonedDateTime date) {
 
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-        return date.format(formatter);
+        if(date!=null){
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+            return date.format(formatter);
+        }else{
+            return "";
+        }
+
+
     }
 
 }
