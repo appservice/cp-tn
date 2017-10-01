@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {Http, Response, RequestOptions, ResponseContentType, Headers} from '@angular/http';
+import {Http, Response, RequestOptions, ResponseContentType, Headers,URLSearchParams} from '@angular/http';
 import {Observable} from 'rxjs/Rx';
 import {JhiDateUtils} from 'ng-jhipster';
 
@@ -51,14 +51,20 @@ export class OrderService {
             .map((res: Response) => this.convertResponse(res));
     }
 
-    getAllInquiries(req?: any): Observable<ResponseWrapper> {
+    getAllInquiries(req?: any,urlSearchParams?: URLSearchParams): Observable<ResponseWrapper> {
         const options = createRequestOption(req);
+        if(urlSearchParams){
+            options.params.appendAll(urlSearchParams);
+        }
         return this.http.get(this.resourceUrl+'/inquiries', options)
             .map((res: Response) => this.convertResponse(res));
     }
 
-    getAllProductionOrders(req?: any): Observable<ResponseWrapper> {
+    getAllProductionOrders(req?: any,urlSearchParams?: URLSearchParams): Observable<ResponseWrapper> {
         const options = createRequestOption(req);
+        if(urlSearchParams){
+            options.params.appendAll(urlSearchParams);
+        }
         return this.http.get(this.resourceUrl+'/production', options)
             .map((res: Response) => this.convertResponse(res));
     }

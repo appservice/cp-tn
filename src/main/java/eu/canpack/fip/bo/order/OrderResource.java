@@ -41,10 +41,8 @@ import java.util.Optional;
 @RequestMapping("/api")
 public class OrderResource {
 
-    private final Logger log = LoggerFactory.getLogger(OrderResource.class);
-
     private static final String ENTITY_NAME = "order";
-
+    private final Logger log = LoggerFactory.getLogger(OrderResource.class);
     private final OrderService orderService;
 
     private final OrderMapper orderMapper;
@@ -111,9 +109,16 @@ public class OrderResource {
      */
     @GetMapping("/orders/inquiries")
     @Timed
-    public ResponseEntity<List<OrderListDTO>> getAllInquiries(@ApiParam Pageable pageable) {
+    public ResponseEntity<List<OrderListDTO>> getAllInquiries(OrderCriteria orderCriteria, @ApiParam Pageable pageable) {
         log.debug("REST request to get a page of Orders");
-        Page<OrderListDTO> page = orderService.findAllByClientAndOrderType(pageable, OrderType.ESTIMATION);
+//        if (orderCriteria == null) {
+//            orderCriteria = new OrderCriteria();
+//        }
+       // orderCriteria.getOrderType().setEquals(OrderType.ESTIMATION);
+        OrderCriteria.OrderTypeFilter orderTypeFilter=new OrderCriteria.OrderTypeFilter();
+        orderTypeFilter.setEquals(OrderType.ESTIMATION);
+        orderCriteria.setOrderType(orderTypeFilter);
+        Page<OrderListDTO> page = orderQueryService.findByCriteriaAndClient(orderCriteria, pageable);//orderService.findAllByClientAndOrderType(pageable, OrderType.ESTIMATION);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/orders");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
@@ -126,9 +131,13 @@ public class OrderResource {
      */
     @GetMapping("/orders/production")
     @Timed
-    public ResponseEntity<List<OrderListDTO>> getAllProductionOrders(@ApiParam Pageable pageable) {
+    public ResponseEntity<List<OrderListDTO>> getAllProductionOrders(OrderCriteria orderCriteria,@ApiParam Pageable pageable) {
         log.debug("REST request to get a page of Orders");
-        Page<OrderListDTO> page = orderService.findAllByClientAndOrderType(pageable, OrderType.PRODUCTION);
+        OrderCriteria.OrderTypeFilter orderTypeFilter=new OrderCriteria.OrderTypeFilter();
+        orderTypeFilter.setEquals(OrderType.PRODUCTION);
+        orderCriteria.setOrderType(orderTypeFilter);
+
+        Page<OrderListDTO> page = orderQueryService.findByCriteriaAndClient(orderCriteria, pageable);//findAllByClientAndOrderType(pageable, OrderType.PRODUCTION);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/orders");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
@@ -141,9 +150,9 @@ public class OrderResource {
      */
     @GetMapping("/orders/filtered")
     @Timed
-    public ResponseEntity<List<OrderListDTO>> getAllOrdersFiltered(OrderCriteria orderCriteria,@ApiParam Pageable pageable) {
+    public ResponseEntity<List<OrderListDTO>> getAllOrdersFiltered(OrderCriteria orderCriteria, @ApiParam Pageable pageable) {
         log.debug("REST request to get a page of Orders");
-        Page<OrderListDTO> page =orderQueryService.findByCriteria(orderCriteria,pageable);
+        Page<OrderListDTO> page = orderQueryService.findByCriteria(orderCriteria, pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/orders/filtered");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
@@ -194,7 +203,7 @@ public class OrderResource {
      * SEARCH  /_search/orders?query=:query : search for the order corresponding
      * to the query.
      *
-     * @param query the query of the order search
+     * @param query    the query of the order search
      * @param pageable the pagination information
      * @return the result of the search
      */
@@ -206,7 +215,6 @@ public class OrderResource {
         HttpHeaders headers = PaginationUtil.generateSearchPaginationHttpHeaders(query, page, "/api/_search/orders");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
-
 
 
     /**
@@ -237,7 +245,7 @@ public class OrderResource {
         Page<OrderListDTO> page = orderService.findOrderToClaimEstimation(pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/orders/not-estimated");
 
-        return  new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
 
     }
 
@@ -255,13 +263,13 @@ public class OrderResource {
         Page<OrderListDTO> page = orderService.findOrderToEstimationByUser(pageable).map(orderMapper::toDto);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/orders/in-estimation");
 
-        return  new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
 
     }
 
     @PutMapping("/orders/{id}/claim-to-estimator")
     @Timed
-    public ResponseEntity<Void>claimToEstimator(@PathVariable Long id){
+    public ResponseEntity<Void> claimToEstimator(@PathVariable Long id) {
         orderService.claimByEstimatior(id);
         return ResponseEntity.ok().build();
     }
@@ -271,7 +279,7 @@ public class OrderResource {
     public ResponseEntity<InputStreamResource> getTechnologyCard(@RequestBody OrderDTO orderDTO) throws IOException {
         ByteArrayOutputStream os = new ByteArrayOutputStream();
 
-       order2PdfCreator.createPdf(orderDTO,os);
+        order2PdfCreator.createPdf(orderDTO, os);
 
         InputStream inputStream = new ByteArrayInputStream(os.toByteArray());
         InputStreamResource inputStreamResource = new InputStreamResource(inputStream);
@@ -286,8 +294,8 @@ public class OrderResource {
 
     @PutMapping("/orders/{id}/move-to-archive")
     @Timed
-    public ResponseEntity<Void> moveOrderToArchive(@PathVariable Long id){
-        log.debug("REST request to move order to archive: {}",id);
+    public ResponseEntity<Void> moveOrderToArchive(@PathVariable Long id) {
+        log.debug("REST request to move order to archive: {}", id);
 
         orderService.moveOrderToArchive(id);
         return ResponseEntity.ok().build();
@@ -295,12 +303,12 @@ public class OrderResource {
 
     @PostMapping("/purchase-orders")
     @Timed
-    public ResponseEntity<OrderListDTO> createPurchaseOrder(@RequestBody OrderDTO orderDTO){
-        log.debug("REST request to  createPurchaseOrder by with OrderDTO : {}",orderDTO);
+    public ResponseEntity<OrderListDTO> createPurchaseOrder(@RequestBody OrderDTO orderDTO) {
+        log.debug("REST request to  createPurchaseOrder by with OrderDTO : {}", orderDTO);
 
-        Order order= orderService.createPurchaseOrder(orderDTO);
+        Order order = orderService.createPurchaseOrder(orderDTO);
         OrderListDTO response = orderMapper.toDto(order);
-        return ResponseEntity.created(URI.create("/orders/"+order.getId())).body(response);
+        return ResponseEntity.created(URI.create("/orders/" + order.getId())).body(response);
     }
 
 
@@ -312,13 +320,13 @@ public class OrderResource {
      */
     @GetMapping("/orders/archived")
     @Timed
-    public ResponseEntity<List<OrderListDTO>> getAllArchivedOrder(OrderCriteria orderCriteria,@ApiParam Pageable pageable) {
-        log.debug("REST request to get a page of Orders with criteria {}",orderCriteria);
-        if(orderCriteria.getOrderStatus()==null){
+    public ResponseEntity<List<OrderListDTO>> getAllArchivedOrder(OrderCriteria orderCriteria, @ApiParam Pageable pageable) {
+        log.debug("REST request to get a page of Orders with criteria {}", orderCriteria);
+        if (orderCriteria.getOrderStatus() == null) {
             orderCriteria.setOrderStatus(new OrderCriteria.OrderStatusFilter());
         }
         orderCriteria.getOrderStatus().setEquals(OrderStatus.SENT_OFFER_TO_CLIENT);
-        Page<OrderListDTO> page =orderQueryService.findByCriteria(orderCriteria,pageable);
+        Page<OrderListDTO> page = orderQueryService.findByCriteria(orderCriteria, pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/orders/filtered");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }

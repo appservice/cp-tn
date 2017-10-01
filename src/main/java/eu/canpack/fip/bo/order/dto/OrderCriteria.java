@@ -5,6 +5,7 @@ import java.io.Serializable;
 //import io.github.jhipster.service.filter.BooleanFilter;
 //import io.github.jhipster.service.filter.DoubleFilter;
 import eu.canpack.fip.bo.order.enumeration.OrderStatus;
+import eu.canpack.fip.bo.order.enumeration.OrderType;
 import io.github.jhipster.service.filter.Filter;
 //import io.github.jhipster.service.filter.FloatFilter;
 //import io.github.jhipster.service.filter.IntegerFilter;
@@ -33,6 +34,10 @@ public class OrderCriteria implements Serializable {
     public static class OrderStatusFilter extends Filter<OrderStatus> {
     }
 
+    public static class OrderTypeFilter extends Filter<OrderType>{
+
+    }
+
     private static final long serialVersionUID = 1L;
 
 
@@ -55,6 +60,8 @@ public class OrderCriteria implements Serializable {
     private StringFilter createdByLastName;
 
     private StringFilter createdByFirstName;
+
+    private OrderTypeFilter orderType;
 
 //
 //    private StringFilter test;
@@ -150,6 +157,14 @@ public class OrderCriteria implements Serializable {
 
     public void setCreatedByFirstName(StringFilter createdByFirstName) {
         this.createdByFirstName = createdByFirstName;
+    }
+
+    public OrderTypeFilter getOrderType() {
+        return orderType;
+    }
+
+    public void setOrderType(OrderTypeFilter orderType) {
+        this.orderType = orderType;
     }
 
     @Override

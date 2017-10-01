@@ -63,6 +63,7 @@
                                 <th class="text-right">Cena/szt</th>
                                 <th class="text-right">Wartość</th>
                                 <th>Pliki:</th>
+                                <th>Uwagi:</th>
                                 <th></th>
 
                             </tr>
@@ -118,6 +119,8 @@
                                     </button>
 
                                 </td>
+                                <td><textarea class="form-control text-area" rows="1" [(ngModel)]="estimation.remark" name="estimation_remarks_{{rowIndex}}"></textarea></td>
+
                                 <td>
                                     <button type="button" class="btn btn-outline-dark" (click)="onDeleteRow(rowIndex);">x</button>
                                 </td>
@@ -131,6 +134,7 @@
                                <td></td>
                                <td class="text-right">Suma:</td>
                                <td class="text-right">{{calculateTotalValue()|currency:'PLN'}}</td>
+                               <td></td>
                                <td></td>
                                <td></td>
                             </tr>

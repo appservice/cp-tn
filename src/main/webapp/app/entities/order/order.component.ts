@@ -7,6 +7,9 @@ import {Order, OrderType} from './order.model';
 import {OrderService} from './order.service';
 import {ITEMS_PER_PAGE, Principal, ResponseWrapper} from '../../shared';
 import {PaginationConfig} from '../../blocks/config/uib-pagination.config';
+import {OrderFilter} from './order-filter.model';
+import {URLSearchParams} from '@angular/http';
+
 
 @Component({
     selector: 'jhi-order',
@@ -31,6 +34,7 @@ export class OrderComponent implements OnInit, OnDestroy {
     reverse: any;
     orderType: OrderType;
     title:String;
+    orderFilter: OrderFilter;
 
     constructor(private orderService: OrderService,
                 private parseLinks: JhiParseLinks,
@@ -51,6 +55,7 @@ export class OrderComponent implements OnInit, OnDestroy {
             this.predicate = data['pagingParams'].predicate;
         });
         this.currentSearch = activatedRoute.snapshot.params['search'] ? activatedRoute.snapshot.params['search'] : '';
+        this.orderFilter=new OrderFilter();
     }
 
     loadAll() {
@@ -67,12 +72,16 @@ export class OrderComponent implements OnInit, OnDestroy {
                     (res: ResponseWrapper) => this.onError(res.json)
                 );
                 return;
-            }
+            };
+            let urlSearchParams=new URLSearchParams();
+            urlSearchParams.append('internalNumber.contains', this.orderFilter.internalNumber);
+            urlSearchParams.append('referenceNumber.contains', this.orderFilter.referenceNumber);
+            urlSearchParams.append('clientName.contains', this.orderFilter.clientName);
             this.orderService.getAllInquiries({
                 page: this.page - 1,
                 size: this.itemsPerPage,
                 sort: this.sort()
-            }).subscribe(
+            },urlSearchParams).subscribe(
                 (res: ResponseWrapper) => this.onSuccess(res.json, res.headers),
                 (res: ResponseWrapper) => this.onError(res.json)
             );
@@ -184,5 +193,20 @@ export class OrderComponent implements OnInit, OnDestroy {
 
     private onError(error) {
         this.alertService.error(error.message, null, null);
+    }
+
+    onEnterClickFilter(event:any){
+        if(event.keyCode==13){
+            this.loadAll();
+        }
+
+    }
+
+    clearFilterAndLoadAll(){
+        this.orderFilter.internalNumber=null;
+        this.orderFilter.referenceNumber=null;
+        this.orderFilter.orderStatus=null;
+        this.orderFilter.clientName=null;
+        this.loadAll();
     }
 }
