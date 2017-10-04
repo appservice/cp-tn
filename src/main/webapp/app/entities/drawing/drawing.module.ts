@@ -17,6 +17,7 @@ import {
 } from './';
 import {TnComponentsModule} from '../../tn-components/tn-components.module';
 import {DrawingEditComponent} from './drawing-edit/drawing-edit.component';
+import {DrawingFinderComponent} from './drawing-finder/drawing-finder.component';
 
 const ENTITY_STATES = [
     ...drawingRoute,
@@ -37,6 +38,7 @@ const ENTITY_STATES = [
         DrawingPopupComponent,
         DrawingDeletePopupComponent,
         DrawingEditComponent,
+        DrawingFinderComponent,
 
     ],
     entryComponents: [
@@ -45,6 +47,7 @@ const ENTITY_STATES = [
         DrawingPopupComponent,
         DrawingDeleteDialogComponent,
         DrawingDeletePopupComponent,
+        DrawingFinderComponent,
     ],
     providers: [
         DrawingService,

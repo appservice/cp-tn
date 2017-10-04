@@ -77,6 +77,9 @@ export class OrderComponent implements OnInit, OnDestroy {
             urlSearchParams.append('internalNumber.contains', this.orderFilter.internalNumber);
             urlSearchParams.append('referenceNumber.contains', this.orderFilter.referenceNumber);
             urlSearchParams.append('clientName.contains', this.orderFilter.clientName);
+            urlSearchParams.append('orderStatus.equals', this.orderFilter.orderStatus);
+            urlSearchParams.append('createdAt.greaterOrEqualThan', this.orderFilter.getValidFromString());
+            urlSearchParams.append('createdAt.lessOrEqualThan', this.orderFilter.getValidToString());
             this.orderService.getAllInquiries({
                 page: this.page - 1,
                 size: this.itemsPerPage,
@@ -207,6 +210,8 @@ export class OrderComponent implements OnInit, OnDestroy {
         this.orderFilter.referenceNumber=null;
         this.orderFilter.orderStatus=null;
         this.orderFilter.clientName=null;
+        this.orderFilter.validFrom=null
+        this.orderFilter.validTo=null;
         this.loadAll();
     }
 }

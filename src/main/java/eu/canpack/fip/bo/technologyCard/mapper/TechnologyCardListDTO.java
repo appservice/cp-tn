@@ -31,6 +31,8 @@ public class TechnologyCardListDTO implements Serializable {
     //    private DrawingDTO drawing;
 //
     private String drawingNumber;
+
+    private String drawingName;
     private Long drawingId;
 
     public TechnologyCardListDTO() {
@@ -125,6 +127,14 @@ public class TechnologyCardListDTO implements Serializable {
 //        this.drawing = drawing;
 //    }
 
+
+    public String getDrawingName() {
+        return drawingName;
+    }
+
+    public void setDrawingName(String drawingName) {
+        this.drawingName = drawingName;
+    }
 
     @Override
     public boolean equals(Object o) {

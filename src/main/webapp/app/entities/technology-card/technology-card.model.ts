@@ -12,6 +12,7 @@ export class TechnologyCard implements BaseEntity {
         public amount?: number,
         public drawing?: Drawing,
         public drawingNumber?: string,
+        public drawingName?: string,
         public createdByName?: string,
         public operations?: Operation[],
         public sequenceNumber ?: number,

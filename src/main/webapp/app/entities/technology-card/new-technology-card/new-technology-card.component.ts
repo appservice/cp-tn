@@ -16,6 +16,7 @@ import {TechnologyCardService} from '../technology-card.service';
 import {isNullOrUndefined} from 'util';
 import {OrderService} from '../../order/order.service';
 import {OrderSimpleDTO} from '../../order/order-simpleDTO.model';
+import {DrawingFinderComponent} from '../../drawing/drawing-finder/drawing-finder.component';
 
 @Component({
     selector: 'new-etechnology-card',
@@ -39,6 +40,8 @@ export class NewTechnologyCardComponent implements OnInit, OnDestroy {
     private searchingUnit = false;
     hideSearchingWhenUnsubscribed = new Observable(() => () => this.searchingUnit = false);
     searchFeild: boolean;
+    title: string;
+    readOnly: boolean;
 
 
     currencyMaskOpt: CurrencyMaskConfig;
@@ -51,6 +54,7 @@ export class NewTechnologyCardComponent implements OnInit, OnDestroy {
                 private modalService: NgbModal,
                 private unitService: UnitService,
                 private technologyCardService: TechnologyCardService,
+                private activatedRoute: ActivatedRoute,
                 private orderService: OrderService) {
         this.technologyCard = new TechnologyCard();
         this.technologyCard.operations = [];
@@ -64,11 +68,22 @@ export class NewTechnologyCardComponent implements OnInit, OnDestroy {
         this.subscription = this.route.params.subscribe((params) => {
             console.log(params);
             if (params['id']) {
-                console.log('params exiest');
+                this.title="Edytuj kartę technologizną"
                 this.load(params['id']);
+
+            }else{
+                this.title="Dodaj kartę technologizną"
+
+            }
+            if(params['readOnly']){
+                this.readOnly = params['readOnly'];
 
             }
 
+        });
+
+        this.activatedRoute.data.subscribe((data) => {
+            this.readOnly=data['readOnly'];
         });
         this.machineService.query()
             .subscribe((res: ResponseWrapper) => {
@@ -270,4 +285,18 @@ export class NewTechnologyCardComponent implements OnInit, OnDestroy {
     //     );
     //     //  console.log(response());
     // }
+
+
+    openDrawingCardModal() {
+
+        const modalRef = this.modalService.open(DrawingFinderComponent,{size:'lg'});
+
+        console.log(modalRef.result);
+        modalRef.result.then(result=>{
+            console.log(result);
+            this.technologyCard.drawing=result;
+           // this.insertOperationFromTechnologyCard(result)
+        },(reason:any)=>{console.log(reason)});
+        // modalRef.componentInstance.name = 'World';
+    }
 }

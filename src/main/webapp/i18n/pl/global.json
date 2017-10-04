@@ -14,8 +14,8 @@
                 "drawing": "Rysunek techn.",
                 "client": "Klient",
                 "unit": "Jednostka miary",
-                "commercialPart": "Commercial Part",
-                "technologyCard": "Technology Card",
+                "commercialPart": "Część handlowa",
+                "technologyCard": "Karta technolog.",
                 "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
             },
             "account": {

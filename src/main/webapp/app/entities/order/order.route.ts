@@ -126,7 +126,7 @@ export const orderRoute: Routes = [
         },
         data: {
             authorities: ['ROLE_USER'],
-            pageTitle: 'Zlecenia czekające na rozpoczęcie wyceny'
+            pageTitle: 'tnApp.order.inquiriesForEstimation'
         },
         canActivate: [UserRouteAccessService]
     },
@@ -138,7 +138,7 @@ export const orderRoute: Routes = [
         },
         data: {
             authorities: ['ROLE_USER'],
-            pageTitle: 'Zlecenia aktualnie wyceniane'
+            pageTitle: 'tnApp.order.inquiriesEstimated'
         },
         canActivate: [UserRouteAccessService]
     },
@@ -161,7 +161,7 @@ export const orderRoute: Routes = [
         },
         data: {
             authorities: ['ROLE_USER'],
-            pageTitle: 'Zlecenia archivalnee'
+            pageTitle: 'tnApp.order.archivalInquiries'
         },
         canActivate: [UserRouteAccessService]
     },

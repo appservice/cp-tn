@@ -28,6 +28,7 @@ import {
     ErrorComponent
 } from './layouts';
 import {CurrencyMaskModule} from 'ng2-currency-mask';
+import {FormsModule} from '@angular/forms';
 
 
 @NgModule({

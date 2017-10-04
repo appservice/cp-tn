@@ -1,6 +1,7 @@
 package eu.canpack.fip.bo.technologyCard;
 
 import eu.canpack.fip.bo.drawing.Drawing;
+import eu.canpack.fip.bo.drawing.DrawingRepository;
 import eu.canpack.fip.bo.estimation.EstimationDTO;
 import eu.canpack.fip.bo.operation.Operation;
 import eu.canpack.fip.bo.operation.OperationMapper;
@@ -42,14 +43,17 @@ public class TechnologyCardService {
 
     private final TechnologyCardMapper technologyCardMapper;
 
+    private final DrawingRepository drawingRepository;
+
     private final UserService userService;
 
-    public TechnologyCardService(TechnologyCardRepository technologyCardRepository, TechnologyCardListMapper technologyCardListMapper, TechnologyCardSearchRepository technologyCardSearchRepository, OperationMapper operationMapper, TechnologyCardMapper technologyCardMapper, UserService userService) {
+    public TechnologyCardService(TechnologyCardRepository technologyCardRepository, TechnologyCardListMapper technologyCardListMapper, TechnologyCardSearchRepository technologyCardSearchRepository, OperationMapper operationMapper, TechnologyCardMapper technologyCardMapper, DrawingRepository drawingRepository, UserService userService) {
         this.technologyCardRepository = technologyCardRepository;
         this.technologyCardListMapper = technologyCardListMapper;
         this.technologyCardSearchRepository = technologyCardSearchRepository;
         this.operationMapper = operationMapper;
         this.technologyCardMapper = technologyCardMapper;
+        this.drawingRepository = drawingRepository;
         this.userService = userService;
     }
 
@@ -62,13 +66,14 @@ public class TechnologyCardService {
     public TechnologyCardDTO save(TechnologyCardDTO technologyCardDTO) {
         log.debug("Request to save TechnologyCard : {}", technologyCardDTO);
         TechnologyCard technologyCard = technologyCardMapper.toEntity(technologyCardDTO);
-        log.debug("technologyCard form mapper {}",technologyCard);
-        technologyCard = technologyCardRepository.save(technologyCard);
+        log.debug("technologyCard form mapper {}", technologyCard);
         technologyCard.createdAt(ZonedDateTime.now());
         technologyCard.createdBy(userService.getLoggedUser());
+        technologyCard = technologyCardRepository.save(technologyCard);
+
 
         TechnologyCardDTO result = technologyCardMapper.toDto(technologyCard);
-//        technologyCardSearchRepository.save(technologyCard);
+        technologyCardSearchRepository.save(technologyCard);
         return result;
     }
 
@@ -130,9 +135,23 @@ public class TechnologyCardService {
             .material(estimationDTO.getMaterial())
             .mass(estimationDTO.getMass())
             .amount(estimationDTO.getAmount());
-        Drawing drawing = new Drawing();
-        drawing.setId(estimationDTO.getDrawing().getId());
-        technologyCard.setDrawing(drawing);
+        if (estimationDTO.getDrawing() !=  null) {
+            Drawing drawing = new Drawing();
+            drawing.setId(estimationDTO.getDrawing().getId());
+            drawing.getTechnologyCards().add(technologyCard);
+            drawingRepository.save(drawing);
+            technologyCard.setDrawing(drawing);
+        } else {
+            Drawing drawing = new Drawing();
+            drawing.setNumber(estimationDTO.getItemNumber());
+            drawing.setName(estimationDTO.getItemName());
+            drawing.getTechnologyCards().add(technologyCard);
+            drawingRepository.save(drawing);
+            technologyCard.setDrawing(drawing);
+
+
+        }
+
 
         //clear operations
         estimationDTO.getOperations().forEach(o -> {
@@ -140,11 +159,12 @@ public class TechnologyCardService {
             o.setEstimationId(null);
         });
 
-
         List<Operation> operations = operationMapper.toEntity(estimationDTO.getOperations());
         technologyCard.setOperations(operations);
         technologyCard.setCreatedBy(userService.getLoggedUser());
-        return technologyCardRepository.save(technologyCard);
+        technologyCard = technologyCardRepository.save(technologyCard);
+        technologyCardSearchRepository.save(technologyCard);
+        return technologyCard;
 
     }
 }

@@ -7,3 +7,4 @@ export * from './drawing-detail.component';
 export * from './drawing.component';
 export * from './drawing.route';
 export * from './drawing-edit/drawing-edit.component';
+export * from './drawing-finder/drawing-finder.component';

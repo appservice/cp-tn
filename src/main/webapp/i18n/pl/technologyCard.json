@@ -5,7 +5,7 @@
                 "title": "Karty technologiczne",
                 "createLabel": "Dodaj Kartę techn.",
                 "createOrEditLabel": "Dodaj lub edytuj: Kartę techn.",
-                "search": "Szukaj Technology Card"
+                "search": "Szukaj Karty technologicznej"
             },
             "created": "Utworzono nowy Kartę techn.z identyfikatorem {{ param }}",
             "updated": "Uaktualniono Kartę techn. z identyfikatorem {{ param }}",

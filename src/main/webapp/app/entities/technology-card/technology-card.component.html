@@ -1,7 +1,7 @@
 <div>
     <h2>
         <span jhiTranslate="tnApp.technologyCard.home.title">Technology Cards</span>
-        <button class="btn btn-primary float-right jh-create-entity create-technology-card" [routerLink]="['/', { outlets: { popup: ['technology-card-new'] } }]">
+        <button class="btn btn-primary float-right jh-create-entity create-technology-card" [routerLink]="['technology-card-new']">
             <span class="fa fa-plus"></span>
             <span class="hidden-sm-down"  jhiTranslate="tnApp.technologyCard.home.createLabel">
             Create new Technology Card
@@ -46,7 +46,7 @@
                         <a [routerLink]="['../drawing', technologyCard.drawingId  ]" >{{technologyCard.drawingNumber}}</a>
                     </div>
                 </td>
-                <td>{{technologyCard.description}}</td>
+                <td>{{technologyCard.drawingName}}</td>
                 <td>{{technologyCard.mass}}</td>
                 <td>{{technologyCard.createdAt | date:'medium'}}</td>
                 <td>{{technologyCard.createdByName}}</td>

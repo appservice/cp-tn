@@ -26,7 +26,10 @@
             "estimations": "Kalkulacja",
             "client": "Klient",
             "purchaseOrders": "Zamówienia",
-            "inquiries": "Zapytania ofertowe"
+            "inquiries": "Zapytania ofertowe",
+            "archivalInquiries": "Zlecenia archiwalne",
+            "inquiriesEstimated":"Zlecenia aktualnie wyceniane",
+            "inquiriesForEstimation": "Zlecenia czekające na rozpoczęcie wyceny"
         }
     }
 }

@@ -26,7 +26,6 @@ public class TechnologyCardDTO implements Serializable {
 
     private String description;
 
-    @NotNull
     private ZonedDateTime createdAt;
 
     private Integer amount;

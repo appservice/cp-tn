@@ -15,6 +15,7 @@ public interface TechnologyCardListMapper extends EntityMapper<TechnologyCardLis
 
     @Mapping(source = "drawing.id", target = "drawingId")
     @Mapping(source = "drawing.number", target = "drawingNumber")
+    @Mapping(source = "drawing.name", target = "drawingName")
     @Mapping(target = "createdByName",expression = "java(technologyCard.getCreatorName())")
     @Mapping(source = "createdBy.id",target = "createdById")
     TechnologyCardListDTO toDto(TechnologyCard technologyCard);

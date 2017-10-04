@@ -45,7 +45,8 @@ export const technologyCardRoute: Routes = [
         component: NewTechnologyCardComponent,
         data: {
             authorities: ['ROLE_USER'],
-            pageTitle: 'tnApp.technologyCard.home.title'
+            pageTitle: 'tnApp.technologyCard.home.title',
+            readOnly: true,
         },
         canActivate: [UserRouteAccessService]
     }
@@ -57,11 +58,20 @@ export const technologyCardRoute: Routes = [
             pageTitle: 'tnApp.technologyCard.home.title'
         },
         canActivate: [UserRouteAccessService]
+    },
+    {
+        path: 'technology-card-new',
+        component: NewTechnologyCardComponent,
+        data: {
+            authorities: ['ROLE_USER'],
+            pageTitle: 'tnApp.technologyCard.home.title'
+        },
+        canActivate: [UserRouteAccessService],
     }
 ];
 
 export const technologyCardPopupRoute: Routes = [
-    {
+   /* {
         path: 'technology-card-new',
         component: TechnologyCardPopupComponent,
         data: {
@@ -70,7 +80,7 @@ export const technologyCardPopupRoute: Routes = [
         },
         canActivate: [UserRouteAccessService],
         outlet: 'popup'
-    },
+    },*/
     {
         path: 'technology-card-finder',
         component: TechnologyCardFinderComponent,

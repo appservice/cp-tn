@@ -147,7 +147,10 @@ public class OrderQueryService extends QueryService<Order> {
         User user = userService.getLoggedUser();
         Client client = user.getClient();
         if (client != null) {
-
+            log.debug("user client: {}",client);
+            if(criteria.getClientId()==null){
+                criteria.setClientId(new LongFilter());
+            }
             criteria.getClientId().setEquals(client.getId());
 
         }

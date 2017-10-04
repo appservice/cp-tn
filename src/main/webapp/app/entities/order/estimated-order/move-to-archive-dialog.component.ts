@@ -1,5 +1,5 @@
 import {Component, OnInit, OnDestroy, Input,} from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 
 import { NgbActiveModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { JhiEventManager } from 'ng-jhipster';
@@ -21,6 +21,8 @@ export class MoveToArchiveDialogComponent {
         private orderService: OrderService,
         public activeModal: NgbActiveModal,
         private eventManager: JhiEventManager,
+        private router: Router,
+
     ) {
     }
 
@@ -35,6 +37,8 @@ export class MoveToArchiveDialogComponent {
                 content: 'Moved to archive'
             });
             this.activeModal.dismiss(true);
+            this.router.navigate(['orders-in-estimation']);
+
         });
     }
 }
