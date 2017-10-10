@@ -1,0 +1,26 @@
+{
+    "tnApp": {
+        "operator" : {
+            "home": {
+                "title": "Operatorzy",
+                "createLabel": "Dodaj Operatora",
+                "createOrEditLabel": "Dodaj lub edytuj dane: Operatora",
+                "search": "Szukaj Operatora"
+            },
+            "created": "Utworzono nowego Operatora z identyfikatorem {{ param }}",
+            "updated": "Uaktualniono dane Operatora z identyfikatorem {{ param }}",
+            "deleted": "Usunięto Operatora z identyfikatorem {{ param }}",
+            "delete": {
+                "question": "Czy na pewno chcesz usunąć Operatora {{ id }}?"
+            },
+            "detail": {
+                "title": "Operator"
+            },
+            "firstName": "Imię",
+            "lastName": "Nazwisko",
+            "cardNumber": "Numer karty",
+            "jobTitle": "Stanowisko",
+            "active": "Aktywny"
+        }
+    }
+}
