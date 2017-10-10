@@ -34,7 +34,7 @@ export const productionRoute: Routes = [
         },
         data: {
             authorities: ['ROLE_USER'],
-            pageTitle: 'tnApp.estimation.home.title'
+            pageTitle: 'tnApp.production.home.title'
         },
         canActivate: [UserRouteAccessService]
     },
@@ -46,7 +46,7 @@ export const productionRoute: Routes = [
         },
         data: {
             authorities: ['ROLE_USER'],
-            pageTitle: 'tnApp.orders.home.title'
+            pageTitle: 'tnApp.production.home.title'
         },
         canActivate: [UserRouteAccessService]
     },
@@ -58,7 +58,7 @@ export const productionRoute: Routes = [
         },
         data: {
             authorities: ['ROLE_USER'],
-            pageTitle: 'tnApp.orders.home.title'
+            pageTitle: 'tnApp.production.home.title'
         },
         canActivate: [UserRouteAccessService]
     },
@@ -67,7 +67,7 @@ export const productionRoute: Routes = [
         component: TechnologyEditComponent,
         data: {
             authorities: ['ROLE_USER'],
-            pageTitle: 'tnApp.estimation.home.title'
+            pageTitle: 'tnApp.production.home.title'
         },
         canActivate: [UserRouteAccessService]
     },

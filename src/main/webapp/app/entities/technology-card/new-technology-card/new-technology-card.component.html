@@ -22,8 +22,8 @@
 
                                 <div class="row">
                                     <div class="col-12">
-                                        <a (click)="openDrawingCardModal()">Rysunek:</a> <a
-                                        (click)="openModal(content)"><strong>{{technologyCard.drawing.number}}</strong></a>
+                                        <a (click)="openDrawingCardModal()">Rysunek:</a>
+                                        <a (click)="openModal(content)"><strong>{{technologyCard.drawing.number}}</strong></a>
 
                                     </div>
                                 </div>
@@ -198,17 +198,17 @@
         </ngb-tabset>
     </fieldset>
 
-        <div class="text-center" style="margin-top: 30px">
+    <div class="text-center" style="margin-top: 30px">
 
-            <button class="btn btn-info " type="submit" [disabled]="editForm.form.invalid || isSaving" *ngIf="!readOnly">
-                <span class="fa fa-save"></span>&nbsp;Zapisz
-                <!--<span jhiTranslate="entity.action.save">Save</span>-->
-            </button>
-            <button type="button" class="btn btn-danger" (click)="previousState()">Powrót</button>
+        <button class="btn btn-info " type="submit" [disabled]="editForm.form.invalid || isSaving" *ngIf="!readOnly">
+            <span class="fa fa-save"></span>&nbsp;Zapisz
+            <!--<span jhiTranslate="entity.action.save">Save</span>-->
+        </button>
+        <button type="button" class="btn btn-danger" (click)="previousState()">Powrót</button>
 
 
-        </div>
-        </div>
+    </div>
+    </div>
 </form>
 
 

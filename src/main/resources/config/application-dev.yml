@@ -65,6 +65,10 @@ spring:
         cache-seconds: 1
     thymeleaf:
         cache: false
+    http:
+      multipart:
+        max-request-size: 20MB
+        max-file-size: 20MB
 
 liquibase:
     contexts: dev

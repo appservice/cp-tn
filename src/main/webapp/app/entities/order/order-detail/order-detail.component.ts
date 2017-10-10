@@ -12,6 +12,7 @@ import {Subscription} from 'rxjs/Subscription';
 import {ModalDismissReasons, NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {EstimationRemark} from '../../estimation-remark/estimation-remark.model';
 import {Drawing} from '../../drawing/drawing.model';
+import {ExcelService} from '../../../tn-components/excel.service';
 
 @Component({
     selector: 'tn-order-detail',
@@ -44,7 +45,10 @@ export class OrderDetailComponent implements OnInit, OnDestroy {
                 private eventManager: JhiEventManager,
                 private router: Router,
                 private route: ActivatedRoute,
-                private modalService: NgbModal) {
+                private modalService: NgbModal,
+                private excelService: ExcelService,
+
+    ) {
         this.order = new Order();
         this.order.estimations = [];
 
@@ -195,4 +199,6 @@ export class OrderDetailComponent implements OnInit, OnDestroy {
         }
         return isDisabled;
     }
+
+
 }

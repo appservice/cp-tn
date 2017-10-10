@@ -85,6 +85,7 @@ public class CacheConfiguration {
 //            cm.createCache(eu.canpack.fip.domain.Drawing.class.getName(), jcacheConfiguration);
             cm.createCache(TechnologyCard.class.getName(), jcacheConfiguration);
             cm.createCache(TechnologyCard.class.getName() + ".operations", jcacheConfiguration);
+            cm.createCache(eu.canpack.fip.domain.Operator.class.getName(), jcacheConfiguration);
             // jhipster-needle-ehcache-add-entry
         };
     }

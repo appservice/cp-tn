@@ -9,6 +9,7 @@ import eu.canpack.fip.bo.estimation.EstimationDTO;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -45,7 +46,15 @@ public class OrderDTO implements Serializable {
 
     private Long inquiryId;
 
+    private ZonedDateTime createdAt;
+
+    private String createdByName;
+
+    private String estimationMakerName;
+
     private List<EstimationCreateDTO> estimations = new ArrayList<>();
+
+    private ZonedDateTime estimationFinishDate;
 
     public OrderDTO() {
 
@@ -64,6 +73,14 @@ public class OrderDTO implements Serializable {
         this.clientId = o.getClient().getId();
         this.clientShortcut=o.getClient().getShortcut();
         this.referenceNumber=o.getReferenceNumber();
+        this.createdAt=o.getCreatedAt();
+        if(o.getCreatedBy()!=null) {
+            this.createdByName = o.getCreatedBy().getFirstName() + " " + o.getCreatedBy().getLastName();
+        }
+        if(o.getEstimationMaker()!=null) {
+            this.estimationMakerName = o.getEstimationMaker().getFirstName() + " " + o.getEstimationMaker().getLastName();
+        }
+        this.estimationFinishDate=o.getEstimationFinsihDate();
        // this.estimations = estimations;
     }
 
@@ -169,6 +186,30 @@ public class OrderDTO implements Serializable {
 
     public void setInquiryId(Long inquiryId) {
         this.inquiryId = inquiryId;
+    }
+
+    public ZonedDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(ZonedDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public String getCreatedByName() {
+        return createdByName;
+    }
+
+    public void setCreatedByName(String createdByName) {
+        this.createdByName = createdByName;
+    }
+
+    public String getEstimationMakerName() {
+        return estimationMakerName;
+    }
+
+    public void setEstimationMakerName(String estimationMakerName) {
+        this.estimationMakerName = estimationMakerName;
     }
 
     @Override

@@ -53,8 +53,7 @@ public class Order implements Serializable {
     @Column(name = "reference_number")
     private String referenceNumber;
 
-    @NotNull
-    @Column(name = "name", nullable = false)
+    @Column(name = "name")
     private String name;
 
 
@@ -87,6 +86,9 @@ public class Order implements Serializable {
     @Column(name="created_at",nullable = false)
     @NotNull
     private ZonedDateTime createdAt;
+
+    @Column(name="estimation_finish_date")
+    private ZonedDateTime estimationFinsihDate;
 
     public Long getId() {
         return id;
@@ -278,6 +280,20 @@ public class Order implements Serializable {
     public void setYear(Integer year) {
         this.year = year;
     }
+
+    public ZonedDateTime getEstimationFinsihDate() {
+        return estimationFinsihDate;
+    }
+
+    public void setEstimationFinsihDate(ZonedDateTime estimationFinsihDate) {
+        this.estimationFinsihDate = estimationFinsihDate;
+    }
+
+    public Order estimationFinsihDate(final ZonedDateTime estimationFinsihDate) {
+        this.estimationFinsihDate = estimationFinsihDate;
+        return this;
+    }
+
 
     @Override
     public boolean equals(Object o) {

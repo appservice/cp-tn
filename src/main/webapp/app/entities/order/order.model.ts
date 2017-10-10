@@ -26,9 +26,11 @@ export class Order implements BaseEntity {
                 public clientId?: number,
                 public clientShortcut?: string,
                 public createdAt?: string,
+                public createdByName?: string,
+                public estimationMakerName?: string,
                 public remark ?: string,
                 public inquiryId?: number,
-
+                public estimationFinishDate?: any,
                 ) {
     }
 }

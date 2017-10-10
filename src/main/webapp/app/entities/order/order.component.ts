@@ -9,6 +9,7 @@ import {ITEMS_PER_PAGE, Principal, ResponseWrapper} from '../../shared';
 import {PaginationConfig} from '../../blocks/config/uib-pagination.config';
 import {OrderFilter} from './order-filter.model';
 import {URLSearchParams} from '@angular/http';
+import {ExcelService} from '../../tn-components/excel.service';
 
 
 @Component({
@@ -44,7 +45,8 @@ export class OrderComponent implements OnInit, OnDestroy {
                 private router: Router,
                 private eventManager: JhiEventManager,
                 private paginationUtil: JhiPaginationUtil,
-                private paginationConfig: PaginationConfig) {
+                private paginationConfig: PaginationConfig,
+                private excelService: ExcelService) {
         this.itemsPerPage = ITEMS_PER_PAGE;
         this.routeData = this.activatedRoute.data.subscribe((data) => {
             console.log(data);
@@ -213,5 +215,9 @@ export class OrderComponent implements OnInit, OnDestroy {
         this.orderFilter.validFrom=null
         this.orderFilter.validTo=null;
         this.loadAll();
+    }
+
+    exportAsExcelFile(){
+        this.excelService.exportAsExcelFile(this.orders, 'TestFile.xlsx');
     }
 }

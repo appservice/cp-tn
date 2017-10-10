@@ -75,7 +75,7 @@
                             <!--<span class="fa fa-remove"></span>-->
                             <!--<span class="hidden-md-down" jhiTranslate="entity.action.delete">Delete</span>-->
                         <!--</button>-->
-                        <button type="submit" *ngIf="order.orderStatus=='WORKING_COPY'"
+                        <button type="submit" *ngIf="order.orderStatus=='IN_PRODUCTION'"
                                 [routerLink]="['/orders-in-production/'+order.id+'/detail']"
                                 class="btn btn-outline-primary btn-sm">
                             <span class="fa fa-list"></span>

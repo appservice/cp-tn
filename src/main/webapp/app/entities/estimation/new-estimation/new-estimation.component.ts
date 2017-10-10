@@ -20,6 +20,7 @@ import {OrderSimpleDTO} from '../../order/order-simpleDTO.model';
 import {TnAlert} from '../../../tn-components/tn-alert';
 import {TechnologyCardFinderComponent} from '../../technology-card/technology-card-finder/technology-card-finder.component';
 import {TechnologyCard} from '../../technology-card/technology-card.model';
+import {DrawingFinderComponent} from '../../drawing/drawing-finder/drawing-finder.component';
 
 @Component({
     selector: 'new-estimation',
@@ -38,7 +39,7 @@ export class NewEstimationComponent implements OnInit, OnDestroy {
     subscription: Subscription;
     closeResult: string;
     clickedRow: number;
-    isCollapsed:boolean=false;
+    isCollapsed: boolean = false;
     model = 1;
     machines: Machine[] = [];
     private searchingUnit = false;
@@ -102,7 +103,6 @@ export class NewEstimationComponent implements OnInit, OnDestroy {
         this.calculateCommercialPartsTotalCost();
 
 
-
     }
 
     private onError(error) {
@@ -116,7 +116,7 @@ export class NewEstimationComponent implements OnInit, OnDestroy {
     addOperation() {
         this.estimation.operations.push({
             id: null,
-            sequenceNumber: (this.estimation.operations.length+1)*5
+            sequenceNumber: (this.estimation.operations.length + 1) * 5
 
         });
     }
@@ -155,12 +155,17 @@ export class NewEstimationComponent implements OnInit, OnDestroy {
     }
 
     onFileArrayChange(event: Attachment[]) {
+        if (this.estimation.drawing) {
+            this.estimation.drawing.attachments = event;
+            console.log('event from parent object: ', event);
+
+        }
         // this.attachments = event;
-        console.log('event from parent object: ', event);
     }
 
     save() {
         this.isSaving = true;
+        console.log(this.estimation);
         if (this.estimation.id !== undefined) {
             this.subscribeToSaveResponse(
                 this.estimationService.update(this.estimation));
@@ -214,11 +219,15 @@ export class NewEstimationComponent implements OnInit, OnDestroy {
     }
 
     openModal(content) {
-        this.modalService.open(content, {size: 'lg'}).result.then((result) => {
-            this.closeResult = `Closed with: ${result}`;
-        }, (reason) => {
-            this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
-        });
+        if (this.estimation.drawing) {
+
+
+            this.modalService.open(content, {size: 'lg'}).result.then((result) => {
+                this.closeResult = `Closed with: ${result}`;
+            }, (reason) => {
+                this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+            });
+        }
     }
 
     private getDismissReason(reason: any): string {
@@ -317,16 +326,16 @@ export class NewEstimationComponent implements OnInit, OnDestroy {
         console.log('test export technology card');
         console.log('est: ', this.estimation);
         this.estimationService.exportToTechnologyCard(this.estimation).subscribe(res => {
-            const modalRef = this.modalService.open(TnAlert);
-            modalRef.componentInstance.header = 'Uwaga';
-            modalRef.componentInstance.content = 'Dane zostały wyeksportowane do karty technologicznej nr: '+res.json().id;
+                const modalRef = this.modalService.open(TnAlert);
+                modalRef.componentInstance.header = 'Uwaga';
+                modalRef.componentInstance.content = 'Dane zostały wyeksportowane do karty technologicznej nr: ' + res.json().id;
                 this.isExporting = false;
             }, (error: any) => {
                 this.isExporting = false;
 
-            const modalRef = this.modalService.open(TnAlert);
-            modalRef.componentInstance.header = 'Uwaga';
-            modalRef.componentInstance.content = 'Błąd podczas eksportu! '
+                const modalRef = this.modalService.open(TnAlert);
+                modalRef.componentInstance.header = 'Uwaga';
+                modalRef.componentInstance.content = 'Błąd podczas eksportu! '
             }
         );
         //  console.log(response());
@@ -334,23 +343,44 @@ export class NewEstimationComponent implements OnInit, OnDestroy {
 
     openTechnologyCardModal() {
 
-        const modalRef = this.modalService.open(TechnologyCardFinderComponent,{size:'lg'});
+        const modalRef = this.modalService.open(TechnologyCardFinderComponent, {size: 'lg'});
 
         console.log(modalRef.result);
-       modalRef.result.then(result=>{
-           this.insertOperationFromTechnologyCard(result)
-       },(reason:any)=>{console.log(reason)});
-       // modalRef.componentInstance.name = 'World';
+        modalRef.result.then(result => {
+            this.insertOperationFromTechnologyCard(result)
+        }, (reason: any) => {
+            console.log(reason)
+        });
+        // modalRef.componentInstance.name = 'World';
     }
-   // promisetechnologyCard: Promise<TechnologyCard>;
 
-    private insertOperationFromTechnologyCard(technologyCard:TechnologyCard):void{
+    // promisetechnologyCard: Promise<TechnologyCard>;
+
+    private insertOperationFromTechnologyCard(technologyCard: TechnologyCard): void {
         console.log(technologyCard);
-        for(let operation of technologyCard.operations){
-            operation.id=null;
+        for (let operation of technologyCard.operations) {
+            operation.id = null;
             this.estimation.operations.push(operation);
             this.calculateOperationsTotalCost();
         }
+    }
+
+
+    openDrawingCardModal() {
+
+        const modalRef = this.modalService.open(DrawingFinderComponent, {size: 'lg'});
+
+        console.log(modalRef.result);
+        modalRef.result.then(result => {
+            console.log(result);
+            this.estimation.drawing = result;
+            //    this.estimation.itemNumber = result.number;
+            //  this.estimation.itemNumber=result.number;
+            // this.insertOperationFromTechnologyCard(result)
+        }, (reason: any) => {
+            console.log(reason)
+        });
+        //
     }
 
 }

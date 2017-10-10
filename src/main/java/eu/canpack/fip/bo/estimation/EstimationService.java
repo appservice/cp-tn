@@ -88,6 +88,12 @@ public class EstimationService {
         User currentUser=userService.getLoggedUser();
         estimation.setCreatedBy(currentUser);
 
+        if(estimation.getDrawing()!=null){
+            log.debug("estimation DrawingO: {}",estimation.getDrawing());
+            log.debug("attachmentsO: {}",estimation.getDrawing().getAttachments());
+
+        }
+
         if(estimationDTO.getRemark()!=null && !estimationDTO.getRemark().isEmpty()){
             EstimationRemark remark = createRemark(estimationDTO.getRemark(), estimation);
             estimation.getEstimationRemarks().add(remark);

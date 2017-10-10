@@ -80,7 +80,8 @@
                                             <!--</ss-multiselect-dropdown>-->
                                             <button class="btn btn-outline-dark" type="button"
                                                     (click)="openModal(content,rowIndex)">
-                                                <strong>{{estimation.drawing.attachments.length}}</strong>
+                                                <strong *ngIf="estimation.drawing">{{estimation.drawing.attachments.length}}</strong>
+                                                <strong *ngIf="!estimation.drawing">0</strong>
                                                 <i class="fa fa-paperclip"></i>
                                             </button>
 

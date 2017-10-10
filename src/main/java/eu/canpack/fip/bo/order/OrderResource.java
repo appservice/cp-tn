@@ -114,8 +114,8 @@ public class OrderResource {
 //        if (orderCriteria == null) {
 //            orderCriteria = new OrderCriteria();
 //        }
-       // orderCriteria.getOrderType().setEquals(OrderType.ESTIMATION);
-        OrderCriteria.OrderTypeFilter orderTypeFilter=new OrderCriteria.OrderTypeFilter();
+        // orderCriteria.getOrderType().setEquals(OrderType.ESTIMATION);
+        OrderCriteria.OrderTypeFilter orderTypeFilter = new OrderCriteria.OrderTypeFilter();
         orderTypeFilter.setEquals(OrderType.ESTIMATION);
         orderCriteria.setOrderType(orderTypeFilter);
         Page<OrderListDTO> page = orderQueryService.findByCriteriaAndClient(orderCriteria, pageable);//orderService.findAllByClientAndOrderType(pageable, OrderType.ESTIMATION);
@@ -131,9 +131,9 @@ public class OrderResource {
      */
     @GetMapping("/orders/production")
     @Timed
-    public ResponseEntity<List<OrderListDTO>> getAllProductionOrders(OrderCriteria orderCriteria,@ApiParam Pageable pageable) {
+    public ResponseEntity<List<OrderListDTO>> getAllProductionOrders(OrderCriteria orderCriteria, @ApiParam Pageable pageable) {
         log.debug("REST request to get a page of Orders");
-        OrderCriteria.OrderTypeFilter orderTypeFilter=new OrderCriteria.OrderTypeFilter();
+        OrderCriteria.OrderTypeFilter orderTypeFilter = new OrderCriteria.OrderTypeFilter();
         orderTypeFilter.setEquals(OrderType.PRODUCTION);
         orderCriteria.setOrderType(orderTypeFilter);
 
@@ -297,6 +297,7 @@ public class OrderResource {
     public ResponseEntity<Void> moveOrderToArchive(@PathVariable Long id) {
         log.debug("REST request to move order to archive: {}", id);
 
+
         orderService.moveOrderToArchive(id);
         return ResponseEntity.ok().build();
     }
@@ -314,7 +315,7 @@ public class OrderResource {
 
     /**
      * GET  /orders : get all the orders.
-     *
+     *ez
      * @param pageable the pagination information
      * @return the ResponseEntity with status 200 (OK) and the list of orders in body
      */

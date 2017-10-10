@@ -88,7 +88,7 @@ public class Estimation implements Serializable {
     private LocalDate estimatedRealizationDate;
 
 
-    @OneToMany(mappedBy = "estimation", cascade = CascadeType.ALL)/*orphanRemoval = true, */
+    @OneToMany(mappedBy = "estimation",orphanRemoval = true,cascade = CascadeType.ALL)
     @JsonIgnore
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private List<CommercialPart> commercialParts = new ArrayList<>();

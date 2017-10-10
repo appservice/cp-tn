@@ -9,33 +9,74 @@
         <fieldset>
             <div class="row">
 
-                <div class="col-lg-2">
-                    <label for="title_external_number_field">Nr ref. klienta</label>
-                    <input type="text" id="title_external_number_field" class="form-control" name="title"
-                           value="{{order.referenceNumber}}" disabled/>
-                </div>
-                <div class="col-lg-2">
-                    <label for="title_field">Tytuł</label>
-                    <input type="text" id="title_field" class="form-control" name="title" value="{{order.name}}"
-                           disabled/>
-                </div>
-                <div class="col-lg-2">
-                    <label for="sap_number_field">Nr SAP</label>
-                    <input type="text" id="sap_number_field" class="form-control" name="sap_number"
-                           value="{{order.sapNumber}}" disabled/>
+                <div class="col-md-8">
+                    <div class="card bg-light ">
 
-                </div>
-                <div class="form-group col-lg-2">
-                    <label for="field_client">Klient</label>
-                    <input type="text" id="field_client" class="form-control" name="client"
-                           value="{{order.clientShortcut}}" disabled/>
+                        <div class="card-body">
+                            <h5 class="card-title">Dane zapytania</h5>
 
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div>Numer klienta: <strong>{{order.referenceNumber}}</strong></div>
+                                    <div> Klient: <strong>{{order.clientShortcut}}</strong></div>
+
+                                </div>
+
+                                <div class="col-md-4">
+                                    <div>Utworzył: <strong>{{order.createdByName}}</strong></div>
+                                    <div>Data utworz.: <strong>{{order.createdAt|date:"dd-MM-yyyy"}} <span
+                                        class="fa fa-clock-o"></span> {{order.createdAt|date:"HH:mm"}}</strong></div>
+
+                                </div>
+                                <div class="col-md-4">
+                                    <div> Status: <strong jhiTranslate="{{'tnApp.OrderStatus.' + order.orderStatus}}">{{order.orderStatus}}</strong>
+                                    </div>
+                                    <div> Uwagi: <strong>{{order.description}}</strong></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="col-lg-2">
-                    <label for="description_field">Opis dod.</label>
-                    <input type="text" id="description_field" name="description" value="{{order.description}}"
-                           class="form-control" disabled/>
+
+                <div class="col-md-4">
+                    <div class="card bg-light ">
+                        <div class="card-body">
+                            <h5 class="card-title">Dane oferty</h5>
+                            <div>Utworzył: <strong>{{order.estimationMakerName}}</strong></div>
+                            <div>Data utworz.: <strong>{{order.createdAt|date:"dd-MM-yyyy"}} <span
+                                class="fa fa-clock-o"></span> {{order.createdAt|date:"HH:mm"}}</strong></div>
+                        </div>
+                    </div>
                 </div>
+
+                <!--
+                                <div class="col-lg-2">
+                                    <label for="title_external_number_field">Nr ref. klienta</label>
+                                    <input type="text" id="title_external_number_field" class="form-control" name="title"
+                                           value="{{order.referenceNumber}}" disabled/>
+                                </div>
+                                <div class="col-lg-2">
+                                    <label for="title_field">Tytuł</label>
+                                    <input type="text" id="title_field" class="form-control" name="title" value="{{order.name}}"
+                                           disabled/>
+                                </div>
+                                <div class="col-lg-2">
+                                    <label for="sap_number_field">Nr SAP</label>
+                                    <input type="text" id="sap_number_field" class="form-control" name="sap_number"
+                                           value="{{order.sapNumber}}" disabled/>
+
+                                </div>
+                                <div class="form-group col-lg-2">
+                                    <label for="field_client">Klient</label>
+                                    <input type="text" id="field_client" class="form-control" name="client"
+                                           value="{{order.clientShortcut}}" disabled/>
+
+                                </div>
+                                <div class="col-lg-2">
+                                    <label for="description_field">Opis dod.</label>
+                                    <input type="text" id="description_field" name="description" value="{{order.description}}"
+                                           class="form-control" disabled/>
+                                </div>-->
 
             </div>
             <br/>
@@ -81,7 +122,8 @@
 
 
                                             <!--</ss-multiselect-dropdown>-->
-                                            <button class="btn btn-outline-dark" type="button" (click)="openModal(content,rowIndex)">
+                                            <button class="btn btn-outline-dark" type="button"
+                                                    (click)="openModal(content,rowIndex)">
                                                 <strong *ngIf="estimation.drawing">{{estimation.drawing.attachments.length}}</strong>
                                                 <strong *ngIf="!estimation.drawing">0</strong>
                                                 <i class="fa fa-paperclip"></i>
@@ -91,11 +133,11 @@
                                         <td>{{estimation.estimatedCost|currency:'PLN'}}</td>
                                         <td>{{estimation.estimatedRealizationDate|date:'dd-MM-yyyy'}}</td>
                                         <td class="right">
-        <!--                                    <button type="button" class="btn btn-outline-secondary" placement="left"
-                                                    [ngbPopover]="popContent" popoverTitle="Uwagi"
-                                            >&lt;!&ndash; [triggers]="'hover'"&ndash;&gt;
-                                                <span class="fa fa-question"></span>
-                                            </button>-->
+                                            <!--                                    <button type="button" class="btn btn-outline-secondary" placement="left"
+                                                                                        [ngbPopover]="popContent" popoverTitle="Uwagi"
+                                                                                >&lt;!&ndash; [triggers]="'hover'"&ndash;&gt;
+                                                                                    <span class="fa fa-question"></span>
+                                                                                </button>-->
 
                                             <tn-estimation-remark [estimationRemarks]="estimation.estimationRemarks"
                                                                   *ngIf="estimation.estimationRemarks!=null && estimation.estimationRemarks.length>0"></tn-estimation-remark>
@@ -136,7 +178,6 @@
 
 </form>
 
-
 <ng-template #content let-c="close" let-d="dismiss">
     <div class="modal-header">
         <h4 class="modal-title">Załączniki</h4>
@@ -154,6 +195,12 @@
         <button type="button" class="btn btn-secondary" (click)="c('Close click')">Close</button>
     </div>
 </ng-template>
+
+
+<!--<div style="width:100%; margin-top: 20px">
+    <tn-order-spreed-sheet [estimations]="order.estimations"></tn-order-spreed-sheet>
+</div>-->
+
 <!--<p-chips [(ngModel)]="myValues">test</p-chips>-->
 <!--
 <ng-template #popContent>

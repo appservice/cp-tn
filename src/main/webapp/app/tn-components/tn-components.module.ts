@@ -10,6 +10,7 @@ import {TnAlert} from './tn-alert';
 import {TnEstimationRemarkComponent} from './tn-estimation-remark-component/tn-estimation-remark-component';
 import {NgbDatepickerI18n, NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {NgbdDatepickerI18n} from './datepicker-pl';
+import {ExcelService} from './excel.service';
 
 @NgModule({
     imports: [
@@ -36,7 +37,11 @@ import {NgbdDatepickerI18n} from './datepicker-pl';
             NgbdDatepickerI18n,
 
 
-        ]
+        ],
+    providers:
+    [
+        ExcelService
+    ]
 })
 export class TnComponentsModule {
 }

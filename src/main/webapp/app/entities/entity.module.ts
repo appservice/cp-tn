@@ -10,6 +10,7 @@ import { TnMachineModule } from './machine/machine.module';
 import { TnDrawingModule } from './drawing/drawing.module';
 import {TnProductionModule} from './production/production.module'
 import { TnTechnologyCardModule } from './technology-card/technology-card.module';
+import { TnOperatorModule } from './operator/operator.module';
 /* jhipster-needle-add-entity-module-import - JHipster will add entity modules imports here */
 
 @NgModule({
@@ -24,6 +25,7 @@ import { TnTechnologyCardModule } from './technology-card/technology-card.module
         TnDrawingModule,
         TnProductionModule,
         TnTechnologyCardModule,
+        TnOperatorModule,
         /* jhipster-needle-add-entity-module - JHipster will add entity modules here */
     ],
     declarations: [],

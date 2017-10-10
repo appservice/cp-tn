@@ -168,7 +168,7 @@
             </button>
             <button type="button" class="btn btn-outline-danger" (click)="previousState()">Powrót</button>
 
-            <button class="btn btn-outline-primary" (click)="sendToEstimation();" *ngIf="order.orderStatus =='WORKING_COPY' || order.orderStatus==null">
+            <button class="btn btn-outline-primary" (click)="sendToProduction();" *ngIf="order.orderStatus =='WORKING_COPY' || order.orderStatus==null">
                 <span class="fa fa-play"></span> Wyślij do realizacji
             </button>
         </div>

@@ -27,7 +27,7 @@ public class OrderListDTO implements Serializable {
     @NotNull
     private OrderType orderType;
 
-    @NotNull
+
     private String name;
 
     private String description;
@@ -36,6 +36,7 @@ public class OrderListDTO implements Serializable {
 
     private OrderStatus orderStatus;
 
+    @NotNull
     private Long clientId;
 
     private String clientShortcut;

@@ -214,10 +214,10 @@ export class NewPurchaseOrderComponent implements OnInit, OnDestroy {
         }
     }
 
-    sendToEstimation() {
+    sendToProduction() {
         console.log('Sent to estimation');
 
-        this.order.orderStatus = 'SENT_TO_ESTIMATION';//OrderStatus.SENT_TO_ESTIMATION;
+        this.order.orderStatus = 'IN_PRODUCTION';//OrderStatus.SENT_TO_ESTIMATION;
         this.save();
     }
 

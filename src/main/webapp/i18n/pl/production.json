@@ -1,0 +1,12 @@
+{
+    "tnApp": {
+        "production": {
+            "home": {
+                "title": "Produkcja",
+                "createLabel": "Dodaj Zlecenie",
+                "createOrEditLabel": "Dodaj lub edytuj: Zlecenie",
+                "search": "Produkcja"
+            }
+        }
+    }
+}

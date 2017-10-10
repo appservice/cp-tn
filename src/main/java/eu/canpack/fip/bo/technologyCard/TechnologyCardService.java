@@ -135,12 +135,17 @@ public class TechnologyCardService {
             .material(estimationDTO.getMaterial())
             .mass(estimationDTO.getMass())
             .amount(estimationDTO.getAmount());
-        if (estimationDTO.getDrawing() !=  null) {
-            Drawing drawing = new Drawing();
-            drawing.setId(estimationDTO.getDrawing().getId());
+        if (estimationDTO.getDrawing() !=  null && estimationDTO.getDrawing().getId()!=null) {
+            Drawing drawing = drawingRepository.findOne(estimationDTO.getDrawing().getId());
             drawing.getTechnologyCards().add(technologyCard);
-            drawingRepository.save(drawing);
             technologyCard.setDrawing(drawing);
+//            Drawing drawing = new Drawing();
+//            drawing.setId(estimationDTO.getDrawing().getId());
+//            drawing.getTechnologyCards().add(technologyCard);
+//            drawing.setName(estimationDTO.getDrawing().getName());
+//            drawing.setNumber(estimationDTO.getDrawing().getNumber());
+//            drawingRepository.save(drawing);
+//            technologyCard.setDrawing(drawing);
         } else {
             Drawing drawing = new Drawing();
             drawing.setNumber(estimationDTO.getItemNumber());

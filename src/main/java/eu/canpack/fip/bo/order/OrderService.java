@@ -215,14 +215,14 @@ public class OrderService {
                     List<Attachment> attachments = estDTO.getDrawing().getAttachments().stream()
                         .map(a -> attachmentRepository.findOne(a.getId())).collect(Collectors.toList());
 
-                    if(estimation.getDrawing()!=null){
+                    if (estimation.getDrawing() != null) {
                         estimation.getDrawing().setNumber(estDTO.getItemNumber());
                         estimation.getDrawing().setName(estDTO.getItemName());
                         estimation.getDrawing().setAttachments(attachments);
 
 
-                    }else{
-                        Drawing drawing=new Drawing();
+                    } else {
+                        Drawing drawing = new Drawing();
                         drawing.setName(estDTO.getItemName());
                         drawing.setNumber(estDTO.getItemNumber());
                         drawing.setAttachments(attachments);
@@ -409,6 +409,8 @@ public class OrderService {
     void moveOrderToArchive(Long id) {
         Order order = orderRepository.findOne(id);
         order.setOrderStatus(OrderStatus.SENT_OFFER_TO_CLIENT);
+        order.setEstimationFinsihDate(ZonedDateTime.now());
+
         orderRepository.save(order);
     }
 
@@ -419,6 +421,8 @@ public class OrderService {
         Order order = orderMapper.toEntity(orderDTO);
         order.setId(null);
 
+        User loggedUser = userService.getLoggedUser();
+        ZonedDateTime now = ZonedDateTime.now();
 
 //        PropertyFilter filter = PropertyFilters.getAnnotationFilter(Id.class);
 
@@ -442,6 +446,16 @@ public class OrderService {
             newEstimation.setNeededRealizationDate(est.getNeededRealizationDate());
             newEstimation.setMaterialPrice(est.getMaterialPrice());
 
+            if(estDTO.getRemark()!=null && !estDTO.getRemark().trim().isEmpty()){
+                EstimationRemark estimationRemark = new EstimationRemark();
+                estimationRemark.setRemark(estDTO.getRemark());
+                estimationRemark.setCreatedBy(loggedUser);
+                estimationRemark.setCreatedAt(now);
+                estimationRemark.setEstimation(newEstimation);
+                newEstimation.getEstimationRemarks().add(estimationRemark);
+            }
+
+
             for (Operation op : est.getOperations()) {
                 Operation newOperation = new Operation();
                 newOperation.setEstimation(newEstimation);
@@ -451,6 +465,7 @@ public class OrderService {
                 newOperation.setSequenceNumber(op.getSequenceNumber());
                 newOperation.setRemark(op.getRemark());
                 newOperation.setEstimatedTime(op.getEstimatedTime());
+
                 newEstimation.getOperations().add(newOperation);
             }
 
@@ -492,12 +507,13 @@ public class OrderService {
 //
 //        order.setEstimations(estimations);
 
-        order.setCreatedAt(ZonedDateTime.now());
-        order.createdBy(userService.getLoggedUser());
+        order.setCreatedAt(now);
+        order.createdBy(loggedUser);
         prepareDocumentNumber(order);
         return orderRepository.save(order);
 
     }
+
 
 //    public Object deepCopy(Object input) {
 //
