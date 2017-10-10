@@ -1,7 +1,9 @@
 import { Injectable } from '@angular/core';
-import { Http, Response } from '@angular/http';
+import {Http, RequestOptions, Response, ResponseContentType,Headers} from '@angular/http';
 import { Observable } from 'rxjs/Rx';
 import { SERVER_API_URL } from '../../app.constants';
+import * as FileSaver from 'file-saver';
+
 
 import { Operator } from './operator.model';
 import { ResponseWrapper, createRequestOption } from '../../shared';
@@ -58,5 +60,25 @@ export class OperatorService {
     private convert(operator: Operator): Operator {
         const copy: Operator = Object.assign({}, operator);
         return copy;
+    }
+
+    download(operator: Operator): void {
+        let headers = new Headers({ 'Content-Type': 'application/json'} );
+        let options = new RequestOptions({responseType: ResponseContentType.Blob,headers});
+
+        this.http.get(`${this.resourceUrl}/${operator.id}/print-card`,options)
+            .map((res: Response) => res.blob())
+            .subscribe((data: any) => {
+                OperatorService.saveDownload(data, operator.firstName+" "+operator.lastName, 'application/pdf');
+
+            });
+    }
+
+    static saveDownload(responseData: any, fileName: string, contentType: string) {
+        const data: Blob = new Blob([responseData], {type: contentType});
+
+        const disableAutoBOM = true;
+
+        FileSaver.saveAs(data, 'Karta_'+fileName+'.pdf', disableAutoBOM);
     }
 }

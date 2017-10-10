@@ -50,4 +50,9 @@ export class OperatorDetailComponent implements OnInit, OnDestroy {
             (response) => this.load(this.operator.id)
         );
     }
+
+    printCard():void{
+        console.log("print card for operator: ",this.operator);
+        this.operatorService.download(this.operator);
+    }
 }

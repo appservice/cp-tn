@@ -1,6 +1,6 @@
 
 <div *ngIf="operator">
-    <h2><span jhiTranslate="tnApp.operator.detail.title">Operator</span> {{operator.id}}</h2>
+    <h2><span jhiTranslate="tnApp.operator.detail.title">Operator</span> {{operator.cardNumber}}</h2>
     <hr>
     <jhi-alert-error></jhi-alert-error>
     <dl class="row-md jh-entity-details">
@@ -22,7 +22,7 @@
         </dd>
         <dt><span jhiTranslate="tnApp.operator.active">Active</span></dt>
         <dd>
-            <span>{{operator.active}}</span>
+            <span jhiTranslate="tnApp.operator.{{operator.active}}">{{operator.active}}</span>
         </dd>
     </dl>
 
@@ -37,5 +37,10 @@
             replaceUrl="true"
             class="btn btn-primary">
         <span class="fa fa-pencil"></span>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+    </button>
+    <button type="button"
+            (click)="printCard()"
+            class="btn btn-outline-dark">
+        <span class="fa fa-print"></span>&nbsp; Drukuj kartę
     </button>
 </div>

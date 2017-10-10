@@ -1,6 +1,8 @@
 package eu.canpack.fip.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
+import eu.canpack.fip.bo.pdf.OperatorCardCreatorService;
+import eu.canpack.fip.domain.Operator;
 import eu.canpack.fip.service.OperatorService;
 import eu.canpack.fip.web.rest.util.HeaderUtil;
 import eu.canpack.fip.web.rest.util.PaginationUtil;
@@ -11,22 +13,25 @@ import io.swagger.annotations.ApiParam;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.core.io.InputStreamResource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.StreamSupport;
-
-import static org.elasticsearch.index.query.QueryBuilders.*;
 
 /**
  * REST controller for managing Operator.
@@ -35,17 +40,18 @@ import static org.elasticsearch.index.query.QueryBuilders.*;
 @RequestMapping("/api")
 public class OperatorResource {
 
-    private final Logger log = LoggerFactory.getLogger(OperatorResource.class);
-
     private static final String ENTITY_NAME = "operator";
-
+    private final Logger log = LoggerFactory.getLogger(OperatorResource.class);
     private final OperatorService operatorService;
 
     private final OperatorQueryService operatorQueryService;
 
-    public OperatorResource(OperatorService operatorService, OperatorQueryService operatorQueryService) {
+    private final OperatorCardCreatorService operatorCardCreatorService;
+
+    public OperatorResource(OperatorService operatorService, OperatorQueryService operatorQueryService, OperatorCardCreatorService operatorCardCreatorService) {
         this.operatorService = operatorService;
         this.operatorQueryService = operatorQueryService;
+        this.operatorCardCreatorService = operatorCardCreatorService;
     }
 
     /**
@@ -99,7 +105,7 @@ public class OperatorResource {
      */
     @GetMapping("/operators")
     @Timed
-    public ResponseEntity<List<OperatorDTO>> getAllOperators(OperatorCriteria criteria,@ApiParam Pageable pageable) {
+    public ResponseEntity<List<OperatorDTO>> getAllOperators(OperatorCriteria criteria, @ApiParam Pageable pageable) {
         log.debug("REST request to get Operators by criteria: {}", criteria);
         Page<OperatorDTO> page = operatorQueryService.findByCriteria(criteria, pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/operators");
@@ -138,7 +144,7 @@ public class OperatorResource {
      * SEARCH  /_search/operators?query=:query : search for the operator corresponding
      * to the query.
      *
-     * @param query the query of the operator search
+     * @param query    the query of the operator search
      * @param pageable the pagination information
      * @return the result of the search
      */
@@ -151,4 +157,18 @@ public class OperatorResource {
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
 
+    @GetMapping("/operators/{id}/print-card")
+    public ResponseEntity<InputStreamResource> getTechnologyCard(@PathVariable(name = "id") Long operatorId) throws IOException {
+        OperatorDTO operator = operatorService.findOne(operatorId);
+        ByteArrayOutputStream os = new ByteArrayOutputStream();
+        operatorCardCreatorService.createOperatorCard(os, operator);
+
+        InputStream inputStream = new ByteArrayInputStream(os.toByteArray());
+        InputStreamResource inputStreamResource = new InputStreamResource(inputStream);
+        os.close();
+        inputStream.close();
+
+        return ResponseEntity.ok().header(HttpHeaders.CONTENT_DISPOSITION, "attachment;filename=" + "karta_operatora.pdf").contentType(MediaType.APPLICATION_PDF).body(inputStreamResource);
+
+    }
 }

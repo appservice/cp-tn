@@ -1,6 +1,6 @@
 {
     "tnApp": {
-        "operator" : {
+        "operator": {
             "home": {
                 "title": "Operatorzy",
                 "createLabel": "Dodaj Operatora",
@@ -20,7 +20,9 @@
             "lastName": "Nazwisko",
             "cardNumber": "Numer karty",
             "jobTitle": "Stanowisko",
-            "active": "Aktywny"
+            "active": "Aktywny",
+            "true": "Tak",
+            "false": "Nie"
         }
     }
 }

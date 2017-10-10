@@ -9,7 +9,6 @@ import eu.canpack.fip.repository.search.OperatorSearchRepository;
 import eu.canpack.fip.service.dto.OperatorDTO;
 import eu.canpack.fip.service.mapper.OperatorMapper;
 import eu.canpack.fip.web.rest.errors.ExceptionTranslator;
-import eu.canpack.fip.service.dto.OperatorCriteria;
 import eu.canpack.fip.service.OperatorQueryService;
 
 import org.junit.Before;
@@ -92,7 +91,7 @@ public class OperatorResourceIntTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        final OperatorResource operatorResource = new OperatorResource(operatorService, operatorQueryService);
+        final OperatorResource operatorResource = new OperatorResource(operatorService, operatorQueryService, operatorCardCreatorService);
         this.restOperatorMockMvc = MockMvcBuilders.standaloneSetup(operatorResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)
