@@ -8,6 +8,8 @@ import {JhiLanguageHelper, Principal, LoginModalService, LoginService} from '../
 
 import {VERSION, DEBUG_INFO_ENABLED} from '../../app.constants';
 import {Subscription} from 'rxjs/Subscription';
+import { Http, Response } from '@angular/http';
+
 
 
 @Component({
@@ -35,7 +37,8 @@ export class NavbarComponent implements OnInit, OnDestroy {
                 private loginModalService: LoginModalService,
                 private profileService: ProfileService,
                 private router: Router,
-                private eventManager: JhiEventManager) {
+                private eventManager: JhiEventManager,
+                private http: Http) {
         this
             .version = VERSION ? 'v' + VERSION : '';
         this
@@ -110,6 +113,12 @@ export class NavbarComponent implements OnInit, OnDestroy {
 
     ngOnDestroy() {
         this.eventManager.destroy(this.eventSubscriber);
+    }
+
+    reindexElasticsearch(): void {
+        this.http.post('api/elasticsearch/index',null,null).subscribe((resp:Response)=>{
+            console.log(resp);
+        },(error: any)=>console.log(error));
     }
 
 }
