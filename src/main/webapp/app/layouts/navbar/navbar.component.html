@@ -347,6 +347,12 @@
                             <span jhiTranslate="global.menu.admin.apidocs">API</span>
                         </a>
                     </li>
+                    <li  *jhiHasAnyAuthority="['ROLE_ADMIN']" >
+                        <a class="dropdown-item"  (click)="reindexElasticsearch()">
+                            <i class="fa fa-fw fa-book" aria-hidden="true"></i>
+                            <span>Elastic Reindex</span>
+                        </a>
+                    </li>
                         </span>
                     <!-- jhipster-needle-add-element-to-admin-menu - JHipster will add entities to the admin menu here -->
                 </ul>
