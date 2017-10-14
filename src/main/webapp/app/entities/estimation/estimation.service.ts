@@ -1,9 +1,9 @@
-import { Injectable } from '@angular/core';
-import {Http, RequestOptions, Response, ResponseContentType,Headers} from '@angular/http';
-import { Observable } from 'rxjs/Rx';
+import {Injectable} from '@angular/core';
+import {Http, RequestOptions, Response, ResponseContentType, Headers} from '@angular/http';
+import {Observable} from 'rxjs/Rx';
 
-import { Estimation } from './estimation.model';
-import { ResponseWrapper, createRequestOption } from '../../shared';
+import {Estimation} from './estimation.model';
+import {ResponseWrapper, createRequestOption} from '../../shared';
 import * as FileSaver from 'file-saver';
 import {JhiDateUtils} from 'ng-jhipster';
 import {letProto} from 'rxjs/operator/let';
@@ -15,7 +15,8 @@ export class EstimationService {
     private resourceUrl = 'api/estimations';
     private resourceSearchUrl = 'api/_search/estimations';
 
-    constructor(private http: Http,private dateUtils: JhiDateUtils) { }
+    constructor(private http: Http, private dateUtils: JhiDateUtils) {
+    }
 
     create(estimation: Estimation): Observable<Estimation> {
         const copy = this.convert(estimation);
@@ -34,17 +35,17 @@ export class EstimationService {
     find(id: number): Observable<Estimation> {
         return this.http.get(`${this.resourceUrl}/${id}`).map((res: Response) => {
 
-           let jsonResponse= res.json();
-           if(jsonResponse.estimatedRealizationDate!=null){
-               const tempDate = this.dateUtils.convertLocalDateFromServer(jsonResponse.estimatedRealizationDate);
+            let jsonResponse = res.json();
+            if (jsonResponse.estimatedRealizationDate != null) {
+                const tempDate = this.dateUtils.convertLocalDateFromServer(jsonResponse.estimatedRealizationDate);
 
-               jsonResponse.estimatedRealizationDate = {
-                   year: tempDate.getFullYear(),
-                   month: tempDate.getMonth() + 1,
-                   day: tempDate.getDate()
-               };
+                jsonResponse.estimatedRealizationDate = {
+                    year: tempDate.getFullYear(),
+                    month: tempDate.getMonth() + 1,
+                    day: tempDate.getDate()
+                };
 
-           }
+            }
 
             return jsonResponse;
         });
@@ -52,7 +53,7 @@ export class EstimationService {
 
     query(req?: any): Observable<ResponseWrapper> {
         const options = createRequestOption(req);
-        return this.http.get(this.resourceUrl+'/to-finish', options)
+        return this.http.get(this.resourceUrl + '/to-finish', options)
             .map((res: Response) => this.convertResponse(res));
     }
 
@@ -82,10 +83,10 @@ export class EstimationService {
     }
 
     download(estimation: Estimation): void {
-        let headers = new Headers({ 'Content-Type': 'application/json'} );
-        let options = new RequestOptions({responseType: ResponseContentType.Blob,headers});
+        let headers = new Headers({'Content-Type': 'application/json'});
+        let options = new RequestOptions({responseType: ResponseContentType.Blob, headers});
 
-        this.http.get(`${this.resourceUrl}/${estimation.id}/technology-card`,options)
+        this.http.get(`${this.resourceUrl}/${estimation.id}/technology-card`, options)
             .map((res: Response) => res.blob())
             .subscribe((data: any) => {
                 this.saveDownload(data, estimation.drawing.number, 'application/pdf');
@@ -98,11 +99,11 @@ export class EstimationService {
 
         const disableAutoBOM = true;
 
-        FileSaver.saveAs(data, 'Karta_obiegowa_'+fileName+'.pdf', disableAutoBOM);
+        FileSaver.saveAs(data, 'Karta_obiegowa_' + fileName + '.pdf', disableAutoBOM);
     }
 
 
-    exportToTechnologyCard(estimation: Estimation){
+    exportToTechnologyCard(estimation: Estimation) {
         console.log('class from service');
         const copy = this.convert(estimation);
         console.log('copy', copy);

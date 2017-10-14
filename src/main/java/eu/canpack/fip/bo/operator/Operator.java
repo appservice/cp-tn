@@ -1,4 +1,4 @@
-package eu.canpack.fip.domain;
+package eu.canpack.fip.bo.operator;
 
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;

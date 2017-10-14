@@ -2,9 +2,10 @@ package eu.canpack.fip.bo.technologyCard;
 
 import eu.canpack.fip.bo.drawing.Drawing;
 import eu.canpack.fip.bo.drawing.DrawingRepository;
-import eu.canpack.fip.bo.estimation.EstimationDTO;
+import eu.canpack.fip.bo.estimation.dto.EstimationDTO;
 import eu.canpack.fip.bo.operation.Operation;
 import eu.canpack.fip.bo.operation.OperationMapper;
+import eu.canpack.fip.bo.operation.OperationType;
 import eu.canpack.fip.bo.technologyCard.mapper.TechnologyCardDTO;
 import eu.canpack.fip.bo.technologyCard.mapper.TechnologyCardListDTO;
 import eu.canpack.fip.bo.technologyCard.mapper.TechnologyCardListMapper;
@@ -165,6 +166,7 @@ public class TechnologyCardService {
         });
 
         List<Operation> operations = operationMapper.toEntity(estimationDTO.getOperations());
+        operations.forEach(o->o.setOperationType(OperationType.TECHNOLOGY_CARD));
         technologyCard.setOperations(operations);
         technologyCard.setCreatedBy(userService.getLoggedUser());
         technologyCard = technologyCardRepository.save(technologyCard);

@@ -1,14 +1,14 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { Subscription } from 'rxjs/Rx';
-import { JhiEventManager, JhiParseLinks, JhiPaginationUtil, JhiLanguageService, JhiAlertService, JhiDataUtils } from 'ng-jhipster';
+import {Component, OnInit, OnDestroy} from '@angular/core';
+import {ActivatedRoute, Router} from '@angular/router';
+import {Subscription} from 'rxjs/Rx';
+import {JhiEventManager, JhiParseLinks, JhiPaginationUtil, JhiLanguageService, JhiAlertService, JhiDataUtils} from 'ng-jhipster';
 
-import { Drawing } from './drawing.model';
-import { DrawingService } from './drawing.service';
-import { ITEMS_PER_PAGE, Principal, ResponseWrapper } from '../../shared';
-import { PaginationConfig } from '../../blocks/config/uib-pagination.config';
-import {DrawingFilter} from './drawing-filter.model';
+import {Drawing} from './drawing.model';
+import {DrawingService} from './drawing.service';
+import {ITEMS_PER_PAGE, Principal, ResponseWrapper} from '../../shared';
+import {PaginationConfig} from '../../blocks/config/uib-pagination.config';
 import {URLSearchParams} from '@angular/http';
+import {DrawingFilter} from './drawing-finder/drawing-filter';
 
 
 @Component({
@@ -17,7 +17,7 @@ import {URLSearchParams} from '@angular/http';
 })
 export class DrawingComponent implements OnInit, OnDestroy {
 
-currentAccount: any;
+    currentAccount: any;
     drawings: Drawing[];
     error: any;
     success: any;
@@ -34,18 +34,16 @@ currentAccount: any;
     reverse: any;
     drawingFilter: DrawingFilter;
 
-    constructor(
-        private drawingService: DrawingService,
-        private parseLinks: JhiParseLinks,
-        private alertService: JhiAlertService,
-        private principal: Principal,
-        private activatedRoute: ActivatedRoute,
-        private dataUtils: JhiDataUtils,
-        private router: Router,
-        private eventManager: JhiEventManager,
-        private paginationUtil: JhiPaginationUtil,
-        private paginationConfig: PaginationConfig
-    ) {
+    constructor(private drawingService: DrawingService,
+                private parseLinks: JhiParseLinks,
+                private alertService: JhiAlertService,
+                private principal: Principal,
+                private activatedRoute: ActivatedRoute,
+                private dataUtils: JhiDataUtils,
+                private router: Router,
+                private eventManager: JhiEventManager,
+                private paginationUtil: JhiPaginationUtil,
+                private paginationConfig: PaginationConfig) {
         this.itemsPerPage = ITEMS_PER_PAGE;
         this.routeData = this.activatedRoute.data.subscribe((data) => {
             this.page = data['pagingParams'].page;
@@ -54,7 +52,7 @@ currentAccount: any;
             this.predicate = data['pagingParams'].predicate;
         });
         this.currentSearch = activatedRoute.snapshot.params['search'] ? activatedRoute.snapshot.params['search'] : '';
-        this.drawingFilter=new DrawingFilter();
+        this.drawingFilter = new DrawingFilter();
     }
 
 
@@ -64,27 +62,33 @@ currentAccount: any;
             this.drawingService.search({
                 query: this.currentSearch,
                 size: this.itemsPerPage,
-                sort: this.sort()},).subscribe(
-                    (res: ResponseWrapper) => this.onSuccess(res.json, res.headers),
-                    (res: ResponseWrapper) => this.onError(res.json)
-                );
+                sort: this.sort()
+            },).subscribe(
+                (res: ResponseWrapper) => this.onSuccess(res.json, res.headers),
+                (res: ResponseWrapper) => this.onError(res.json)
+            );
             return;
         }
-        let urlSearchParams=new URLSearchParams();
+        let urlSearchParams = new URLSearchParams();
         urlSearchParams.append('number.contains', this.drawingFilter.number);
         urlSearchParams.append('name.contains', this.drawingFilter.name);
+        urlSearchParams.append('createdAt.greaterOrEqualThan', this.drawingFilter.getValidFromString());
+        urlSearchParams.append('createdAt.lessOrEqualThan', this.drawingFilter.getValidToString());
         this.drawingService.query({
             page: this.page - 1,
             size: this.itemsPerPage,
-            sort: this.sort()},urlSearchParams).subscribe(
+            sort: this.sort()
+        }, urlSearchParams).subscribe(
             (res: ResponseWrapper) => this.onSuccess(res.json, res.headers),
             (res: ResponseWrapper) => this.onError(res.json)
         );
     }
 
-    clearFilterAndLoadAll(){
-        this.drawingFilter.name=null;
-        this.drawingFilter.number=null;
+    clearFilterAndLoadAll() {
+        this.drawingFilter.name = null;
+        this.drawingFilter.number = null;
+        this.drawingFilter.createdAtFrom = null;
+        this.drawingFilter.createdAtTo = null;
         this.loadAll();
     }
 
@@ -94,14 +98,16 @@ currentAccount: any;
             this.transition();
         }
     }
+
     transition() {
-        this.router.navigate(['/drawing'], {queryParams:
-            {
-                page: this.page,
-                size: this.itemsPerPage,
-                search: this.currentSearch,
-                sort: this.predicate + ',' + (this.reverse ? 'asc' : 'desc')
-            }
+        this.router.navigate(['/drawing'], {
+            queryParams:
+                {
+                    page: this.page,
+                    size: this.itemsPerPage,
+                    search: this.currentSearch,
+                    sort: this.predicate + ',' + (this.reverse ? 'asc' : 'desc')
+                }
         });
         this.loadAll();
     }
@@ -115,6 +121,7 @@ currentAccount: any;
         }]);
         this.loadAll();
     }
+
     search(query) {
         if (!query) {
             return this.clear();
@@ -128,12 +135,14 @@ currentAccount: any;
         }]);
         this.loadAll();
     }
+
     ngOnInit() {
         this.loadAll();
         this.principal.identity().then((account) => {
             this.currentAccount = account;
         });
         this.registerChangeInDrawings();
+        this.drawingFilter = new DrawingFilter();
     }
 
     ngOnDestroy() {
@@ -151,6 +160,7 @@ currentAccount: any;
     openFile(contentType, field) {
         return this.dataUtils.openFile(contentType, field);
     }
+
     registerChangeInDrawings() {
         this.eventSubscriber = this.eventManager.subscribe('drawingListModification', (response) => this.loadAll());
     }
@@ -170,12 +180,13 @@ currentAccount: any;
         // this.page = pagingParams.page;
         this.drawings = data;
     }
+
     private onError(error) {
         this.alertService.error(error.message, null, null);
     }
 
-    onEnterClickFilter(event:any){
-        if(event.keyCode==13){
+    onEnterClickFilter(event: any) {
+        if (event.keyCode == 13) {
             this.loadAll();
         }
 

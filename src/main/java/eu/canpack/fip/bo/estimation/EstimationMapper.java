@@ -1,6 +1,7 @@
 package eu.canpack.fip.bo.estimation;
 
 import eu.canpack.fip.bo.drawing.Drawing;
+import eu.canpack.fip.bo.estimation.dto.EstimationDTO;
 import eu.canpack.fip.bo.operation.OperationMapper;
 import eu.canpack.fip.bo.order.OrderMapper;
 
@@ -9,8 +10,6 @@ import eu.canpack.fip.bo.commercialPart.CommercialPartMapper;
 import eu.canpack.fip.bo.remark.EstimationRemarkMapper;
 import eu.canpack.fip.service.mapper.EntityMapper;
 import org.mapstruct.*;
-
-import javax.persistence.ManyToOne;
 
 /**
  * Mapper for the entity Estimation and its DTO EstimationDTO.
@@ -57,5 +56,5 @@ public interface EstimationMapper extends EntityMapper<EstimationDTO, Estimation
 //    Estimation toEntity(EstimationCreateDTO estimationCreateDTO);
 
 //    List<Estimation> toEstimationList(List<EstimationCreateDTO> estimationCreateDTOS);
-//    java.util.List<eu.canpack.fip.bo.estimation.Estimation> mapToList(java.util.List<eu.canpack.fip.bo.estimation.EstimationCreateDTO> value);
+//    java.util.List<eu.canpack.fip.bo.estimation.Estimation> mapToList(java.util.List<eu.canpack.fip.bo.estimation.dto.EstimationCreateDTO> value);
 }

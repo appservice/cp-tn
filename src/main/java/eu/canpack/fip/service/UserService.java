@@ -269,7 +269,13 @@ public class UserService {
      * @return a list of all the authorities
      */
     public List<String> getAuthorities() {
-        return authorityRepository.findAll().stream().map(Authority::getName).collect(Collectors.toList());
+        List<Authority>allAuthorities= authorityRepository.findAll();
+        if(SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.ADMIN)){
+            return allAuthorities.stream().map(Authority::getName).collect(Collectors.toList());
+        }else{
+            return allAuthorities.stream().map(Authority::getName).filter(a-> !a.equals(AuthoritiesConstants.ADMIN)).collect(Collectors.toList());
+        }
+
     }
 
     public User getLoggedUser() {

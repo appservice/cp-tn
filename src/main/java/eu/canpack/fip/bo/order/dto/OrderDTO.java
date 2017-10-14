@@ -1,10 +1,9 @@
 package eu.canpack.fip.bo.order.dto;
 
-import eu.canpack.fip.bo.estimation.EstimationCreateDTO;
+import eu.canpack.fip.bo.estimation.dto.EstimationCreateDTO;
 import eu.canpack.fip.bo.order.Order;
 import eu.canpack.fip.bo.order.enumeration.OrderStatus;
 import eu.canpack.fip.bo.order.enumeration.OrderType;
-import eu.canpack.fip.bo.estimation.EstimationDTO;
 
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;

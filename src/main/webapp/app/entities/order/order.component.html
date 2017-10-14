@@ -67,7 +67,7 @@
             <div class="input-group">
                 <input type="text" class="form-control"
                        name="validFromFilter"
-                       ngbDatepicker #realizationDateDp="ngbDatepicker"
+                       ngbDatepickerPl="" #realizationDateDp="ngbDatepickerPl"
                        [(ngModel)]="orderFilter.validFrom" placeholder="Data utworz. od:"/>
                 <span class="input-group-btn">
                     <button type="button" class="btn btn-default" (click)="realizationDateDp.toggle()"
@@ -79,7 +79,7 @@
             <!--<label class="form-control-label" jhiTranslate="tnApp.order.closeDate" for="field_closeDate">Close Date</label>-->
             <div class="input-group">
                 <input type="text" class="form-control" name="validToFilter" ngbDatepicker #createdToEnd="ngbDatepicker"
-                       [(ngModel)]="orderFilter.validTo" placeholder="Data utworz. do:"/>
+                       [(ngModel)]="orderFilter.validTo" placeholder="Data utworz. do:" dispalyMonths="2"/>
                 <span class="input-group-btn">
                     <button type="button" class="btn btn-default" (click)="createdToEnd.toggle()"
                             (keyup)="createdToEnd.toggle()"><i class="fa fa-calendar"></i></button>
@@ -179,4 +179,7 @@
     </div>
 </div>
 </div>
-<button class="btn btn-outline-dark" type="button" (click)="exportAsExcelFile()"><span class="fa fa-file-excel-o"></span> exportuj do excel</button>
+
+<!--<ngbd-datepicker-i18n></ngbd-datepicker-i18n>-->
+<!--<button class="btn btn-outline-dark" type="button" (click)="exportAsExcelFile()"><span class="fa fa-file-excel-o"></span> exportuj do excel</button>-->
+

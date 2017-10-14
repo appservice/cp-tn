@@ -30,7 +30,7 @@ export class TnFileUploaderComponent implements OnInit {
                 private attachmentService: AttachmentService) {
 
         this.token = this.localStorage.retrieve('authenticationToken') || this.sessionStorage.retrieve('authenticationToken');
-        let tokenWithBearer = 'Bearer ' + this.token;
+        const tokenWithBearer = 'Bearer ' + this.token;
 
         this.uploader = new FileUploader({
             url: URL,
@@ -45,7 +45,6 @@ export class TnFileUploaderComponent implements OnInit {
 
     ngOnInit() {
     }
-
 
     public fileOverBase(e: any): void {
         this.hasBaseDropZoneOver = e;
@@ -66,13 +65,13 @@ export class TnFileUploaderComponent implements OnInit {
         this.uploader.onCompleteItem = (item: any, response: any, status: any, headers: any) => {
 
             if (status === 200) {
-                let attachment = <Attachemnt>JSON.parse(response);
+                const attachment = <Attachemnt>JSON.parse(response);
 
                 this.attachments.push(attachment);
                 this.notify.emit(this.attachments);
 
             } else {
-                console.log("Error: ", status);
+                console.log('Error: ', status);
 
             }
 

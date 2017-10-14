@@ -1,14 +1,11 @@
 package eu.canpack.fip.bo.pdf;
 
-import eu.canpack.fip.domain.Operator;
-import eu.canpack.fip.service.dto.OperatorDTO;
+import eu.canpack.fip.bo.operator.OperatorDTO;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.io.FileOutputStream;
 import java.io.OutputStream;
-
-import static org.junit.Assert.*;
 
 /**
  * CP S.A.

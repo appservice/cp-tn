@@ -9,8 +9,8 @@ import {FileSizePipe} from './file-size-pipe';
 import {TnAlert} from './tn-alert';
 import {TnEstimationRemarkComponent} from './tn-estimation-remark-component/tn-estimation-remark-component';
 import {NgbDatepickerI18n, NgbModule} from '@ng-bootstrap/ng-bootstrap';
-import {NgbdDatepickerI18n} from './datepicker-pl';
 import {ExcelService} from './excel.service';
+import {NgbDatePickerPl} from './datepicker-pl';
 
 @NgModule({
     imports: [
@@ -25,7 +25,7 @@ import {ExcelService} from './excel.service';
             FileSizePipe,
             TnAlert,
             TnEstimationRemarkComponent,
-            NgbdDatepickerI18n,
+            NgbDatePickerPl,
         ],
     exports:
         [
@@ -34,7 +34,7 @@ import {ExcelService} from './excel.service';
             FileSizePipe,
             TnAlert,
             TnEstimationRemarkComponent,
-            NgbdDatepickerI18n,
+            NgbDatePickerPl,
 
 
         ],

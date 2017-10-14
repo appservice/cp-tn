@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 
+import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -71,6 +72,7 @@ public class DrawingService {
             .map(a -> attachmentRepository.findOne(a.getId()))
             .peek(a -> a.setDrawing(drawing)).collect(Collectors.toList());
         drawing.setAttachments(attachments);
+        drawing.setCreatedAt(ZonedDateTime.now());
         Drawing response = drawingRepository.save(drawing);
         DrawingDTO result = drawingMapper.toDto(response);
         drawingSearchRepository.save(response);

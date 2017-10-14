@@ -1,10 +1,10 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {Http, Response, URLSearchParams} from '@angular/http';
-import { Observable } from 'rxjs/Rx';
-import { JhiDateUtils } from 'ng-jhipster';
+import {Observable} from 'rxjs/Rx';
+import {JhiDateUtils} from 'ng-jhipster';
 
-import { TechnologyCard } from './technology-card.model';
-import { ResponseWrapper, createRequestOption } from '../../shared';
+import {TechnologyCard} from './technology-card.model';
+import {ResponseWrapper, createRequestOption} from '../../shared';
 
 @Injectable()
 export class TechnologyCardService {
@@ -12,7 +12,8 @@ export class TechnologyCardService {
     private resourceUrl = 'api/technology-cards';
     private resourceSearchUrl = 'api/_search/technology-cards';
 
-    constructor(private http: Http, private dateUtils: JhiDateUtils) { }
+    constructor(private http: Http, private dateUtils: JhiDateUtils) {
+    }
 
     create(technologyCard: TechnologyCard): Observable<TechnologyCard> {
         const copy = this.convert(technologyCard);
@@ -40,13 +41,13 @@ export class TechnologyCardService {
         });
     }
 
-    query(req?: any,urlSearchParams?: URLSearchParams): Observable<ResponseWrapper> {
+    query(req?: any, urlSearchParams?: URLSearchParams): Observable<ResponseWrapper> {
         const options = createRequestOption(req);
-        if(urlSearchParams){
+        if (urlSearchParams) {
             options.params.appendAll(urlSearchParams);
         }
         console.log('options', options);
-        return this.http.get(this.resourceUrl+"/filtered", options)
+        return this.http.get(this.resourceUrl + '/filtered', options)
             .map((res: Response) => this.convertResponse(res));
     }
 

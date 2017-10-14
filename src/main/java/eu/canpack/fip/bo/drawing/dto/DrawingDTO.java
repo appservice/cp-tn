@@ -7,6 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.Serializable;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -24,6 +25,8 @@ public class DrawingDTO implements Serializable {
     private String number;
 
     private String name;
+
+    private ZonedDateTime createdAt;
 
 //    private List<EstimationDTO> estimations;
 
@@ -44,6 +47,7 @@ public class DrawingDTO implements Serializable {
         this.attachments = drawing.getAttachments().stream()
             .map(AttachmentDTO::new).collect(Collectors.toList());
         this.name=drawing.getName();
+        this.createdAt=drawing.getCreatedAt();
 
     }
 
@@ -71,7 +75,15 @@ public class DrawingDTO implements Serializable {
         this.attachments = attachments;
     }
 
-//    public List<EstimationDTO> getEstimations() {
+    public ZonedDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(ZonedDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    //    public List<EstimationDTO> getEstimations() {
 //        return estimations;
 //    }
 //
@@ -122,6 +134,7 @@ public class DrawingDTO implements Serializable {
             "id=" + id +
             ", number='" + number + '\'' +
             ", name='" + name + '\'' +
+            ", createdAt=" + createdAt +
             ", attachments=" + attachments +
             '}';
     }

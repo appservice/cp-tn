@@ -12,6 +12,7 @@ import org.springframework.data.elasticsearch.annotations.Document;
 import javax.persistence.*;
 import javax.validation.constraints.*;
 import java.io.Serializable;
+import java.time.ZonedDateTime;
 import java.util.*;
 
 /**
@@ -36,6 +37,8 @@ public class Drawing implements Serializable {
     @Column(name="name")
     private String name;
 
+    @Column(name = "cratedAt")
+    private ZonedDateTime createdAt;
 
     @OneToMany(mappedBy = "drawing")//@ManyToOne
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
@@ -110,6 +113,14 @@ public class Drawing implements Serializable {
         this.technologyCards = technologyCards;
     }
 
+    public ZonedDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(ZonedDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -130,14 +141,7 @@ public class Drawing implements Serializable {
         return Objects.hashCode(getId());
     }
 
-    @Override
-    public String toString() {
-        return "Drawing{" +
-            "id=" + getId() +
-            ", number='" + getNumber() + "'" +
 
-            "}";
-    }
 
     public Drawing number(String number) {
         this.number = number;
@@ -154,4 +158,13 @@ public class Drawing implements Serializable {
         return this;
     }
 
+    @Override
+    public String toString() {
+        return "Drawing{" +
+            "id=" + id +
+            ", number='" + number + '\'' +
+            ", name='" + name + '\'' +
+            ", createdAt=" + createdAt +
+            '}';
+    }
 }

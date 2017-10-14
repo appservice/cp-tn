@@ -1,4 +1,4 @@
-package eu.canpack.fip.service;
+package eu.canpack.fip.bo.operator;
 
 
 import java.util.List;
@@ -13,13 +13,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import io.github.jhipster.service.QueryService;
 
-import eu.canpack.fip.domain.Operator;
-import eu.canpack.fip.domain.*; // for static metamodels
 import eu.canpack.fip.repository.OperatorRepository;
 import eu.canpack.fip.repository.search.OperatorSearchRepository;
-import eu.canpack.fip.service.dto.OperatorCriteria;
 
-import eu.canpack.fip.service.dto.OperatorDTO;
 import eu.canpack.fip.service.mapper.OperatorMapper;
 
 /**

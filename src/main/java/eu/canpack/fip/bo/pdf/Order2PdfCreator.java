@@ -6,7 +6,7 @@ import com.lowagie.text.Image;
 import com.lowagie.text.Rectangle;
 import com.lowagie.text.pdf.*;
 import eu.canpack.fip.bo.estimation.Estimation;
-import eu.canpack.fip.bo.estimation.EstimationCreateDTO;
+import eu.canpack.fip.bo.estimation.dto.EstimationCreateDTO;
 import eu.canpack.fip.bo.order.Order;
 import eu.canpack.fip.bo.order.OrderRepository;
 import eu.canpack.fip.bo.order.dto.OrderDTO;
@@ -20,7 +20,6 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.math.BigDecimal;
 import java.text.NumberFormat;
-import java.time.LocalDate;
 import java.util.Map;
 import java.util.stream.Collectors;
 

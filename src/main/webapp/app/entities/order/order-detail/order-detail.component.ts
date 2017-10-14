@@ -82,7 +82,6 @@ export class OrderDetailComponent implements OnInit, OnDestroy {
         return item.id;
     }
 
-
     onWorkingCopyBtnClick() {
         console.log('save is cliccked');
         console.log(this.order);
@@ -94,13 +93,10 @@ export class OrderDetailComponent implements OnInit, OnDestroy {
         window.history.back();
     }
 
-
     onFileArrayChange(event: Attachment[]) {
         this.attachments = event;
         console.log('event from parent object: ', event);
-
     }
-
 
     save() {
         this.isSaving = true;
@@ -149,7 +145,6 @@ export class OrderDetailComponent implements OnInit, OnDestroy {
             //     console.log('enum 3', ]);
             this.isReadOnly = order.orderStatus != null && order.orderStatus != 'WORKING_COPY';
 
-
         });
     }
 
@@ -157,7 +152,6 @@ export class OrderDetailComponent implements OnInit, OnDestroy {
         this.subscription.unsubscribe();
         // this.eventManager.destroy(this.eventSubscriber);
     }
-
 
     openModal(content, row: number) {
         if (!this.order.estimations[row].drawing) {
@@ -183,7 +177,6 @@ export class OrderDetailComponent implements OnInit, OnDestroy {
         }
     }
 
-
     convertToDate(ngBootstrapDate: any): Date {
         if (typeof ngBootstrapDate === 'string') {
             return null;
@@ -199,6 +192,5 @@ export class OrderDetailComponent implements OnInit, OnDestroy {
         }
         return isDisabled;
     }
-
 
 }

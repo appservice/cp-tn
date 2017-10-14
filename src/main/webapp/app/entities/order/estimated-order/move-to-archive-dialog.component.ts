@@ -1,13 +1,11 @@
 import {Component, OnInit, OnDestroy, Input,} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 
-import { NgbActiveModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
-import { JhiEventManager } from 'ng-jhipster';
+import {NgbActiveModal, NgbModalRef} from '@ng-bootstrap/ng-bootstrap';
+import {JhiEventManager} from 'ng-jhipster';
 import {Order} from '../order.model';
 import {OrderService} from '../order.service';
 import {OrderPopupService} from '../order-popup.service';
-
-
 
 @Component({
     selector: 'tn-move-to-archive-dialog',
@@ -17,13 +15,10 @@ export class MoveToArchiveDialogComponent {
 
     @Input() order: Order;
 
-    constructor(
-        private orderService: OrderService,
-        public activeModal: NgbActiveModal,
-        private eventManager: JhiEventManager,
-        private router: Router,
-
-    ) {
+    constructor(private orderService: OrderService,
+                public activeModal: NgbActiveModal,
+                private eventManager: JhiEventManager,
+                private router: Router,) {
     }
 
     clear() {
@@ -51,10 +46,9 @@ export class MoveToArchivePopupComponent implements OnInit, OnDestroy {
 
     routeSub: any;
 
-    constructor(
-        private route: ActivatedRoute,
-        private orderPopupService: OrderPopupService
-    ) {}
+    constructor(private route: ActivatedRoute,
+                private orderPopupService: OrderPopupService) {
+    }
 
     ngOnInit() {
         this.routeSub = this.route.params.subscribe((params) => {

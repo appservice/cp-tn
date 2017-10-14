@@ -7,6 +7,7 @@ export class Estimation implements BaseEntity {
     constructor(
         public id?: number,
         public internalNumber?: string,
+        public itemName?: string,
         public itemNumber?: string,
         public material?: string,
         public materialPrice?: number,
@@ -23,7 +24,8 @@ export class Estimation implements BaseEntity {
         public commercialParts?: CommercialPart[],
         public optionsModel?: number[],
         public discount?: number,
-        public createdAt?: any
+        public createdAt?: any,
+        public createdBy?: string,
     ) {
     }
 }

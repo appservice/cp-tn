@@ -1,9 +1,13 @@
 package eu.canpack.fip.bo.estimation;
 
+import eu.canpack.fip.bo.estimation.dto.EstimationDTO;
 import eu.canpack.fip.bo.operation.Operation;
 import eu.canpack.fip.bo.operation.OperationMapper;
 import eu.canpack.fip.bo.commercialPart.CommercialPart;
+import eu.canpack.fip.bo.operation.OperationType;
 import eu.canpack.fip.bo.order.Order;
+import eu.canpack.fip.bo.order.OrderRepository;
+import eu.canpack.fip.bo.order.enumeration.OrderType;
 import eu.canpack.fip.bo.pdf.TechnologyCardPdfCreator;
 import eu.canpack.fip.bo.remark.EstimationRemark;
 import eu.canpack.fip.domain.User;
@@ -51,7 +55,9 @@ public class EstimationService {
 
     private final UserService userService;
 
-    public EstimationService(EstimationRepository estimationRepository, EstimationMapper estimationMapper, EstimationSearchRepository estimationSearchRepository, OperationMapper operationMapper, CommercialPartMapper commercialPartMapper, UserRepository userRepository, TechnologyCardPdfCreator technologyCardPdfCreator, UserService userService) {
+    private final OrderRepository orderRepository;
+
+    public EstimationService(EstimationRepository estimationRepository, EstimationMapper estimationMapper, EstimationSearchRepository estimationSearchRepository, OperationMapper operationMapper, CommercialPartMapper commercialPartMapper, UserRepository userRepository, TechnologyCardPdfCreator technologyCardPdfCreator, UserService userService, OrderRepository orderRepository) {
         this.estimationRepository = estimationRepository;
         this.estimationMapper = estimationMapper;
         this.estimationSearchRepository = estimationSearchRepository;
@@ -60,6 +66,7 @@ public class EstimationService {
         this.userRepository = userRepository;
         this.technologyCardPdfCreator = technologyCardPdfCreator;
         this.userService = userService;
+        this.orderRepository = orderRepository;
     }
 
     /**
@@ -74,9 +81,18 @@ public class EstimationService {
         List<Operation> operations = operationMapper.toEntity(estimationDTO.getOperations());
         log.debug("operations DTO: {}",estimationDTO.getOperations());
         log.debug("operations list: {}",operations);
+        Order order = orderRepository.findOne(estimationDTO.getOrderId());
 
         Estimation finalEstimation = estimation;
-        operations.forEach(operation -> operation.setEstimation(finalEstimation));
+
+        if(order.getOrderType().equals(OrderType.ESTIMATION)){
+            operations.forEach(operation -> {operation.setEstimation(finalEstimation);
+            operation.setOperationType(OperationType.ESTIMATION);});
+
+        }else{
+            operations.forEach(operation -> {operation.setEstimation(finalEstimation);
+                operation.setOperationType(OperationType.PRODUCTION);});
+        }
         estimation.setOperations(operations);
 
         List<CommercialPart> commercialParts = commercialPartMapper.toEntity(estimationDTO.getCommercialParts());
@@ -100,7 +116,6 @@ public class EstimationService {
         }
 
 
-        Order order=estimation.getOrder();
 
         estimation = estimationRepository.save(estimation);
         estimationSearchRepository.save(estimation);

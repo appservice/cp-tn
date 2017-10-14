@@ -5,6 +5,7 @@ import {ResponseWrapper} from '../../../shared/model/response-wrapper.model';
 import {URLSearchParams} from '@angular/http';
 import {Drawing} from '../drawing.model';
 import {DrawingService} from '../drawing.service';
+import {DrawingFilter} from './drawing-filter';
 
 @Component({
     selector: 'tn-drawing-finder',
@@ -26,8 +27,7 @@ export class DrawingFinderComponent implements OnInit {
     previousPage: any;
     reverse: any;
 
-    nameFilter: string;
-    numberFilter: string;
+    drawingFilter: DrawingFilter;
 
     constructor(public activeModal: NgbActiveModal,
                 private drawingService: DrawingService,
@@ -36,19 +36,22 @@ export class DrawingFinderComponent implements OnInit {
 
     ngOnInit() {
         this.drawings = [];
+        this.drawingFilter = new DrawingFilter();
     }
 
     findDrawings() {
-        let urlSearchParams=new URLSearchParams();
-        urlSearchParams.append('number.contains', this.numberFilter);
-        urlSearchParams.append('name.contains', this.nameFilter);
+        let urlSearchParams = new URLSearchParams();
+        urlSearchParams.append('number.contains', this.drawingFilter.number);
+        urlSearchParams.append('name.contains', this.drawingFilter.name);
+        urlSearchParams.append('createdAt.greaterOrEqualThan', this.drawingFilter.getValidFromString());
+        urlSearchParams.append('createdAt.lessOrEqualThan', this.drawingFilter.getValidToString());
         console.log(urlSearchParams);
 
         this.drawingService.query({
             'page': (this.page - 1),
             'size': this.itemsPerPage,
 
-        },urlSearchParams).subscribe((res: ResponseWrapper) => {
+        }, urlSearchParams).subscribe((res: ResponseWrapper) => {
             this.onSuccess(res.json, res.headers);
         });
     }
@@ -79,10 +82,13 @@ export class DrawingFinderComponent implements OnInit {
     }
 
 
-    clearFilter(){
-        this.nameFilter=null;
-        this.numberFilter=null;
+    clearFilter() {
+        this.drawingFilter.name = null;
+        this.drawingFilter.number = null;
+        this.drawingFilter.createdAtTo = null;
+        this.drawingFilter.createdAtFrom = null;
     }
+
     // private onError(error) {
     //     this.alertService.error(error.message, null, null);
     // }

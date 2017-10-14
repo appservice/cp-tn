@@ -1,7 +1,7 @@
 package eu.canpack.fip.bo.technologyCard;
 
 import com.codahale.metrics.annotation.Timed;
-import eu.canpack.fip.bo.estimation.EstimationDTO;
+import eu.canpack.fip.bo.estimation.dto.EstimationDTO;
 import eu.canpack.fip.bo.technologyCard.mapper.TechnologyCardDTO;
 import eu.canpack.fip.bo.technologyCard.mapper.TechnologyCardListDTO;
 import eu.canpack.fip.web.rest.util.HeaderUtil;

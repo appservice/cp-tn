@@ -1,9 +1,7 @@
-package eu.canpack.fip.service;
+package eu.canpack.fip.bo.operator;
 
-import eu.canpack.fip.domain.Operator;
 import eu.canpack.fip.repository.OperatorRepository;
 import eu.canpack.fip.repository.search.OperatorSearchRepository;
-import eu.canpack.fip.service.dto.OperatorDTO;
 import eu.canpack.fip.service.mapper.OperatorMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

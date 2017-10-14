@@ -6,6 +6,7 @@ export class Drawing implements BaseEntity {
         public id?: number,
         public number?: string,
         public name?: string,
+        public createdAt ?: string,
         public attachments?: Attachemnt[],
         // public dataContentType?: string,
         // public data?: any,

@@ -2,25 +2,10 @@ package eu.canpack.fip.bo.pdf;
 
 import com.lowagie.text.*;
 import com.lowagie.text.Font;
-import com.lowagie.text.Image;
-import com.lowagie.text.Rectangle;
 import com.lowagie.text.pdf.PdfPCell;
-import com.lowagie.text.pdf.PdfPTable;
-import com.lowagie.text.pdf.PdfWriter;
-import eu.canpack.fip.bo.estimation.Estimation;
-import eu.canpack.fip.bo.estimation.EstimationCreateDTO;
-import eu.canpack.fip.bo.order.Order;
-import eu.canpack.fip.bo.order.OrderRepository;
-import eu.canpack.fip.bo.order.dto.OrderDTO;
 import org.springframework.stereotype.Service;
 
 import java.awt.*;
-import java.io.IOException;
-import java.io.OutputStream;
-import java.math.BigDecimal;
-import java.text.NumberFormat;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 /**
  * CP S.A.

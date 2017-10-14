@@ -201,6 +201,7 @@ dependencies {
     }
     compile "io.springfox:springfox-bean-validators:${springfox_version}"
     compile "mysql:mysql-connector-java"
+    compile "org.postgresql:postgresql"
     compile "org.mapstruct:mapstruct-jdk8:${mapstruct_version}"
 //    compile "org.liquibase.ext:liquibase-hibernate5:${liquibase_hibernate5_version}"
 
@@ -213,6 +214,10 @@ dependencies {
     compile group: 'p6spy', name: 'p6spy', version: '3.0.0'
 // https://mvnrepository.com/artifact/com.github.nociar/jpa-cloner
     compile group: 'com.github.nociar', name: 'jpa-cloner', version: '1.0.3'
+
+// https://mvnrepository.com/artifact/org.activiti/activiti-spring-boot-starter-basic
+    compile group: 'org.activiti', name: 'activiti-spring-boot-starter-basic', version: '6.0.0'
+
 
 
     testCompile "org.awaitility:awaitility:${awaitility_version}"

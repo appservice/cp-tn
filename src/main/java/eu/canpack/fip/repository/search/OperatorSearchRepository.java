@@ -1,6 +1,6 @@
 package eu.canpack.fip.repository.search;
 
-import eu.canpack.fip.domain.Operator;
+import eu.canpack.fip.bo.operator.Operator;
 import org.springframework.data.elasticsearch.repository.ElasticsearchRepository;
 
 /**

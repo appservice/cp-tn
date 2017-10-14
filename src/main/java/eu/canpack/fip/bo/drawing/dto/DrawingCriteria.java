@@ -3,6 +3,7 @@ package eu.canpack.fip.bo.drawing.dto;
 import io.github.jhipster.service.filter.Filter;
 import io.github.jhipster.service.filter.LongFilter;
 import io.github.jhipster.service.filter.StringFilter;
+import io.github.jhipster.service.filter.ZonedDateTimeFilter;
 
 import java.io.Serializable;
 
@@ -43,6 +44,7 @@ public class DrawingCriteria implements Serializable {
 
     private StringFilter number;
     private StringFilter name;
+    private ZonedDateTimeFilter createdAt;
 
 //    private StringFilter createdByLastName;
 //
@@ -89,12 +91,21 @@ public class DrawingCriteria implements Serializable {
         this.name = name;
     }
 
+    public ZonedDateTimeFilter getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(ZonedDateTimeFilter createdAt) {
+        this.createdAt = createdAt;
+    }
+
     @Override
     public String toString() {
         return "OrderCriteria{" +
                 (id != null ? "=" + id + ", " : "") +
                 (number != null ? "number=" + number + ", " : "") +
                 (name != null ? "name=" + name + ", " : "") +
+                (createdAt != null ? "createdAt=" + createdAt + ", " : "") +
 
 
 

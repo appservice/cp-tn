@@ -61,14 +61,12 @@ export class NewPurchaseOrderComponent implements OnInit, OnDestroy {
 
         this.order.orderType = OrderType.ESTIMATION;
 
-
         this.subscription = this.route.params.subscribe((params) => {
             console.log(params);
             if (params['inquiryId']) {
                 console.log('new purcahse order');
                 this.loadNewPurchaseOrder(params['inquiryId']);
                 this.title = 'Nowe zamówienie';
-
             }
             if (params['id']) {
                 console.log('edit purcahse order');
@@ -85,7 +83,6 @@ export class NewPurchaseOrderComponent implements OnInit, OnDestroy {
     trackClientById(index: number, item: Client) {
         return item.id;
     }
-
 
     onDeleteRow(index: number) {
         // console.log(event);
@@ -112,9 +109,7 @@ export class NewPurchaseOrderComponent implements OnInit, OnDestroy {
     onFileArrayChange(event: Attachment[]) {
         this.attachments = event;
         console.log('event from parent object: ', event);
-
     }
-
 
     save() {
         this.isSaving = true;
@@ -161,7 +156,7 @@ export class NewPurchaseOrderComponent implements OnInit, OnDestroy {
             console.log('enum status: ', OrderStatus['WORKING_COPY']);
             console.log('enum 3', order.orderStatus.constructor.name);
             //     console.log('enum 3', ]);
-            this.isReadOnly = order.orderStatus != null && order.orderStatus != 'WORKING_COPY';
+            this.isReadOnly = order.orderStatus != null && order.orderStatus !== 'WORKING_COPY';
             order.internalNumber = null;
             order.inquiryId = order.id;
             order.id = null;
@@ -172,8 +167,6 @@ export class NewPurchaseOrderComponent implements OnInit, OnDestroy {
             order.createdAt = null;
             order.description = null;
             order.referenceNumber = null;
-
-
         });
     }
 
@@ -217,13 +210,13 @@ export class NewPurchaseOrderComponent implements OnInit, OnDestroy {
     sendToProduction() {
         console.log('Sent to estimation');
 
-        this.order.orderStatus = 'IN_PRODUCTION';//OrderStatus.SENT_TO_ESTIMATION;
+        this.order.orderStatus = 'IN_PRODUCTION'; // OrderStatus.SENT_TO_ESTIMATION;
         this.save();
     }
 
     calculateTotalValue(): number {
         let total = 0;
-        for (let estimation of this.order.estimations) {
+        for (const estimation of this.order.estimations) {
             total = total + estimation.estimatedCost * estimation.amount;
         }
         return total;

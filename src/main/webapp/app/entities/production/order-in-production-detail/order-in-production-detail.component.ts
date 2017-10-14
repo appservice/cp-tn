@@ -47,7 +47,6 @@ export class OrderInProductionDetailComponent implements OnInit, OnDestroy {
                 private modalService: NgbModal) {
         this.order = new Order();
         this.order.estimations = [];
-
     }
 
     ngOnInit() {
@@ -64,9 +63,7 @@ export class OrderInProductionDetailComponent implements OnInit, OnDestroy {
             console.log(params);
             if (params['id']) {
                 this.load(params['id']);
-
             }
-
         });
     }
 
@@ -77,7 +74,6 @@ export class OrderInProductionDetailComponent implements OnInit, OnDestroy {
     trackClientById(index: number, item: Client) {
         return item.id;
     }
-
 
     onWorkingCopyBtnClick() {
         console.log('save is cliccked');
@@ -90,13 +86,11 @@ export class OrderInProductionDetailComponent implements OnInit, OnDestroy {
         window.history.back();
     }
 
-
     onFileArrayChange(event: Attachment[]) {
         this.attachments = event;
         console.log('event from parent object: ', event);
 
     }
-
 
     save() {
         this.isSaving = true;
@@ -143,9 +137,7 @@ export class OrderInProductionDetailComponent implements OnInit, OnDestroy {
             console.log('enum 3', order.orderStatus.constructor.name);
             console.log('order ', order)
             //     console.log('enum 3', ]);
-            this.isReadOnly = order.orderStatus != null && order.orderStatus != 'WORKING_COPY';
-
-
+            this.isReadOnly = order.orderStatus != null && order.orderStatus !== 'WORKING_COPY';
         });
     }
 
@@ -153,7 +145,6 @@ export class OrderInProductionDetailComponent implements OnInit, OnDestroy {
         this.subscription.unsubscribe();
         // this.eventManager.destroy(this.eventSubscriber);
     }
-
 
     openModal(content, row: number) {
         if (!this.order.estimations[row].drawing) {
@@ -179,7 +170,6 @@ export class OrderInProductionDetailComponent implements OnInit, OnDestroy {
         }
     }
 
-
     convertToDate(ngBootstrapDate: any): Date {
         if (typeof ngBootstrapDate === 'string') {
             return null;
@@ -190,13 +180,13 @@ export class OrderInProductionDetailComponent implements OnInit, OnDestroy {
 
     isProductionCreateBtnDisabled(): boolean {
         let isDisabled = false;
-        for (let estimation of this.order.estimations) {
+        for (const estimation of this.order.estimations) {
             isDisabled = isDisabled || estimation.estimatedCost !== null
         }
         return isDisabled;
     }
 
-    printTechnologyCard(){
+    printTechnologyCard() {
         this.orderService.createTechnologyCardPdf(this.order);
     }
 }

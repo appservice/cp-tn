@@ -3,7 +3,7 @@ package eu.canpack.fip.bo.pdf;
 import eu.canpack.fip.bo.client.Client;
 import eu.canpack.fip.bo.drawing.Drawing;
 import eu.canpack.fip.bo.estimation.Estimation;
-import eu.canpack.fip.bo.estimation.EstimationCreateDTO;
+import eu.canpack.fip.bo.estimation.dto.EstimationCreateDTO;
 import eu.canpack.fip.bo.order.Order;
 import eu.canpack.fip.bo.order.OrderRepository;
 import eu.canpack.fip.bo.order.dto.OrderDTO;

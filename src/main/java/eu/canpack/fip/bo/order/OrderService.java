@@ -7,10 +7,10 @@ import eu.canpack.fip.bo.commercialPart.CommercialPart;
 import eu.canpack.fip.bo.drawing.Drawing;
 import eu.canpack.fip.bo.drawing.DrawingRepository;
 import eu.canpack.fip.bo.estimation.Estimation;
-import eu.canpack.fip.bo.estimation.EstimationCreateDTO;
-import eu.canpack.fip.bo.estimation.EstimationDTO;
+import eu.canpack.fip.bo.estimation.dto.EstimationCreateDTO;
 import eu.canpack.fip.bo.estimation.EstimationRepository;
 import eu.canpack.fip.bo.operation.Operation;
+import eu.canpack.fip.bo.operation.OperationType;
 import eu.canpack.fip.bo.order.dto.OrderDTO;
 import eu.canpack.fip.bo.order.dto.OrderListDTO;
 import eu.canpack.fip.bo.order.dto.OrderSimpleDTO;
@@ -465,6 +465,7 @@ public class OrderService {
                 newOperation.setSequenceNumber(op.getSequenceNumber());
                 newOperation.setRemark(op.getRemark());
                 newOperation.setEstimatedTime(op.getEstimatedTime());
+                newOperation.setOperationType(OperationType.PRODUCTION);
 
                 newEstimation.getOperations().add(newOperation);
             }

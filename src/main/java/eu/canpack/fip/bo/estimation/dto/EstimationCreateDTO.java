@@ -1,7 +1,8 @@
-package eu.canpack.fip.bo.estimation;
+package eu.canpack.fip.bo.estimation.dto;
 
 
 import eu.canpack.fip.bo.drawing.dto.DrawingDTO;
+import eu.canpack.fip.bo.estimation.Estimation;
 import eu.canpack.fip.bo.remark.EstimationRemark;
 import eu.canpack.fip.bo.remark.EstimationRemarkDTO;
 

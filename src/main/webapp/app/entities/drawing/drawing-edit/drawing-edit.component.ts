@@ -22,17 +22,17 @@ export class DrawingEditComponent implements OnInit, OnDestroy {
                 private drawingService: DrawingService,
                 private route: ActivatedRoute,
                 private alertService: JhiAlertService,
-                private router:Router) {
+                private router: Router) {
     }
 
     ngOnInit() {
         this.subscription = this.route.params.subscribe((params) => {
-            if(params['id']){
+            if (params['id']) {
                 this.load(params['id']);
 
-            }else{
-                this.drawing=new Drawing();
-                this.drawing.attachments=[];
+            } else {
+                this.drawing = new Drawing();
+                this.drawing.attachments = [];
             }
         });
         this.registerChangeInDrawings();
@@ -63,37 +63,36 @@ export class DrawingEditComponent implements OnInit, OnDestroy {
     save() {
         console.log('save is clicked');
         console.log(this.drawing);
-        for(let attachment of this.drawing.attachments){
-            attachment.drawingId=this.drawing.id;
+        for (let attachment of this.drawing.attachments) {
+            attachment.drawingId = this.drawing.id;
         }
 
-        this.isSaving=true;
+        this.isSaving = true;
 
         if (this.drawing.id !== undefined && this.drawing.id !== null) {
 
             this.drawingService.update(this.drawing).subscribe((drawing: Drawing) => {
-                console.log("updated: ", drawing);
+                console.log('updated: ', drawing);
                 this.onSaveSuccess(drawing);
 
             }, (error: any) => {
-                console.log("error occured");
+                console.log('error occured');
                 this.onSaveError(error);
             });
-        }else{
+        } else {
             this.drawingService.create(this.drawing).subscribe((drawing: Drawing) => {
-                console.log("updated: ", drawing);
+                console.log('updated: ', drawing);
                 this.onSaveSuccess(drawing);
 
             }, (error: any) => {
-                console.log("error occured");
+                console.log('error occured');
                 this.onSaveError(error);
             });
         }
     }
 
-
     private onSaveSuccess(result: Drawing) {
-        this.eventManager.broadcast({ name: 'drawingListModification', content: 'OK'});
+        this.eventManager.broadcast({name: 'drawingListModification', content: 'OK'});
         this.isSaving = false;
         this.router.navigate(['drawing']);
 
@@ -108,7 +107,6 @@ export class DrawingEditComponent implements OnInit, OnDestroy {
         this.isSaving = false;
         this.onError(error);
     }
-
 
     private onError(error) {
         this.alertService.error(error.message, null, null);

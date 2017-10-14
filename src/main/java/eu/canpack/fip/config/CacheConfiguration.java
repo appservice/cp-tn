@@ -1,5 +1,6 @@
 package eu.canpack.fip.config;
 
+import eu.canpack.fip.bo.operator.Operator;
 import eu.canpack.fip.bo.remark.EstimationRemark;
 import eu.canpack.fip.bo.attachment.Attachment;
 import eu.canpack.fip.bo.client.Client;
@@ -85,7 +86,7 @@ public class CacheConfiguration {
 //            cm.createCache(eu.canpack.fip.domain.Drawing.class.getName(), jcacheConfiguration);
             cm.createCache(TechnologyCard.class.getName(), jcacheConfiguration);
             cm.createCache(TechnologyCard.class.getName() + ".operations", jcacheConfiguration);
-            cm.createCache(eu.canpack.fip.domain.Operator.class.getName(), jcacheConfiguration);
+            cm.createCache(Operator.class.getName(), jcacheConfiguration);
             // jhipster-needle-ehcache-add-entry
         };
     }

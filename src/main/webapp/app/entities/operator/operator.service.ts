@@ -1,12 +1,12 @@
-import { Injectable } from '@angular/core';
-import {Http, RequestOptions, Response, ResponseContentType,Headers} from '@angular/http';
-import { Observable } from 'rxjs/Rx';
-import { SERVER_API_URL } from '../../app.constants';
+import {Injectable} from '@angular/core';
+import {Http, RequestOptions, Response, ResponseContentType, Headers} from '@angular/http';
+import {Observable} from 'rxjs/Rx';
+import {SERVER_API_URL} from '../../app.constants';
 import * as FileSaver from 'file-saver';
 
 
-import { Operator } from './operator.model';
-import { ResponseWrapper, createRequestOption } from '../../shared';
+import {Operator} from './operator.model';
+import {ResponseWrapper, createRequestOption} from '../../shared';
 
 @Injectable()
 export class OperatorService {
@@ -14,7 +14,8 @@ export class OperatorService {
     private resourceUrl = SERVER_API_URL + 'api/operators';
     private resourceSearchUrl = SERVER_API_URL + 'api/_search/operators';
 
-    constructor(private http: Http) { }
+    constructor(private http: Http) {
+    }
 
     create(operator: Operator): Observable<Operator> {
         const copy = this.convert(operator);
@@ -63,13 +64,13 @@ export class OperatorService {
     }
 
     download(operator: Operator): void {
-        let headers = new Headers({ 'Content-Type': 'application/json'} );
-        let options = new RequestOptions({responseType: ResponseContentType.Blob,headers});
+        let headers = new Headers({'Content-Type': 'application/json'});
+        let options = new RequestOptions({responseType: ResponseContentType.Blob, headers});
 
-        this.http.get(`${this.resourceUrl}/${operator.id}/print-card`,options)
+        this.http.get(`${this.resourceUrl}/${operator.id}/print-card`, options)
             .map((res: Response) => res.blob())
             .subscribe((data: any) => {
-                OperatorService.saveDownload(data, operator.firstName+" "+operator.lastName, 'application/pdf');
+                OperatorService.saveDownload(data, operator.firstName + " " + operator.lastName, 'application/pdf');
 
             });
     }
@@ -79,6 +80,6 @@ export class OperatorService {
 
         const disableAutoBOM = true;
 
-        FileSaver.saveAs(data, 'Karta_'+fileName+'.pdf', disableAutoBOM);
+        FileSaver.saveAs(data, 'Karta_' + fileName + '.pdf', disableAutoBOM);
     }
 }

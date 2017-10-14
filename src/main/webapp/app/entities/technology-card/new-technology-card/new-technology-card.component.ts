@@ -68,14 +68,14 @@ export class NewTechnologyCardComponent implements OnInit, OnDestroy {
         this.subscription = this.route.params.subscribe((params) => {
             console.log(params);
             if (params['id']) {
-                this.title="Edytuj kartę technologizną"
+                this.title = "Edytuj kartę technologizną"
                 this.load(params['id']);
 
-            }else{
-                this.title="Dodaj kartę technologizną"
+            } else {
+                this.title = "Dodaj kartę technologizną"
 
             }
-            if(params['readOnly']){
+            if (params['readOnly']) {
                 this.readOnly = params['readOnly'];
 
             }
@@ -83,7 +83,7 @@ export class NewTechnologyCardComponent implements OnInit, OnDestroy {
         });
 
         this.activatedRoute.data.subscribe((data) => {
-            this.readOnly=data['readOnly'];
+            this.readOnly = data['readOnly'];
         });
         this.machineService.query()
             .subscribe((res: ResponseWrapper) => {
@@ -289,14 +289,16 @@ export class NewTechnologyCardComponent implements OnInit, OnDestroy {
 
     openDrawingCardModal() {
 
-        const modalRef = this.modalService.open(DrawingFinderComponent,{size:'lg'});
+        const modalRef = this.modalService.open(DrawingFinderComponent, {size: 'lg'});
 
         console.log(modalRef.result);
-        modalRef.result.then(result=>{
+        modalRef.result.then(result => {
             console.log(result);
-            this.technologyCard.drawing=result;
-           // this.insertOperationFromTechnologyCard(result)
-        },(reason:any)=>{console.log(reason)});
+            this.technologyCard.drawing = result;
+            // this.insertOperationFromTechnologyCard(result)
+        }, (reason: any) => {
+            console.log(reason)
+        });
         // modalRef.componentInstance.name = 'World';
     }
 }

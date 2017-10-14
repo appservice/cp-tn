@@ -51,6 +51,14 @@ public class Operation implements Serializable {
     @ManyToOne
     private Estimation estimation;
 
+    @Enumerated(EnumType.STRING)
+    @Column(name = "operation_status")
+    private OperationStatus operationStatus;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "operation_type")
+    private OperationType operationType;
+
 
 
     public Long getId() {
@@ -151,6 +159,21 @@ public class Operation implements Serializable {
         return this;
     }
 
+    public OperationStatus getOperationStatus() {
+        return operationStatus;
+    }
+
+    public void setOperationStatus(OperationStatus operationStatus) {
+        this.operationStatus = operationStatus;
+    }
+
+    public OperationType getOperationType() {
+        return operationType;
+    }
+
+    public void setOperationType(OperationType operationType) {
+        this.operationType = operationType;
+    }
 
     public void setEstimation(Estimation estimation) {
         this.estimation = estimation;

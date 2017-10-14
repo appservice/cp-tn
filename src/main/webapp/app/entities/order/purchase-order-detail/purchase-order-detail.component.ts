@@ -35,7 +35,6 @@ export class PurchaseOrderDetailComponent implements OnInit, OnDestroy {
     closeResult: string;
     clickedRow: number;
     isReadOnly: boolean = false;
-
     dropdownList = [];
 
     constructor(private alertService: JhiAlertService,
@@ -64,7 +63,6 @@ export class PurchaseOrderDetailComponent implements OnInit, OnDestroy {
             console.log(params);
             if (params['id']) {
                 this.load(params['id']);
-
             }
 
         });
@@ -78,7 +76,6 @@ export class PurchaseOrderDetailComponent implements OnInit, OnDestroy {
         return item.id;
     }
 
-
     onWorkingCopyBtnClick() {
         console.log('save is cliccked');
         console.log(this.order);
@@ -90,13 +87,10 @@ export class PurchaseOrderDetailComponent implements OnInit, OnDestroy {
         window.history.back();
     }
 
-
     onFileArrayChange(event: Attachment[]) {
         this.attachments = event;
         console.log('event from parent object: ', event);
-
     }
-
 
     save() {
         this.isSaving = true;
@@ -137,15 +131,12 @@ export class PurchaseOrderDetailComponent implements OnInit, OnDestroy {
     load(id) {
         this.orderService.find(id).subscribe((order) => {
             this.order = order;
-
             console.log('order status: ', order.orderStatus.toString());
             console.log('enum status: ', OrderStatus['WORKING_COPY']);
             console.log('enum 3', order.orderStatus.constructor.name);
             console.log('order ', order)
             //     console.log('enum 3', ]);
-            this.isReadOnly = order.orderStatus != null && order.orderStatus != 'WORKING_COPY';
-
-
+            this.isReadOnly = order.orderStatus != null && order.orderStatus !== 'WORKING_COPY';
         });
     }
 
@@ -153,7 +144,6 @@ export class PurchaseOrderDetailComponent implements OnInit, OnDestroy {
         this.subscription.unsubscribe();
         // this.eventManager.destroy(this.eventSubscriber);
     }
-
 
     openModal(content, row: number) {
         if (!this.order.estimations[row].drawing) {
@@ -178,7 +168,6 @@ export class PurchaseOrderDetailComponent implements OnInit, OnDestroy {
             return `with: ${reason}`;
         }
     }
-
 
     convertToDate(ngBootstrapDate: any): Date {
         if (typeof ngBootstrapDate === 'string') {

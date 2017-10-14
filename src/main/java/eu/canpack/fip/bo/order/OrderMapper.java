@@ -1,6 +1,6 @@
 package eu.canpack.fip.bo.order;
 
-import eu.canpack.fip.bo.estimation.EstimationCreateMapper;
+import eu.canpack.fip.bo.estimation.dto.EstimationCreateMapper;
 import eu.canpack.fip.bo.client.ClientMapper;
 import eu.canpack.fip.bo.order.dto.OrderDTO;
 import eu.canpack.fip.bo.order.dto.OrderListDTO;

@@ -1,4 +1,4 @@
-package eu.canpack.fip.service.dto;
+package eu.canpack.fip.bo.operator;
 
 
 import javax.validation.constraints.*;

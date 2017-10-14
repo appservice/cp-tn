@@ -6,18 +6,43 @@
 </div>
 <div class="modal-body">
     <div class="row">
-        <div class="col-4">
+        <div class="col-3">
             <!--<label for="drawing_number_field">Nr rysunku</label>-->
             <input type="text" class="form-control" id="drawing_number_field" name="drawing_number"
-                   placeholder="Nr rysunku" [(ngModel)]="numberFilter">
+                   placeholder="Nr rysunku" [(ngModel)]="drawingFilter.number">
 
         </div>
-        <div class="col-5">
+        <div class="col-3">
             <!--<label for="drawing_name_field">Nazwa</label>-->
-            <input type="text" class="form-control" id="drawing_name_field" name="drawing_name" placeholder="Nazwa"  [(ngModel)]="nameFilter" >
+            <input type="text" class="form-control" id="drawing_name_field" name="drawing_name" placeholder="Nazwa"  [(ngModel)]="drawingFilter.name" >
 
         </div>
-        <div class="col-3"><span class="btn-group">
+
+        <div class="form-group col-3">
+            <!--<label class="form-control-label" jhiTranslate="tnApp.order.closeDate" for="field_closeDate">Close Date</label>-->
+            <div class="input-group">
+                <input type="text" class="form-control"
+                       name="validFromFilter"
+                       ngbDatepickerPl="" #realizationDateDp="ngbDatepickerPl"
+                       [(ngModel)]="drawingFilter.createdAtFrom" placeholder="Data utworz. od:"/>
+                <span class="input-group-btn">
+                    <button type="button" class="btn btn-default" (click)="realizationDateDp.toggle()"
+                            (keyup)="realizationDateDp.toggle()"><i class="fa fa-calendar"></i></button>
+                </span>
+            </div>
+        </div>
+        <div class="form-group col-3">
+            <!--<label class="form-control-label" jhiTranslate="tnApp.order.closeDate" for="field_closeDate">Close Date</label>-->
+            <div class="input-group">
+                <input type="text" class="form-control" name="validToFilter" ngbDatepicker #createdToEnd="ngbDatepicker"
+                       [(ngModel)]="drawingFilter.createdAtTo" placeholder="Data utworz. do:" dispalyMonths="2"/>
+                <span class="input-group-btn">
+                    <button type="button" class="btn btn-default" (click)="createdToEnd.toggle()"
+                            (keyup)="createdToEnd.toggle()"><i class="fa fa-calendar"></i></button>
+                </span>
+            </div>
+        </div>
+        <div class="col-2"><span class="btn-group">
 
             <button class="btn  btn-outline-primary" (click)="findDrawings()">Szukaj</button>
             <button class="btn  btn-outline-danger" (click)="clearFilter()">Resetuj</button>

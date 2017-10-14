@@ -1,7 +1,8 @@
-package eu.canpack.fip.bo.estimation;
+package eu.canpack.fip.bo.estimation.dto;
 
 import eu.canpack.fip.bo.drawing.Drawing;
 import eu.canpack.fip.bo.drawing.DrawingMapper;
+import eu.canpack.fip.bo.estimation.Estimation;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 

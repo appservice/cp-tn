@@ -2,14 +2,15 @@ package eu.canpack.fip.web.rest;
 
 import eu.canpack.fip.TnApp;
 
-import eu.canpack.fip.domain.Operator;
+import eu.canpack.fip.bo.operator.OperatorResource;
+import eu.canpack.fip.bo.operator.Operator;
 import eu.canpack.fip.repository.OperatorRepository;
-import eu.canpack.fip.service.OperatorService;
+import eu.canpack.fip.bo.operator.OperatorService;
 import eu.canpack.fip.repository.search.OperatorSearchRepository;
-import eu.canpack.fip.service.dto.OperatorDTO;
+import eu.canpack.fip.bo.operator.OperatorDTO;
 import eu.canpack.fip.service.mapper.OperatorMapper;
 import eu.canpack.fip.web.rest.errors.ExceptionTranslator;
-import eu.canpack.fip.service.OperatorQueryService;
+import eu.canpack.fip.bo.operator.OperatorQueryService;
 
 import org.junit.Before;
 import org.junit.Test;

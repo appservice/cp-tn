@@ -36,6 +36,32 @@
             <!--<label>Nazwa</label>-->
             <input type="text" class="form-control" name="filterDrawingName" [(ngModel)]="drawingFilter.name" placeholder="Nazwa" (keydown)="onEnterClickFilter($event)">
         </div>
+
+        <div class="form-group col-md-2">
+            <!--<label class="form-control-label" jhiTranslate="tnApp.order.closeDate" for="field_closeDate">Close Date</label>-->
+            <div class="input-group">
+                <input type="text" class="form-control"
+                       name="validFromFilter"
+                       ngbDatepickerPl="" #realizationDateDp="ngbDatepickerPl"
+                       [(ngModel)]="drawingFilter.createdAtFrom" placeholder="Data utworz. od:"/>
+                <span class="input-group-btn">
+                    <button type="button" class="btn btn-default" (click)="realizationDateDp.toggle()"
+                            (keyup)="realizationDateDp.toggle()"><i class="fa fa-calendar"></i></button>
+                </span>
+            </div>
+        </div>
+        <div class="form-group col-md-2">
+            <!--<label class="form-control-label" jhiTranslate="tnApp.order.closeDate" for="field_closeDate">Close Date</label>-->
+            <div class="input-group">
+                <input type="text" class="form-control" name="validToFilter" ngbDatepicker #createdToEnd="ngbDatepicker"
+                       [(ngModel)]="drawingFilter.createdAtTo" placeholder="Data utworz. do:" dispalyMonths="2"/>
+                <span class="input-group-btn">
+                    <button type="button" class="btn btn-default" (click)="createdToEnd.toggle()"
+                            (keyup)="createdToEnd.toggle()"><i class="fa fa-calendar"></i></button>
+                </span>
+            </div>
+        </div>
+
         <div class="col-md-4">
             <label>&nbsp;</label>
             <button class="btn btn-outline-dark" type="button" (click)="loadAll()"><span class="fa fa-search"></span> Filtruj</button>
@@ -50,6 +76,7 @@
                 <th jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span> <span class="fa fa-sort"></span></th>
                 <th jhiSortBy="number"><span>Numer rys.</span> <span class="fa fa-sort"></span></th>
                 <th jhiSortBy="name"><span>Nazwa</span> <span class="fa fa-sort"></span></th>
+                <th jhiSortBy="createdAt"><span>Data utworz.</span> <span class="fa fa-sort"></span></th>
                 <th></th>
             </tr>
             </thead>
@@ -58,6 +85,7 @@
                 <td><a [routerLink]="['../drawing', drawing.id ]">{{drawing.id}}</a></td>
                 <td>{{drawing.number}}</td>
                 <td>{{drawing.name}}</td>
+                <td>{{drawing.createdAt|date:'dd-MM-yyyy HH:mm'}}</td>
 
                 <td class="text-right">
                     <div class="btn-group flex-btn-group-container">

@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {Http, Response, RequestOptions, ResponseContentType, Headers,URLSearchParams} from '@angular/http';
+import {Http, Response, RequestOptions, ResponseContentType, Headers, URLSearchParams} from '@angular/http';
 import {Observable} from 'rxjs/Rx';
 import {JhiDateUtils} from 'ng-jhipster';
 
@@ -7,7 +7,7 @@ import {Order} from './order.model';
 import {ResponseWrapper, createRequestOption} from '../../shared';
 import {OrderSimpleDTO} from './order-simpleDTO.model';
 import * as FileSaver from 'file-saver';
-import * as _ from "lodash";
+import * as _ from 'lodash';
 
 
 @Injectable()
@@ -51,21 +51,21 @@ export class OrderService {
             .map((res: Response) => this.convertResponse(res));
     }
 
-    getAllInquiries(req?: any,urlSearchParams?: URLSearchParams): Observable<ResponseWrapper> {
+    getAllInquiries(req?: any, urlSearchParams?: URLSearchParams): Observable<ResponseWrapper> {
         const options = createRequestOption(req);
-        if(urlSearchParams){
+        if (urlSearchParams) {
             options.params.appendAll(urlSearchParams);
         }
-        return this.http.get(this.resourceUrl+'/inquiries', options)
+        return this.http.get(this.resourceUrl + '/inquiries', options)
             .map((res: Response) => this.convertResponse(res));
     }
 
-    getAllProductionOrders(req?: any,urlSearchParams?: URLSearchParams): Observable<ResponseWrapper> {
+    getAllProductionOrders(req?: any, urlSearchParams?: URLSearchParams): Observable<ResponseWrapper> {
         const options = createRequestOption(req);
-        if(urlSearchParams){
+        if (urlSearchParams) {
             options.params.appendAll(urlSearchParams);
         }
-        return this.http.get(this.resourceUrl+'/production', options)
+        return this.http.get(this.resourceUrl + '/production', options)
             .map((res: Response) => this.convertResponse(res));
     }
 
@@ -186,13 +186,13 @@ export class OrderService {
     createPdfOffer(order: Order): void {
         const copy = this.convert(order);
 
-        let headers = new Headers({'Content-Type': 'application/json'});
-        let options = new RequestOptions({responseType: ResponseContentType.Blob, headers});
+        const headers = new Headers({'Content-Type': 'application/json'});
+        const options = new RequestOptions({responseType: ResponseContentType.Blob, headers});
 
         this.http.post(`${this.resourceUrl}/create-pdf-offer`, copy, options)
             .map((res: Response) => res.blob())
             .subscribe((data: any) => {
-                this.saveDownload(data, 'Oferta_'+order.internalNumber, 'application/pdf');
+                this.saveDownload(data, 'Oferta_' + order.internalNumber, 'application/pdf');
 
             });
     }
@@ -207,7 +207,7 @@ export class OrderService {
         this.http.post(`api/production/create-technology-card-pdf`, copy, options)
             .map((res: Response) => res.blob())
             .subscribe((data: any) => {
-                this.saveDownload(data, 'Karta_techn_zam_'+order.internalNumber, 'application/pdf');
+                this.saveDownload(data, 'Karta_techn_zam_' + order.internalNumber, 'application/pdf');
 
             });
     }
@@ -221,9 +221,8 @@ export class OrderService {
     }
 
 
-
-    moveOrderToArchive(id: number):  Observable<Response>{
-       return this.http.put(`${this.resourceUrl}/${id}/move-to-archive`, null);
+    moveOrderToArchive(id: number): Observable<Response> {
+        return this.http.put(`${this.resourceUrl}/${id}/move-to-archive`, null);
     }
 
 
@@ -234,7 +233,6 @@ export class OrderService {
             return jsonResponse;
         });
     }
-
 
 
     createNewPurchaseOrder(order: Order): Observable<Order> {

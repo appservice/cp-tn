@@ -46,7 +46,6 @@ export class TechnologyEditComponent implements OnInit, OnDestroy {
     hideSearchingWhenUnsubscribed = new Observable(() => () => this.searchingUnit = false);
     searchFeild: boolean;
 
-
     currencyMaskOpt: CurrencyMaskConfig;
 
     constructor(private alertService: JhiAlertService,
@@ -69,13 +68,11 @@ export class TechnologyEditComponent implements OnInit, OnDestroy {
     ngOnInit() {
         this.isSaving = false;
 
-
         this.subscription = this.route.params.subscribe((params) => {
             console.log(params);
             if (params['id']) {
                 console.log('params exiest');
                 this.load(params['id']);
-
             }
 
         });
@@ -101,7 +98,6 @@ export class TechnologyEditComponent implements OnInit, OnDestroy {
             precision: 2
         };
         this.calculateCommercialPartsTotalCost();
-
 
     }
 
@@ -205,7 +201,6 @@ export class TechnologyEditComponent implements OnInit, OnDestroy {
 
             }));
 
-
         });
     }
 
@@ -215,7 +210,6 @@ export class TechnologyEditComponent implements OnInit, OnDestroy {
 
     openModal(content) {
         if (this.estimation.drawing) {
-
 
             this.modalService.open(content, {size: 'lg'}).result.then((result) => {
                 this.closeResult = `Closed with: ${result}`;
@@ -315,7 +309,6 @@ export class TechnologyEditComponent implements OnInit, OnDestroy {
         'other': '# tygodni'
     };
 
-
     exportToTechnologyCard() {
         this.isExporting = true;
         console.log('test export technology card');
@@ -348,7 +341,6 @@ export class TechnologyEditComponent implements OnInit, OnDestroy {
         });
         // modalRef.componentInstance.name = 'World';
     }
-
     // promisetechnologyCard: Promise<TechnologyCard>;
 
     private insertOperationFromTechnologyCard(technologyCard: TechnologyCard): void {
@@ -360,7 +352,6 @@ export class TechnologyEditComponent implements OnInit, OnDestroy {
         }
     }
 
-
     openDrawingCardModal() {
 
         const modalRef = this.modalService.open(DrawingFinderComponent, {size: 'lg'});
@@ -369,7 +360,7 @@ export class TechnologyEditComponent implements OnInit, OnDestroy {
         modalRef.result.then(result => {
             console.log(result);
             this.estimation.drawing = result;
-        //    this.estimation.itemNumber = result.number;
+            //    this.estimation.itemNumber = result.number;
             //  this.estimation.itemNumber=result.number;
             // this.insertOperationFromTechnologyCard(result)
         }, (reason: any) => {

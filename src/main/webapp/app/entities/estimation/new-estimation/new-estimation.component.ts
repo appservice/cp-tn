@@ -298,7 +298,7 @@ export class NewEstimationComponent implements OnInit, OnDestroy {
     }
 
     calculateTotal(): number {
-        return this.commercialPartsTotalCost + this.operationsTotalCost + this.estimation.materialPrice
+        return this.commercialPartsTotalCost + this.operationsTotalCost + this.estimation.materialPrice;
     }
 
     calculateDiscount(): number {

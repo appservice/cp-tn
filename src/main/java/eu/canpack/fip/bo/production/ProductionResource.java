@@ -7,7 +7,7 @@ package eu.canpack.fip.bo.production;
 
 import com.lowagie.text.DocumentException;
 import eu.canpack.fip.bo.estimation.Estimation;
-import eu.canpack.fip.bo.estimation.EstimationCreateDTO;
+import eu.canpack.fip.bo.estimation.dto.EstimationCreateDTO;
 import eu.canpack.fip.bo.estimation.EstimationRepository;
 import eu.canpack.fip.bo.order.dto.OrderDTO;
 import eu.canpack.fip.bo.pdf.PdfUtilService;

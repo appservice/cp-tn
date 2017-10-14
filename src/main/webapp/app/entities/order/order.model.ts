@@ -2,9 +2,9 @@ import {BaseEntity} from './../../shared';
 import {Estimation} from '../estimation/estimation.model';
 
 export const enum OrderType {
-    'ESTIMATION',
-    'SERVICE',
-    'PRODUCTION'
+    ESTIMATION = 'ESTIMATION',
+    SERVICE = 'SERVICE',
+    PRODUCTION = 'PRODUCTION'
 }
 
 export const enum OrderStatus {
@@ -30,7 +30,6 @@ export class Order implements BaseEntity {
                 public estimationMakerName?: string,
                 public remark ?: string,
                 public inquiryId?: number,
-                public estimationFinishDate?: any,
-                ) {
+                public estimationFinishDate?: any,) {
     }
 }

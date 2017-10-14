@@ -38,6 +38,7 @@ public class DrawingQueryService extends QueryService<Drawing> {
 
     /**
      * Return a {@link List} of {%link OrderDTO} which matches the criteria from the database
+     *
      * @param criteria The object which holds all the filters, which the entities should match.
      * @return the matching entities.
      */
@@ -50,8 +51,9 @@ public class DrawingQueryService extends QueryService<Drawing> {
 
     /**
      * Return a {@link Page} of {%link OrderDTO} which matches the criteria from the database
+     *
      * @param criteria The object which holds all the filters, which the entities should match.
-     * @param page The page, which should be returned.
+     * @param page     The page, which should be returned.
      * @return the matching entities.
      */
     @Transactional(readOnly = true)
@@ -76,6 +78,9 @@ public class DrawingQueryService extends QueryService<Drawing> {
             }
             if (criteria.getNumber() != null) {
                 specification = specification.and(buildStringSpecification(criteria.getNumber(), eu.canpack.fip.bo.drawing.Drawing_.number));
+            }
+            if (criteria.getCreatedAt() != null) {
+                specification = specification.and(buildRangeSpecification(criteria.getCreatedAt(), eu.canpack.fip.bo.drawing.Drawing_.createdAt));
             }
 
         }

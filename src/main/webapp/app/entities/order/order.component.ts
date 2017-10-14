@@ -34,7 +34,7 @@ export class OrderComponent implements OnInit, OnDestroy {
     previousPage: any;
     reverse: any;
     orderType: OrderType;
-    title:String;
+    title: String;
     orderFilter: OrderFilter;
 
     constructor(private orderService: OrderService,
@@ -57,12 +57,12 @@ export class OrderComponent implements OnInit, OnDestroy {
             this.predicate = data['pagingParams'].predicate;
         });
         this.currentSearch = activatedRoute.snapshot.params['search'] ? activatedRoute.snapshot.params['search'] : '';
-        this.orderFilter=new OrderFilter();
+        this.orderFilter = new OrderFilter();
     }
 
     loadAll() {
         if (this.orderType == OrderType.ESTIMATION) {
-            this.title='Zapytania ofertowe';
+            this.title = 'Zapytania ofertowe';
 
             if (this.currentSearch) {
                 this.orderService.getAllInquiries({
@@ -74,8 +74,9 @@ export class OrderComponent implements OnInit, OnDestroy {
                     (res: ResponseWrapper) => this.onError(res.json)
                 );
                 return;
-            };
-            let urlSearchParams=new URLSearchParams();
+            }
+            ;
+            let urlSearchParams = new URLSearchParams();
             urlSearchParams.append('internalNumber.contains', this.orderFilter.internalNumber);
             urlSearchParams.append('referenceNumber.contains', this.orderFilter.referenceNumber);
             urlSearchParams.append('clientName.contains', this.orderFilter.clientName);
@@ -86,12 +87,12 @@ export class OrderComponent implements OnInit, OnDestroy {
                 page: this.page - 1,
                 size: this.itemsPerPage,
                 sort: this.sort()
-            },urlSearchParams).subscribe(
+            }, urlSearchParams).subscribe(
                 (res: ResponseWrapper) => this.onSuccess(res.json, res.headers),
                 (res: ResponseWrapper) => this.onError(res.json)
             );
         }
-        if(this.orderType==OrderType.PRODUCTION){
+        if (this.orderType == OrderType.PRODUCTION) {
             this.title = 'Zamówienia';
 
             if (this.currentSearch) {
@@ -200,24 +201,24 @@ export class OrderComponent implements OnInit, OnDestroy {
         this.alertService.error(error.message, null, null);
     }
 
-    onEnterClickFilter(event:any){
-        if(event.keyCode==13){
+    onEnterClickFilter(event: any) {
+        if (event.keyCode == 13) {
             this.loadAll();
         }
 
     }
 
-    clearFilterAndLoadAll(){
-        this.orderFilter.internalNumber=null;
-        this.orderFilter.referenceNumber=null;
-        this.orderFilter.orderStatus=null;
-        this.orderFilter.clientName=null;
-        this.orderFilter.validFrom=null
-        this.orderFilter.validTo=null;
+    clearFilterAndLoadAll() {
+        this.orderFilter.internalNumber = null;
+        this.orderFilter.referenceNumber = null;
+        this.orderFilter.orderStatus = null;
+        this.orderFilter.clientName = null;
+        this.orderFilter.validFrom = null
+        this.orderFilter.validTo = null;
         this.loadAll();
     }
 
-    exportAsExcelFile(){
+    exportAsExcelFile() {
         this.excelService.exportAsExcelFile(this.orders, 'TestFile.xlsx');
     }
 }

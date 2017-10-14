@@ -1,7 +1,7 @@
 package eu.canpack.fip.bo.estimation;
 
 import com.codahale.metrics.annotation.Timed;
-import eu.canpack.fip.bo.pdf.Order2PdfCreator;
+import eu.canpack.fip.bo.estimation.dto.EstimationDTO;
 import eu.canpack.fip.web.rest.util.HeaderUtil;
 import eu.canpack.fip.web.rest.util.PaginationUtil;
 import io.swagger.annotations.ApiParam;

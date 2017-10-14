@@ -1,7 +1,7 @@
 package eu.canpack.fip.service.mapper;
 
-import eu.canpack.fip.domain.*;
-import eu.canpack.fip.service.dto.OperatorDTO;
+import eu.canpack.fip.bo.operator.Operator;
+import eu.canpack.fip.bo.operator.OperatorDTO;
 
 import org.mapstruct.*;
 
@@ -10,8 +10,8 @@ import org.mapstruct.*;
  */
 @Mapper(componentModel = "spring", uses = {})
 public interface OperatorMapper extends EntityMapper <OperatorDTO, Operator> {
-    
-    
+
+
     default Operator fromId(Long id) {
         if (id == null) {
             return null;
