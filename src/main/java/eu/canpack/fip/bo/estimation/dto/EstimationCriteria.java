@@ -40,6 +40,8 @@ public class EstimationCriteria implements Serializable {
 
     }
 
+
+
     private static final long serialVersionUID = 1L;
 
     private String orderInternalNumber;
@@ -53,6 +55,8 @@ public class EstimationCriteria implements Serializable {
 //    private LongFilter clientId;
 
     private StringFilter clientName;
+
+    private OrderTypeFilter orderTypeFilter;
 
     public static long getSerialVersionUID() {
         return serialVersionUID;
@@ -88,6 +92,14 @@ public class EstimationCriteria implements Serializable {
 
     public void setClientName(StringFilter clientName) {
         this.clientName = clientName;
+    }
+
+    public OrderTypeFilter getOrderTypeFilter() {
+        return orderTypeFilter;
+    }
+
+    public void setOrderTypeFilter(OrderTypeFilter orderTypeFilter) {
+        this.orderTypeFilter = orderTypeFilter;
     }
 
     @Override

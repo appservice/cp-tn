@@ -7,6 +7,7 @@ import eu.canpack.fip.bo.estimation.dto.EstimationShowDTO;
 import eu.canpack.fip.bo.order.Order;
 import eu.canpack.fip.bo.order.OrderMapper;
 import eu.canpack.fip.bo.order.OrderRepository;
+import eu.canpack.fip.bo.order.Order_;
 import eu.canpack.fip.bo.order.dto.OrderCriteria;
 import eu.canpack.fip.service.UserService;
 import io.github.jhipster.service.QueryService;
@@ -85,27 +86,6 @@ public class EstimationQueryService extends QueryService<Estimation> {
                 specification = specification.and(buildStringSpecification(criteria.getItemNumber(), eu.canpack.fip.bo.estimation.Estimation_.itemNumber));
             }
 
-//            if (criteria.getOrderStatus() != null) {
-//                specification = specification.and(buildSpecification(criteria.getOrderStatus(), eu.canpack.fip.bo.order.Order_.orderStatus));
-//            }
-//            if (criteria.getCreatedById() != null) {
-//                specification = specification.and(buildReferringEntitySpecification(criteria.getCreatedById(), eu.canpack.fip.bo.order.Order_.createdBy, User_.id));
-//            }
-//            if (criteria.getClientId() != null) {
-//                specification = specification.and(buildReferringEntitySpecification(criteria.getClientId(), eu.canpack.fip.bo.order.Order_.client, Client_.id));
-//            }
-////            if (criteria.getClientName() != null) {
-////                specification = specification.and(buildReferringEntitySpecification(criteria.getClientName(), eu.canpack.fip.bo.order.Order_.client, Client_.name));
-////            }
-//            if (criteria.getCreatedByLastName() != null) {
-//                specification = specification.and(buildReferringEntitySpecification(criteria.getCreatedByLastName(), eu.canpack.fip.bo.order.Order_.createdBy, User_.lastName));
-//            }
-//            if (criteria.getCreatedByFirstName() != null) {
-//                specification = specification.and(buildReferringEntitySpecification(criteria.getCreatedByFirstName(), eu.canpack.fip.bo.order.Order_.createdBy, User_.firstName));
-//            }
-//            if (criteria.getOrderType() != null) {
-//                specification = specification.and(buildSpecification(criteria.getOrderType(), eu.canpack.fip.bo.order.Order_.orderType));
-//            }
             if (criteria.getClientName() != null) {
 //                log.debug("drawingNumber {}",criteria.getDrawingNumber().getContains());
                 Specification<Estimation> spec = (root, query, builder) -> {
@@ -114,6 +94,15 @@ public class EstimationQueryService extends QueryService<Estimation> {
                     return builder.or(builder.like(joinToClient.get(Client_.name), "%" + criteria.getClientName().getContains().trim() + "%"),
                                       builder.like(joinToClient.get(Client_.shortcut), "%" + criteria.getClientName().getContains().trim() + "%"));
 
+
+                };
+                specification = specification.and(spec);
+
+            }
+            if (criteria.getOrderTypeFilter() != null) {
+                Specification<Estimation> spec = (root, query, builder) -> {
+                    Join<Estimation, Order> joinToOrder = root.join((eu.canpack.fip.bo.estimation.Estimation_.order), JoinType.INNER);
+                    return builder.equal(joinToOrder.get(Order_.orderType), criteria.getOrderTypeFilter());
 
                 };
                 specification = specification.and(spec);

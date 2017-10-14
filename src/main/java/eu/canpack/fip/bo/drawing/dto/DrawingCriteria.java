@@ -41,7 +41,6 @@ public class DrawingCriteria implements Serializable {
 //    private ZonedDateTimeFilter createdAt;
 
 
-
     private StringFilter number;
     private StringFilter name;
     private ZonedDateTimeFilter createdAt;
@@ -102,11 +101,10 @@ public class DrawingCriteria implements Serializable {
     @Override
     public String toString() {
         return "OrderCriteria{" +
-                (id != null ? "=" + id + ", " : "") +
-                (number != null ? "number=" + number + ", " : "") +
-                (name != null ? "name=" + name + ", " : "") +
-                (createdAt != null ? "createdAt=" + createdAt + ", " : "") +
-
+            (id != null ? "=" + id + ", " : "") +
+            (number != null ? "number=" + number + ", " : "") +
+            (name != null ? "name=" + name + ", " : "") +
+            (createdAt != null ? "createdAt=" + createdAt + ", " : "") +
 
 
             "}";
