@@ -146,4 +146,4 @@ Desktop.ini
 # ESLint
 ######################
 .eslintcache
-/es-data/**
+/es-data/

@@ -1,0 +1,24 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+    <changeSet author="lukasz.mochel (generated)" id="1505683177497-1">
+        <createTable tableName="estimation_remark">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true" primaryKeyName="estimation_remarkPK"/>
+            </column>
+            <column name="created_at" type="datetime">
+                <constraints nullable="false"/>
+            </column>
+            <column name="remark" type="VARCHAR(255)"/>
+            <column name="user_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="estimation_id" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="lukasz.mochel (generated)" id="1505683177497-2">
+        <addForeignKeyConstraint baseColumnNames="estimation_id" baseTableName="estimation_remark" constraintName="FK35dvogl2i7y1kqpcuvqcaojxs" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="estimation"/>
+    </changeSet>
+    <changeSet author="lukasz.mochel (generated)" id="1505683177497-3">
+        <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="estimation_remark" constraintName="FKdmrmqd7nx0tbsu0a3kdx66ffm" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="jhi_user"/>
+    </changeSet>
+</databaseChangeLog>

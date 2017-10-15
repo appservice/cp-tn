@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+
+    <include file="classpath:config/liquibase/changelog/00000000000000_initial_schema.xml" relativeToChangelogFile="false"/>
+    <include file="classpath:config/liquibase/changelog/20170710162514_added_entity_Order.xml" relativeToChangelogFile="false"/>
+    <include file="classpath:config/liquibase/changelog/20170710162515_added_entity_Estimation.xml" relativeToChangelogFile="false"/>
+    <include file="classpath:config/liquibase/changelog/20170710162516_added_entity_Operation.xml" relativeToChangelogFile="false"/>
+    <include file="classpath:config/liquibase/changelog/20170710162517_added_entity_Machine.xml" relativeToChangelogFile="false"/>
+    <include file="classpath:config/liquibase/changelog/20170710162518_added_entity_Drawing.xml" relativeToChangelogFile="false"/>
+    <include file="classpath:config/liquibase/changelog/20170710162519_added_entity_Client.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20170812084258_added_entity_Unit.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20170815212848_added_entity_CommercialPart.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20170905205334_added_entity_TechnologyCard.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20171010203848_added_entity_Operator.xml" relativeToChangelogFile="false"/>
+    <!-- jhipster-needle-liquibase-add-changelog - JHipster will add liquibase changelogs here -->
+    <include file="classpath:config/liquibase/changelog/20170710162514_added_entity_constraints_Order.xml" relativeToChangelogFile="false"/>
+    <include file="classpath:config/liquibase/changelog/20170710162515_added_entity_constraints_Estimation.xml" relativeToChangelogFile="false"/>
+    <include file="classpath:config/liquibase/changelog/20170710162516_added_entity_constraints_Operation.xml" relativeToChangelogFile="false"/>
+    <include file="classpath:config/liquibase/changelog/20170710162517_added_entity_constraints_Machine.xml" relativeToChangelogFile="false"/>
+    <include file="classpath:config/liquibase/changelog/20170710162518_added_entity_constraints_Drawing.xml" relativeToChangelogFile="false"/>
+    <include file="classpath:config/liquibase/changelog/20170720231547_added_autid_for_Order.xml" relativeToChangelogFile="false"/>
+    <include file="classpath:config/liquibase/changelog/20170728230917_added_Attachment.xml" relativeToChangelogFile="false"/>
+    <include file="classpath:config/liquibase/changelog/20170729010202_added_estimation_maker.xml" relativeToChangelogFile="false"/>
+    <include file="classpath:config/liquibase/changelog/20170804201103_extended_order.xml" relativeToChangelogFile="false"/>
+    <include file="classpath:config/liquibase/changelog/20170805011923_corrected_Order_and_Estimation.xml" relativeToChangelogFile="false"/>
+    <include file="classpath:config/liquibase/changelog/20170807231747_extended_estimation.xml" relativeToChangelogFile="false"/>
+    <include file="classpath:config/liquibase/changelog/20170815001327_estimation_changeg_column_to_TEXT.xml" relativeToChangelogFile="false"/>
+    <include file="classpath:config/liquibase/changelog/20170815185739_changed_relation_machine_operation.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20170815212848_added_entity_constraints_CommercialPart.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20170820001535_load_machines.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20170820125330_load_units.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20170820134732_added_discount_to_estimation.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20170820223703_extended_drawing.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20170821123515_extended_estimation.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20170829222534_add_user_to_client.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20170905205334_added_entity_constraints_TechnologyCard.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20170913220628_added_estimated_realization_date.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20170914223332_add_user_id_to_techn_card.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20170917231915_added_estitmation_remark.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20170920204424_changed_relation_between_estimation_and_drawing.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20170923232109_added_sequence_number.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20171001002432_extended_estimation.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20171005005259_added_estim_finish_date.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20171010203848_added_entity_Operator.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20171011005819_added_operation_enums.xml" relativeToChangelogFile="false"/>
+    <!-- jhipster-needle-liquibase-add-constraints-changelog - JHipster will add liquibase constraints changelogs here -->
+</databaseChangeLog>

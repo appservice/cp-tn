@@ -1,0 +1,31 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+    <changeSet author="lukasz.mochel (generated)" id="1505933097140-1">
+        <addColumn tableName="technology_card">
+            <column name="created_by_id" type="bigint"/>
+        </addColumn>
+    </changeSet>
+    <changeSet author="lukasz.mochel (generated)" id="1505933097140-2">
+        <addColumn tableName="estimation">
+            <column name="drawing_id" type="bigint"/>
+        </addColumn>
+    </changeSet>
+    <changeSet author="lukasz.mochel (generated)" id="1505933097140-3">
+        <addForeignKeyConstraint baseColumnNames="created_by_id" baseTableName="technology_card" constraintName="FK1lxbrdt09dpsilm2lyh67f6vj" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="jhi_user"/>
+    </changeSet>
+    <changeSet author="lukasz.mochel (generated)" id="1505933097140-4">
+        <addForeignKeyConstraint baseColumnNames="drawing_id" baseTableName="estimation" constraintName="FK40gsku7jolqc304pdym2yue9b" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="drawing"/>
+    </changeSet>
+    <changeSet author="lukasz.mochel (generated)" id="1505933097140-5">
+        <dropForeignKeyConstraint baseTableName="technology_card" constraintName="FKip70jnuycbxemsahco0yp1scm"/>
+    </changeSet>
+    <changeSet author="lukasz.mochel (generated)" id="1505933097140-6">
+        <dropForeignKeyConstraint baseTableName="drawing" constraintName="fk_drawing_estimation_id"/>
+    </changeSet>
+    <changeSet author="lukasz.mochel (generated)" id="1505933097140-7">
+        <dropColumn columnName="estimation_id" tableName="drawing"/>
+    </changeSet>
+    <changeSet author="lukasz.mochel (generated)" id="1505933097140-8">
+        <dropColumn columnName="user_id" tableName="technology_card"/>
+    </changeSet>
+</databaseChangeLog>
