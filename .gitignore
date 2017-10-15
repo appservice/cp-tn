@@ -15,6 +15,11 @@ node_modules/
 npm-debug.log.*
 
 ######################
+# elasticsearch
+######################
+*/es-data/**
+
+######################
 # SASS
 ######################
 .sass-cache/
@@ -141,3 +146,4 @@ Desktop.ini
 # ESLint
 ######################
 .eslintcache
+/es-data/**

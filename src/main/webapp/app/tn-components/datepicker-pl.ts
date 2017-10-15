@@ -14,9 +14,9 @@ import {createInjector} from '@angular/core/src/view/refs';
 import {ViewData} from '@angular/core/src/view';
 
 const I18N_VALUES = {
-    'fr': {
+    'pl': {
         weekdays: ['Lu', 'Ma', 'Me', 'Je', 'Ve', 'Sa', 'Di'],
-        months: ['Jan', 'Fév', 'Mar', 'Avr', 'Mai', 'Juin', 'Juil', 'Aou', 'Sep', 'Oct', 'Nov', 'Déc'],
+        months: ['Sty', 'Lut', 'Mar', 'Kwi', 'Maj', 'Czer', 'Lip', 'Sie', 'Wrz', 'Paź', 'Lis', 'Gru'],
     }
     // other languages you would support
 };
@@ -25,7 +25,7 @@ const I18N_VALUES = {
 // use the Angular LOCALE_ID value
 @Injectable()
 export class I18n {
-    language = 'fr';
+    language = 'pl';
 }
 
 // Define custom service providing the months and weekdays translations
@@ -59,6 +59,17 @@ export class CustomDatepickerI18n extends NgbDatepickerI18n {
 //     model;
 // }
 
+class NgbDatePickerPlComp extends NgbDatepicker {
+    constructor( _keyMapService, _service, _calendar,  config, _cd, _elementRef) {
+        const i18n=new I18n();
+
+
+        const customDtPickerI18n = new CustomDatepickerI18n(i18n);
+        super(_keyMapService, _service, _calendar, customDtPickerI18n, config, _cd, _elementRef);
+        console.log(' build NgbDatePickerPlComp',this);
+    }
+}
+
 const NGB_DATEPICKER_VALUE_ACCESSOR = {
     provide: NG_VALUE_ACCESSOR,
     useExisting: forwardRef(() => NgbDatePickerPl),
@@ -88,7 +99,7 @@ const NGB_DATEPICKER_VALIDATOR = {
 })
 export class NgbDatePickerPl implements OnChanges,
     OnDestroy, ControlValueAccessor, Validator {
-    private _cRef: ComponentRef<NgbDatepicker> = null;
+    private _cRef: ComponentRef<NgbDatePickerPlComp> = null;
     private _model: NgbDate;
     private _zoneSubscription: any;
 
@@ -259,7 +270,7 @@ export class NgbDatePickerPl implements OnChanges,
             // console.log(this._cfr);
 
             this._cRef = this._vcRef.createComponent(cf);
-            this._cRef.instance.i18n = this.ngbDatePickerI18n;
+            // this._cRef.instance.i18n = this.ngbDatePickerI18n;
 
             console.log(this._cRef.instance.i18n.getMonthShortName(2));
             console.log(this._cRef.instance.i18n.getMonthShortName(2));
