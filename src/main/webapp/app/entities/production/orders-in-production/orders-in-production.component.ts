@@ -57,18 +57,18 @@ export class OrdersInProductionComponent implements OnInit, OnDestroy {
 
 
 
-            if (this.currentSearch) {
-                this.orderService.getAllProductionOrders({
-                    query: this.currentSearch,
-                    size: this.itemsPerPage,
-                    sort: this.sort()
-                }).subscribe(
-                    (res: ResponseWrapper) => this.onSuccess(res.json, res.headers),
-                    (res: ResponseWrapper) => this.onError(res.json)
-                );
-                return;
-            }
-            this.orderService.getAllProductionOrders({
+            // if (this.currentSearch) {
+            //     this.orderService.getAllProductionOrders({
+            //         query: this.currentSearch,
+            //         size: this.itemsPerPage,
+            //         sort: this.sort()
+            //     }).subscribe(
+            //         (res: ResponseWrapper) => this.onSuccess(res.json, res.headers),
+            //         (res: ResponseWrapper) => this.onError(res.json)
+            //     );
+            //     return;
+            // }
+            this.orderService.getAllProductionOrdersForEdit({
                 page: this.page - 1,
                 size: this.itemsPerPage,
                 sort: this.sort()

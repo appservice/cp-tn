@@ -12,6 +12,7 @@ import {EstimationRemark} from '../../estimation-remark/estimation-remark.model'
 import {Drawing} from '../../drawing/drawing.model';
 import {Order, OrderStatus, OrderType} from '../../order/order.model';
 import {OrderService} from '../../order/order.service';
+import {Estimation} from '../estimation.model';
 
 @Component({
     selector: 'tn-order-in-production-detail',
@@ -112,9 +113,10 @@ export class OrderInProductionDetailComponent implements OnInit, OnDestroy {
     }
 
     private onSaveSuccess(result: Order) {
-        this.eventManager.broadcast({name: 'orderListModification', content: 'OK'});
+        this.eventManager.broadcast({name: 'sapNumbersUpdated', content: 'OK'});
         this.isSaving = false;
-        this.router.navigate(['order']);
+        this.previousState();
+        // this.router.navigate(['order']);
         // this.activeModal.dismiss(result);
     }
 
@@ -189,4 +191,14 @@ export class OrderInProductionDetailComponent implements OnInit, OnDestroy {
     printTechnologyCard() {
         this.orderService.createTechnologyCardPdf(this.order);
     }
+
+    saveSapNumbers(): void {
+        this.orderService.insertSapNumber(this.order).subscribe((order: Order) => {
+            this.onSaveSuccess(order);
+        }, (error: any) => {
+            this.onSaveError(error);
+            console.log(error);
+        });
+    }
+
 }

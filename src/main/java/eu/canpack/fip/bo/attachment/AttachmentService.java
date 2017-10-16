@@ -1,5 +1,6 @@
 package eu.canpack.fip.bo.attachment;
 
+import org.apache.commons.io.FilenameUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -7,11 +8,14 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.transaction.Transactional;
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 
 /**
  * CP S.A.
@@ -31,7 +35,13 @@ public class AttachmentService {
 
 
     public Attachment upload(MultipartFile multipartFile, String fileName) throws IOException {
-        Path path = Paths.get(drawingDirectoryPath, fileName);
+        ZonedDateTime now = ZonedDateTime.now();
+        String dateString = now.format(DateTimeFormatter.ofPattern("yyyy-MM-dd_HH.mm.ss"));
+        String fileExtensions = FilenameUtils.getExtension(fileName);
+        String fileBaseName = FilenameUtils.getBaseName(fileName);
+        String pathFileName=fileBaseName+"_"+dateString+"."+fileExtensions;
+
+        Path path = Paths.get(drawingDirectoryPath, pathFileName);
 
         byte[] bytes = multipartFile.getBytes();
         path = Files.write(path, bytes);
@@ -41,13 +51,12 @@ public class AttachmentService {
         attachment.setName(fileName);
         attachment.setPath(path.toString());
         attachment.setDataContentType(multipartFile.getContentType());
-        attachment.setUploadDate(ZonedDateTime.now());
+        attachment.setUploadDate(now);
 //        attachment.setDrawing();
         attachmentRepository.save(attachment);
         return attachment;
 
     }
-
 
 
     public void deleteAttachment(Long attachmentId) {
@@ -56,7 +65,7 @@ public class AttachmentService {
         try {
             Files.delete(path);
         } catch (IOException e) {
-            log.warn("problem with deleting file {}", path.toString(),e);
+            log.warn("problem with deleting file {}", path.toString(), e);
         }
         if (attachment.getDrawing() != null) {
             attachment.getDrawing().getAttachments().remove(attachment);
@@ -64,7 +73,6 @@ public class AttachmentService {
 
         attachmentRepository.delete(attachmentId);
     }
-
 
 
 }

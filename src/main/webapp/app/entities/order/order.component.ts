@@ -31,6 +31,7 @@ export class OrderComponent implements OnInit, OnDestroy {
     itemsPerPage: any;
     page: any;
     predicate: any;
+
     previousPage: any;
     reverse: any;
     orderType: OrderType;

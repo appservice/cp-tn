@@ -9,29 +9,29 @@
         <fieldset>
             <div class="row">
 
-                <div class="col-lg-2">
+                <div class="col-lg-3">
                     <label for="title_external_number_field">Nr ref. klienta</label>
                     <input type="text" id="title_external_number_field" class="form-control" name="title"
                            value="{{order.referenceNumber}}" disabled/>
                 </div>
-                <div class="col-lg-2">
+                <div class="col-lg-3">
                     <label for="title_field">Tytuł</label>
                     <input type="text" id="title_field" class="form-control" name="title" value="{{order.name}}"
                            disabled/>
                 </div>
-                <div class="col-lg-2">
-                    <label for="sap_number_field">Nr SAP</label>
-                    <input type="text" id="sap_number_field" class="form-control" name="sap_number"
-                           value="{{order.sapNumber}}" disabled/>
+                <!--<div class="col-lg-2">-->
+                    <!--<label for="sap_number_field">Nr SAP</label>-->
+                    <!--<input type="text" id="sap_number_field" class="form-control" name="sap_number"-->
+                           <!--value="{{order.sapNumber}}" disabled/>-->
 
-                </div>
-                <div class="form-group col-lg-2">
+                <!--</div>-->
+                <div class="form-group col-lg-3">
                     <label for="field_client">Klient</label>
                     <input type="text" id="field_client" class="form-control" name="client"
                            value="{{order.clientShortcut}}" disabled/>
 
                 </div>
-                <div class="col-lg-2">
+                <div class="col-lg-3">
                     <label for="description_field">Opis dod.</label>
                     <input type="text" id="description_field" name="description" value="{{order.description}}"
                            class="form-control" disabled/>
@@ -59,6 +59,7 @@
                                         <th>Cena/Szt</th>
                                         <th>Termin wyk.</th>
                                         <th>Uwagi</th>
+                                        <th>Nr sap</th>
                                         <th></th>
                                         <th></th>
 
@@ -95,15 +96,23 @@
                                             <tn-estimation-remark [estimationRemarks]="estimation.estimationRemarks"
                                                                   *ngIf="estimation.estimationRemarks!=null && estimation.estimationRemarks.length>0"></tn-estimation-remark>
                                         </td>
+                                        <td><input type="text" class="form-control" [(ngModel)]="estimation.sapNumber" required *ngIf="order.orderStatus==='CREATING_SAP_ORDER'" name="sapNumber_{{rowIndex}}">
+                                          <span *ngIf="order.orderStatus!=='CREATING_SAP_ORDER'">  {{estimation.sapNumber}}</span>
+                                        </td>
                                         <td>
                                             <label class="custom-control custom-checkbox mb-3 mr-sm-3 mb-sm-0 tn-checkbox">
                                                 <input type="checkbox" class="custom-control-input" name="checked_{{rowIndex}}" [(ngModel)]="estimation.checked">
                                                 <span class="custom-control-indicator"></span>
                                             </label>
                                             <!--<input type="checkbox" [(ngModel)]="estimation.checked" name="checked_{{idx}}" class="form-control checkbox"></td>-->
+                                        </td>
                                         <td>
-                                        <td>
+
+                                        <!--<button type="button" class="btn btn-outline-dark" *ngIf="order.orderStatus==='CREATING_SAP_ORDER'"-->
+                                                <!--&gt;Dodaj nr zlec SAP</button>-->
+
                                         <button type="button" class="btn btn-outline-dark" [routerLink]="['/orders-in-production/technology', estimation.id,'edit']"
+                                                *ngIf="order.orderStatus==='TECHNOLOGY_VERIFICATION'"
                                                 >Edytuj technologię</button>
 
                                         <!--<button class="btn btn-primary float-right jh-create-entity create-estimation" routerLink='/estimation-new'>-->
@@ -128,9 +137,12 @@
         <div class="text-center">
 
             <button type="button" class="btn btn-outline-danger" (click)="previousState()">Powrót</button>
-            <button type="button" class="btn btn-outline-primary" (click)="printTechnologyCard()" >
+            <button type="button" class="btn btn-outline-primary" (click)="printTechnologyCard()" *ngIf="order.orderStatus==='TECHNOLOGY_VERIFICATION' || order.orderStatus==='IN_PRODUCTION'">
                 <span class="fa fa-print"></span>
                 Drukuj karty obiegowe</button>
+            <button type="button" class="btn btn-outline-primary" (click)="saveSapNumbers()" *ngIf="order.orderStatus==='CREATING_SAP_ORDER'"   [disabled]="editForm.form.invalid || isSaving">
+                <span class="fa fa-save"></span>
+                Zapisz </button>
         </div>
     </div>
 

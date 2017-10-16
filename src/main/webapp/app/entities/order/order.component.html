@@ -67,8 +67,8 @@
             <div class="input-group">
                 <input type="text" class="form-control"
                        name="validFromFilter"
-                       ngbDatepickerPl="" #realizationDateDp="ngbDatepickerPl"
-                       [(ngModel)]="orderFilter.validFrom" placeholder="Data utworz. od:"/>
+                        [displayMonths]="true" [showWeekdays]="true"
+                       [(ngModel)]="orderFilter.validFrom" placeholder="Utworzono po:" ngbDatepicker="" #realizationDateDp="ngbDatepicker"/>
                 <span class="input-group-btn">
                     <button type="button" class="btn btn-default" (click)="realizationDateDp.toggle()"
                             (keyup)="realizationDateDp.toggle()"><i class="fa fa-calendar"></i></button>
@@ -78,8 +78,8 @@
         <div class="form-group col-md-2">
             <!--<label class="form-control-label" jhiTranslate="tnApp.order.closeDate" for="field_closeDate">Close Date</label>-->
             <div class="input-group">
-                <input type="text" class="form-control" name="validToFilter" ngbDatepicker #createdToEnd="ngbDatepicker"
-                       [(ngModel)]="orderFilter.validTo" placeholder="Data utworz. do:" dispalyMonths="2"/>
+                <input type="text" class="form-control" name="validToFilter" ngbDatepicker #createdToEnd="ngbDatepicker" [displayMonths]="true" [showWeekdays]="true"
+                       [(ngModel)]="orderFilter.validTo" placeholder="Utworzono przed:" />
                 <span class="input-group-btn">
                     <button type="button" class="btn btn-default" (click)="createdToEnd.toggle()"
                             (keyup)="createdToEnd.toggle()"><i class="fa fa-calendar"></i></button>

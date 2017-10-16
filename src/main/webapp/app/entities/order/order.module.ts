@@ -31,7 +31,7 @@ import {PurchaseOrderComponent} from './purchase-order/purchase-order.component'
 import {ArchiveOrdersComponent} from './archive-orders/archive-orders.component';
 import {PurchaseOrderDetailComponent} from './purchase-order-detail/purchase-order-detail.component';
 import {OrderSpreedSheetComponent} from './order-detail/order-spreed-sheet/order-spreed-sheet.component';
-import {HotTableModule} from 'angular-handsontable';
+// import {HotTableModule} from 'angular-handsontable';
 import {ExcelService} from '../../tn-components/excel.service';
 
 
@@ -47,7 +47,7 @@ const ENTITY_STATES = [
         RouterModule.forRoot(ENTITY_STATES, { useHash: true }),
         BrowserAnimationsModule,
         TnComponentsModule,
-        HotTableModule,
+        // HotTableModule,
 
     ],
     declarations: [

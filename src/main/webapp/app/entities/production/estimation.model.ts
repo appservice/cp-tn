@@ -26,6 +26,7 @@ export class Estimation implements BaseEntity {
         public discount?: number,
         public createdAt?: any,
         public createdBy?: string,
+        public sapNumber?: string,
     ) {
     }
 }

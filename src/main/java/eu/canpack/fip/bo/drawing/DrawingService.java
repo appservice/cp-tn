@@ -51,6 +51,7 @@ public class DrawingService {
     public DrawingDTO save(DrawingDTO drawingDTO) {
         log.debug("Request to save Drawing : {}", drawingDTO);
         Drawing drawing = drawingMapper.toEntity(drawingDTO);
+        drawing.setCreatedAt(ZonedDateTime.now());
         drawing = drawingRepository.save(drawing);
         DrawingDTO result = drawingMapper.toDto(drawing);
         drawingSearchRepository.save(drawing);

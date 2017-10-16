@@ -221,8 +221,10 @@
         </button>
     </div>
     <div class="modal-body">
+        <h5> Rusunek: {{technologyCard.drawing.number}} {{technologyCard.drawing.name}}</h5>
+
         <tn-file-uploader (notify)="onFileArrayChange($event);"
-                          [attachments]="technologyCard.drawing.attachments"></tn-file-uploader>
+                          [attachments]="technologyCard.drawing.attachments" [isViewOnly]="true"></tn-file-uploader>
     </div>
     <div class="modal-footer">
         <button type="button" class="btn btn-secondary" (click)="c('Close click')">Close</button>

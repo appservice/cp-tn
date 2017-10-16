@@ -30,6 +30,7 @@ export class Estimation implements BaseEntity {
         public checked ?: boolean,
         public estimatedRealizationDate ?: any,
         public estimationRemarks?: EstimationRemark[],
+        public sapNumber ?: string,
         public remark?: string,
     ) {
     }

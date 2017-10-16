@@ -160,7 +160,7 @@ export class NewPurchaseOrderComponent implements OnInit, OnDestroy {
             order.internalNumber = null;
             order.inquiryId = order.id;
             order.id = null;
-            order.name = 'zamówienie';
+           // order.name = null;
             order.orderType = OrderType.PRODUCTION;
             order.sapNumber = null;
             order.orderStatus = null;

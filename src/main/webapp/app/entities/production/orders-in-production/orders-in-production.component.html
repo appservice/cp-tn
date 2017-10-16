@@ -10,7 +10,7 @@
          </button>-->
     </h2>
     <jhi-alert></jhi-alert>
-    <div class="row">
+    <!--<div class="row">
         <div class="col-sm-12">
             <form name="searchForm" class="form-inline">
                 <div class="input-group w-100 mt-3">
@@ -24,7 +24,7 @@
                 </div>
             </form>
         </div>
-    </div>
+    </div>-->
     <br/>
     <div class="table-responsive" *ngIf="orders">
         <table class="table table-striped">
@@ -33,7 +33,7 @@
                 <th jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span> <span class="fa fa-sort"></span></th>
                 <th jhiSortBy="internalNumber"><span >Nr wewnętrzny</span> <span class="fa fa-sort"></span></th>
                 <th jhiSortBy="description"><span >Nr Klienta</span> <span class="fa fa-sort"></span></th>
-                <th jhiSortBy="sapNumber"><span jhiTranslate="tnApp.order.sapNumber">Sap Number</span> <span class="fa fa-sort"></span></th>
+                <!--<th jhiSortBy="sapNumber"><span jhiTranslate="tnApp.order.sapNumber">Sap Number</span> <span class="fa fa-sort"></span></th>-->
                 <!--<th jhiSortBy="orderType"><span jhiTranslate="tnApp.order.orderType">Order Type</span> <span class="fa fa-sort"></span></th>-->
                 <th jhiSortBy="name"><span jhiTranslate="tnApp.order.name">Name</span> <span class="fa fa-sort"></span></th>
                 <th jhiSortBy="createdAt"><span j>Data utworzenia</span> <span class="fa fa-sort"></span></th>
@@ -48,7 +48,7 @@
                 <td><a [routerLink]="['../purchase-order', order.id ]">{{order.id}}</a></td>
                 <td><a [routerLink]="['../purchase-order', order.id ]">{{order.internalNumber}}</a></td>
                 <td>{{order.referenceNumber}}</td>
-                <td>{{order.sapNumber}}</td>
+                <!--<td>{{order.sapNumber}}</td>-->
                 <!--<td jhiTranslate="{{'tnApp.OrderType.' + order.orderType}}">{{order.orderType}}</td>-->
                 <td>{{order.name}}</td>
                 <td>{{order.createdAt|date:'dd-MM-yyyy'}}</td>
@@ -75,7 +75,7 @@
                             <!--<span class="fa fa-remove"></span>-->
                             <!--<span class="hidden-md-down" jhiTranslate="entity.action.delete">Delete</span>-->
                         <!--</button>-->
-                        <button type="submit" *ngIf="order.orderStatus=='IN_PRODUCTION'"
+                        <button type="submit"
                                 [routerLink]="['/orders-in-production/'+order.id+'/detail']"
                                 class="btn btn-outline-primary btn-sm">
                             <span class="fa fa-list"></span>

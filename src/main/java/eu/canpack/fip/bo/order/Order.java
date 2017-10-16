@@ -39,6 +39,9 @@ public class Order implements Serializable {
     @Column(name="number")
     private Integer number;
 
+    @Column(name="purchase_order_number")
+    private Integer purchaseOrderNumber;
+
     @Column(name="year")
     private Integer year;
 
@@ -294,6 +297,14 @@ public class Order implements Serializable {
         return this;
     }
 
+
+    public Integer getPurchaseOrderNumber() {
+        return purchaseOrderNumber;
+    }
+
+    public void setPurchaseOrderNumber(Integer purchaseOrderNumber) {
+        this.purchaseOrderNumber = purchaseOrderNumber;
+    }
 
     @Override
     public boolean equals(Object o) {

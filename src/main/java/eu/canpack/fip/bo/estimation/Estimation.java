@@ -37,6 +37,8 @@ public class Estimation implements Serializable {
     @Column(name = "material")
     private String material;
 
+
+
     @DecimalMin(value = "0")
     @Column(name = "material_price", precision = 10, scale = 2)
     private BigDecimal materialPrice;
@@ -107,6 +109,9 @@ public class Estimation implements Serializable {
 
     @Column(name = "createdAt")
     private ZonedDateTime createdAt;
+
+    @Column(name="sap_number")
+    private String sapNumber;
 
     public String getItemName() {
         return itemName;
@@ -377,6 +382,13 @@ public class Estimation implements Serializable {
         return this;
     }
 
+    public String getSapNumber() {
+        return sapNumber;
+    }
+
+    public void setSapNumber(String sapNumber) {
+        this.sapNumber = sapNumber;
+    }
 
     @Override
     public boolean equals(Object o) {
@@ -398,22 +410,31 @@ public class Estimation implements Serializable {
         return Objects.hashCode(getId());
     }
 
+
     @Override
     public String toString() {
         return "Estimation{" +
-            "id=" + getId() +
-//            ", internalNumber='" + getInternalNumber() + "'" +
-            ", material='" + getMaterial() + "'" +
-            ", materialPrice='" + getMaterialPrice() + "'" +
-            ", amount='" + getAmount() + "'" +
-            ", mass='" + getMass() + "'" +
-            ", description='" + getDescription() + "'" +
-            ", estimatedCost='" + getEstimatedCost() + "'" +
-            ", finalCost='" + getFinalCost() + "'" +
-            ", neededRealizationDate='" + getNeededRealizationDate() + "'" +
-            ", discount='" + getDiscount() + "'" +
-            "}";
+            "id=" + id +
+            ", material='" + material + '\'' +
+            ", materialPrice=" + materialPrice +
+            ", amount=" + amount +
+            ", mass=" + mass +
+            ", itemName='" + itemName + '\'' +
+            ", itemNumber='" + itemNumber + '\'' +
+            ", description='" + description + '\'' +
+            ", estimatedCost=" + estimatedCost +
+            ", finalCost=" + finalCost +
+            ", drawing=" + drawing +
+//            ", operations=" + operations +
+            ", order=" + order +
+            ", neededRealizationDate=" + neededRealizationDate +
+            ", estimatedRealizationDate=" + estimatedRealizationDate +
+//            ", commercialParts=" + commercialParts +
+//            ", estimationRemarks=" + estimationRemarks +
+            ", discount=" + discount +
+            ", createdBy=" + createdBy +
+            ", createdAt=" + createdAt +
+            ", sapNumber='" + sapNumber + '\'' +
+            '}';
     }
-
-
 }

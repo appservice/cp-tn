@@ -12,6 +12,7 @@ public final class AuthoritiesConstants {
     public static final String ANONYMOUS = "ROLE_ANONYMOUS";
     public static final String MANAGER = "ROLE_MANAGER";
     public static final String TECHNOLOGIST = "ROLE_TECHNOLOGIST";
+    public static final String SAP_INTRODUCER = "ROLE_SAP_INTRODUCER";
 
     private AuthoritiesConstants() {
     }

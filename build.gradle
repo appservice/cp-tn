@@ -216,7 +216,7 @@ dependencies {
     compile group: 'com.github.nociar', name: 'jpa-cloner', version: '1.0.3'
 
 // https://mvnrepository.com/artifact/org.activiti/activiti-spring-boot-starter-basic
-    compile group: 'org.activiti', name: 'activiti-spring-boot-starter-basic', version: '6.0.0'
+//    compile group: 'org.activiti', name: 'activiti-spring-boot-starter-basic', version: '6.0.0'
 
 
 

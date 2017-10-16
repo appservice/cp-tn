@@ -29,6 +29,7 @@ import {
 } from './layouts';
 import {CurrencyMaskModule} from 'ng2-currency-mask';
 import {FormsModule} from '@angular/forms';
+import {NgxMyDatePickerModule} from 'ngx-mydatepicker';
 
 
 @NgModule({
@@ -42,6 +43,7 @@ import {FormsModule} from '@angular/forms';
         TnAccountModule,
         TnEntityModule,
         TnComponentsModule,
+        NgxMyDatePickerModule.forRoot(),
 
 
         // jhipster-needle-angular-add-module JHipster will add new module here

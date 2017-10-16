@@ -8,6 +8,8 @@ import java.time.LocalDate;
 import javax.validation.constraints.*;
 import java.io.Serializable;
 import java.time.ZonedDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -42,6 +44,8 @@ public class OrderListDTO implements Serializable {
     private String clientShortcut;
 
     private ZonedDateTime createdAt;
+
+    private List<String> buttons = new ArrayList<>();
 
     public Long getId() {
         return id;
@@ -137,6 +141,14 @@ public class OrderListDTO implements Serializable {
 
     public void setReferenceNumber(String referenceNumber) {
         this.referenceNumber = referenceNumber;
+    }
+
+    public List<String> getButtons() {
+        return buttons;
+    }
+
+    public void setButtons(List<String> buttons) {
+        this.buttons = buttons;
     }
 
     @Override

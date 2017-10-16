@@ -515,7 +515,8 @@
         </button>
     </div>
     <div class="modal-body">
-        <tn-file-uploader (notify)="onFileArrayChange($event);"
+        <h5> Rusunek: {{estimation.drawing.number}} {{estimation.drawing.name}}</h5>
+        <tn-file-uploader (notify)="onFileArrayChange($event);" [isViewOnly]="true"
                           [attachments]="estimation.drawing.attachments"></tn-file-uploader>
     </div>
     <div class="modal-footer">

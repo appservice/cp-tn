@@ -1,6 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
-import Handsontable from "handsontable";
-import {Order} from '../../order.model';
+
 import {Estimation} from '../../../estimation/estimation.model';
 
 @Component({

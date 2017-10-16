@@ -69,6 +69,15 @@ export class OrderService {
             .map((res: Response) => this.convertResponse(res));
     }
 
+    getAllProductionOrdersForEdit(req?: any, urlSearchParams?: URLSearchParams): Observable<ResponseWrapper> {
+        const options = createRequestOption(req);
+        if (urlSearchParams) {
+            options.params.appendAll(urlSearchParams);
+        }
+        return this.http.get(this.resourceUrl + '/production-edit', options)
+            .map((res: Response) => this.convertResponse(res));
+    }
+
     delete(id: number): Observable<Response> {
         return this.http.delete(`${this.resourceUrl}/${id}`);
     }
@@ -235,6 +244,7 @@ export class OrderService {
     }
 
 
+
     createNewPurchaseOrder(order: Order): Observable<Order> {
         const copy = this.convert(order);
         return this.http.post("api/purchase-orders", copy).map((res: Response) => {
@@ -243,4 +253,16 @@ export class OrderService {
             return jsonResponse;
         });
     }
+
+
+
+    insertSapNumber(order: Order): Observable<Order> {
+        const copy = this.convert(order);
+        return this.http.put(this.resourceUrl+'/insert-sap-numbers', copy).map((res: Response) => {
+            const jsonResponse = res.json();
+            this.convertItemFromServer(jsonResponse);
+            return jsonResponse;
+        });
+    }
+
 }

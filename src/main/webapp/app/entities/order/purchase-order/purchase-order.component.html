@@ -10,7 +10,7 @@
         </button>-->
     </h2>
     <jhi-alert></jhi-alert>
-    <div class="row">
+    <!--<div class="row">
         <div class="col-sm-12">
             <form name="searchForm" class="form-inline">
                 <div class="input-group w-100 mt-3">
@@ -23,6 +23,75 @@
                     </button>
                 </div>
             </form>
+        </div>
+    </div>-->
+
+    <div class="row" style="margin-top: 40px">
+        <div class="col-md-2">
+            <!--<label>Numer rys.</label>-->
+            <input type="text" class="form-control" name="filterInternalNumber"
+                   [(ngModel)]="orderFilter.internalNumber" placeholder="Numer wewn."
+                   (keydown)="onEnterClickFilter($event)">
+
+        </div>
+        <div class="col-md-2">
+            <!--<label>Nazwa</label>-->
+            <input type="text" class="form-control" name="filterReferenceNumber"
+                   [(ngModel)]="orderFilter.referenceNumber" placeholder="Numer klienta"
+                   (keydown)="onEnterClickFilter($event)">
+        </div>
+        <div class="col-md-2">
+            <!--<label>Nazwa</label>-->
+            <input type="text" class="form-control" name="filterClientName" [(ngModel)]="orderFilter.clientName"
+                   placeholder="Nazwa klienta" (keydown)="onEnterClickFilter($event)">
+        </div>
+
+        <div class="col-md-2">
+            <!--<label class="form-control-label" jhiTranslate="tnApp.order.orderStatus" for="field_orderStatus">Order Status</label>-->
+            <select class="form-control" name="orderStatus" [(ngModel)]="orderFilter.orderStatus"
+                    id="field_orderStatus">
+                <option value="undefined" disabled selected hidden>Status zamówienia</option>
+                <option value="null" disabled selected hidden>Status zamówienia</option>
+                <option value="WORKING_COPY">KOPIA ROBOCZA</option>
+                <!--jhiTranslate="tnApp.OrderStatus.FOR_ESTIMATION"-->
+                <option value="IN_PRODUCTION">W PRODUKCJI</option>
+            </select>
+        </div>
+
+        <div class="form-group col-md-2">
+            <!--<label class="form-control-label" jhiTranslate="tnApp.order.closeDate" for="field_closeDate">Close Date</label>-->
+            <div class="input-group">
+                <input type="text" class="form-control"
+                       name="validFromFilter"
+                       [displayMonths]="true" [showWeekdays]="true"
+                       [(ngModel)]="orderFilter.validFrom" placeholder="Utworzono po:" ngbDatepicker="" #realizationDateDp="ngbDatepicker"/>
+                <span class="input-group-btn">
+                    <button type="button" class="btn btn-default" (click)="realizationDateDp.toggle()"
+                            (keyup)="realizationDateDp.toggle()"><i class="fa fa-calendar"></i></button>
+                </span>
+            </div>
+        </div>
+        <div class="form-group col-md-2">
+            <!--<label class="form-control-label" jhiTranslate="tnApp.order.closeDate" for="field_closeDate">Close Date</label>-->
+            <div class="input-group">
+                <input type="text" class="form-control" name="validToFilter" ngbDatepicker #createdToEnd="ngbDatepicker" [displayMonths]="true" [showWeekdays]="true"
+                       [(ngModel)]="orderFilter.validTo" placeholder="Utworzono przed:" />
+                <span class="input-group-btn">
+                    <button type="button" class="btn btn-default" (click)="createdToEnd.toggle()"
+                            (keyup)="createdToEnd.toggle()"><i class="fa fa-calendar"></i></button>
+                </span>
+            </div>
+        </div>
+    </div>
+    <div class="row" style="margin-top: 10px">
+        <div class="col-md-4">
+            <label>&nbsp;</label>
+            <button class="btn btn-outline-dark" type="button" (click)="loadAll()"><span
+                class="fa fa-search"></span> Filtruj
+            </button>
+            <button class="btn btn-outline-dark" type="button" (click)="clearFilterAndLoadAll()"><span
+                class="fa fa-trash-o"></span> Wyczyść filtr
+            </button>
         </div>
     </div>
     <br/>

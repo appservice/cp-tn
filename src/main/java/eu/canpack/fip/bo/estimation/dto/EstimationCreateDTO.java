@@ -47,6 +47,8 @@ public class EstimationCreateDTO implements Serializable {
 
     private List<EstimationRemarkDTO> estimationRemarks;
 
+    private String sapNumber;
+
     public String getItemNumber() {
         return itemNumber;
     }
@@ -96,8 +98,17 @@ public class EstimationCreateDTO implements Serializable {
 
         this.itemName=estimation.getItemName();
         this.itemNumber=estimation.getItemNumber();
+        this.sapNumber=estimation.getSapNumber();
     }
 
+
+    public String getSapNumber() {
+        return sapNumber;
+    }
+
+    public void setSapNumber(String sapNumber) {
+        this.sapNumber = sapNumber;
+    }
 
     public DrawingDTO getDrawing() {
         return drawing;

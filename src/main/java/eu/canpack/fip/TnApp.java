@@ -22,7 +22,7 @@ import java.util.Arrays;
 import java.util.Collection;
 
 @ComponentScan(basePackages = "eu.canpack.fip")
-@EnableAutoConfiguration(exclude = {MetricFilterAutoConfiguration.class, MetricRepositoryAutoConfiguration.class,org.activiti.spring.boot.SecurityAutoConfiguration.class})
+@EnableAutoConfiguration(exclude = {MetricFilterAutoConfiguration.class, MetricRepositoryAutoConfiguration.class/*,org.activiti.spring.boot.SecurityAutoConfiguration.class*/})
 @EnableConfigurationProperties({LiquibaseProperties.class, ApplicationProperties.class})
 public class TnApp {
 

@@ -8,9 +8,9 @@ import {PlnCurrencyPipe} from './pln-currency.pipe';
 import {FileSizePipe} from './file-size-pipe';
 import {TnAlert} from './tn-alert';
 import {TnEstimationRemarkComponent} from './tn-estimation-remark-component/tn-estimation-remark-component';
-import {NgbDatepickerI18n, NgbModule} from '@ng-bootstrap/ng-bootstrap';
+import { NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {ExcelService} from './excel.service';
-import {NgbDatePickerPl} from './datepicker-pl';
+import {NgbdDatepickerI18n} from './datepicker-pl';
 
 @NgModule({
     imports: [
@@ -25,7 +25,8 @@ import {NgbDatePickerPl} from './datepicker-pl';
             FileSizePipe,
             TnAlert,
             TnEstimationRemarkComponent,
-            NgbDatePickerPl,
+            NgbdDatepickerI18n,
+
         ],
     exports:
         [
@@ -34,7 +35,7 @@ import {NgbDatePickerPl} from './datepicker-pl';
             FileSizePipe,
             TnAlert,
             TnEstimationRemarkComponent,
-            NgbDatePickerPl,
+            NgbdDatepickerI18n
 
 
         ],

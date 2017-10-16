@@ -20,10 +20,13 @@ import eu.canpack.fip.bo.remark.EstimationRemark;
 import eu.canpack.fip.domain.User;
 import eu.canpack.fip.repository.UserRepository;
 import eu.canpack.fip.repository.search.OrderSearchRepository;
+import eu.canpack.fip.security.AuthoritiesConstants;
+import eu.canpack.fip.security.SecurityUtils;
 import eu.canpack.fip.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -32,9 +35,13 @@ import javax.persistence.EntityManager;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.ZonedDateTime;
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
+import static eu.canpack.fip.security.AuthoritiesConstants.SAP_INTRODUCER;
 import static org.elasticsearch.index.query.QueryBuilders.queryStringQuery;
 
 /**
@@ -97,6 +104,8 @@ public class OrderService {
         Order order = orderMapper.toEntity(orderDTO);
         User loggedUser = userService.getLoggedUser();
 
+        ZonedDateTime now = ZonedDateTime.now();
+
         List<Estimation> estimations = orderDTO.getEstimations().stream().map(estDTO -> {
             log.debug("osdDTO: {}", estDTO);
             Estimation estimation = new Estimation()
@@ -126,6 +135,7 @@ public class OrderService {
                     drawing.getEstimations().add(estimation);
                     drawing.setNumber(estDTO.getItemNumber());
                     drawing.setName(estDTO.getItemName());
+                    drawing.setCreatedAt(now);
                     List<Attachment> attahcments = estDTO.getDrawing().getAttachments().stream()
                         .map(a -> attachmentRepository.findOne(a.getId())).collect(Collectors.toList());
                     drawing.setAttachments(attahcments);
@@ -142,7 +152,7 @@ public class OrderService {
         order.setEstimations(estimations);
 
 
-        order.createdAt(ZonedDateTime.now());
+        order.createdAt(now);
         order.setCreatedBy(loggedUser);
         prepareDocumentNumber(order);
 
@@ -155,6 +165,8 @@ public class OrderService {
 
     public OrderListDTO updateOrder(OrderDTO orderDTO) {
         User loggedUser = userService.getLoggedUser();
+
+        ZonedDateTime now = ZonedDateTime.now();
 
         log.debug("Request to update Order : {}", orderDTO);
         Order orderFromDb = orderRepository.findOne(orderDTO.getId());
@@ -189,6 +201,7 @@ public class OrderService {
                     List<Attachment> attahcments = estDTO.getDrawing().getAttachments().stream()
                         .map(a -> attachmentRepository.findOne(a.getId())).collect(Collectors.toList());
                     drawing.setAttachments(attahcments);
+                    drawing.setCreatedAt(now);
                     estimation.setDrawing(drawing);
                 }
                 return estimation;
@@ -242,7 +255,7 @@ public class OrderService {
 
         order.setCreatedBy(loggedUser);
 
-        order.createdAt(ZonedDateTime.now());
+        order.createdAt(now);
 //        prepareDocumentNumber(order);
 
 //        order.setOrderStatus(OrderStatus.WORKING_COPY);
@@ -382,6 +395,16 @@ public class OrderService {
 
     }
 
+    private void preparePurchaseOrderDocumentNumber(Order order) {
+        int year = LocalDate.now().getYear();
+        int number = orderRepository.getPurchaseOrderDocNumber(year) + 1;
+        order.setYear(year);
+        order.setPurchaseOrderNumber(number);
+
+        order.setInternalNumber(number + "/" + year + "/" + order.getOrderType().getShortcut());
+
+    }
+
     OrderSimpleDTO getSimpleOrderDtoData(Long orderId) {
         return orderRepository.getOrderSimpleDTO(orderId);
     }
@@ -446,7 +469,7 @@ public class OrderService {
             newEstimation.setNeededRealizationDate(est.getNeededRealizationDate());
             newEstimation.setMaterialPrice(est.getMaterialPrice());
 
-            if(estDTO.getRemark()!=null && !estDTO.getRemark().trim().isEmpty()){
+            if (estDTO.getRemark() != null && !estDTO.getRemark().trim().isEmpty()) {
                 EstimationRemark estimationRemark = new EstimationRemark();
                 estimationRemark.setRemark(estDTO.getRemark());
                 estimationRemark.setCreatedBy(loggedUser);
@@ -510,7 +533,11 @@ public class OrderService {
 
         order.setCreatedAt(now);
         order.createdBy(loggedUser);
-        prepareDocumentNumber(order);
+        preparePurchaseOrderDocumentNumber(order);
+        if(!orderDTO.getOrderStatus().equals(OrderStatus.WORKING_COPY)){
+            order.setOrderStatus(OrderStatus.CREATING_SAP_ORDER);
+
+        }
         return orderRepository.save(order);
 
     }
@@ -536,4 +563,39 @@ public class OrderService {
 //        }
 //        return output;
 //    }
+
+    @Transactional(readOnly = true)
+    public Page<OrderListDTO> findOrderInProducitionForEdit(Pageable pageable) {
+        Set<OrderStatus> orderStatuses = new HashSet<>();
+        if (SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.TECHNOLOGIST)) {
+            orderStatuses.add(OrderStatus.TECHNOLOGY_VERIFICATION);
+        }
+        if (SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.SAP_INTRODUCER)) {
+            orderStatuses.add(OrderStatus.CREATING_SAP_ORDER);
+        }
+        log.debug("order statusses", orderStatuses);
+        if (!orderStatuses.isEmpty()) {
+            Page<Order> orders = orderRepository.findAllByOrderTypeAndOrderStatusIn(OrderType.PRODUCTION, orderStatuses, pageable);
+            return orders.map(orderMapper::toDto);
+        }
+
+
+        return new PageImpl<>(Collections.emptyList());
+    }
+
+    @Transactional
+    public OrderDTO insertSapNumbers(OrderDTO orderDTO) {
+        orderDTO.getEstimations().forEach(e -> {
+            Estimation estimation = estimationRepository.findOne(e.getId());
+            estimation.setSapNumber(e.getSapNumber());
+        });
+        Order order = orderRepository.findOne(orderDTO.getId());
+        boolean hasOrderEmptySapNumber = order.getEstimations().stream()
+            .anyMatch(e -> e.getSapNumber() == null || e.getSapNumber().isEmpty());
+        if (!hasOrderEmptySapNumber) {
+            order.setOrderStatus(OrderStatus.TECHNOLOGY_VERIFICATION);
+        }
+        return new OrderDTO(order);
+
+    }
 }

@@ -148,6 +148,23 @@ public class OrderResource {
      * @param pageable the pagination information
      * @return the ResponseEntity with status 200 (OK) and the list of orders in body
      */
+    @GetMapping("/orders/production-edit")
+    @Timed
+    public ResponseEntity<List<OrderListDTO>> getAllProductionOrdersForEdit( @ApiParam Pageable pageable) {
+        log.debug("REST request to get a page of Orders");
+
+
+        Page<OrderListDTO> page = orderService.findOrderInProducitionForEdit(pageable);//findAllByClientAndOrderType(pageable, OrderType.PRODUCTION);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/orders");
+        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+    }
+
+    /**
+     * GET  /orders : get all the orders.
+     *
+     * @param pageable the pagination information
+     * @return the ResponseEntity with status 200 (OK) and the list of orders in body
+     */
     @GetMapping("/orders/filtered")
     @Timed
     public ResponseEntity<List<OrderListDTO>> getAllOrdersFiltered(OrderCriteria orderCriteria, @ApiParam Pageable pageable) {
@@ -272,6 +289,15 @@ public class OrderResource {
     public ResponseEntity<Void> claimToEstimator(@PathVariable Long id) {
         orderService.claimByEstimatior(id);
         return ResponseEntity.ok().build();
+    }
+
+    @PutMapping("/orders/insert-sap-numbers")
+    @Timed
+    public ResponseEntity<OrderDTO> insertSapNumbers(@RequestBody OrderDTO orderDTO) {
+        log.debug("orderDTO", orderDTO);
+       OrderDTO response= orderService.insertSapNumbers(orderDTO);
+
+        return ResponseEntity.ok(response);
     }
 
 
