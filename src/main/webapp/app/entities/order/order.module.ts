@@ -1,7 +1,7 @@
-import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { RouterModule } from '@angular/router';
+import {NgModule, CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
+import {RouterModule} from '@angular/router';
 
-import { TnSharedModule } from '../../shared';
+import {TnSharedModule} from '../../shared';
 import {
     OrderService,
     OrderPopupService,
@@ -15,8 +15,8 @@ import {
     orderPopupRoute,
     OrderResolvePagingParams,
 } from './';
-import { NewOrderComponent } from './new-order/new-order.component';
-import { PreEstimationComponent } from './new-order/pre-estimation/pre-estimation.component';
+import {NewOrderComponent} from './new-order/new-order.component';
+import {PreEstimationComponent} from './new-order/pre-estimation/pre-estimation.component';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {TnComponentsModule} from '../../tn-components/tn-components.module';
 import {OrderToEstimationComponent} from './orders-to-estimation/order-to-estimation.component';
@@ -33,7 +33,7 @@ import {PurchaseOrderDetailComponent} from './purchase-order-detail/purchase-ord
 import {OrderSpreedSheetComponent} from './order-detail/order-spreed-sheet/order-spreed-sheet.component';
 // import {HotTableModule} from 'angular-handsontable';
 import {ExcelService} from '../../tn-components/excel.service';
-
+import {InquiryItemFinderComponent} from './inquiry-item-finder/inquiry-item-finder.component';
 
 
 const ENTITY_STATES = [
@@ -44,7 +44,7 @@ const ENTITY_STATES = [
 @NgModule({
     imports: [
         TnSharedModule,
-        RouterModule.forRoot(ENTITY_STATES, { useHash: true }),
+        RouterModule.forRoot(ENTITY_STATES, {useHash: true}),
         BrowserAnimationsModule,
         TnComponentsModule,
         // HotTableModule,
@@ -69,6 +69,7 @@ const ENTITY_STATES = [
         ArchiveOrdersComponent,
         PurchaseOrderDetailComponent,
         OrderSpreedSheetComponent,
+        InquiryItemFinderComponent,
 
 
     ],
@@ -92,4 +93,5 @@ const ENTITY_STATES = [
     ],
     schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
-export class TnOrderModule {}
+export class TnOrderModule {
+}

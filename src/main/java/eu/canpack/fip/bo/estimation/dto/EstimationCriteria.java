@@ -33,18 +33,16 @@ public class EstimationCriteria implements Serializable {
     /**
      * Class for filtering FirstEnum
      */
-    public static class OrderStatusFilter extends Filter<OrderStatus> {
-    }
+//    public static class OrderStatusFilter extends Filter<OrderStatus> {
+//    }
 
     public static class OrderTypeFilter extends Filter<OrderType>{
 
     }
 
-
-
     private static final long serialVersionUID = 1L;
 
-    private String orderInternalNumber;
+    private StringFilter orderInternalNumber;
 
     private StringFilter itemName;
 
@@ -52,9 +50,10 @@ public class EstimationCriteria implements Serializable {
 
 //    private LongFilter createdById;
 
-//    private LongFilter clientId;
 
     private StringFilter clientName;
+
+    private LongFilter clientId;
 
     private OrderTypeFilter orderTypeFilter;
 
@@ -62,11 +61,11 @@ public class EstimationCriteria implements Serializable {
         return serialVersionUID;
     }
 
-    public String getOrderInternalNumber() {
+    public StringFilter getOrderInternalNumber() {
         return orderInternalNumber;
     }
 
-    public void setOrderInternalNumber(String orderInternalNumber) {
+    public void setOrderInternalNumber(StringFilter orderInternalNumber) {
         this.orderInternalNumber = orderInternalNumber;
     }
 
@@ -100,6 +99,14 @@ public class EstimationCriteria implements Serializable {
 
     public void setOrderTypeFilter(OrderTypeFilter orderTypeFilter) {
         this.orderTypeFilter = orderTypeFilter;
+    }
+
+    public LongFilter getClientId() {
+        return clientId;
+    }
+
+    public void setClientId(LongFilter clientId) {
+        this.clientId = clientId;
     }
 
     @Override

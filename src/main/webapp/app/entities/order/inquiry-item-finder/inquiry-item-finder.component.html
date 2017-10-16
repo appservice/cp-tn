@@ -1,0 +1,143 @@
+<h2>
+    Wyszukaj zapytanie ofertowe po detalu
+</h2>
+<br/>
+
+<div class="col-md-12">
+    <div class="row" style="margin-top: 40px">
+        <div class="col-md-2">
+            <!--<label>Numer rys.</label>-->
+            <input type="text" class="form-control" name="itemName"
+                   [(ngModel)]="estimationFilter.itemName" placeholder="Nazwa detalu"
+                   (keydown)="onEnterClickFilter($event)">
+
+        </div>
+        <div class="col-md-2">
+            <!--<label>Nazwa</label>-->
+            <input type="text" class="form-control" name="itemNumber"
+                   [(ngModel)]="estimationFilter.itemNumber" placeholder="Numer rys."
+                   (keydown)="onEnterClickFilter($event)">
+        </div>
+        <!--        <div class="col-md-2">
+                    &lt;!&ndash;<label>Nazwa</label>&ndash;&gt;
+                    <input type="text" class="form-control" name="filterClientName" [(ngModel)]="estimationFilter.clientName"
+                           placeholder="Nazwa klienta" (keydown)="onEnterClickFilter($event)">
+                </div>-->
+
+        <!--<div class="col-md-2">
+            &lt;!&ndash;<label class="form-control-label" jhiTranslate="tnApp.order.orderStatus" for="field_orderStatus">Order Status</label>&ndash;&gt;
+            <select class="form-control" name="orderStatus" [(ngModel)]="orderFilter.orderStatus"
+                    id="field_orderStatus">
+                <option value="undefined" disabled selected hidden>Status zamówienia</option>
+                <option value="null" disabled selected hidden>Status zamówienia</option>
+                <option value="WORKING_COPY">KOPIA ROBOCZA</option>
+                &lt;!&ndash;jhiTranslate="tnApp.OrderStatus.FOR_ESTIMATION"&ndash;&gt;
+                <option value="IN_ESTIMATION">W TRAKCIE WYCENY</option>
+                <option value="SENT_OFFER_TO_CLIENT">OFERTA UKOŃCZONA</option>
+            </select>
+        </div>-->
+
+        <!--<div class="row" style="margin-top: 10px">-->
+        <div class="col-md-5">
+            <label>&nbsp;</label>
+            <button class="btn btn-outline-dark" type="button" (click)="loadAll()"><span
+                class="fa fa-search"></span> Filtruj
+            </button>
+            <button class="btn btn-outline-dark" type="button" (click)="clearFilterAndLoadAll()"><span
+                class="fa fa-trash-o"></span> Wyczyść filtr
+            </button>
+        </div>
+        <!--</div>-->
+
+    </div>
+    <br/>
+    <table class="table table-striped">
+        <thead>
+        <tr jhiSort [(predicate)]="predicate" [(ascending)]="reverse" [callback]="transition.bind(this)">
+            <th jhiSortBy="id">Id <span class="fa fa-sort"></span></th>
+            <th>Zlecenie</th>
+            <th jhiSortBy="itemName">Nazwa <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="itemNumber">Nr rys. <span class="fa fa-sort"></span></th>
+            <th>Ilość</th>
+            <th>Jedn.</th>
+            <th style="width: 180px">Prop. data realiz.</th>
+            <th>Pliki</th>
+            <th>Cena/Szt</th>
+            <th>Termin wyk.</th>
+            <th>Uwagi</th>
+
+        </tr>
+        </thead>
+        <tbody>
+
+        <tr *ngFor="let estimation of estimations;let rowIndex = index">
+            <td>{{estimation.id}}</td>
+            <td><a [routerLink]="['../order', estimation.orderId ]">{{estimation.orderInternalNumber}}</a></td>
+            <!--<td><input type="text" [(ngModel)]="estimation.id" class="form-control"/></td>-->
+            <td>{{estimation.itemName}}</td>
+            <td style="max-width: 150px;">
+                {{estimation.itemNumber}}
+            </td>
+            <td style="max-width: 80px">{{estimation.amount}}</td>
+            <td> SZT</td>
+            <td style="max-width: 150px">
+                {{estimation.neededRealizationDate|date:'dd-MM-yyyy'}}
+            </td>
+            <td style="width: 100px">
+
+
+                <!--</ss-multiselect-dropdown>-->
+                <button class="btn btn-outline-dark" type="button"
+                        (click)="openModal(content,rowIndex)">
+                    <strong *ngIf="estimation.drawing">{{estimation.drawing.attachments.length}}</strong>
+                    <strong *ngIf="!estimation.drawing">0</strong>
+                    <i class="fa fa-paperclip"></i>
+                </button>
+
+            </td>
+            <td>{{estimation.estimatedCost|currency:'PLN'}}</td>
+            <td>{{estimation.estimatedRealizationDate|date:'dd-MM-yyyy'}}</td>
+            <td class="right">
+                <!--                                    <button type="button" class="btn btn-outline-secondary" placement="left"
+                                                            [ngbPopover]="popContent" popoverTitle="Uwagi"
+                                                    >&lt;!&ndash; [triggers]="'hover'"&ndash;&gt;
+                                                        <span class="fa fa-question"></span>
+                                                    </button>-->
+
+                <tn-estimation-remark [estimationRemarks]="estimation.estimationRemarks"
+                                      *ngIf="estimation.estimationRemarks!=null && estimation.estimationRemarks.length>0"></tn-estimation-remark>
+            </td>
+        </tr>
+
+
+        </tbody>
+
+    </table>
+</div>
+<div *ngIf="estimations && estimations.length">
+    <div class="row justify-content-center">
+        <jhi-item-count [page]="page" [total]="queryCount" [itemsPerPage]="itemsPerPage"></jhi-item-count>
+    </div>
+    <div class="row justify-content-center">
+        <ngb-pagination [collectionSize]="totalItems" [(page)]="page"
+                        (pageChange)="loadPage(page)"></ngb-pagination>
+    </div>
+</div>
+
+<ng-template #content let-c="close" let-d="dismiss">
+    <div class="modal-header">
+        <h4 class="modal-title">Załączniki</h4>
+
+        <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <tn-file-uploader (notify)="onFileArrayChange($event);"
+                          [attachments]="estimations[clickedRow].drawing.attachments"
+                          [isViewOnly]="true"></tn-file-uploader>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="c('Close click')">Close</button>
+    </div>
+</ng-template>

@@ -493,12 +493,12 @@
 
 
     <div class="text-center" style="margin-top: 30px">
+    <button type="button" class="btn btn-outline-danger" (click)="previousState()">Powrót</button>
 
-        <button class="btn btn-info " type="submit" [disabled]="editForm.form.invalid || isSaving">
+        <button class="btn btn-outline-primary " type="submit" [disabled]="editForm.form.invalid || isSaving">
             <span class="fa fa-save"></span>&nbsp;Zapisz
             <!--<span jhiTranslate="entity.action.save">Save</span>-->
         </button>
-        <button type="button" class="btn btn-danger" (click)="previousState()">Powrót</button>
 
 
     </div>

@@ -1,6 +1,10 @@
 package eu.canpack.fip.bo.estimation;
 
+import eu.canpack.fip.bo.client.Client;
+import eu.canpack.fip.bo.estimation.dto.EstimationCreateDTO;
+import eu.canpack.fip.bo.estimation.dto.EstimationCriteria;
 import eu.canpack.fip.bo.estimation.dto.EstimationDTO;
+import eu.canpack.fip.bo.estimation.dto.EstimationShowDTO;
 import eu.canpack.fip.bo.operation.Operation;
 import eu.canpack.fip.bo.operation.OperationMapper;
 import eu.canpack.fip.bo.commercialPart.CommercialPart;
@@ -15,6 +19,7 @@ import eu.canpack.fip.repository.UserRepository;
 import eu.canpack.fip.repository.search.EstimationSearchRepository;
 import eu.canpack.fip.bo.commercialPart.CommercialPartMapper;
 import eu.canpack.fip.service.UserService;
+import io.github.jhipster.service.filter.LongFilter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -57,7 +62,9 @@ public class EstimationService {
 
     private final OrderRepository orderRepository;
 
-    public EstimationService(EstimationRepository estimationRepository, EstimationMapper estimationMapper, EstimationSearchRepository estimationSearchRepository, OperationMapper operationMapper, CommercialPartMapper commercialPartMapper, UserRepository userRepository, TechnologyCardPdfCreator technologyCardPdfCreator, UserService userService, OrderRepository orderRepository) {
+    private final EstimationQueryService estimationQueryService;
+
+    public EstimationService(EstimationRepository estimationRepository, EstimationMapper estimationMapper, EstimationSearchRepository estimationSearchRepository, OperationMapper operationMapper, CommercialPartMapper commercialPartMapper, UserRepository userRepository, TechnologyCardPdfCreator technologyCardPdfCreator, UserService userService, OrderRepository orderRepository, EstimationQueryService estimationQueryService) {
         this.estimationRepository = estimationRepository;
         this.estimationMapper = estimationMapper;
         this.estimationSearchRepository = estimationSearchRepository;
@@ -67,6 +74,9 @@ public class EstimationService {
         this.technologyCardPdfCreator = technologyCardPdfCreator;
         this.userService = userService;
         this.orderRepository = orderRepository;
+
+
+        this.estimationQueryService = estimationQueryService;
     }
 
     /**
@@ -79,19 +89,23 @@ public class EstimationService {
         log.debug("Request to save Estimation : {}", estimationDTO);
         Estimation estimation = estimationMapper.toEntity(estimationDTO);
         List<Operation> operations = operationMapper.toEntity(estimationDTO.getOperations());
-        log.debug("operations DTO: {}",estimationDTO.getOperations());
-        log.debug("operations list: {}",operations);
+        log.debug("operations DTO: {}", estimationDTO.getOperations());
+        log.debug("operations list: {}", operations);
         Order order = orderRepository.findOne(estimationDTO.getOrderId());
 
         Estimation finalEstimation = estimation;
 
-        if(order.getOrderType().equals(OrderType.ESTIMATION)){
-            operations.forEach(operation -> {operation.setEstimation(finalEstimation);
-            operation.setOperationType(OperationType.ESTIMATION);});
+        if (order.getOrderType().equals(OrderType.ESTIMATION)) {
+            operations.forEach(operation -> {
+                operation.setEstimation(finalEstimation);
+                operation.setOperationType(OperationType.ESTIMATION);
+            });
 
-        }else{
-            operations.forEach(operation -> {operation.setEstimation(finalEstimation);
-                operation.setOperationType(OperationType.PRODUCTION);});
+        } else {
+            operations.forEach(operation -> {
+                operation.setEstimation(finalEstimation);
+                operation.setOperationType(OperationType.PRODUCTION);
+            });
         }
         estimation.setOperations(operations);
 
@@ -101,20 +115,19 @@ public class EstimationService {
 
 
         estimation.setCreatedAt(ZonedDateTime.now());
-        User currentUser=userService.getLoggedUser();
+        User currentUser = userService.getLoggedUser();
         estimation.setCreatedBy(currentUser);
 
-        if(estimation.getDrawing()!=null){
-            log.debug("estimation DrawingO: {}",estimation.getDrawing());
-            log.debug("attachmentsO: {}",estimation.getDrawing().getAttachments());
+        if (estimation.getDrawing() != null) {
+            log.debug("estimation DrawingO: {}", estimation.getDrawing());
+            log.debug("attachmentsO: {}", estimation.getDrawing().getAttachments());
 
         }
 
-        if(estimationDTO.getRemark()!=null && !estimationDTO.getRemark().isEmpty()){
+        if (estimationDTO.getRemark() != null && !estimationDTO.getRemark().isEmpty()) {
             EstimationRemark remark = createRemark(estimationDTO.getRemark(), estimation);
             estimation.getEstimationRemarks().add(remark);
         }
-
 
 
         estimation = estimationRepository.save(estimation);
@@ -124,7 +137,7 @@ public class EstimationService {
         return result;
     }
 
-    private EstimationRemark createRemark(String remakr,Estimation estimation){
+    private EstimationRemark createRemark(String remakr, Estimation estimation) {
         EstimationRemark estimationRemark = new EstimationRemark();
         estimationRemark.setCreatedAt(ZonedDateTime.now());
         estimationRemark.setCreatedBy(userService.getLoggedUser());
@@ -201,21 +214,37 @@ public class EstimationService {
     }
 
 
-    public ByteArrayOutputStream getTechnologyCard(Long estimationId){
+    public ByteArrayOutputStream getTechnologyCard(Long estimationId) {
         log.debug("Request for get technology card for estiamtionId: {}", estimationId);
 
         Estimation estimation = estimationRepository.findOne(estimationId);
         estimation.getOperations().size();
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        technologyCardPdfCreator.createPdf(estimation,outputStream);
+        technologyCardPdfCreator.createPdf(estimation, outputStream);
         return outputStream;
 
     }
 
     @Transactional(readOnly = true)
-    public Page<EstimationDTO> findEstimationToFinish(Pageable pageable){
+    public Page<EstimationDTO> findEstimationToFinish(Pageable pageable) {
 
-       Page<Estimation> estimation= estimationRepository.findAllToFinish(pageable,userService.getLoggedUser());
+        Page<Estimation> estimation = estimationRepository.findAllToFinish(pageable, userService.getLoggedUser());
         return estimation.map(estimationMapper::toDto);
+    }
+
+    @Transactional(readOnly = true)
+    public Page<EstimationShowDTO> getAllInquiriesByCriteriaAndClient(EstimationCriteria criteria, Pageable pageable) {
+
+        User user = userService.getLoggedUser();
+        Client client = user.getClient();
+
+        if (client != null) {
+            if (criteria.getClientId() == null) {
+                criteria.setClientId(new LongFilter());
+            }
+            criteria.getClientId().setEquals(client.getId());
+        }
+        Page<Estimation> estimationPage = estimationQueryService.findByCriteria(criteria, pageable);
+        return estimationPage.map(EstimationShowDTO::new);
     }
 }

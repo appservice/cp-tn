@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {Http, RequestOptions, Response, ResponseContentType, Headers} from '@angular/http';
+import {Http, RequestOptions, Response, ResponseContentType, Headers, URLSearchParams} from '@angular/http';
 import {Observable} from 'rxjs/Rx';
 
 import {Estimation} from './estimation.model';
@@ -108,6 +108,16 @@ export class EstimationService {
         const copy = this.convert(estimation);
         console.log('copy', copy);
         return this.http.post('api/technology-cards/created-from-estimation', copy);
+    }
+
+
+    findInquiryByCriteria(req?: any, urlSearchParams?: URLSearchParams): Observable<ResponseWrapper> {
+        const options = createRequestOption(req);
+        if (urlSearchParams) {
+            options.params.appendAll(urlSearchParams);
+        }
+        return this.http.get(this.resourceUrl + '/inquiry-item-finder', options)
+            .map((res: Response) => this.convertResponse(res));
     }
 
 }

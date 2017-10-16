@@ -1,7 +1,10 @@
 package eu.canpack.fip.bo.estimation;
 
 import com.codahale.metrics.annotation.Timed;
+import eu.canpack.fip.bo.estimation.dto.EstimationCriteria;
 import eu.canpack.fip.bo.estimation.dto.EstimationDTO;
+import eu.canpack.fip.bo.estimation.dto.EstimationShowDTO;
+import eu.canpack.fip.bo.order.enumeration.OrderType;
 import eu.canpack.fip.web.rest.util.HeaderUtil;
 import eu.canpack.fip.web.rest.util.PaginationUtil;
 import io.swagger.annotations.ApiParam;
@@ -166,5 +169,16 @@ public class EstimationResource {
 
     }
 
+    @GetMapping("/estimations/inquiry-item-finder")
+    public ResponseEntity<List<EstimationShowDTO>> findInquiryByCriteria(EstimationCriteria estimationCriteria,@ApiParam Pageable pageable){
+        if(estimationCriteria.getOrderTypeFilter()==null){
+            estimationCriteria.setOrderTypeFilter(new EstimationCriteria.OrderTypeFilter());
+        }
+        estimationCriteria.getOrderTypeFilter().setEquals(OrderType.ESTIMATION);
+        Page<EstimationShowDTO> page = estimationService.getAllInquiriesByCriteriaAndClient(estimationCriteria, pageable);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "api/inquiry-item-finder");
+        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+
+    }
 
 }

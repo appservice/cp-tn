@@ -19,6 +19,7 @@ import {OrderType} from './order.model';
 import {PurchaseOrderComponent} from './purchase-order/purchase-order.component';
 import {ArchiveOrdersComponent} from './archive-orders/archive-orders.component';
 import {PurchaseOrderDetailComponent} from './purchase-order-detail/purchase-order-detail.component';
+import {InquiryItemFinderComponent} from './inquiry-item-finder/inquiry-item-finder.component';
 
 
 @Injectable()
@@ -153,7 +154,8 @@ export const orderRoute: Routes = [
             pageTitle: 'tnApp.order.inquiries'
         },
         canActivate: [UserRouteAccessService]
-    },    {
+    },
+    {
         path: 'archived-orders',
         component: ArchiveOrdersComponent,
         resolve: {
@@ -162,6 +164,18 @@ export const orderRoute: Routes = [
         data: {
             authorities: ['ROLE_USER'],
             pageTitle: 'tnApp.order.archivalInquiries'
+        },
+        canActivate: [UserRouteAccessService]
+    },
+    {
+        path: 'inquiry-item-finder',
+        component: InquiryItemFinderComponent,
+        resolve: {
+            'pagingParams': OrderResolvePagingParams
+        },
+        data: {
+            authorities: ['ROLE_USER'],
+            pageTitle: 'tnApp.order.inquiries'
         },
         canActivate: [UserRouteAccessService]
     },

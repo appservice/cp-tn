@@ -45,18 +45,7 @@ public class EstimationQueryService extends QueryService<Estimation> {
 
     }
 
-//    /**
-//     * Return a {@link List} of {%link OrderDTO} which matches the criteria from the database
-//     *
-//     * @param criteria The object which holds all the filters, which the entities should match.
-//     * @return the matching entities.
-//     */
-//    @Transactional(readOnly = true)
-//    public List<OrderListDTO> findByCriteria(OrderCriteria criteria) {
-//        log.debug("find by criteria : {}", criteria);
-//        final Specifications<Order> specification = createSpecification(criteria);
-//        return OrderMapper.toDto(OrderRepository.findAll(specification));
-//    }
+
 
     /**
      * Return a {@link Page} of {%link OrderDTO} which matches the criteria from the database
@@ -66,11 +55,11 @@ public class EstimationQueryService extends QueryService<Estimation> {
      * @return the matching entities.
      */
     @Transactional(readOnly = true)
-    public Page<EstimationShowDTO> findByCriteria(EstimationCriteria criteria, Pageable page) {
+    public Page<Estimation> findByCriteria(EstimationCriteria criteria, Pageable page) {
         log.debug("find by criteria : {}, page: {}", criteria, page);
         final Specifications<Estimation> specification = createSpecification(criteria);
         final Page<Estimation> result = estimationRepository.findAll(specification, page);
-        return result.map(EstimationShowDTO::new);
+        return result;
     }
 
     /**
@@ -84,6 +73,19 @@ public class EstimationQueryService extends QueryService<Estimation> {
             }
             if (criteria.getItemNumber() != null) {
                 specification = specification.and(buildStringSpecification(criteria.getItemNumber(), eu.canpack.fip.bo.estimation.Estimation_.itemNumber));
+            }
+
+            if(criteria.getClientId()!=null){
+                Specification<Estimation> spec = (root, query, builder) -> {
+                    Join<Estimation, Order> joinToOrder = root.join((eu.canpack.fip.bo.estimation.Estimation_.order), JoinType.INNER);
+                    Join<Order, Client> joinToClient = joinToOrder.join(eu.canpack.fip.bo.order.Order_.client, JoinType.INNER);
+                    return builder.equal(joinToClient.get(Client_.id),criteria.getClientId().getEquals());
+//                    return builder.or(builder.like(joinToClient.get(Client_.name), "%" + criteria.getClientName().getContains().trim() + "%"),
+//                                      builder.like(joinToClient.get(Client_.shortcut), "%" + criteria.getClientName().getContains().trim() + "%"));
+
+
+                };
+                specification = specification.and(spec);
             }
 
             if (criteria.getClientName() != null) {
@@ -102,7 +104,7 @@ public class EstimationQueryService extends QueryService<Estimation> {
             if (criteria.getOrderTypeFilter() != null) {
                 Specification<Estimation> spec = (root, query, builder) -> {
                     Join<Estimation, Order> joinToOrder = root.join((eu.canpack.fip.bo.estimation.Estimation_.order), JoinType.INNER);
-                    return builder.equal(joinToOrder.get(Order_.orderType), criteria.getOrderTypeFilter());
+                    return builder.equal(joinToOrder.get(Order_.orderType), criteria.getOrderTypeFilter().getEquals());
 
                 };
                 specification = specification.and(spec);

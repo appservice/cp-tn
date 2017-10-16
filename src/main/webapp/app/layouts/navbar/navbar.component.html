@@ -42,6 +42,13 @@
                         </a>
                     </li>
                     <li>
+                        <a class="dropdown-item" routerLink="inquiry-item-finder" routerLinkActive="active"
+                           [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
+                            <i class="fa fa-fw fa-asterisk" aria-hidden="true"></i>
+                            <span>Szukaj zap. ofertowe po detalu</span>
+                        </a>
+                    </li>
+                    <li>
                         <a class="dropdown-item" routerLink="purchase-order" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
                             <i class="fa fa-fw fa-asterisk" aria-hidden="true"></i>
                             <span>Zamówienia</span>
