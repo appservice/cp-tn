@@ -130,8 +130,9 @@ public class TechnologyCardService {
     }
 
     public TechnologyCard createFromEstimation(EstimationDTO estimationDTO) {
+        ZonedDateTime now = ZonedDateTime.now();
         TechnologyCard technologyCard = new TechnologyCard()
-            .createdAt(ZonedDateTime.now())
+            .createdAt(now)
             .description(estimationDTO.getDescription())
             .material(estimationDTO.getMaterial())
             .mass(estimationDTO.getMass())
@@ -152,6 +153,7 @@ public class TechnologyCardService {
             drawing.setNumber(estimationDTO.getItemNumber());
             drawing.setName(estimationDTO.getItemName());
             drawing.getTechnologyCards().add(technologyCard);
+            drawing.setCreatedAt(now);
             drawingRepository.save(drawing);
             technologyCard.setDrawing(drawing);
 

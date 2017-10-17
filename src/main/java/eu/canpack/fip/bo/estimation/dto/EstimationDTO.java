@@ -72,6 +72,8 @@ public class EstimationDTO implements Serializable {
 
     private String remark;
 
+    private String sapNumber;
+
     public String getItemName() {
         return itemName;
     }
@@ -251,6 +253,14 @@ public class EstimationDTO implements Serializable {
         this.remark = remark;
     }
 
+    public String getSapNumber() {
+        return sapNumber;
+    }
+
+    public void setSapNumber(String sapNumber) {
+        this.sapNumber = sapNumber;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -290,6 +300,8 @@ public class EstimationDTO implements Serializable {
             ", neededRealizationDate=" + neededRealizationDate +
             ", estimatedRealizationDate=" + estimatedRealizationDate +
             ", remark=" + remark +
+            ", sapNumber=" + sapNumber +
+
             '}';
     }
 }

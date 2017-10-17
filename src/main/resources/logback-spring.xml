@@ -20,8 +20,8 @@
         <appender-ref ref="FILE"/>
     </appender>
 
-    <logger name="eu.canpack.fip" level="#logback.loglevel#"/>
-
+    <logger name="eu.canpack.fip" level="DEBUG"/>
+<!--#logback.loglevel#-->
     <logger name="io.github.jhipster" level="#logback.loglevel#"/>
 
     <logger name="javax.activation" level="WARN"/>

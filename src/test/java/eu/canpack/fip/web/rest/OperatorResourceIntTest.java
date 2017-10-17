@@ -4,6 +4,7 @@ import eu.canpack.fip.TnApp;
 
 import eu.canpack.fip.bo.operator.OperatorResource;
 import eu.canpack.fip.bo.operator.Operator;
+import eu.canpack.fip.bo.pdf.OperatorCardCreatorService;
 import eu.canpack.fip.repository.OperatorRepository;
 import eu.canpack.fip.bo.operator.OperatorService;
 import eu.canpack.fip.repository.search.OperatorSearchRepository;
@@ -81,6 +82,9 @@ public class OperatorResourceIntTest {
 
     @Autowired
     private ExceptionTranslator exceptionTranslator;
+
+    @Autowired
+    private OperatorCardCreatorService operatorCardCreatorService;
 
     @Autowired
     private EntityManager em;

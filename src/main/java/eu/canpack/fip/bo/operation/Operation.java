@@ -29,20 +29,23 @@ public class Operation implements Serializable {
     private Long id;
 
     @NotNull
-    @Column(name="sequence_number",nullable = false)
+    @Column(name = "sequence_number", nullable = false)
     private Integer sequenceNumber;
 
-    @Size(max = 1024)
-    @Column(name = "description", length = 1024)
+    //    @Size(max = 1024)
+//    @Column(name = "description", length = 1024)
+    @Lob
+//max 65,535 letters
+    @Column(name = "description", columnDefinition = "TEXT")
     private String description;
 
     @Column(name = "remark")
     private String remark;
 
-    @Column(name = "estimated_time", precision=10, scale=4)
+    @Column(name = "estimated_time", precision = 10, scale = 4)
     private BigDecimal estimatedTime;
 
-    @Column(name = "real_time", precision=10, scale=4)
+    @Column(name = "real_time", precision = 10, scale = 4)
     private BigDecimal realTime;
 
     @ManyToOne
@@ -60,7 +63,6 @@ public class Operation implements Serializable {
     private OperationType operationType;
 
 
-
     public Long getId() {
         return id;
     }
@@ -73,17 +75,21 @@ public class Operation implements Serializable {
         return description;
     }
 
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
     public Operation description(String description) {
         this.description = description;
         return this;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
     public String getRemark() {
         return remark;
+    }
+
+    public void setRemark(String remark) {
+        this.remark = remark;
     }
 
     public Operation remark(String remark) {
@@ -91,12 +97,12 @@ public class Operation implements Serializable {
         return this;
     }
 
-    public void setRemark(String remark) {
-        this.remark = remark;
-    }
-
     public BigDecimal getEstimatedTime() {
         return estimatedTime;
+    }
+
+    public void setEstimatedTime(BigDecimal estimatedTime) {
+        this.estimatedTime = estimatedTime;
     }
 
     public Operation estimatedTime(BigDecimal estimatedTime) {
@@ -104,23 +110,18 @@ public class Operation implements Serializable {
         return this;
     }
 
-    public void setEstimatedTime(BigDecimal estimatedTime) {
-        this.estimatedTime = estimatedTime;
-    }
-
     public BigDecimal getRealTime() {
         return realTime;
-    }
-
-    public Operation realTime(BigDecimal realTime) {
-        this.realTime = realTime;
-        return this;
     }
 
     public void setRealTime(BigDecimal realTime) {
         this.realTime = realTime;
     }
 
+    public Operation realTime(BigDecimal realTime) {
+        this.realTime = realTime;
+        return this;
+    }
 
     public Machine getMachine() {
         return machine;
@@ -131,7 +132,6 @@ public class Operation implements Serializable {
     }
 
 
-
     public Operation machine(Machine machine) {
         this.machine = machine;
         return this;
@@ -139,6 +139,10 @@ public class Operation implements Serializable {
 
     public Estimation getEstimation() {
         return estimation;
+    }
+
+    public void setEstimation(Estimation estimation) {
+        this.estimation = estimation;
     }
 
     public Operation estimation(Estimation estimation) {
@@ -173,10 +177,6 @@ public class Operation implements Serializable {
 
     public void setOperationType(OperationType operationType) {
         this.operationType = operationType;
-    }
-
-    public void setEstimation(Estimation estimation) {
-        this.estimation = estimation;
     }
 
     @Override

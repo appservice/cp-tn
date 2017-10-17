@@ -21,9 +21,9 @@ spring:
             enabled: false
     datasource:
         type: com.zaxxer.hikari.HikariDataSource
-        url: jdbc:postgresql://localhost:5432/tn
-        username: postgres
-        password: Start123!
+        url: jdbc:postgresql://localhost:5432/tn-cert #10.11.0.73
+        username: cp-tn
+        password: IXD1G4vL.Q
         hikari:
             data-source-properties:
                 cachePrepStmts: true
@@ -52,7 +52,7 @@ spring:
 #            cluster-name:
 #            cluster-nodes: localhost:9300
     mail:
-        host: localhost
+        host: 10.11.0.213
         port: 25
         username:
         password:
@@ -86,7 +86,7 @@ liquibase:
 #        keyAlias: tn
 # ===================================================================
 server:
-    port: 8080
+    port: 18080
     compression:
         enabled: true
         mime-types: text/html,text/xml,text/plain,text/css, application/javascript, application/json
@@ -115,8 +115,8 @@ jhipster:
                 token-validity-in-seconds: 86400
                 token-validity-in-seconds-for-remember-me: 2592000
     mail: # specific JHipster mail property, for standard properties see MailProperties
-        from: tn@localhost
-        base-url: http://my-server-url-to-change # Modify according to your server's URL
+        from: cp-tn@
+        base-url: http://10.11.0.73:18080 # Modify according to your server's URL
     metrics: # DropWizard Metrics configuration, used by MetricsConfiguration
         jmx.enabled: true
         graphite:
@@ -147,4 +147,4 @@ jhipster:
 # ===================================================================
 
 application:
-    drawingDirectoryPath: D://uploaded_from_tn
+    drawingDirectoryPath: uploaded_from_tn

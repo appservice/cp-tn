@@ -40,8 +40,8 @@ public class Operator implements Serializable {
     @Column(name = "job_title", nullable = false)
     private String jobTitle;
 
-    @Column(name = "active")
-    private Boolean active;
+    @Column(name = "active", nullable=false)
+    private boolean active=false;
 
     // jhipster-needle-entity-add-field - Jhipster will add fields here, do not remove
     public Long getId() {

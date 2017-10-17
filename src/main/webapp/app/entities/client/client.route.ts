@@ -63,7 +63,7 @@ export const clientPopupRoute: Routes = [
         path: 'client/:id/edit',
         component: ClientPopupComponent,
         data: {
-            authorities: ['ROLE_USER'],
+            authorities: ['ROLE_ADMIN','ROLE_MANAGER'],
             pageTitle: 'tnApp.client.home.title'
         },
         canActivate: [UserRouteAccessService],
@@ -73,7 +73,7 @@ export const clientPopupRoute: Routes = [
         path: 'client/:id/delete',
         component: ClientDeletePopupComponent,
         data: {
-            authorities: ['ROLE_USER'],
+            authorities: ['ROLE_ADMIN','ROLE_MANAGER'],
             pageTitle: 'tnApp.client.home.title'
         },
         canActivate: [UserRouteAccessService],

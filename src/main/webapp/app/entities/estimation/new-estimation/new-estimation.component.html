@@ -415,7 +415,7 @@
 
 
                 <div class="row">
-                    <div class="col-md-6">
+                    <div class="col-md-6"  style="margin-top: 30px">
                         <table class="table table-striped">
                             <thead>
                             </thead>
@@ -428,25 +428,27 @@
                                     </div>
 
                                 </td>
-                                <!--         <th>LP.</th>
-                                         <th>Nazwa:</th>
-                                         <th>Wartość [PLN]</th>-->
 
                             </tr>
                             </tbody>
                             </tfoot>
 
                         </table>
+
+                    </div>
+                    <div class="col-md-6" style="margin-top: 5px">
                         <div class="row">
                             <div class="col-12">
-                                <label for="estimation_remark_field">Dodaj uwagę:</label>
+
+                                <label for="estimation_remark_field">Dodaj nową uwagę:</label>
                                 <textarea class="form-control text-area" name="estimation_remark"
                                           id="estimation_remark_field" [(ngModel)]="estimation.remark"></textarea>
+
 
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-6" style="margin-top: 20px">
+                    <!--<div class="col-md-6" style="margin-top: 20px">
 
                         <div class="row">
                             <div class="col-12">
@@ -468,7 +470,7 @@
 
                                 <label>Szacowana data realizacji</label>
                                 <div class="form-group">
-                                    <!--<label class="form-control-label" jhiTranslate="tnApp.order.closeDate" for="field_closeDate">Close Date</label>-->
+                                    &lt;!&ndash;<label class="form-control-label" jhiTranslate="tnApp.order.closeDate" for="field_closeDate">Close Date</label>&ndash;&gt;
                                     <div class="input-group">
                                         <input id="field_closeDate2" type="text" class="form-control"
                                                name="estimation_realization_date_{{rowIndex}}"
@@ -485,7 +487,7 @@
                             </div>
                         </div>
 
-                    </div>
+                    </div>-->
                 </div>
             </ng-template>
         </ngb-tab>
@@ -493,12 +495,12 @@
 
 
     <div class="text-center" style="margin-top: 30px">
+        <button type="button" class="btn btn-outline-danger" (click)="previousState()">Powrót</button>
 
-        <button class="btn btn-info " type="submit" [disabled]="editForm.form.invalid || isSaving">
+        <button class="btn btn-outline-primary" type="submit" [disabled]="editForm.form.invalid || isSaving">
             <span class="fa fa-save"></span>&nbsp;Zapisz
             <!--<span jhiTranslate="entity.action.save">Save</span>-->
         </button>
-        <button type="button" class="btn btn-danger" (click)="previousState()">Powrót</button>
 
 
     </div>
