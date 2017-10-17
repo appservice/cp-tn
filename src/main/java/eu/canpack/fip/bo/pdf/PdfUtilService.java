@@ -52,6 +52,8 @@ public class PdfUtilService {
                 PdfImportedPage page = writer.getImportedPage(reader, i);
                 //add the page to the destination pdf
                 cb.addTemplate(page, 0, 0);
+                os.close();
+//                os.close();
             }
         }
 

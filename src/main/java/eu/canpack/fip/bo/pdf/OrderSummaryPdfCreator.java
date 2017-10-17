@@ -17,9 +17,10 @@ import org.springframework.transaction.annotation.Transactional;
 import java.awt.*;
 import java.io.OutputStream;
 import java.math.BigDecimal;
+import java.text.DecimalFormat;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 
-import static eu.canpack.fip.bo.pdf.PdfUtil.formatDate;
 
 /**
  * CP S.A.
@@ -32,16 +33,14 @@ public class OrderSummaryPdfCreator {
 
 
     private static BaseFont baseFont;
-    private final BarcodeCreatorService barcodeCreatorService;
-    DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+    private DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
 
-    public OrderSummaryPdfCreator(BarcodeCreatorService barcodeCreatorService) {
-        this.barcodeCreatorService = barcodeCreatorService;
+    public OrderSummaryPdfCreator() {
         baseFont = PdfUtil.getArialUnicodeBaseFont();
     }
 
 
-    public void createPdf(Order order, OutputStream os) {
+    public void createPdf(Order order, List<Estimation> estimations, OutputStream os) {
         Document doc = new Document(PageSize.A4);
         try {
             PdfWriter writer = PdfWriter.getInstance(doc, os);
@@ -51,8 +50,6 @@ public class OrderSummaryPdfCreator {
             doc.open();
             doc.add(PdfUtil.getImageLogo(doc.getPageSize()));
 
-     /*       Paragraph dateParagraph = new Paragraph(), dateFont);
-            doc.add(dateParagraph);*/
             Font orderNumberFont = new Font(baseFont, 18, Font.BOLD, Color.BLACK);
 
 
@@ -75,13 +72,15 @@ public class OrderSummaryPdfCreator {
             doc.add(new Paragraph(" "));
             doc.add(new Paragraph(" "));
 
-            for (Estimation estimation : order.getEstimations()) {
+            for (Estimation estimation : estimations) {
 
                 doc.add(createParagraphWith2Fonts("Przedmiot: ", estimation.getItemName()));
 
                 if (estimation.getItemNumber() != null) {
                     doc.add(createParagraphWith2Fonts("Nr rys.: ", estimation.getItemNumber()));
                 }
+                doc.add(createParagraphWith2Fonts("Ilość: ", String.valueOf(estimation.getAmount())));
+
                 doc.add(createParagraphWith2Fonts("Termin realiz: ", estimation.getEstimatedRealizationDate().format(dateFormatter)));
 
                 doc.add(new Paragraph(" "));
@@ -89,48 +88,8 @@ public class OrderSummaryPdfCreator {
 
                 doc.add(pdfPTable);
                 doc.newPage();
-//                doc.add(new Paragraph(" "));
-//                doc.add(new Paragraph(" "));
-
 
             }
-
-
-//
-//            PdfPTable pdfPTable = new PdfPTable(new float[]{1,1});
-//            pdfPTable.setWidthPercentage(100);
-//            if(estimation.getCreatedBy()!=null){
-//                pdfPTable.addCell(createTechnologyCreatorCells("Autor technologi: "+estimation.getCreatedBy().getFirstName()+" "+estimation.getCreatedBy().getLastName()));
-//
-//            }else{
-//                pdfPTable.addCell(createTechnologyCreatorCells("Autor technologi:"));
-//            }
-//
-//            pdfPTable.addCell(createTechnologyCreatorCells2("Data opracowania: "+formatDate(estimation.getCreatedAt())));
-//            doc.add(pdfPTable);
-//
-////            doc.add(new Paragraph("Autor technologi: "+estimation.getCreatedBy().getFirstName()+" "+estimation.getCreatedBy().getLastName(),dateFont));
-//
-//            Paragraph emptyParagaph = new Paragraph("");
-//            doc.add(emptyParagaph);
-//
-//
-//            Font fontTitle = new Font(baseFont, 16, Font.BOLD, Color.BLACK);
-//            Paragraph titleParagraph = new Paragraph("Karta obiegowa", fontTitle);
-//            titleParagraph.setAlignment(Element.ALIGN_CENTER);
-//
-//            Paragraph drawingNumberParagraph = new Paragraph("Nr rysunku: " + estimation.getItemNumber(), fontTitle);
-//            drawingNumberParagraph.setAlignment(Element.ALIGN_CENTER);
-//            addEmptyLine(drawingNumberParagraph, 2);
-//
-//            doc.add(titleParagraph);
-//
-//            doc.add(drawingNumberParagraph);
-//
-//            doc.add(crateTable1(estimation));
-//            doc.add(new Paragraph(" "));
-//
-//            doc.add(createTable2(estimation));
 
             doc.close();
 
@@ -141,10 +100,11 @@ public class OrderSummaryPdfCreator {
 
 
     private PdfPTable prepareTableOfOperation(Estimation estimation) {
-        PdfPTable pdfPTable = new PdfPTable(new float[]{1, 4, 1});
+        PdfPTable pdfPTable = new PdfPTable(new float[]{1, 6,1,1});
         pdfPTable.setWidthPercentage(100);
         pdfPTable.addCell(createLabelCell("Lp"));
         pdfPTable.addCell(createLabelCell("Miejsce operacji"));
+        pdfPTable.addCell(createLabelCell("Ilość godz./szt"));
         pdfPTable.addCell(createLabelCell("Ilość godz."));
         BigDecimal numberOfHour=BigDecimal.ZERO;
         for (Operation op : estimation.getOperations()) {
@@ -153,20 +113,27 @@ public class OrderSummaryPdfCreator {
             pdfPTable.addCell(cell);
 
             pdfPTable.addCell(createValueCell(op.getMachine().getName()));
-            cell = createValueCell(op.getEstimatedTime().multiply(new BigDecimal(estimation.getAmount())).toString().replace(".",","));
+
+            cell = createValueCell(formatBigDecimal(op.getEstimatedTime()).replace(".",","));
             cell.setHorizontalAlignment(Element.ALIGN_CENTER);
             pdfPTable.addCell(cell);
-           numberOfHour= numberOfHour.add(op.getEstimatedTime());
+
+            BigDecimal bdMultipled=op.getEstimatedTime().multiply(new BigDecimal(estimation.getAmount()));
+
+            cell = createValueCell(formatBigDecimal(bdMultipled).replace(".",","));
+            cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+            pdfPTable.addCell(cell);
+           numberOfHour= numberOfHour.add(bdMultipled);
         }
 
         Font font = new Font(baseFont, 12, Font.BOLD);
         PdfPCell cell = new PdfPCell(new Phrase("Suma: ",font));
-        cell.setColspan(2);
+        cell.setColspan(3);
         cell.setPaddingBottom(5);
         cell.setHorizontalAlignment(Element.ALIGN_RIGHT);
         pdfPTable.addCell(cell);
 
-        cell=new PdfPCell(new Phrase(numberOfHour.toString().replace(".",","),font));
+        cell=new PdfPCell(new Phrase(formatBigDecimal(numberOfHour).replace(".",","),font));
         cell.setHorizontalAlignment(Element.ALIGN_CENTER);
         cell.setBackgroundColor(Color.LIGHT_GRAY);
         pdfPTable.addCell(cell);
@@ -178,7 +145,7 @@ public class OrderSummaryPdfCreator {
     // create cells
 
 
-    Paragraph createParagraphWith2Fonts(String text1, String text2) {
+    private Paragraph createParagraphWith2Fonts(String text1, String text2) {
         Phrase phrase = new Phrase();
         Chunk chunk = new Chunk(text1, new Font(baseFont, 14, Font.NORMAL));
         phrase.add(chunk);
@@ -216,4 +183,14 @@ public class OrderSummaryPdfCreator {
         return cell;
     }
 
+
+    private String formatBigDecimal(BigDecimal inputBigDecimal){
+        DecimalFormat df = new DecimalFormat();
+        df.setMaximumFractionDigits(3); //Sets the maximum number of digits after the decimal point
+        df.setMinimumFractionDigits(0); //Sets the minimum number of digits after the decimal point
+        df.setGroupingUsed(false); //If false thousands separator such ad 1,000 wont work so it will display 1000
+
+        return df.format(inputBigDecimal);
+
+    }
 }

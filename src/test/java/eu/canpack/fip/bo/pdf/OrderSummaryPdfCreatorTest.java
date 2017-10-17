@@ -27,12 +27,11 @@ import java.time.ZonedDateTime;
 public class OrderSummaryPdfCreatorTest {
     public static final String RESULT = "order_summary.pdf";
     private static final Logger log = LoggerFactory.getLogger(OrderSummaryPdfCreatorTest.class);
-    BarcodeCreatorService barcodeCreatorService = new BarcodeCreatorService();
     private OrderSummaryPdfCreator pdfCreator;
 
     @Before
     public void setUp() throws Exception {
-        pdfCreator = new OrderSummaryPdfCreator(barcodeCreatorService);
+        pdfCreator = new OrderSummaryPdfCreator();
     }
 
     @Test
@@ -41,31 +40,10 @@ public class OrderSummaryPdfCreatorTest {
         OutputStream os = new FileOutputStream(RESULT);
 
         Estimation est1 = createEstimation();
-        pdfCreator.createPdf(est1.getOrder(), os);
+        pdfCreator.createPdf(est1.getOrder(), est1.getOrder().getEstimations(), os);
         os.close();
     }
-
-//    @Test
-//    public void mergePdfTest() throws Exception {
-//        PdfUtilService pdfUtilService = new PdfUtilService();
 //
-//        OutputStream os = new FileOutputStream("JoinedPDF2.pdf");
-//
-//        Estimation est1=createEstimation();
-//        ByteArrayOutputStream baos1 = new ByteArrayOutputStream();
-//        pdfCreator.createPdf(est1, baos1);
-//
-//        ByteArrayOutputStream baos2 = new ByteArrayOutputStream();
-//        pdfCreator.createPdf(est1, baos2);
-//
-//        pdfUtilService.margePdfs(os, baos1, baos2);
-//
-//
-//        os.close();
-//        baos1.close();
-//        baos2.close();
-//    }
-
     private Estimation createEstimation() {
         Order order = new Order();
         order.setInternalNumber("12/2107/W");
