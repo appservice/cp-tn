@@ -12,6 +12,7 @@ import eu.canpack.fip.bo.technologyCard.mapper.TechnologyCardListMapper;
 import eu.canpack.fip.bo.technologyCard.mapper.TechnologyCardMapper;
 import eu.canpack.fip.repository.search.TechnologyCardSearchRepository;
 import eu.canpack.fip.service.UserService;
+import eu.canpack.fip.web.rest.errors.CustomParameterizedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -130,6 +131,10 @@ public class TechnologyCardService {
     }
 
     public TechnologyCard createFromEstimation(EstimationDTO estimationDTO) {
+        if(estimationDTO.getMaterial()==null){
+            throw new CustomParameterizedException("error.materialCanNotBeNull");
+        }
+
         ZonedDateTime now = ZonedDateTime.now();
         TechnologyCard technologyCard = new TechnologyCard()
             .createdAt(now)

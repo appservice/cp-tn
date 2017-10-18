@@ -107,7 +107,14 @@
 
                             <div class="col-md-4">
                                 <label>Materiał</label>
-                                <input class="form-control" name="material" [(ngModel)]="estimation.material"/>
+                                <input class="form-control" name="material" [(ngModel)]="estimation.material" required/>
+                                <div [hidden]="!(editForm.controls.material?.dirty && editForm.controls.material?.invalid)">
+                                    <small class="form-text text-danger"
+                                           [hidden]="!editForm.controls.material?.errors?.required"
+                                           jhiTranslate="entity.validation.required">
+                                        This field is required.
+                                    </small>
+                                </div>
                             </div>
                             <div class="col-md-4"><label>Cena materiału [PLN]</label>
                                 <input class="form-control" name="material_price" [(ngModel)]="estimation.materialPrice"

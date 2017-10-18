@@ -303,6 +303,7 @@ public class OrderResource {
 
     @PostMapping("/orders/create-pdf-offer")
     public ResponseEntity<InputStreamResource> getTechnologyCard(@RequestBody OrderDTO orderDTO) throws IOException {
+
         ByteArrayOutputStream os = new ByteArrayOutputStream();
 
         order2PdfCreator.createPdf(orderDTO, os);

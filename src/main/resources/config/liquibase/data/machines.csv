@@ -1,17 +1,17 @@
 id;name;shortcut;working_hour_price
-1;Szlifierka do płaszczyzn;Sz.P;120
-2;Szlifierka do otworów;Sz.O;120
-3;Szlifierka do wałków;Sz.W;120
-4;Tokarka uniwersalna;T.U;120
-5;Tokarka numeryczna;T.N;120
-6;Frezarka uniwersalna;F.U;120
-7;Frezarka numeryczna;F.Num;120
-8;Dłutownica;Dłut.;120
-9;Ślusarz;Ślus.;120
-10;Obróbka ciepla;OC;120
-11;Spawalnia;Spaw.;120
-12;Kontola jakości;K.J;120
-13;Trasa;Trasa;120
-14;Wypalarka;Wypal;120
-15;Laser/koop;Laser;120
-16;Piła taśmowa;P.T;120
+1;Szlifierka do płaszczyzn;Sz.P;125.48
+2;Szlifierka do otworów;Sz.O;125.48
+3;Szlifierka do wałków;Sz.W;125.48
+4;Tokarka uniwersalna;T.U;125.48
+5;Tokarka numeryczna;T.N;125.48
+6;Frezarka uniwersalna;F.U;125.48
+7;Frezarka numeryczna;F.Num;125.48
+8;Dłutownica;Dłut.;125.48
+9;Ślusarz;Ślus.;125.48
+10;Obróbka ciepla;OC;125.48
+11;Spawalnia;Spaw.;125.48
+12;Kontola jakości;K.J;125.48
+13;Trasa;Trasa;125.48
+14;Wypalarka;Wypal;125.48
+15;Laser/koop;Laser;125.48
+16;Piła taśmowa;P.T;125.48

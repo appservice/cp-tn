@@ -203,10 +203,22 @@ public class Order2PdfCreator {
             table.addCell(createValueCell(estimation.getItemName(),Element.ALIGN_LEFT));
             table.addCell(createValueCell(estimation.getItemNumber(),Element.ALIGN_CENTER));
             table.addCell(createValueCell(String.valueOf(estimation.getAmount()),Element.ALIGN_CENTER));
-            table.addCell(createValueCell(getFormattedPrice(estimation.getEstimatedCost().setScale(2, BigDecimal.ROUND_HALF_UP)),Element.ALIGN_RIGHT));
+            if(estimation.getEstimatedCost()!=null){
+                table.addCell(createValueCell(getFormattedPrice(estimation.getEstimatedCost().setScale(2, BigDecimal.ROUND_HALF_UP)),Element.ALIGN_RIGHT));
+
+            }else{
+                table.addCell(createValueCell(" ", Element.ALIGN_RIGHT));
+
+            }
 
             log.info("object {}", estimation.getEstimatedRealizationDate());
-            table.addCell(createValueCell(formatDate(estimation.getEstimatedRealizationDate()),Element.ALIGN_CENTER));//
+            if(estimation.getEstimatedRealizationDate()!=null){
+                table.addCell(createValueCell(formatDate(estimation.getEstimatedRealizationDate()),Element.ALIGN_CENTER));//
+
+            }else{
+                table.addCell(createValueCell(" ", Element.ALIGN_RIGHT));
+
+            }
             lp++;
         }
 
