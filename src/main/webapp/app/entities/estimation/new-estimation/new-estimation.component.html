@@ -165,14 +165,14 @@
                                    name="operation_sequence_nb_{{rowIndex}}" style="width: 70px;"/><!---->
                         </td>
 
-                        <td style="width: 160px;">               <!-- <input class="form-control" />-->
+                        <td style="width: 250px;">               <!-- <input class="form-control" />-->
                             <select class="form-control" id="field_machine_{{rowIndex}}" name="machine_{{rowIndex}}"
                                     [(ngModel)]="operation.machine" (ngModelChange)="calculateOperationsTotalCost()"
                                     required [compareWith]="compareMachine">
 
                                 <option *ngFor="let machineOpt of machines; trackBy: trackMachineById"
                                         [ngValue]="machineOpt">
-                                    {{machineOpt.shortcut}}
+                                    {{machineOpt.name}}
 
                                 </option>
                             </select>
