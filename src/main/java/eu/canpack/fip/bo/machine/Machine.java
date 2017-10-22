@@ -37,8 +37,12 @@ public class Machine implements Serializable {
     @Column(name = "shortcut", nullable = false)
     private String shortcut;
 
-    @Column(name = "working_hour_price", precision=10, scale=2)
-    private BigDecimal workingHourPrice;
+//    @Column(name = "working_hour_price", precision=10, scale=2)
+//    private BigDecimal workingHourPrice;
+
+    @OneToMany(mappedBy = "machine",cascade = CascadeType.ALL,orphanRemoval = true)
+    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+    private List<MachineDtl> machineDtls = new ArrayList<>();
 
 
     @OneToMany(mappedBy = "machine")
@@ -80,19 +84,19 @@ public class Machine implements Serializable {
     public void setShortcut(String shortcut) {
         this.shortcut = shortcut;
     }
-
-    public BigDecimal getWorkingHourPrice() {
-        return workingHourPrice;
-    }
-
-    public Machine workingHourPrice(BigDecimal workingHourPrice) {
-        this.workingHourPrice = workingHourPrice;
-        return this;
-    }
-
-    public void setWorkingHourPrice(BigDecimal workingHourPrice) {
-        this.workingHourPrice = workingHourPrice;
-    }
+//
+//    public BigDecimal getWorkingHourPrice() {
+//        return workingHourPrice;
+//    }
+//
+//    public Machine workingHourPrice(BigDecimal workingHourPrice) {
+//        this.workingHourPrice = workingHourPrice;
+//        return this;
+//    }
+//
+//    public void setWorkingHourPrice(BigDecimal workingHourPrice) {
+//        this.workingHourPrice = workingHourPrice;
+//    }
 
     public List<Operation> getOperations() {
         return operations;
@@ -115,6 +119,14 @@ public class Machine implements Serializable {
     public Machine removeOperation(Operation operation){
         this.operations.remove(operation);
         return this;
+    }
+
+    public List<MachineDtl> getMachineDtls() {
+        return machineDtls;
+    }
+
+    public void setMachineDtls(List<MachineDtl> machineDtls) {
+        this.machineDtls = machineDtls;
     }
 
     @Override
@@ -143,7 +155,7 @@ public class Machine implements Serializable {
             "id=" + getId() +
             ", name='" + getName() + "'" +
             ", shortcut='" + getShortcut() + "'" +
-            ", workingHourPrice='" + getWorkingHourPrice() + "'" +
+//            ", workingHourPrice='" + getWorkingHourPrice() + "'" +
             "}";
     }
 }

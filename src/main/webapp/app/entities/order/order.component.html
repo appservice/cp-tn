@@ -63,8 +63,9 @@
         </div>
 
         <div class="form-group col-md-2">
+            <my-date-picker locale="pl"  [(ngModel)]="orderFilter.validFrom" placeholder="Utworzono po:"></my-date-picker>
             <!--<label class="form-control-label" jhiTranslate="tnApp.order.closeDate" for="field_closeDate">Close Date</label>-->
-            <div class="input-group">
+            <!--<div class="input-group">
                 <input type="text" class="form-control"
                        name="validFromFilter"
                         [displayMonths]="true" [showWeekdays]="true"
@@ -73,18 +74,20 @@
                     <button type="button" class="btn btn-default" (click)="realizationDateDp.toggle()"
                             (keyup)="realizationDateDp.toggle()"><i class="fa fa-calendar"></i></button>
                 </span>
-            </div>
+            </div>-->
         </div>
         <div class="form-group col-md-2">
+            <!--<my-date-picker locale="pl"  [(ngModel)]="orderFilter.validTo" placeholder="Utworzono przed:"></my-date-picker>-->
+            <my-date-picker locale="pl"  [(ngModel)]="orderFilter.validTo"  placeholder="Utworzono przed:"></my-date-picker>
             <!--<label class="form-control-label" jhiTranslate="tnApp.order.closeDate" for="field_closeDate">Close Date</label>-->
-            <div class="input-group">
+            <!--<div class="input-group">
                 <input type="text" class="form-control" name="validToFilter" ngbDatepicker #createdToEnd="ngbDatepicker" [displayMonths]="true" [showWeekdays]="true"
                        [(ngModel)]="orderFilter.validTo" placeholder="Utworzono przed:" />
                 <span class="input-group-btn">
                     <button type="button" class="btn btn-default" (click)="createdToEnd.toggle()"
                             (keyup)="createdToEnd.toggle()"><i class="fa fa-calendar"></i></button>
                 </span>
-            </div>
+            </div>-->
         </div>
     </div>
     <div class="row" style="margin-top: 10px">
@@ -97,7 +100,23 @@
                 class="fa fa-trash-o"></span> Wyczyść filtr
             </button>
         </div>
+        <!--<div class="col-md-2"><div class="input-group">
+            <input class="form-control "  placeholder="data od" ngx-mydatepicker name="mydate"
+                   [(ngModel)]="model" #dp="ngx-mydatepicker"  (inputFieldChanged)="onInputFieldChanged($event)" [options]="myOptions"
+            (dateChanged)="onDateChanged($event)" [ngClass]="{'is-invalid':!validDate}">
+
+            <span class="input-group-btn">
+            &lt;!&ndash;<button type="button" class="btn btn-default" (click)="dp.clearDate()">&ndash;&gt;
+                &lt;!&ndash;<i class="fa fa-remove"></i>&ndash;&gt;
+                &lt;!&ndash;</button>&ndash;&gt;
+            <button type="button" class="btn btn-default" (click)="dp.toggleCalendar()">
+                <i class="fa fa-calendar"></i>
+            </button>
+        </span>
+        </div></div>-->
     </div>
+
+
 </div>
 <!--</div></div>-->
 
@@ -180,6 +199,10 @@
 </div>
 </div>
 
+<!--<my-date-picker locale="pl" [placeholder]="data" [options]="" ></my-date-picker>-->
+<!--<tn-date-picker></tn-date-picker>-->
+
+<!--<ngbd-datepicker-i18n></ngbd-datepicker-i18n>-->
 <!--<ngbd-datepicker-i18n></ngbd-datepicker-i18n>-->
 <!--<button class="btn btn-outline-dark" type="button" (click)="exportAsExcelFile()"><span class="fa fa-file-excel-o"></span> exportuj do excel</button>-->
 

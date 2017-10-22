@@ -4,6 +4,7 @@ package eu.canpack.fip.bo.machine;
 import javax.validation.constraints.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.Objects;
 
 /**
@@ -21,7 +22,23 @@ public class MachineDTO implements Serializable {
 
     private BigDecimal workingHourPrice;
 
-//    private Long operationsId;
+    private LocalDate validFrom;
+
+    public MachineDTO() {
+    }
+
+    public MachineDTO(Machine machine, MachineDtl machineDtl) {
+       this.id=machine.getId();
+       this.name=machine.getName();
+       this.shortcut=machine.getShortcut();
+       if(machineDtl!=null){
+           this.workingHourPrice=machineDtl.getWorkingHourPrice();
+           this.validFrom=machineDtl.getValidFrom();
+
+       }
+    }
+
+    //    private Long operationsId;
 
     public Long getId() {
         return id;
@@ -55,7 +72,14 @@ public class MachineDTO implements Serializable {
         this.workingHourPrice = workingHourPrice;
     }
 
-//    public Long getOperationsId() {
+    public LocalDate getValidFrom() {
+        return validFrom;
+    }
+
+    public void setValidFrom(LocalDate validFrom) {
+        this.validFrom = validFrom;
+    }
+    //    public Long getOperationsId() {
 //        return operationsId;
 //    }
 //
@@ -87,10 +111,11 @@ public class MachineDTO implements Serializable {
     @Override
     public String toString() {
         return "MachineDTO{" +
-            "id=" + getId() +
-            ", name='" + getName() + "'" +
-            ", shortcut='" + getShortcut() + "'" +
-            ", workingHourPrice='" + getWorkingHourPrice() + "'" +
-            "}";
+            "id=" + id +
+            ", name='" + name + '\'' +
+            ", shortcut='" + shortcut + '\'' +
+            ", workingHourPrice=" + workingHourPrice +
+            ", validFrom=" + validFrom +
+            '}';
     }
 }

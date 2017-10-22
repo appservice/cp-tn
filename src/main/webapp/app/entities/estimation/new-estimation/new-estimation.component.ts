@@ -69,20 +69,20 @@ export class NewEstimationComponent implements OnInit, OnDestroy {
     ngOnInit() {
         this.isSaving = false;
 
-
-        this.subscription = this.route.params.subscribe((params) => {
-            console.log(params);
-            if (params['id']) {
-                console.log('params exiest');
-                this.load(params['id']);
-
-            }
-
-        });
         this.machineService.query()
             .subscribe((res: ResponseWrapper) => {
                 this.machines = res.json;
 
+
+                this.subscription = this.route.params.subscribe((params) => {
+                    console.log(params);
+                    if (params['id']) {
+                        console.log('params exiest');
+                        this.load(params['id']);
+
+                    }
+
+                });
             }, (res: ResponseWrapper) => this.onError(res.json));
 
         this.estimation.materialPrice = 0;

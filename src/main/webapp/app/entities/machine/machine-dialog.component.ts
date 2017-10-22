@@ -4,13 +4,14 @@ import { Response } from '@angular/http';
 
 import { Observable } from 'rxjs/Rx';
 import { NgbActiveModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
-import { JhiEventManager, JhiAlertService } from 'ng-jhipster';
+import {JhiEventManager, JhiAlertService, JhiDateUtils} from 'ng-jhipster';
 
 import { Machine } from './machine.model';
 import { MachinePopupService } from './machine-popup.service';
 import { MachineService } from './machine.service';
 import { Operation, OperationService } from '../operation';
 import { ResponseWrapper } from '../../shared';
+import {IMyDpOptions} from 'mydatepicker';
 
 @Component({
     selector: 'jhi-machine-dialog',
@@ -20,6 +21,9 @@ export class MachineDialogComponent implements OnInit {
 
     machine: Machine;
     isSaving: boolean;
+    myDatePickerOptions:IMyDpOptions;
+    //validFromData=
+    validFromData:any;
 
     operations: Operation[];
 
@@ -28,7 +32,8 @@ export class MachineDialogComponent implements OnInit {
         private alertService: JhiAlertService,
         private machineService: MachineService,
         private operationService: OperationService,
-        private eventManager: JhiEventManager
+        private eventManager: JhiEventManager,
+        private dateUtils: JhiDateUtils,
     ) {
     }
 
@@ -36,6 +41,10 @@ export class MachineDialogComponent implements OnInit {
         this.isSaving = false;
         this.operationService.query()
             .subscribe((res: ResponseWrapper) => { this.operations = res.json; }, (res: ResponseWrapper) => this.onError(res.json));
+
+       this.myDatePickerOptions={
+            dateFormat:'dd-mm-yyyy'
+        }
     }
 
     clear() {
@@ -45,6 +54,7 @@ export class MachineDialogComponent implements OnInit {
     save() {
         this.isSaving = true;
         if (this.machine.id !== undefined) {
+            this.machine.validFrom=this.dateUtils.convertLocalDateToServer(this.validFromData.date,'yyyy-MM-dd');
             this.subscribeToSaveResponse(
                 this.machineService.update(this.machine));
         } else {
@@ -111,4 +121,5 @@ export class MachinePopupComponent implements OnInit, OnDestroy {
     ngOnDestroy() {
         this.routeSub.unsubscribe();
     }
+
 }

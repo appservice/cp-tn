@@ -11,10 +11,13 @@ import {TnEstimationRemarkComponent} from './tn-estimation-remark-component/tn-e
 import { NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {ExcelService} from './excel.service';
 import {NgbdDatepickerI18n} from './datepicker-pl';
+import {TnDatePickerComponent} from './tn-date-picker/tn-date-picker.component';
+import {NgxMyDatePickerModule} from 'ngx-mydatepicker';
+import {FormsModule} from '@angular/forms';
 
 @NgModule({
     imports: [
-        CommonModule, FileUploadModule,NgbModule
+        CommonModule, FileUploadModule,NgbModule, NgxMyDatePickerModule,FormsModule
     ],
     declarations:
         [
@@ -26,6 +29,7 @@ import {NgbdDatepickerI18n} from './datepicker-pl';
             TnAlert,
             TnEstimationRemarkComponent,
             NgbdDatepickerI18n,
+            TnDatePickerComponent,
 
         ],
     exports:
@@ -35,7 +39,8 @@ import {NgbdDatepickerI18n} from './datepicker-pl';
             FileSizePipe,
             TnAlert,
             TnEstimationRemarkComponent,
-            NgbdDatepickerI18n
+            NgbdDatepickerI18n,
+            TnDatePickerComponent
 
 
         ],

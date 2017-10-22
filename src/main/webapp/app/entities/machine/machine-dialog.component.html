@@ -34,10 +34,19 @@
                 </small>
             </div>
         </div>
+
+        <div class="form-group">
+            <label class="form-control-label">Data</label>
+            <my-date-picker  [(ngModel)]="validFromData"  name="validFrom" locale="pl" [options]="myDatePickerOptions" required></my-date-picker>
+            <!--<input type="number" class="form-control" name="validFrom" id="field_validFrom"-->
+                <!--[(ngModel)]="machine.validFrom"  />-->
+        </div>
+
         <div class="form-group">
             <label class="form-control-label" jhiTranslate="tnApp.machine.workingHourPrice" for="field_workingHourPrice">Working Hour Price</label>
+
             <input type="number" class="form-control" name="workingHourPrice" id="field_workingHourPrice"
-                [(ngModel)]="machine.workingHourPrice"  />
+                [(ngModel)]="machine.workingHourPrice"  required="" />
         </div>
 
 

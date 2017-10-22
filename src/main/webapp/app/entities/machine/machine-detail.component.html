@@ -14,9 +14,22 @@
         </dd>
         <dt><span jhiTranslate="tnApp.machine.workingHourPrice">Working Hour Price</span></dt>
         <dd>
+            <table class="table table-striped">
+                <tr>
+                    <th>Od</th>
+                    <th>Do</th>
+                    <th>Cena roboczogodz.</th>
+                </tr>
+                <tr *ngFor="let machineDtl of machineDtls">
+                    <td>{{machineDtl.validFrom|date:'dd-MM-yyyy'}}</td>
+                    <td>{{machineDtl.validTo|date:'dd-MM-yyyy'}}</td>
+                    <td>{{machineDtl.workingHourPrice|currency:'PLN'}}</td>
+                </tr>
+            </table>
+
             <span>{{machine.workingHourPrice}}</span>
         </dd>
-        <dt><span jhiTranslate="tnApp.machine.operations">Operations</span></dt>
+        <!--<dt><span jhiTranslate="tnApp.machine.operations">Operations</span></dt>-->
 
     </dl>
 

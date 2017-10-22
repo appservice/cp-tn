@@ -1,13 +1,12 @@
 import { BaseEntity } from './../../shared';
 
-export class Machine implements BaseEntity {
+export class MachineDtl implements BaseEntity {
     constructor(
         public id?: number,
-        public name?: string,
-        public shortcut?: string,
         public workingHourPrice?: number,
         public validFrom?: any,
-        // public operationsId?: number,
+        public validTo?: any,
+
     ) {
     }
 }

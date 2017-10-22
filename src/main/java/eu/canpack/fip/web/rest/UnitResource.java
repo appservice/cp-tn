@@ -114,7 +114,7 @@ public class UnitResource {
     @Timed
     public ResponseEntity<List<Unit>> getAllUnitBySentence(@RequestParam("sentence")String sentence) {
         log.debug("REST request to get a page of Units");
-        List<Unit>units = unitRepository.findAllByNameContains(sentence);
+        List<Unit>units = unitRepository.findAllByNameContainingIgnoreCase(sentence);
         return new ResponseEntity<>(units, HttpStatus.OK);
     }
 

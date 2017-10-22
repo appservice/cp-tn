@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Http, Response } from '@angular/http';
+import { Http, Response,URLSearchParams } from '@angular/http';
 import { Observable } from 'rxjs/Rx';
 
 import { Machine } from './machine.model';
@@ -33,11 +33,16 @@ export class MachineService {
         });
     }
 
-    query(req?: any): Observable<ResponseWrapper> {
+    query(req?: any, urlSearchParams?: URLSearchParams): Observable<ResponseWrapper> {
         const options = createRequestOption(req);
+        if (urlSearchParams) {
+            options.params.appendAll(urlSearchParams);
+        }
         return this.http.get(this.resourceUrl, options)
             .map((res: Response) => this.convertResponse(res));
     }
+
+
 
     delete(id: number): Observable<Response> {
         return this.http.delete(`${this.resourceUrl}/${id}`);
@@ -58,4 +63,10 @@ export class MachineService {
         const copy: Machine = Object.assign({}, machine);
         return copy;
     }
+
+     getMachineDtlByMachineId(machineId: number): Observable<ResponseWrapper>{
+      return  this.http.get(this.resourceUrl+'/'+machineId+'/get-machine-dtls')
+            .map((res: Response) => this.convertResponse(res));
+    }
+
 }

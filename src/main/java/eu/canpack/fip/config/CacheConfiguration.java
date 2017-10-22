@@ -1,5 +1,6 @@
 package eu.canpack.fip.config;
 
+import eu.canpack.fip.bo.machine.MachineDtl;
 import eu.canpack.fip.bo.operator.Operator;
 import eu.canpack.fip.bo.remark.EstimationRemark;
 import eu.canpack.fip.bo.attachment.Attachment;
@@ -64,6 +65,8 @@ public class CacheConfiguration {
 //            cm.createCache(Operation.class.getName() + ".machines", jcacheConfiguration);
             cm.createCache(Machine.class.getName(), jcacheConfiguration);
             cm.createCache(Machine.class.getName() + ".operations", jcacheConfiguration);
+            cm.createCache(Machine.class.getName() + ".machineDtls", jcacheConfiguration);
+            cm.createCache(MachineDtl.class.getName(), jcacheConfiguration);
             cm.createCache(Drawing.class.getName(), jcacheConfiguration);
             cm.createCache(Drawing.class.getName() + ".attachments", jcacheConfiguration);
             cm.createCache(Drawing.class.getName() + ".estimations", jcacheConfiguration);

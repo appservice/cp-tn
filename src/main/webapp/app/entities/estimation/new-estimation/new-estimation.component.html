@@ -162,13 +162,13 @@
                     <tr *ngFor="let operation of estimation.operations;let rowIndex=index">
                         <td>
                             <input type=number class="form-control" [(ngModel)]="operation.sequenceNumber"
-                                   name="operation_sequence_nb_{{rowIndex}}" style="width: 70px;"/><!---->
+                                   name="operation_sequence_nb_{{rowIndex}}" style="width: 70px;" required/><!---->
                         </td>
 
                         <td style="width: 250px;">               <!-- <input class="form-control" />-->
-                            <select class="form-control" id="field_machine_{{rowIndex}}" name="machine_{{rowIndex}}"
+                            <select class="form-control" id="field_machine_{{rowIndex}}" name="machine{{rowIndex}}"
                                     [(ngModel)]="operation.machine" (ngModelChange)="calculateOperationsTotalCost()"
-                                    required [compareWith]="compareMachine">
+                                    required [compareWith]="compareMachine" #machine="ngModel">
 
                                 <option *ngFor="let machineOpt of machines; trackBy: trackMachineById"
                                         [ngValue]="machineOpt">
@@ -177,9 +177,9 @@
                                 </option>
                             </select>
 
-                            <div [hidden]="!(editForm.controls.client?.dirty && editForm.controls.client?.invalid)">
+                            <div [hidden]="!(machine?.dirty && machine?.invalid)">
                                 <small class="form-text text-danger"
-                                       [hidden]="!editForm.controls.client?.errors?.required"
+                                       [hidden]="!machine?.errors?.required"
                                        jhiTranslate="entity.validation.required">
                                     This field is required.
                                 </small>
@@ -187,11 +187,30 @@
 
                         </td><!-- [ngbTypeahead]="search"-->
                         <td><textarea class="form-control" autosize="" rows="1" [(ngModel)]="operation.description"
-                                      name="operation_dscription_{{rowIndex}}"></textarea></td>
+                                      name="operation_dscription_{{rowIndex}}" required #operatoin_description="ngModel"></textarea>
+
+                            <div [hidden]="!(operatoin_description.dirty && operatoin_description.invalid)">
+                                <small class="form-text text-danger"
+                                       [hidden]="!operatoin_description.errors?.required"
+                                       jhiTranslate="entity.validation.required">
+                                    This field is required.
+                                </small>
+                            </div>
+
+                        </td>
                         <td>
                             <input type="number" class="form-control" [(ngModel)]="operation.estimatedTime"
                                    name="operation_estimatedTime_{{rowIndex}}"
-                                   (ngModelChange)="calculateOperationsTotalCost()"/></td>
+                                   (ngModelChange)="calculateOperationsTotalCost()" required #operaton_estimatedTime="ngModel"/>
+                            <div [hidden]="!(operaton_estimatedTime?.dirty &&operaton_estimatedTime?.invalid)">
+                                <small class="form-text text-danger"
+                                       [hidden]="!operaton_estimatedTime?.errors?.required"
+                                       jhiTranslate="entity.validation.required">
+                                    This field is required.
+                                </small>
+                            </div>
+                        </td>
+
                         <td>
 
                             <input *ngIf="operation.estimatedTime!=null && operation.machine!=null;else other_content"
@@ -270,19 +289,27 @@
                         <td><input class="form-control" value="{{(rowIndex+1)}}" disabled style="width: 50px;"/></td>
 
                         <td><input type="text" class="form-control" [(ngModel)]="commercialPart.name"
-                                   value="Lozysko 6203 2RS SKF" name="commecialPart_name_{{rowIndex}}"></td>
+                                   value="Lozysko 6203 2RS SKF" name="commecialPart_name_{{rowIndex}}" required></td>
                         <td><input type="number" class="form-control" [(ngModel)]="commercialPart.amount"
                                    name="commecialpart_amount_{{rowIndex}}"
-                                   (ngModelChange)="calculateCommercialPartsTotalCost()"/></td>
-                        <td><input type="text" class="form-control" [(ngModel)]="commercialPart.unit"
+                                   (ngModelChange)="calculateCommercialPartsTotalCost()" required/></td>
+                        <td>
+                            <input type="text" class="form-control" [(ngModel)]="commercialPart.unit"
                                    [ngbTypeahead]="searchUnit" name="commercialpart_unit_{{rowIndex}}"
                                    [inputFormatter]="formatter"
                                    [resultFormatter]="resultFormatter"
-                                   [editable]="false" (selectItem)="onSelectItem($event)"
-                        /></td>
+                                   [editable]="false" (selectItem)="onSelectItem($event)" required #comercialpart_unit="ngModel"/>
+                            <div [hidden]="!(comercialpart_unit?.dirty && comercialpart_unit?.invalid)">
+                                <small class="form-text text-danger"
+                                       [hidden]="!comercialpart_unit?.errors?.required"
+                                       jhiTranslate="entity.validation.required">
+                                    This field is required.
+                                </small>
+                            </div>
+                        </td>
                         <td><input currencyMask [options]="currencyMaskOpt" class="form-control"
                                    [(ngModel)]="commercialPart.price" name="commercialPart_price_{{rowIndex}}"
-                                   (ngModelChange)="calculateCommercialPartsTotalCost()"/></td>
+                                   (ngModelChange)="calculateCommercialPartsTotalCost()" required/></td>
                         <td>
 
                             <input class="form-control"
@@ -422,7 +449,7 @@
 
 
                 <div class="row">
-                    <div class="col-md-6"  style="margin-top: 30px">
+                    <div class="col-md-6" style="margin-top: 30px">
                         <table class="table table-striped">
                             <thead>
                             </thead>

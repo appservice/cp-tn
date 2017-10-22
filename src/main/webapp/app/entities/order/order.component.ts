@@ -10,6 +10,7 @@ import {PaginationConfig} from '../../blocks/config/uib-pagination.config';
 import {OrderFilter} from './order-filter.model';
 import {URLSearchParams} from '@angular/http';
 import {ExcelService} from '../../tn-components/excel.service';
+import {IMyDateModel, IMyInputFieldChanged, INgxMyDpOptions} from 'ngx-mydatepicker';
 
 
 @Component({
@@ -31,6 +32,7 @@ export class OrderComponent implements OnInit, OnDestroy {
     itemsPerPage: any;
     page: any;
     predicate: any;
+    validDate:boolean;
 
     previousPage: any;
     reverse: any;
@@ -168,6 +170,7 @@ export class OrderComponent implements OnInit, OnDestroy {
             this.currentAccount = account;
         });
         this.registerChangeInOrders();
+        this.validDate=true;
     }
 
     ngOnDestroy() {
@@ -222,4 +225,32 @@ export class OrderComponent implements OnInit, OnDestroy {
     exportAsExcelFile() {
         this.excelService.exportAsExcelFile(this.orders, 'TestFile.xlsx');
     }
+
+    model: any;
+
+
+/*    onInputFieldChanged(event: IMyInputFieldChanged) {
+        console.log('onInputFieldChanged(): Value: ', event.value, ' - dateFormat: ', event.dateFormat, ' - valid: ', event.valid);
+        console.log(event);
+        console.log(this.model);
+        if(event.value!=null && event.value){
+            this.validDate=event.valid;
+        }
+
+    }
+    myOptions: INgxMyDpOptions = {
+        // other options...
+        showWeekNumbers:true,
+        dateFormat: 'dd-mm-yyyy',
+        todayBtnTxt: 'Dzisiaj',
+        dayLabels: {su: "Nie", mo: "Pon", tu: "Wto", we: "Sro", th: "Czw", fr: "Pią", sa: "Sob"},
+        monthLabels: {1: "Sty", 2: "Lut", 3: "Mar", 4: "Kwi", 5: "Maj", 6: "Cze", 7: "Lip", 8: "Sier", 9: "Wrz", 10: "Paź", 11: "Lis", 12: "Gru"},
+    };
+
+    // optional date changed callback
+    onDateChanged(event: IMyDateModel): void {
+        console.log(event);
+        this.validDate = true;
+    }*/
+
 }

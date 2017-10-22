@@ -15,9 +15,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import javax.xml.ws.Response;
 import java.net.URI;
 import java.net.URISyntaxException;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -28,14 +30,14 @@ import java.util.Optional;
 @RequestMapping("/api")
 public class MachineResource {
 
-    private final Logger log = LoggerFactory.getLogger(MachineResource.class);
-
     private static final String ENTITY_NAME = "machine";
-
+    private final Logger log = LoggerFactory.getLogger(MachineResource.class);
     private final MachineService machineService;
+    private final MachineDtlRepository machineDtlRepository;
 
-    public MachineResource(MachineService machineService) {
+    public MachineResource(MachineService machineService, MachineDtlRepository machineDtlRepository) {
         this.machineService = machineService;
+        this.machineDtlRepository = machineDtlRepository;
     }
 
     /**
@@ -52,7 +54,7 @@ public class MachineResource {
         if (machineDTO.getId() != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert(ENTITY_NAME, "idexists", "A new machine cannot already have an ID")).body(null);
         }
-        MachineDTO result = machineService.save(machineDTO);
+        MachineDTO result = machineService.create(machineDTO);
         return ResponseEntity.created(new URI("/api/machines/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
             .body(result);
@@ -74,7 +76,7 @@ public class MachineResource {
         if (machineDTO.getId() == null) {
             return createMachine(machineDTO);
         }
-        MachineDTO result = machineService.save(machineDTO);
+        MachineDTO result = machineService.update(machineDTO);
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, machineDTO.getId().toString()))
             .body(result);
@@ -88,9 +90,15 @@ public class MachineResource {
      */
     @GetMapping("/machines")
     @Timed
-    public ResponseEntity<List<MachineDTO>> getAllMachines(@ApiParam Pageable pageable) {
-        log.debug("REST request to get a page of Machines");
-        Page<MachineDTO> page = machineService.findAll(pageable);
+    public ResponseEntity<List<MachineDTO>> getAllMachines(@ApiParam Pageable pageable, @RequestParam(name = "operationDate", required = false) LocalDate operationDate) {
+        log.debug("REST request to get a page of Machines by operationDate: {}", operationDate);
+        Page<MachineDTO> page;
+        if (operationDate == null) {
+            page = machineService.findAll(pageable);
+        } else {
+            page = machineService.findAll(operationDate, pageable);
+
+        }
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/machines");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
@@ -127,7 +135,7 @@ public class MachineResource {
      * SEARCH  /_search/machines?query=:query : search for the machine corresponding
      * to the query.
      *
-     * @param query the query of the machine search
+     * @param query    the query of the machine search
      * @param pageable the pagination information
      * @return the result of the search
      */
@@ -140,4 +148,12 @@ public class MachineResource {
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
 
+    @GetMapping("machines/{id}/get-machine-dtls")
+    @Timed
+    public ResponseEntity<List<MachineDtl>> getMachineDtlsByMachineId(@PathVariable Long id) {
+        log.debug("REST request tgetMachineDtlsByMachineId  with parameter id: {}", id);
+
+        List<MachineDtl> response = machineDtlRepository.findAllByMachineId(id);
+        return ResponseEntity.ok(response);
+    }
 }

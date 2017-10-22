@@ -10,7 +10,7 @@ import {Observable} from 'rxjs/Rx';
 import {ActivatedRoute, Router} from '@angular/router';
 import {Subscription} from 'rxjs/Subscription';
 import {Drawing} from '../../drawing/drawing.model';
-import {ModalDismissReasons, NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import {ModalDismissReasons, NgbDatepicker, NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {Estimation} from '../../production/estimation.model';
 import {MoveToArchiveDialogComponent} from './move-to-archive-dialog.component';
 
@@ -204,11 +204,18 @@ export class EstimatedOrderComponent implements OnInit, OnDestroy {
     }
 
     convertToDate(ngBootstrapDate: any): Date {
-        if (typeof ngBootstrapDate === 'string') {
-            return null;
-           // return new Date( ngBootstrapDate);
+
+        if (ngBootstrapDate && ngBootstrapDate !== null) {
+
+
+            if (typeof ngBootstrapDate === 'string') {
+                return null;
+                // return new Date( ngBootstrapDate);
+            }
+
+            return new Date(ngBootstrapDate.year, ngBootstrapDate.month, ngBootstrapDate.day);
         }
-        return new Date(ngBootstrapDate.year, ngBootstrapDate.month, ngBootstrapDate.day);
+        return null;
     }
 
     isPrintingDisabled(): boolean {
@@ -224,9 +231,10 @@ export class EstimatedOrderComponent implements OnInit, OnDestroy {
         this.orderService.createPdfOffer(this.order);
     }
 
-    moveToArchive(){
-        const modalRef=  this.modalService.open(MoveToArchiveDialogComponent);
-        modalRef.componentInstance.order=this.order;
+    moveToArchive() {
+        const modalRef = this.modalService.open(MoveToArchiveDialogComponent);
+        modalRef.componentInstance.order = this.order;
     }
+
 
 }

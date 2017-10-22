@@ -15,6 +15,7 @@ import {
     machinePopupRoute,
     MachineResolvePagingParams,
 } from './';
+import {MyDatePickerModule} from 'mydatepicker';
 
 const ENTITY_STATES = [
     ...machineRoute,
@@ -24,7 +25,8 @@ const ENTITY_STATES = [
 @NgModule({
     imports: [
         TnSharedModule,
-        RouterModule.forRoot(ENTITY_STATES, { useHash: true })
+        RouterModule.forRoot(ENTITY_STATES, { useHash: true }),
+        MyDatePickerModule,
     ],
     declarations: [
         MachineComponent,

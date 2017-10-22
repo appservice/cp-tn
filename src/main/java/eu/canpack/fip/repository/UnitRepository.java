@@ -13,7 +13,7 @@ import java.util.List;
 @SuppressWarnings("unused")
 @Repository
 public interface UnitRepository extends JpaRepository<Unit,Long> {
-    List<Unit> findUnitByNameContains(String sentence);
+ //   List<Unit> findUnitByNameContains(String sentence);
 
-    List<Unit> findAllByNameContains(String sentence);
+    List<Unit> findAllByNameContainingIgnoreCase(String sentence);
 }

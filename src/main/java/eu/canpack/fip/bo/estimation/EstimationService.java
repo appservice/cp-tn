@@ -1,11 +1,13 @@
 package eu.canpack.fip.bo.estimation;
 
 import eu.canpack.fip.bo.client.Client;
-import eu.canpack.fip.bo.estimation.dto.EstimationCreateDTO;
 import eu.canpack.fip.bo.estimation.dto.EstimationCriteria;
 import eu.canpack.fip.bo.estimation.dto.EstimationDTO;
 import eu.canpack.fip.bo.estimation.dto.EstimationShowDTO;
+import eu.canpack.fip.bo.machine.MachineDTO;
+import eu.canpack.fip.bo.machine.MachineRepository;
 import eu.canpack.fip.bo.operation.Operation;
+import eu.canpack.fip.bo.operation.OperationDTO;
 import eu.canpack.fip.bo.operation.OperationMapper;
 import eu.canpack.fip.bo.commercialPart.CommercialPart;
 import eu.canpack.fip.bo.operation.OperationType;
@@ -30,8 +32,11 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.io.ByteArrayOutputStream;
 import java.time.ZonedDateTime;
-import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import static org.elasticsearch.index.query.QueryBuilders.*;
 
@@ -64,7 +69,9 @@ public class EstimationService {
 
     private final EstimationQueryService estimationQueryService;
 
-    public EstimationService(EstimationRepository estimationRepository, EstimationMapper estimationMapper, EstimationSearchRepository estimationSearchRepository, OperationMapper operationMapper, CommercialPartMapper commercialPartMapper, UserRepository userRepository, TechnologyCardPdfCreator technologyCardPdfCreator, UserService userService, OrderRepository orderRepository, EstimationQueryService estimationQueryService) {
+    private final MachineRepository machineRepository;
+
+    public EstimationService(EstimationRepository estimationRepository, EstimationMapper estimationMapper, EstimationSearchRepository estimationSearchRepository, OperationMapper operationMapper, CommercialPartMapper commercialPartMapper, UserRepository userRepository, TechnologyCardPdfCreator technologyCardPdfCreator, UserService userService, OrderRepository orderRepository, EstimationQueryService estimationQueryService, MachineRepository machineRepository) {
         this.estimationRepository = estimationRepository;
         this.estimationMapper = estimationMapper;
         this.estimationSearchRepository = estimationSearchRepository;
@@ -77,6 +84,7 @@ public class EstimationService {
 
 
         this.estimationQueryService = estimationQueryService;
+        this.machineRepository = machineRepository;
     }
 
     /**
@@ -184,8 +192,23 @@ public class EstimationService {
     public EstimationDTO findOne(Long id) {
         log.debug("Request to get Estimation : {}", id);
         Estimation estimation = estimationRepository.findOne(id);
-        estimation.getOperations().sort(Comparator.comparing(Operation::getSequenceNumber));
-        return estimationMapper.toDto(estimation);
+
+      //  estimation.getOperations().sort(Comparator.comparing(Operation::getSequenceNumber));
+        Set<Long>machineIds=estimation.getOperations().stream().map(o->o.getMachine().getId()).collect(Collectors.toSet());;
+
+        EstimationDTO result=estimationMapper.toDto(estimation);
+
+        if(!machineIds.isEmpty()){
+           Map<Long, MachineDTO> machineDTOsMap = machineRepository.findAllByOperationDate(estimation.getCreatedAt().toLocalDate(), machineIds)
+               .stream().collect(Collectors.toMap(MachineDTO::getId, m -> m));
+
+         for(OperationDTO operationDTO:result.getOperations()){
+             operationDTO.setMachine(machineDTOsMap.get(operationDTO.getMachine().getId()));
+         }
+
+       }
+
+        return result;
     }
 
     /**
