@@ -21,6 +21,7 @@ import {TnAlert} from '../../../tn-components/tn-alert';
 import {TechnologyCardFinderComponent} from '../../technology-card/technology-card-finder/technology-card-finder.component';
 import {TechnologyCard} from '../../technology-card/technology-card.model';
 import {DrawingFinderComponent} from '../../drawing/drawing-finder/drawing-finder.component';
+import {Operation} from '../../operation/operation.model';
 
 @Component({
     selector: 'new-estimation',
@@ -358,9 +359,21 @@ export class NewEstimationComponent implements OnInit, OnDestroy {
 
     private insertOperationFromTechnologyCard(technologyCard: TechnologyCard): void {
         console.log(technologyCard);
+        if(!this.estimation.material|| this.estimation.material==null){
+            this.estimation.material=technologyCard.material;
+
+        }
         for (let operation of technologyCard.operations) {
-            operation.id = null;
-            this.estimation.operations.push(operation);
+            let newOperation=new Operation();
+            newOperation.description=operation.description;
+            newOperation.estimatedTime=operation.estimatedTime;
+            let machines=this.machines.filter(m=>m.id===operation.machine.id);
+
+            newOperation.machine=machines[0];
+            newOperation.sequenceNumber=operation.sequenceNumber;
+
+            this.estimation.operations.push(newOperation);
+
             this.calculateOperationsTotalCost();
         }
     }
@@ -374,9 +387,7 @@ export class NewEstimationComponent implements OnInit, OnDestroy {
         modalRef.result.then(result => {
             console.log(result);
             this.estimation.drawing = result;
-            //    this.estimation.itemNumber = result.number;
-            //  this.estimation.itemNumber=result.number;
-            // this.insertOperationFromTechnologyCard(result)
+
         }, (reason: any) => {
             console.log(reason)
         });

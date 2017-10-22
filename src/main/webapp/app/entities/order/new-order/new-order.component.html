@@ -7,7 +7,7 @@
             {{title}}
 
         </h2>
-        <fieldset >
+        <fieldset>
             <div class="row">
                 <div class="col-lg-2">
                     <label for="internal_number_field">Nr Wewn.</label>
@@ -142,9 +142,15 @@
                                     </button>
 
                                 </td>
-                                <td><textarea class="form-control text-area" rows="1" [(ngModel)]="estimation.remark" name="estimation_remarks_{{rowIndex}}"></textarea></td>
                                 <td>
-                                    <button type="button" class="btn btn-outline-dark" (click)="onDeleteRow(rowIndex);" [disabled]="isReadOnly"><span class="fa fa-remove"></span></button>
+
+                                    <textarea class="form-control text-area" rows="1" [(ngModel)]="estimation.remark" name="estimation_remarks_{{rowIndex}}"></textarea>
+                                </td>
+                                <td>
+                                    <tn-estimation-remark [estimationRemarks]="estimation.estimationRemarks"
+                                                          *ngIf="estimation.estimationRemarks!=null && estimation.estimationRemarks.length>0"></tn-estimation-remark>
+                                    <button type="button" class="btn btn-outline-dark" (click)="onDeleteRow(rowIndex);" [disabled]="isReadOnly"><span class="fa fa-remove"></span>
+                                    </button>
                                 </td>
                             </tr>
 
@@ -169,13 +175,15 @@
 
         <div class="text-center">
 
-            <button class="btn btn-outline-primary " type="submit" [disabled]="editForm.form.invalid || isSaving" *ngIf="order.orderStatus =='WORKING_COPY' || order.orderStatus==null">
+            <button class="btn btn-outline-primary " type="submit" [disabled]="editForm.form.invalid || isSaving"
+                    *ngIf="order.orderStatus =='WORKING_COPY' || order.orderStatus==null">
                 <span class="fa fa-save"></span>&nbsp;Kopia robocza
                 <!--<span jhiTranslate="entity.action.save">Save</span>-->
             </button>
             <button type="button" class="btn btn-outline-danger" (click)="previousState()">Powrót</button>
 
-            <button class="btn btn-outline-primary" (click)="sendToEstimation();" *ngIf="order.orderStatus =='WORKING_COPY' || order.orderStatus==null"  [disabled]="editForm.form.invalid || isSaving">
+            <button class="btn btn-outline-primary" (click)="sendToEstimation();" *ngIf="order.orderStatus =='WORKING_COPY' || order.orderStatus==null"
+                    [disabled]="editForm.form.invalid || isSaving">
                 <span class="fa fa-play"></span> Wyślij do wyceny
             </button>
         </div>

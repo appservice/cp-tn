@@ -1,5 +1,6 @@
 package eu.canpack.fip.bo.operator;
 
+import eu.canpack.fip.bo.operation.OperationEvent;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.springframework.data.elasticsearch.annotations.Document;
@@ -7,6 +8,8 @@ import org.springframework.data.elasticsearch.annotations.Document;
 import javax.persistence.*;
 import javax.validation.constraints.*;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -42,6 +45,10 @@ public class Operator implements Serializable {
 
     @Column(name = "active", nullable=false)
     private boolean active=false;
+
+    @OneToMany(mappedBy = "operator",cascade = CascadeType.ALL,orphanRemoval = true)
+    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+    private List<OperationEvent> operationEvents = new ArrayList<>();
 
     // jhipster-needle-entity-add-field - Jhipster will add fields here, do not remove
     public Long getId() {
@@ -131,6 +138,18 @@ public class Operator implements Serializable {
             return false;
         }
         return Objects.equals(getId(), operator.getId());
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
+    }
+
+    public List<OperationEvent> getOperationEvents() {
+        return operationEvents;
+    }
+
+    public void setOperationEvents(List<OperationEvent> operationEvents) {
+        this.operationEvents = operationEvents;
     }
 
     @Override

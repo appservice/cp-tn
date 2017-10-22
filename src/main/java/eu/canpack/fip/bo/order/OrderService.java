@@ -598,4 +598,12 @@ public class OrderService {
         return new OrderDTO(order);
 
     }
+
+    public void moveOrderToProduction(Long id) {
+        Order order = orderRepository.findOne(id);
+        order.setOrderStatus(OrderStatus.IN_PRODUCTION);
+      //  order.setEstimationFinsihDate(ZonedDateTime.now());
+
+        orderRepository.save(order);
+    }
 }

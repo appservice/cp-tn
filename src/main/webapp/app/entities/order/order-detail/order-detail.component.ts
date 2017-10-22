@@ -178,11 +178,15 @@ export class OrderDetailComponent implements OnInit, OnDestroy {
     }
 
     convertToDate(ngBootstrapDate: any): Date {
-        if (typeof ngBootstrapDate === 'string') {
-            return null;
-            // return new Date( ngBootstrapDate);
+        if(!ngBootstrapDate && ngBootstrapDate!==null){
+            if (typeof ngBootstrapDate === 'string') {
+                return null;
+                // return new Date( ngBootstrapDate);
+            }
+            return new Date(ngBootstrapDate.year, ngBootstrapDate.month, ngBootstrapDate.day);
         }
-        return new Date(ngBootstrapDate.year, ngBootstrapDate.month, ngBootstrapDate.day);
+
+        return null;
     }
 
     isProductionCreateBtnDisabled(): boolean {

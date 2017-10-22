@@ -1,6 +1,7 @@
 package eu.canpack.fip.config;
 
 import eu.canpack.fip.bo.machine.MachineDtl;
+import eu.canpack.fip.bo.operation.OperationEvent;
 import eu.canpack.fip.bo.operator.Operator;
 import eu.canpack.fip.bo.remark.EstimationRemark;
 import eu.canpack.fip.bo.attachment.Attachment;
@@ -29,8 +30,8 @@ import org.springframework.context.annotation.*;
 
 @Configuration
 @EnableCaching
-@AutoConfigureAfter(value = { MetricsConfiguration.class })
-@AutoConfigureBefore(value = { WebConfigurer.class, DatabaseConfiguration.class })
+@AutoConfigureAfter(value = {MetricsConfiguration.class})
+@AutoConfigureBefore(value = {WebConfigurer.class, DatabaseConfiguration.class})
 public class CacheConfiguration {
 
     private final javax.cache.configuration.Configuration<Object, Object> jcacheConfiguration;
@@ -41,7 +42,7 @@ public class CacheConfiguration {
 
         jcacheConfiguration = Eh107Configuration.fromEhcacheCacheConfiguration(
             CacheConfigurationBuilder.newCacheConfigurationBuilder(Object.class, Object.class,
-                ResourcePoolsBuilder.heap(ehcache.getMaxEntries()))
+                                                                   ResourcePoolsBuilder.heap(ehcache.getMaxEntries()))
                 .withExpiry(Expirations.timeToLiveExpiration(Duration.of(ehcache.getTimeToLiveSeconds(), TimeUnit.SECONDS)))
                 .build());
     }
@@ -61,9 +62,11 @@ public class CacheConfiguration {
             cm.createCache(Estimation.class.getName() + ".commercialParts", jcacheConfiguration);
             cm.createCache(Estimation.class.getName() + ".estimationRemarks", jcacheConfiguration);
             cm.createCache(Operation.class.getName(), jcacheConfiguration);
+            cm.createCache(Operation.class.getName() + ".operationEvents", jcacheConfiguration);
 
 //            cm.createCache(Operation.class.getName() + ".machines", jcacheConfiguration);
             cm.createCache(Machine.class.getName(), jcacheConfiguration);
+            cm.createCache(OperationEvent.class.getName(), jcacheConfiguration);
             cm.createCache(Machine.class.getName() + ".operations", jcacheConfiguration);
             cm.createCache(Machine.class.getName() + ".machineDtls", jcacheConfiguration);
             cm.createCache(MachineDtl.class.getName(), jcacheConfiguration);
@@ -90,6 +93,7 @@ public class CacheConfiguration {
             cm.createCache(TechnologyCard.class.getName(), jcacheConfiguration);
             cm.createCache(TechnologyCard.class.getName() + ".operations", jcacheConfiguration);
             cm.createCache(Operator.class.getName(), jcacheConfiguration);
+            cm.createCache(Operator.class.getName() + ".operationEvents", jcacheConfiguration);
             // jhipster-needle-ehcache-add-entry
         };
     }

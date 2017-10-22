@@ -300,6 +300,16 @@ public class OrderResource {
         return ResponseEntity.ok(response);
     }
 
+    @PutMapping("/orders/{id}/move-to-production")
+    @Timed
+    public ResponseEntity<Void> moveOrderToProduction(@PathVariable Long id) {
+
+        log.debug("order form moving to production id {}", id);
+        orderService.moveOrderToProduction(id);
+
+        return ResponseEntity.ok().build();
+    }
+
 
     @PostMapping("/orders/create-pdf-offer")
     public ResponseEntity<InputStreamResource> getTechnologyCard(@RequestBody OrderDTO orderDTO) throws IOException {
@@ -358,4 +368,6 @@ public class OrderResource {
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/orders/filtered");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
+
+
 }

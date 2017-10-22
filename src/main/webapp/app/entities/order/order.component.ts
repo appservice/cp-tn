@@ -52,7 +52,6 @@ export class OrderComponent implements OnInit, OnDestroy {
                 private excelService: ExcelService) {
         this.itemsPerPage = ITEMS_PER_PAGE;
         this.routeData = this.activatedRoute.data.subscribe((data) => {
-            console.log(data);
             this.orderType = data['orderType'];
             this.page = data['pagingParams'].page;
             this.previousPage = data['pagingParams'].page;

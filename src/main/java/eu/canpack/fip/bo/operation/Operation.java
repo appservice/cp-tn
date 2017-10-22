@@ -8,9 +8,10 @@ import org.springframework.data.elasticsearch.annotations.Document;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -61,6 +62,16 @@ public class Operation implements Serializable {
     @Enumerated(EnumType.STRING)
     @Column(name = "operation_type")
     private OperationType operationType;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "production_status")
+    private ProductionStatus productionStatus;
+
+    @OneToMany(mappedBy = "operation",cascade = CascadeType.ALL,orphanRemoval = true)
+    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+    private List<OperationEvent> operationEvents = new ArrayList<>();
+
+
 
 
     public Long getId() {
@@ -177,6 +188,22 @@ public class Operation implements Serializable {
 
     public void setOperationType(OperationType operationType) {
         this.operationType = operationType;
+    }
+
+    public ProductionStatus getProductionStatus() {
+        return productionStatus;
+    }
+
+    public void setProductionStatus(ProductionStatus productionStatus) {
+        this.productionStatus = productionStatus;
+    }
+
+    public List<OperationEvent> getOperationEvents() {
+        return operationEvents;
+    }
+
+    public void setOperationEvents(List<OperationEvent> operationEvents) {
+        this.operationEvents = operationEvents;
     }
 
     @Override
