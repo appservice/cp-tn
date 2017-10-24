@@ -116,7 +116,7 @@
                                     </small>
                                 </div>
                             </div>
-                            <div class="col-md-4"><label>Cena materiału [PLN]</label>
+                            <div class="col-md-4"><label>Cena materiału [PLN]/SZT</label>
                                 <input class="form-control" name="material_price" [(ngModel)]="estimation.materialPrice"
                                        currencyMask
                                        [options]="currencyMaskOpt"/>
@@ -321,103 +321,8 @@
                 </button>
             </ng-template>
         </ngb-tab>
-        <ngb-tab title="Podsumowanie kosztów" id="3">
-            <ng-template ngbTabContent>
 
-
-                <div class="row">
-                    <div class="col-md-6">
-                        <table class="table table-striped">
-                            <thead>
-                            <tr>
-                                <th>LP.</th>
-                                <th>Nazwa:</th>
-                                <th>Wartość [PLN]</th>
-
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <tr>
-                                <td>1</td>
-                                <td>Koszt materiału</td>
-                                <td>{{estimation.materialPrice|currency:'PLN':false}}</td>
-                            </tr>
-                            <tr>
-                                <td>2</td>
-                                <td>Koszt operacji</td>
-                                <td>{{operationsTotalCost|currency:'PLN':false}}</td>
-                            </tr>
-                            <tr>
-                                <td>3</td>
-                                <td>Koszt częsci handlowych</td>
-                                <td>{{commercialPartsTotalCost|currency:'PLN':false}}</td>
-                            </tr>
-
-                            </tbody>
-                            <tfoot>
-                            <tr *ngIf="estimation.discount!==0">
-                                <td></td>
-                                <td class="text-right strong">Upust:</td>
-                                <td class="strong font-weight-bold">
-                                    {{calculateDiscount()|currency:'PLN':false}}
-                                </td>
-                            </tr>
-                            <tr>
-                                <td></td>
-                                <td class="text-right strong">Suma:</td>
-                                <td class="strong font-weight-bold">
-                                    {{(calculateTotal()-calculateDiscount())|currency:'PLN':false}}
-                                </td>
-                            </tr>
-
-                            </tfoot>
-
-                        </table>
-                    </div>
-                    <div class="col-md-6" style="margin-top: 20px">
-
-                        <div class="row">
-                            <div class="col-12">
-                                <label>Upust [%]</label>
-                                <input type="number" class="form-control" [(ngModel)]="estimation.discount"
-                                       name="final_discount" (ngModelChange)="calculateOperationsTotalCost()"/>
-                            </div>
-                        </div>
-                        <div class="row" style="margin-top: 20px">
-                            <div class="col-12">
-                                <label>Cena dla klienta</label>
-                                <input class="form-control" currencyMask [options]="currencyMaskOpt"
-                                       [(ngModel)]="estimation.estimatedCost" name="final_cost"/>
-
-                            </div>
-                        </div>
-                        <div class="row" style="margin-top: 20px">
-                            <div class="col-12">
-
-                                <label>Szacowana data realizacji</label>
-                                <div class="form-group">
-                                    <!--<label class="form-control-label" jhiTranslate="tnApp.order.closeDate" for="field_closeDate">Close Date</label>-->
-                                    <div class="input-group">
-                                        <input id="field_closeDate" type="text" class="form-control"
-                                               name="estimation_realization_date_{{rowIndex}}"
-                                               ngbDatepicker #realizationDateDp="ngbDatepicker"
-                                               [(ngModel)]="estimation.estimatedRealizationDate"
-                                               [disabled]="isReadOnly"/>
-                                        <span class="input-group-btn">
-                    <button type="button" class="btn btn-default" (click)="realizationDateDp.toggle()"
-                            (keyup)="realizationDateDp.toggle()" [disabled]="isReadOnly"><i class="fa fa-calendar"></i></button>
-                </span>
-                                    </div>
-                                </div>
-
-                            </div>
-                        </div>
-
-                    </div>
-                </div>
-            </ng-template>
-        </ngb-tab>
-        <ngb-tab title="Uwagi " id="4">
+        <ngb-tab title="Uwagi " id="3">
             <ng-template ngbTabContent>
 
 
@@ -455,6 +360,110 @@
                             </div>
                         </div>
                     </div>
+            </ng-template>
+        </ngb-tab>
+        <ngb-tab id="4">
+            <ng-template ngbTabTitle>
+                <span  [ngClass]="{'badge badge-danger': !estimation.estimatedCost}">Podsumowanie kosztów</span>
+            </ng-template>
+            <ng-template ngbTabContent>
+
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <table class="table table-striped">
+                            <thead>
+                            <tr>
+                                <th>LP.</th>
+                                <th>Nazwa:</th>
+                                <th>Wartość [PLN]</th>
+
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td>1</td>
+                                <td>Koszt materiału</td>
+                                <td>{{estimation.materialPrice|currency:'PLN':false}}</td>
+                            </tr>
+                            <tr>
+                                <td>2</td>
+                                <td>Koszt operacji</td>
+                                <td>{{operationsTotalCost|currency:'PLN':false}}</td>
+                            </tr>
+                            <tr>
+                                <td>3</td>
+                                <td>Koszt częsci handlowych</td>
+                                <td>{{commercialPartsTotalCost|currency:'PLN':false}}</td>
+                            </tr>
+
+                            </tbody>
+                            <tfoot>
+                            <tr *ngIf="estimation.discount!==0">
+                                <td></td>
+                                <td class="text-right strong">Marża:</td>
+                                <td class="strong font-weight-bold">
+                                    {{calculateDiscount()|currency:'PLN':false}}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td class="text-right strong">Suma:</td>
+                                <td class="strong font-weight-bold">
+                                    {{(calculateTotal()+calculateDiscount())|currency:'PLN':false}}
+                                </td>
+                            </tr>
+
+                            </tfoot>
+
+                        </table>
+                    </div>
+                    <div class="col-md-6" style="margin-top: 20px">
+
+                        <div class="row">
+                            <div class="col-12">
+                                <label>Marża [%]</label>
+                                <input type="number" class="form-control" [(ngModel)]="estimation.discount"
+                                       name="final_discount" (ngModelChange)="calculateOperationsTotalCost()"/>
+                            </div>
+                        </div>
+                        <div class="row" style="margin-top: 20px">
+                            <div class="col-12">
+                                <label>Cena dla klienta</label>
+                                <div class="input-group">
+                                    <input class="form-control" currencyMask [options]="currencyMaskOpt"
+                                           [(ngModel)]="estimation.estimatedCost" name="final_cost"/>
+                                    <span class="input-group-btn">
+                             <button class="btn" type="button" (click)="clonePriceFromSummary()">Kopiuj cenę z podsumowania</button>
+                                 </span>
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="row" style="margin-top: 20px">
+                            <div class="col-12">
+
+                                <label>Szacowana data realizacji</label>
+                                <div class="form-group">
+                                    <!--<label class="form-control-label" jhiTranslate="tnApp.order.closeDate" for="field_closeDate">Close Date</label>-->
+                                    <div class="input-group">
+                                        <input id="field_closeDate" type="text" class="form-control"
+                                               name="estimation_realization_date_{{rowIndex}}"
+                                               ngbDatepicker #realizationDateDp="ngbDatepicker"
+                                               [(ngModel)]="estimation.estimatedRealizationDate"
+                                               [disabled]="isReadOnly"/>
+                                        <span class="input-group-btn">
+                    <button type="button" class="btn btn-default" (click)="realizationDateDp.toggle()"
+                            (keyup)="realizationDateDp.toggle()" [disabled]="isReadOnly"><i class="fa fa-calendar"></i></button>
+                </span>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
             </ng-template>
         </ngb-tab>
     </ngb-tabset>

@@ -368,4 +368,8 @@ export class TechnologyEditComponent implements OnInit, OnDestroy {
         });
         //
     }
+
+    clonePriceFromSummary(){
+        this.estimation.estimatedCost=this.calculateTotal()+this.calculateDiscount();
+    }
 }

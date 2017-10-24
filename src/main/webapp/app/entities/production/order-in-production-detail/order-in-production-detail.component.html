@@ -140,6 +140,9 @@
             <button type="button" class="btn btn-outline-primary" (click)="printTechnologyCard()" *ngIf="order.orderStatus==='TECHNOLOGY_VERIFICATION' || order.orderStatus==='IN_PRODUCTION'">
                 <span class="fa fa-print"></span>
                 Drukuj karty obiegowe</button>
+            <button type="button" class="btn btn-outline-primary" (click)="sendToProduction()"  *ngIf="order.orderStatus==='TECHNOLOGY_VERIFICATION'">
+                <span class="fa fa-arrow-circle-right"></span>
+                Wyślij do produkcji</button>
             <button type="button" class="btn btn-outline-primary" (click)="saveSapNumbers()" *ngIf="order.orderStatus==='CREATING_SAP_ORDER'"   [disabled]="editForm.form.invalid || isSaving">
                 <span class="fa fa-save"></span>
                 Zapisz </button>

@@ -51,6 +51,7 @@
     <include file="config/liquibase/changelog/20171015214409_added_sap_nbr_to_estimation.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20171022013850_added_machine_dtl.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20171022233352_added_operation_event.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20171023005517_extended_estimation.xml" relativeToChangelogFile="false"/>
     <!--<include file="config/liquibase/changelog/20171022012041_added_machine_dtl.xml" relativeToChangelogFile="false"/>-->
 
     <!-- jhipster-needle-liquibase-add-constraints-changelog - JHipster will add liquibase constraints changelogs here -->

@@ -99,7 +99,7 @@ export class NewEstimationComponent implements OnInit, OnDestroy {
             allowNegative: false,
             suffix: ' PLN',
             allowZero: false,
-            precision: 2
+            precision: 2,
         };
         this.calculateCommercialPartsTotalCost();
 
@@ -394,4 +394,7 @@ export class NewEstimationComponent implements OnInit, OnDestroy {
         //
     }
 
+    clonePriceFromSummary(){
+        this.estimation.estimatedCost=this.calculateTotal()+this.calculateDiscount();
+    }
 }

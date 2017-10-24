@@ -234,6 +234,10 @@ export class OrderService {
         return this.http.put(`${this.resourceUrl}/${id}/move-to-archive`, null);
     }
 
+    moveToProduction(id: number): Observable<Response> {
+        return this.http.put(`${this.resourceUrl}/${id}/move-to-production`, null);
+    }
+
 
     findEstimated(id: number): Observable<Order> {
         return this.http.get(`${this.resourceUrl}/${id}/estimated`).map((res: Response) => {

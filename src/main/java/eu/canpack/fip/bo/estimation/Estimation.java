@@ -113,6 +113,12 @@ public class Estimation implements Serializable {
     @Column(name="sap_number")
     private String sapNumber;
 
+    @Column(name="is_in_production")
+    private Boolean inProduction=false;
+
+    @Column(name="is_realized")
+    private Boolean realized=false;
+
     public String getItemName() {
         return itemName;
     }
@@ -388,6 +394,22 @@ public class Estimation implements Serializable {
 
     public void setSapNumber(String sapNumber) {
         this.sapNumber = sapNumber;
+    }
+
+    public Boolean isInProduction() {
+        return inProduction;
+    }
+
+    public void setInProduction(Boolean inProduction) {
+        this.inProduction = inProduction;
+    }
+
+    public Boolean isRealized() {
+        return realized;
+    }
+
+    public void setRealized(Boolean realized) {
+        this.realized = realized;
     }
 
     @Override

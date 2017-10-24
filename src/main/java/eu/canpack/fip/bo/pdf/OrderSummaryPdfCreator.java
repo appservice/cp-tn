@@ -81,7 +81,11 @@ public class OrderSummaryPdfCreator {
                 }
                 doc.add(createParagraphWith2Fonts("Ilość: ", String.valueOf(estimation.getAmount())));
 
-                doc.add(createParagraphWith2Fonts("Termin realiz: ", estimation.getEstimatedRealizationDate().format(dateFormatter)));
+                String dateOfRealization = "";
+                if(estimation.getEstimatedRealizationDate()!=null){
+                    dateOfRealization=estimation.getEstimatedRealizationDate().format(dateFormatter);
+                }
+                doc.add(createParagraphWith2Fonts("Termin realiz: ", dateOfRealization));
 
                 doc.add(new Paragraph(" "));
                 PdfPTable pdfPTable = prepareTableOfOperation(estimation);

@@ -17,7 +17,7 @@
             <li class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
                 <a class="nav-link" routerLink="/" (click)="collapseNavbar()">
                     <i class="fa fa-home" aria-hidden="true"></i>
-                    <span ></span>
+                    <span></span>
                 </a>
             </li>
             <li *jhiHasAnyAuthority="['ROLE_ORDER_INTRODUCER','ROLE_MANAGER']" ngbDropdown
@@ -37,21 +37,31 @@
                     <li>
                         <a class="dropdown-item" routerLink="order" routerLinkActive="active"
                            [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
-                            <i class="fa fa-fw fa-asterisk" aria-hidden="true"></i>
+                            <i class="fa fa-fw fa-question-circle-o" aria-hidden="true"></i>
                             <span>Zapytanie ofertowe</span>
                         </a>
                     </li>
                     <li>
                         <a class="dropdown-item" routerLink="inquiry-item-finder" routerLinkActive="active"
                            [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
-                            <i class="fa fa-fw fa-asterisk" aria-hidden="true"></i>
+                            <i class="fa fa-fw fa-search" aria-hidden="true"></i>
                             <span>Szukaj zap. ofertowe po detalu</span>
                         </a>
                     </li>
                     <li>
+                        <hr/>
+                    </li>
+                    <li>
                         <a class="dropdown-item" routerLink="purchase-order" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
-                            <i class="fa fa-fw fa-asterisk" aria-hidden="true"></i>
+                            <i class="fa fa-fw fa-shopping-cart" aria-hidden="true"></i>
                             <span>Zamówienia</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="dropdown-item"  routerLinkActive="active"
+                           [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
+                            <i class="fa fa-fw fa-search" aria-hidden="true"></i>
+                            <span>Szukaj zamówienie po detalu</span>
                         </a>
                     </li>
 
@@ -78,13 +88,13 @@
                     </span>
                 </a>
                 <ul class="dropdown-menu" ngbDropdownMenu>
-           <!--         <li>
-                        <a class="dropdown-item" routerLink="estimation" routerLinkActive="active"
-                           [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
-                            <i class="fa fa-fw fa-asterisk" aria-hidden="true"></i>
-                            <span>Wyceny wszystkie</span>
-                        </a>
-                    </li>-->
+                    <!--         <li>
+                                 <a class="dropdown-item" routerLink="estimation" routerLinkActive="active"
+                                    [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
+                                     <i class="fa fa-fw fa-asterisk" aria-hidden="true"></i>
+                                     <span>Wyceny wszystkie</span>
+                                 </a>
+                             </li>-->
                     <li>
                         <a class="dropdown-item" routerLink="orders-to-estimation" routerLinkActive="active"
                            [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
@@ -348,14 +358,14 @@
                         </a>
                     </li>
                     <span *jhiHasAnyAuthority="['ROLE_ADMIN']">
-                    <li   *ngIf="swaggerEnabled" >
+                    <li *ngIf="swaggerEnabled">
                         <a class="dropdown-item" routerLink="docs" routerLinkActive="active" (click)="collapseNavbar()">
                             <i class="fa fa-fw fa-book" aria-hidden="true"></i>
                             <span jhiTranslate="global.menu.admin.apidocs">API</span>
                         </a>
                     </li>
-                    <li  *jhiHasAnyAuthority="['ROLE_ADMIN']" >
-                        <a class="dropdown-item"  (click)="reindexElasticsearch()">
+                    <li *jhiHasAnyAuthority="['ROLE_ADMIN']">
+                        <a class="dropdown-item" (click)="reindexElasticsearch()">
                             <i class="fa fa-fw fa-book" aria-hidden="true"></i>
                             <span>Elastic Reindex</span>
                         </a>
@@ -364,22 +374,22 @@
                     <!-- jhipster-needle-add-element-to-admin-menu - JHipster will add entities to the admin menu here -->
                 </ul>
             </li>
-<!--            <li ngbDropdown class="nav-item dropdown pointer" *ngIf="languages">
-                <a class="nav-link dropdown-toggle" ngbDropdownToggle href="javascript:void(0);"
-                   id="languagesnavBarDropdown" *ngIf="languages.length > 1">
-                    <span>
-                        <i class="fa fa-flag" aria-hidden="true"></i>
-                        <span jhiTranslate="global.menu.language">Language</span>
-                        <b class="caret"></b>
-                    </span>
-                </a>
-                <ul class="dropdown-menu" ngbDropdownMenu *ngIf="languages.length > 1">
-                    <li *ngFor="let language of languages">
-                        <a class="dropdown-item" [jhiActiveMenu]="language" href="javascript:void(0);"
-                           (click)="changeLanguage(language);collapseNavbar();">{{language | findLanguageFromKey}}</a>
-                    </li>
-                </ul>
-            </li>-->
+            <!--            <li ngbDropdown class="nav-item dropdown pointer" *ngIf="languages">
+                            <a class="nav-link dropdown-toggle" ngbDropdownToggle href="javascript:void(0);"
+                               id="languagesnavBarDropdown" *ngIf="languages.length > 1">
+                                <span>
+                                    <i class="fa fa-flag" aria-hidden="true"></i>
+                                    <span jhiTranslate="global.menu.language">Language</span>
+                                    <b class="caret"></b>
+                                </span>
+                            </a>
+                            <ul class="dropdown-menu" ngbDropdownMenu *ngIf="languages.length > 1">
+                                <li *ngFor="let language of languages">
+                                    <a class="dropdown-item" [jhiActiveMenu]="language" href="javascript:void(0);"
+                                       (click)="changeLanguage(language);collapseNavbar();">{{language | findLanguageFromKey}}</a>
+                                </li>
+                            </ul>
+                        </li>-->
             <li ngbDropdown class="nav-item dropdown pointer" routerLinkActive="active" placement="bottom-right"
                 [routerLinkActiveOptions]="{exact: true}">
                 <a class="nav-link dropdown-toggle" ngbDropdownToggle href="javascript:void(0);" id="account-menu">

@@ -16,6 +16,8 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.time.LocalDate;
+import java.util.Collections;
+import java.util.Comparator;
 
 import static eu.canpack.fip.bo.pdf.PdfUtil.formatDate;
 import static eu.canpack.fip.bo.pdf.TechnologyCardStyle.*;
@@ -161,10 +163,11 @@ public class TechnologyCardPdfCreator {
         addHeader(table, "LP", "Stanowisko", "Kod", "Opis", "Czas wykonania w godz.", "Podpis");
 
         int i = 1;
+        estimation.getOperations().sort(Comparator.comparing(Operation::getSequenceNumber));
         for (Operation operation : estimation.getOperations()) {
             Image image = barcodeImage(operation.getId());
 
-            addRowTable2(table, String.valueOf(i * 5), operation.getMachine().getShortcut(), image, operation.getDescription());
+            addRowTable2(table, String.valueOf(operation.getSequenceNumber()), operation.getMachine().getShortcut(), image, operation.getDescription());
             i++;
         }
 

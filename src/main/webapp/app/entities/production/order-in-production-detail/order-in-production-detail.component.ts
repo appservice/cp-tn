@@ -201,4 +201,14 @@ export class OrderInProductionDetailComponent implements OnInit, OnDestroy {
         });
     }
 
+    sendToProduction() {
+        console.log('Sent to production '+this.order.id);
+        this.orderService.moveToProduction(this.order.id).subscribe((response)=>{
+           //this.eventManager.broadcast({name: 'sapNumbersUpdated', content: 'OK'});
+           this.router.navigate(['/orders-in-production']);
+
+        },(error)=>console.log(error));
+
+    }
+
 }

@@ -22,6 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 
 import java.time.ZonedDateTime;
+import java.util.Comparator;
 import java.util.List;
 
 import static org.elasticsearch.index.query.QueryBuilders.*;
@@ -102,6 +103,7 @@ public class TechnologyCardService {
     public TechnologyCardDTO findOne(Long id) {
         log.debug("Request to get TechnologyCard : {}", id);
         TechnologyCard technologyCard = technologyCardRepository.findOne(id);
+        technologyCard.getOperations().sort(Comparator.comparing(Operation::getSequenceNumber));
         return technologyCardMapper.toDto(technologyCard);
     }
 
@@ -173,6 +175,8 @@ public class TechnologyCardService {
         });
 
         List<Operation> operations = operationMapper.toEntity(estimationDTO.getOperations());
+        operations.sort(Comparator.comparing(Operation::getSequenceNumber));
+
         operations.forEach(o->o.setOperationType(OperationType.TECHNOLOGY_CARD));
         technologyCard.setOperations(operations);
         technologyCard.setCreatedBy(userService.getLoggedUser());

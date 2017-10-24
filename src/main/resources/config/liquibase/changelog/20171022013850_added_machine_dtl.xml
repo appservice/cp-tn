@@ -29,7 +29,7 @@
     <changeSet author="lukasz.mochel (generated)" id="1508629200015-4">
         <sql dbms="postgresql" endDelimiter=";">
             insert into machine_dtl (valid_from,valid_to,machine_id,working_hour_price)
-            select '1970-01-01','5000-01-01', id,125.48 from machine;
+            select '1970-01-01','5000-01-01', id,100.38 from machine;
         </sql>
     </changeSet>
 </databaseChangeLog>

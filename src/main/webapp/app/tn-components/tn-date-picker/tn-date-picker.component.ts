@@ -6,7 +6,7 @@ import {IMyDateModel, IMyInputFieldChanged, INgxMyDpOptions, } from 'ngx-mydatep
   selector: 'tn-date-picker',
   templateUrl: './tn-date-picker.component.html',
   styles: [],
-    providers: [
+    providers: [/*
         {
             provide: NG_VALUE_ACCESSOR,
             useExisting: forwardRef(() => TnDatePickerComponent),
@@ -27,7 +27,7 @@ import {IMyDateModel, IMyInputFieldChanged, INgxMyDpOptions, } from 'ngx-mydatep
             },
             multi: true
         }
-    ]
+    */]
 
 })
 export class TnDatePickerComponent implements OnInit, ControlValueAccessor, OnDestroy  {

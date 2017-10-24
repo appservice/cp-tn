@@ -4,6 +4,7 @@ import com.codahale.metrics.annotation.Timed;
 import eu.canpack.fip.bo.estimation.dto.EstimationCriteria;
 import eu.canpack.fip.bo.estimation.dto.EstimationDTO;
 import eu.canpack.fip.bo.estimation.dto.EstimationShowDTO;
+import eu.canpack.fip.bo.operation.OperationDTO;
 import eu.canpack.fip.bo.order.enumeration.OrderType;
 import eu.canpack.fip.web.rest.util.HeaderUtil;
 import eu.canpack.fip.web.rest.util.PaginationUtil;
@@ -25,8 +26,10 @@ import java.io.*;
 import java.net.URI;
 import java.net.URISyntaxException;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * REST controller for managing Estimation.
@@ -96,6 +99,7 @@ public class EstimationResource {
     public ResponseEntity<List<EstimationDTO>> getAllEstimations(@ApiParam Pageable pageable) {
         log.debug("REST request to get a page of Estimations");
         Page<EstimationDTO> page = estimationService.findAll(pageable);
+
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/estimations");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
@@ -111,6 +115,8 @@ public class EstimationResource {
     public ResponseEntity<EstimationDTO> getEstimation(@PathVariable Long id) {
         log.debug("REST request to get Estimation : {}", id);
         EstimationDTO estimationDTO = estimationService.findOne(id);
+
+        estimationDTO.getOperations().sort(Comparator.comparing(OperationDTO::getSequenceNumber));
         return ResponseUtil.wrapOrNotFound(Optional.ofNullable(estimationDTO));
     }
 
