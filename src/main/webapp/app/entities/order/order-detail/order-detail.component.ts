@@ -95,7 +95,6 @@ export class OrderDetailComponent implements OnInit, OnDestroy {
 
     onFileArrayChange(event: Attachment[]) {
         this.attachments = event;
-        console.log('event from parent object: ', event);
     }
 
     save() {
@@ -158,7 +157,6 @@ export class OrderDetailComponent implements OnInit, OnDestroy {
             const drawing: Drawing = {id: null, attachments: []};
             this.order.estimations[row].drawing = drawing;
         }
-        console.log('clickedRow: ', row);
         this.clickedRow = row;
         this.modalService.open(content, {size: 'lg'}).result.then((result) => {
             this.closeResult = `Closed with: ${result}`;

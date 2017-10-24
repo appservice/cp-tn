@@ -10,7 +10,7 @@ import eu.canpack.fip.bo.estimation.Estimation;
 import eu.canpack.fip.bo.estimation.dto.EstimationCreateDTO;
 import eu.canpack.fip.bo.estimation.EstimationRepository;
 import eu.canpack.fip.bo.order.dto.OrderDTO;
-import eu.canpack.fip.bo.pdf.OrderSummaryPdfCreator;
+import eu.canpack.fip.bo.pdf.OrderSummary2PdfCreator;
 import eu.canpack.fip.bo.pdf.PdfUtilService;
 import eu.canpack.fip.bo.pdf.TechnologyCardPdfCreator;
 import org.springframework.core.io.InputStreamResource;
@@ -34,12 +34,13 @@ public class ProductionResource {
     private final EstimationRepository estimationRepository;
     private final PdfUtilService pdfUtilService;
     private final TechnologyCardPdfCreator technologyCardPdfCreator;
-    private final OrderSummaryPdfCreator orderSummaryPdfCreator;
+    private final OrderSummary2PdfCreator orderSummaryPdfCreator;
 
-    public ProductionResource(EstimationRepository estimationRepository, PdfUtilService pdfUtilService, TechnologyCardPdfCreator technologyCardPdfCreator, OrderSummaryPdfCreator orderSummaryPdfCreator) {
+    public ProductionResource(EstimationRepository estimationRepository, PdfUtilService pdfUtilService, TechnologyCardPdfCreator technologyCardPdfCreator, OrderSummary2PdfCreator orderSummaryPdfCreator) {
         this.estimationRepository = estimationRepository;
         this.pdfUtilService = pdfUtilService;
         this.technologyCardPdfCreator = technologyCardPdfCreator;
+
         this.orderSummaryPdfCreator = orderSummaryPdfCreator;
     }
 

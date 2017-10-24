@@ -33,7 +33,7 @@ export const operatorRoute: Routes = [
             'pagingParams': OperatorResolvePagingParams
         },
         data: {
-            authorities: ['ROLE_USER'],
+            authorities: ['ROLE_ADMIN','ROLE_MANAGER'],
             pageTitle: 'tnApp.operator.home.title'
         },
         canActivate: [UserRouteAccessService]
@@ -41,7 +41,7 @@ export const operatorRoute: Routes = [
         path: 'operator/:id',
         component: OperatorDetailComponent,
         data: {
-            authorities: ['ROLE_USER'],
+            authorities: ['ROLE_ADMIN','ROLE_MANAGER'],
             pageTitle: 'tnApp.operator.home.title'
         },
         canActivate: [UserRouteAccessService]
@@ -53,7 +53,7 @@ export const operatorPopupRoute: Routes = [
         path: 'operator-new',
         component: OperatorPopupComponent,
         data: {
-            authorities: ['ROLE_USER'],
+            authorities: ['ROLE_ADMIN','ROLE_MANAGER'],
             pageTitle: 'tnApp.operator.home.title'
         },
         canActivate: [UserRouteAccessService],
@@ -63,7 +63,7 @@ export const operatorPopupRoute: Routes = [
         path: 'operator/:id/edit',
         component: OperatorPopupComponent,
         data: {
-            authorities: ['ROLE_USER'],
+            authorities: ['ROLE_ADMIN','ROLE_MANAGER'],
             pageTitle: 'tnApp.operator.home.title'
         },
         canActivate: [UserRouteAccessService],
@@ -73,7 +73,7 @@ export const operatorPopupRoute: Routes = [
         path: 'operator/:id/delete',
         component: OperatorDeletePopupComponent,
         data: {
-            authorities: ['ROLE_USER'],
+            authorities: ['ROLE_ADMIN','ROLE_MANAGER'],
             pageTitle: 'tnApp.operator.home.title'
         },
         canActivate: [UserRouteAccessService],

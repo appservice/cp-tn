@@ -108,7 +108,6 @@ export class NewPurchaseOrderComponent implements OnInit, OnDestroy {
 
     onFileArrayChange(event: Attachment[]) {
         this.attachments = event;
-        console.log('event from parent object: ', event);
     }
 
     save() {
@@ -160,7 +159,7 @@ export class NewPurchaseOrderComponent implements OnInit, OnDestroy {
             order.internalNumber = null;
             order.inquiryId = order.id;
             order.id = null;
-           // order.name = null;
+            // order.name = null;
             order.orderType = OrderType.PRODUCTION;
             order.sapNumber = null;
             order.orderStatus = null;
@@ -188,7 +187,10 @@ export class NewPurchaseOrderComponent implements OnInit, OnDestroy {
     }
 
     openModal(content, row: number) {
-        console.log('clickedRow: ', row);
+        if (!this.order.estimations[row].drawing) {
+            const drawing: Drawing = {id: null, attachments: []};
+            this.order.estimations[row].drawing = drawing;
+        }
         this.clickedRow = row;
         this.modalService.open(content, {size: 'lg'}).result.then((result) => {
             this.closeResult = `Closed with: ${result}`;

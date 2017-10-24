@@ -69,8 +69,6 @@
                             </tr>
                             </thead>
                             <tbody>
-                            <!--            <tr *ngFor="let item of order.estimations;let i = index" tn-pre-estimation [estimation]="item"
-                                            (deleteRow)="onDeleteRow($event,i)" [rowIndex]="i" [editForm]="editForm"></tr>-->
                             <tr *ngFor="let estimation of order.estimations;let rowIndex = index">
                                 <td>{{rowIndex+1}}</td>
                                 <!--<td><input type="text" [(ngModel)]="estimation.id" class="form-control"/></td>-->
@@ -112,8 +110,7 @@
                                 <td class="text-right">{{estimation.estimatedCost*estimation.amount|currency:'PLN'}}</td>
                                 <td style="width: 100px">
 
-                                    <!--</ss-multiselect-dropdown>-->
-                                    <button class="btn" type="button" (click)="openModal(content,rowIndex)">
+                                    <button class="btn btn-outline-dark" type="button" (click)="openModal(content,rowIndex)">
                                         <strong *ngIf="estimation.drawing">{{estimation.drawing.attachments.length}}</strong>
                                         <strong *ngIf="!estimation.drawing">0</strong>
 
@@ -141,32 +138,20 @@
                                <td></td>
                             </tr>
 
-
                             </tbody>
 
                         </table>
 
-
-                        <!--<button type="button" class="btn" (click)="addEstimation();" [disabled]="isReadOnly">Dodaj do wyceny</button>-->
                     </ng-template>
                 </ngb-tab>
-                <!--<ngb-tab title="Pliki" id="2">
-                    <ng-template ngbTabContent>
-                        <tn-file-uploader (notify)="onFileArrayChange($event);"
-                                          [attachments]="attachments"></tn-file-uploader>
-                    </ng-template>
 
-                </ngb-tab>-->
             </ngb-tabset>
         </fieldset>
 
         <div class="text-center">
 
-            <!--<button class="btn btn-outline-primary " type="submit" [disabled]="editForm.form.invalid || isSaving" *ngIf="order.orderStatus =='WORKING_COPY' || order.orderStatus==null">
-                <span class="fa fa-save"></span>&nbsp;Kopia robocza
-                &lt;!&ndash;<span jhiTranslate="entity.action.save">Save</span>&ndash;&gt;
-            </button>-->
-            <button type="button" class="btn btn-outline-danger" (click)="previousState()">Powrót</button>
+
+            <button type="button" class="btn btn-outline-danger" (click)="previousState()"><span class="fa fa-arrow-left"></span> Powrót</button>
 
             <button class="btn btn-outline-primary" (click)="sendToProduction();" *ngIf="order.orderStatus =='WORKING_COPY' || order.orderStatus==null">
                 <span class="fa fa-play"></span> Wyślij do realizacji
@@ -187,7 +172,8 @@
     </div>
     <div class="modal-body">
         <tn-file-uploader (notify)="onFileArrayChange($event);"
-                          [attachments]="order.estimations[clickedRow].drawing.attachments" [isViewOnly]="isReadOnly"></tn-file-uploader>
+                          [attachments]="order.estimations[clickedRow].drawing.attachments"
+                          [isViewOnly]="isReadOnly"></tn-file-uploader>
     </div>
     <div class="modal-footer">
         <button type="button" class="btn btn-secondary" (click)="c('Close click')">Close</button>

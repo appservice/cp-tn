@@ -33,7 +33,7 @@ export const machineRoute: Routes = [
             'pagingParams': MachineResolvePagingParams
         },
         data: {
-            authorities: ['ROLE_USER'],
+            authorities: ['ROLE_ADMIN','ROLE_MANAGER'],
             pageTitle: 'tnApp.machine.home.title'
         },
         canActivate: [UserRouteAccessService]
@@ -41,7 +41,7 @@ export const machineRoute: Routes = [
         path: 'machine/:id',
         component: MachineDetailComponent,
         data: {
-            authorities: ['ROLE_USER'],
+            authorities: ['ROLE_ADMIN','ROLE_MANAGER'],
             pageTitle: 'tnApp.machine.home.title'
         },
         canActivate: [UserRouteAccessService]
@@ -53,7 +53,7 @@ export const machinePopupRoute: Routes = [
         path: 'machine-new',
         component: MachinePopupComponent,
         data: {
-            authorities: ['ROLE_USER'],
+            authorities: ['ROLE_ADMIN','ROLE_MANAGER'],
             pageTitle: 'tnApp.machine.home.title'
         },
         canActivate: [UserRouteAccessService],
@@ -63,7 +63,7 @@ export const machinePopupRoute: Routes = [
         path: 'machine/:id/edit',
         component: MachinePopupComponent,
         data: {
-            authorities: ['ROLE_USER'],
+            authorities: ['ROLE_ADMIN','ROLE_MANAGER'],
             pageTitle: 'tnApp.machine.home.title'
         },
         canActivate: [UserRouteAccessService],
@@ -73,7 +73,7 @@ export const machinePopupRoute: Routes = [
         path: 'machine/:id/delete',
         component: MachineDeletePopupComponent,
         data: {
-            authorities: ['ROLE_USER'],
+            authorities: ['ROLE_ADMIN','ROLE_MANAGER'],
             pageTitle: 'tnApp.machine.home.title'
         },
         canActivate: [UserRouteAccessService],

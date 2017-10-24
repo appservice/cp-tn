@@ -33,7 +33,7 @@ export const unitRoute: Routes = [
             'pagingParams': UnitResolvePagingParams
         },
         data: {
-            authorities: ['ROLE_USER'],
+            authorities: ['ROLE_ADMIN','ROLE_MANAGER'],
             pageTitle: 'tnApp.unit.home.title'
         },
         canActivate: [UserRouteAccessService]
@@ -41,7 +41,7 @@ export const unitRoute: Routes = [
         path: 'unit/:id',
         component: UnitDetailComponent,
         data: {
-            authorities: ['ROLE_USER'],
+            authorities: ['ROLE_ADMIN','ROLE_MANAGER'],
             pageTitle: 'tnApp.unit.home.title'
         },
         canActivate: [UserRouteAccessService]
@@ -53,7 +53,7 @@ export const unitPopupRoute: Routes = [
         path: 'unit-new',
         component: UnitPopupComponent,
         data: {
-            authorities: ['ROLE_USER'],
+            authorities: ['ROLE_ADMIN','ROLE_MANAGER'],
             pageTitle: 'tnApp.unit.home.title'
         },
         canActivate: [UserRouteAccessService],
@@ -63,7 +63,7 @@ export const unitPopupRoute: Routes = [
         path: 'unit/:id/edit',
         component: UnitPopupComponent,
         data: {
-            authorities: ['ROLE_USER'],
+            authorities: ['ROLE_ADMIN','ROLE_MANAGER'],
             pageTitle: 'tnApp.unit.home.title'
         },
         canActivate: [UserRouteAccessService],
@@ -73,7 +73,7 @@ export const unitPopupRoute: Routes = [
         path: 'unit/:id/delete',
         component: UnitDeletePopupComponent,
         data: {
-            authorities: ['ROLE_USER'],
+            authorities: ['ROLE_ADMIN','ROLE_MANAGER'],
             pageTitle: 'tnApp.unit.home.title'
         },
         canActivate: [UserRouteAccessService],

@@ -134,7 +134,6 @@
                                 </td>
                                 <td style="width: 100px">
 
-                                    <!--</ss-multiselect-dropdown>-->
                                     <button class="btn btn-outline-dark" type="button" (click)="openModal(content,rowIndex)">
                                         <strong *ngIf="!estimation.drawing">0</strong>
                                         <strong *ngIf="estimation.drawing">{{estimation.drawing.attachments.length}}</strong>
@@ -163,13 +162,7 @@
                         <button type="button" class="btn btn-outline-dark" (click)="addEstimation();" [disabled]="isReadOnly">Dodaj do wyceny</button>
                     </ng-template>
                 </ngb-tab>
-                <!--<ngb-tab title="Pliki" id="2">
-                    <ng-template ngbTabContent>
-                        <tn-file-uploader (notify)="onFileArrayChange($event);"
-                                          [attachments]="attachments"></tn-file-uploader>
-                    </ng-template>
 
-                </ngb-tab>-->
             </ngb-tabset>
         </fieldset>
 
@@ -178,9 +171,8 @@
             <button class="btn btn-outline-primary " type="submit" [disabled]="editForm.form.invalid || isSaving"
                     *ngIf="order.orderStatus =='WORKING_COPY' || order.orderStatus==null">
                 <span class="fa fa-save"></span>&nbsp;Kopia robocza
-                <!--<span jhiTranslate="entity.action.save">Save</span>-->
             </button>
-            <button type="button" class="btn btn-outline-danger" (click)="previousState()">Powrót</button>
+            <button type="button" class="btn btn-outline-danger" (click)="previousState()"><span class="fa fa-arrow-left"></span> Powrót</button>
 
             <button class="btn btn-outline-primary" (click)="sendToEstimation();" *ngIf="order.orderStatus =='WORKING_COPY' || order.orderStatus==null"
                     [disabled]="editForm.form.invalid || isSaving">

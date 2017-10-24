@@ -87,7 +87,7 @@ export const orderRoute: Routes = [
         path: 'order/:id/edit',
         component: NewOrderComponent,
         data: {
-            authorities: ['ROLE_USER'],
+            authorities: ['ROLE_ORDER_INTRODUCER','ROLE_MANAGER'],
             pageTitle: 'tn.order.purchaseOrders'
         },
         canActivate: [UserRouteAccessService]
@@ -96,7 +96,7 @@ export const orderRoute: Routes = [
         path: 'new-order',
         component: NewOrderComponent, // OrderPopupComponent,
         data: {
-            authorities: ['ROLE_USER'],
+            authorities: ['ROLE_ORDER_INTRODUCER','ROLE_MANAGER'],
             pageTitle: 'tnApp.order.home.title'
         },
         canActivate: [UserRouteAccessService]
@@ -105,7 +105,7 @@ export const orderRoute: Routes = [
         path: 'new-purchase-order',
         component: NewPurchaseOrderComponent, // OrderPopupComponent,
         data: {
-            authorities: ['ROLE_USER'],
+            authorities: ['ROLE_ORDER_INTRODUCER','ROLE_MANAGER'],
             pageTitle: 'tnApp.order.home.title'
         },
         canActivate: [UserRouteAccessService]
@@ -114,7 +114,7 @@ export const orderRoute: Routes = [
         path: 'purchase-order/:id/edit',
         component: NewPurchaseOrderComponent, // OrderPopupComponent,
         data: {
-            authorities: ['ROLE_USER'],
+            authorities: ['ROLE_ORDER_INTRODUCER','ROLE_MANAGER'],
             pageTitle: 'tnApp.order.home.title'
         },
         canActivate: [UserRouteAccessService]
