@@ -1,0 +1,18 @@
+<h3>
+    Switch user
+</h3>
+
+<form name="editForm" role="form" novalidate (ngSubmit)="impersonate()" #editForm="ngForm">
+
+    <div class="row">
+        <div class="col-md-4">
+            <input class="form-control" type="text" [(ngModel)]="impersonateLogin" name="userName"/>
+        </div>
+
+
+    <div class="col-md-3">
+        <button class="btn btn-outline-dark" type="submit">ok</button>
+    </div>
+    </div>
+
+</form>

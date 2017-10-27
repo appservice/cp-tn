@@ -8,6 +8,7 @@ import {
     registerRoute,
     settingsRoute
 } from './';
+import {swichUserRoute} from './switch-user/switch-user.route';
 
 const ACCOUNT_ROUTES = [
     activateRoute,
@@ -15,7 +16,8 @@ const ACCOUNT_ROUTES = [
     passwordResetFinishRoute,
     passwordResetInitRoute,
     registerRoute,
-    settingsRoute
+    settingsRoute,
+    swichUserRoute,
 ];
 
 export const accountState: Routes = [{

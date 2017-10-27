@@ -14,6 +14,8 @@ public final class AuthoritiesConstants {
     public static final String TECHNOLOGIST = "ROLE_TECHNOLOGIST";
     public static final String SAP_INTRODUCER = "ROLE_SAP_INTRODUCER";
 
+    public static final String ROLE_DEV = "ROLE_DEV";
+
     private AuthoritiesConstants() {
     }
 }

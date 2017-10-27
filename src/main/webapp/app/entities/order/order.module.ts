@@ -36,6 +36,7 @@ import { NgxMyDatePickerModule } from 'ngx-mydatepicker';
 import {ExcelService} from '../../tn-components/excel.service';
 import {InquiryItemFinderComponent} from './inquiry-item-finder/inquiry-item-finder.component';
 import {MyDatePickerModule} from 'mydatepicker';
+import {PurchaseOrderItemFinderComponent} from './purchase-order-item-finder/purchase-order-item-finder.component';
 
 
 const ENTITY_STATES = [
@@ -74,6 +75,7 @@ const ENTITY_STATES = [
         PurchaseOrderDetailComponent,
         OrderSpreedSheetComponent,
         InquiryItemFinderComponent,
+        PurchaseOrderItemFinderComponent,
 
 
     ],

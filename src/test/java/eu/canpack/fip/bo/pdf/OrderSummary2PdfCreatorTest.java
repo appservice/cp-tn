@@ -25,7 +25,7 @@ import java.time.ZonedDateTime;
  * Created by lukasz.mochel on 20.08.2017.
  */
 public class OrderSummary2PdfCreatorTest {
-    public static final String RESULT = "order_summary2.pdf";
+    public static final String RESULT = "order_summary3.pdf";
     private static final Logger log = LoggerFactory.getLogger(OrderSummaryPdfCreatorTest.class);
     private OrderSummary2PdfCreator pdfCreator;
 

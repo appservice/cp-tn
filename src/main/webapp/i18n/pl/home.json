@@ -1,9 +1,9 @@
 {
     "home": {
-        "title": "Narzędziownia!",
+        "title": "CP FIP Oddział Narzędziownia",
         "subtitle": "Strona domowa",
         "logged": {
-            "message": "Jesteś zalogowany jako użytkownik \"{{username}}\"."
+            "message": "Jesteś zalogowany jako użytkownik: "
         }
     }
 }

@@ -63,14 +63,15 @@ Logo styles
 ========================================================================== */
 .navbar-brand {
     &.logo {
-        padding: 5px 15px;
+        padding: 5px 0;
         .logo-img {
             height: 45px;
-            width: 70px;
+            width: 50px;
             display: inline-block;
             vertical-align: middle;
-            background: url("../../../content/images/Pinion_gear_Icon_96.png") no-repeat center center;
+            background: url("../../../content/images/logo_fip.jpg") left no-repeat;
             background-size: contain;
         }
     }
 }
+/*, url("../../../content/images/tn-logo2.png") right no-repeat */

@@ -182,7 +182,18 @@ public class EstimationResource {
         }
         estimationCriteria.getOrderTypeFilter().setEquals(OrderType.ESTIMATION);
         Page<EstimationShowDTO> page = estimationService.getAllInquiriesByCriteriaAndClient(estimationCriteria, pageable);
-        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "api/inquiry-item-finder");
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "api/estimations/inquiry-item-finder");
+        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+
+    }
+    @GetMapping("/estimations/purchase-order-item-finder")
+    public ResponseEntity<List<EstimationShowDTO>> findPurchaseOrderByCriteria(EstimationCriteria estimationCriteria,@ApiParam Pageable pageable){
+        if(estimationCriteria.getOrderTypeFilter()==null){
+            estimationCriteria.setOrderTypeFilter(new EstimationCriteria.OrderTypeFilter());
+        }
+        estimationCriteria.getOrderTypeFilter().setEquals(OrderType.PRODUCTION);
+        Page<EstimationShowDTO> page = estimationService.getAllInquiriesByCriteriaAndClient(estimationCriteria, pageable);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "api/estimations/inquiry-item-finder");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
 
     }

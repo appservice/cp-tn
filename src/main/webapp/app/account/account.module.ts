@@ -18,6 +18,7 @@ import {
     SettingsComponent,
     accountState
 } from './';
+import {SwitchUserComponent} from './switch-user/switch-user.component';
 
 @NgModule({
     imports: [
@@ -31,7 +32,8 @@ import {
         PasswordStrengthBarComponent,
         PasswordResetInitComponent,
         PasswordResetFinishComponent,
-        SettingsComponent
+        SettingsComponent,
+        SwitchUserComponent
     ],
     providers: [
         Register,

@@ -18,6 +18,7 @@ import java.awt.*;
 import java.io.OutputStream;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
+import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.List;
@@ -42,8 +43,9 @@ public class OrderSummary2PdfCreator {
 
 
     public void createPdf(Order order, List<Estimation> estimations, OutputStream os) {
-        Document doc = new Document(PageSize.A4);
+        Document doc = new Document(PageSize.A4.rotate());
         try {
+
             PdfWriter writer = PdfWriter.getInstance(doc, os);
             PageNumeration event = new PageNumeration("Zlecenie " + order.getInternalNumber());
             writer.setPageEvent(event);
@@ -59,7 +61,7 @@ public class OrderSummary2PdfCreator {
             doc.add(orderNumberPgh);
 
 
-            doc.add(new Paragraph(" "));
+            doc.add(new Paragraph(" ",new Font(baseFont)));
 
             Paragraph paragraph = createParagraphWith2Fonts("Klient: ", order.getClient().getName());
             paragraph.setAlignment(Element.ALIGN_CENTER);
@@ -70,47 +72,14 @@ public class OrderSummary2PdfCreator {
                 doc.add(paragraph);
             }
             doc.add(new Paragraph(" "));
+
+
             doc.add(new Paragraph(" "));
+            doc.add(new Paragraph("Data wydruku: "+LocalDate.now().format(dateFormatter)));
             doc.add(new Paragraph(" "));
 
-            int i = 1;
-            for (Estimation estimation : estimations) {
-                StringBuilder detal = new StringBuilder();
-                if (estimation.getItemNumber() != null) {
-                    detal.append(estimation.getItemNumber()).append(" ");
-                }
-                detal.append(estimation.getItemName());
+            doc.add(prepareTableOfOperation(estimations));
 
-                doc.add(createParagraphWith2Fonts(i + ". Przedmiot: ", detal.toString()));
-
-
-                StringBuilder paragraph2 = new StringBuilder("     ilość: " + estimation.getAmount() + " szt");
-                if (estimation.getEstimatedRealizationDate() != null) {
-                    paragraph2.append(", ").append("termin realizacji: ").append(estimation.getEstimatedRealizationDate().format(dateFormatter));
-                }
-                paragraph2.append(",");
-                doc.add(new Paragraph(paragraph2.toString(), new Font(baseFont)));
-
-                if (!estimation.getOperations().isEmpty()) {
-                    StringBuilder sb = new StringBuilder("     szacowana ilość roboczogodzin/szt: ");
-                    sb.append(formatBigDecimal(calculateWorkingHourPerItem(estimation))).append(" godz., ");
-                    sb.append("suma roboczogodzin: ");
-                    sb.append(formatBigDecimal(calculateWorkingHourPerItem(estimation)
-                                                   .multiply(new BigDecimal(estimation.getAmount()))));
-                    sb.append(" godz.");
-
-
-                    doc.add(new Paragraph(sb.toString(), new Font(baseFont)));
-                }
-
-                doc.add(new Paragraph(" "));
-//                PdfPTable pdfPTable = prepareTableOfOperation(estimation);
-
-//                doc.add(pdfPTable);
-//                doc.newPage();
-                i++;
-
-            }
 
             doc.close();
 
@@ -128,47 +97,68 @@ public class OrderSummary2PdfCreator {
     }
 
 
-    /*private PdfPTable prepareTableOfOperation(Estimation estimation) {
-        PdfPTable pdfPTable = new PdfPTable(new float[]{1, 6,1,1});
+    private PdfPTable prepareTableOfOperation(List<Estimation> estimations) {
+        PdfPTable pdfPTable = new PdfPTable(new float[]{0.5f, 6, 1, 1.5f, 1, 1, 1.5f, 1.5f});
         pdfPTable.setWidthPercentage(100);
-        pdfPTable.addCell(createLabelCell("Lp"));
-        pdfPTable.addCell(createLabelCell("Miejsce operacji"));
-        pdfPTable.addCell(createLabelCell("Ilość godz./szt"));
-        pdfPTable.addCell(createLabelCell("Ilość godz."));
-        BigDecimal numberOfHour=BigDecimal.ZERO;
-        for (Operation op : estimation.getOperations()) {
-            PdfPCell cell = createValueCell(String.valueOf(op.getSequenceNumber()));
-            cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+        pdfPTable.addCell(createLabelCell(""));
+        pdfPTable.addCell(createLabelCell("Przedmiot"));
+        pdfPTable.addCell(createLabelCell("Ilość"));
+        pdfPTable.addCell(createLabelCell("Termin wyk."));
+        pdfPTable.addCell(createLabelCell("Rbh/szt"));
+        pdfPTable.addCell(createLabelCell("\u2211 Rbh"));
+        pdfPTable.addCell(createLabelCell("Data odb."));
+        pdfPTable.addCell(createLabelCell("Odebrał"));
+
+
+        int counter = 1;
+        for (Estimation estimation : estimations) {
+
+
+            PdfPCell cell;
+
+            //LP
+            cell = createValueCell(String.valueOf(counter));
             pdfPTable.addCell(cell);
 
-            pdfPTable.addCell(createValueCell(op.getMachine().getName()));
+            //nazwa
+            StringBuilder detal = new StringBuilder();
+            if (estimation.getItemNumber() != null) {
+                detal.append(estimation.getItemNumber()).append(" ");
+            }
+            detal.append(estimation.getItemName());
 
-            cell = createValueCell(formatBigDecimal(op.getEstimatedTime()).replace(".",","));
-            cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+            cell = createValueCell(detal.toString());
+            cell.setHorizontalAlignment(Element.ALIGN_LEFT);
             pdfPTable.addCell(cell);
 
-            BigDecimal bdMultipled=op.getEstimatedTime().multiply(new BigDecimal(estimation.getAmount()));
-
-            cell = createValueCell(formatBigDecimal(bdMultipled).replace(".",","));
-            cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+            //ilość
+            cell = createValueCell(String.valueOf(estimation.getAmount()));
             pdfPTable.addCell(cell);
-           numberOfHour= numberOfHour.add(bdMultipled);
+
+            //data realizacji
+            StringBuilder amountSb = new StringBuilder("");
+            if (estimation.getEstimatedRealizationDate() != null) {
+                amountSb.append(estimation.getEstimatedRealizationDate().format(dateFormatter));
+            }
+            cell = createValueCell(amountSb.toString());
+            pdfPTable.addCell(cell);
+
+            cell = createValueCell(formatBigDecimal(calculateWorkingHourPerItem(estimation)));
+            pdfPTable.addCell(cell);
+
+            BigDecimal sumOfWhorkingHours = calculateWorkingHourPerItem(estimation).multiply(new BigDecimal(estimation.getAmount()));
+            cell = createValueCell(formatBigDecimal(sumOfWhorkingHours));
+            pdfPTable.addCell(cell);
+
+            pdfPTable.addCell("");
+            pdfPTable.addCell("");
+
+            counter++;
         }
 
-        Font font = new Font(baseFont, 12, Font.BOLD);
-        PdfPCell cell = new PdfPCell(new Phrase("Suma: ",font));
-        cell.setColspan(3);
-        cell.setPaddingBottom(5);
-        cell.setHorizontalAlignment(Element.ALIGN_RIGHT);
-        pdfPTable.addCell(cell);
-
-        cell=new PdfPCell(new Phrase(formatBigDecimal(numberOfHour).replace(".",","),font));
-        cell.setHorizontalAlignment(Element.ALIGN_CENTER);
-        cell.setBackgroundColor(Color.LIGHT_GRAY);
-        pdfPTable.addCell(cell);
 
         return pdfPTable;
-    }*/
+    }
 
 
     // create cells
@@ -206,8 +196,9 @@ public class OrderSummary2PdfCreator {
         Font font = new Font(baseFont, 12, Font.NORMAL, Color.BLACK);
 
         PdfPCell cell = new PdfPCell(new Phrase(text, font));
-        cell.setPaddingBottom(5f);
-
+        cell.setPadding(5f);
+        cell.setPaddingBottom(10f);
+        cell.setHorizontalAlignment(Element.ALIGN_CENTER);
 
         return cell;
     }

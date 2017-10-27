@@ -9,6 +9,8 @@ import { JhiLanguageHelper } from '../../shared';
 })
 export class JhiMainComponent implements OnInit {
 
+    isHomeRoute:boolean;
+
     constructor(
         private jhiLanguageHelper: JhiLanguageHelper,
         private router: Router
@@ -26,7 +28,10 @@ export class JhiMainComponent implements OnInit {
         this.router.events.subscribe((event) => {
             if (event instanceof NavigationEnd) {
                 this.jhiLanguageHelper.updateTitle(this.getPageTitle(this.router.routerState.snapshot.root));
+               this.isHomeRoute= this.router.url=='/'
+
             }
         });
     }
+
 }

@@ -7,7 +7,7 @@
         </a>
         <a class="navbar-brand logo float-left" routerLink="/" (click)="collapseNavbar()">
             <span class="logo-img"></span>
-            <span jhiTranslate="global.title" class="navbar-title">Tn</span> <span
+            <span  class="navbar-title">Narzędziownia</span> <span
             class="navbar-version">{{version}}</span>
         </a>
     </div>
@@ -58,7 +58,7 @@
                         </a>
                     </li>
                     <li>
-                        <a class="dropdown-item"  routerLinkActive="active"
+                        <a class="dropdown-item" routerLink="purchase-order-item-finder"  routerLinkActive="active"
                            [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
                             <i class="fa fa-fw fa-search" aria-hidden="true"></i>
                             <span>Szukaj zamówienie po detalu</span>
@@ -112,13 +112,13 @@
                     <li>
                         <a class="dropdown-item" routerLink="archived-orders" routerLinkActive="active"
                            [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
-                            <i class="fa fa-fw fa-asterisk" aria-hidden="true"></i>
-                            <span>Wyceny archivalne</span>
+                            <i class="fa fa-fw fa-archive" aria-hidden="true"></i>
+                            <span>Wyceny archiwalne</span>
                         </a>
                     </li>
                 </ul>
             </li>
-            <li *jhiHasAnyAuthority="['ROLE_TECHNOLOGIST','ROLE_MANAGER']" ngbDropdown class="nav-item dropdown pointer"
+            <li *jhiHasAnyAuthority="['ROLE_TECHNOLOGIST','ROLE_MANAGER','ROLE_SAP_INTRODUCER']" ngbDropdown class="nav-item dropdown pointer"
                 routerLinkActive="active"
                 [routerLinkActiveOptions]="{exact: true}">
                 <a class="nav-link dropdown-toggle" ngbDropdownToggle href="javascript:void(0);" id="production-menu">
@@ -139,9 +139,9 @@
                         </a>
                     </li>
                     <li>
-                        <a class="dropdown-item" routerLink="production" routerLinkActive="active"
+                        <a *jhiHasAnyAuthority="['ROLE_TECHNOLOGIST','ROLE_MANAGER']" class="dropdown-item" routerLink="production" routerLinkActive="active"
                            [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
-                            <i class="fa fa-fw fa-asterisk" aria-hidden="true"></i>
+                            <i class="fa fa-fw fa-line-chart" aria-hidden="true"></i>
                             <span>Aktulanie w produkcji</span>
                         </a>
                     </li>
@@ -151,7 +151,7 @@
             </li>
 
 
-            <li *jhiHasAnyAuthority="['ROLE_TECHNOLOGIST','ROLE_MANAGER']" class="nav-item" routerLinkActive="active"
+            <li *jhiHasAnyAuthority="['ROLE_TECHNOLOGIST','ROLE_MANAGER','ROLE_SAP_INTRODUCER']" class="nav-item" routerLinkActive="active"
                 [routerLinkActiveOptions]="{exact: true}">
                 <a class="nav-link" routerLink="client" routerLinkActive="active"
                    [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
@@ -176,14 +176,14 @@
                     <li>
                         <a class="dropdown-item" routerLink="drawing" routerLinkActive="active"
                            [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
-                            <i class="fa fa-fw fa-asterisk" aria-hidden="true"></i>
+                            <i class="fa fa-fw fa-file-image-o" aria-hidden="true"></i>
                             <span jhiTranslate="global.menu.entities.drawing">Drawing</span>
                         </a>
                     </li>
                     <li>
                         <a class="dropdown-item" routerLink="technology-card" routerLinkActive="active"
                            [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
-                            <i class="fa fa-fw fa-asterisk" aria-hidden="true"></i>
+                            <i class="fa fa-fw fa-text-width" aria-hidden="true"></i>
                             <span jhiTranslate="global.menu.entities.technologyCard">Technology Card</span>
                         </a>
                     </li>

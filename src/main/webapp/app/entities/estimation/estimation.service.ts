@@ -120,4 +120,13 @@ export class EstimationService {
             .map((res: Response) => this.convertResponse(res));
     }
 
+    findPurchaseORderByCriteria(req?: any, urlSearchParams?: URLSearchParams): Observable<ResponseWrapper> {
+        const options = createRequestOption(req);
+        if (urlSearchParams) {
+            options.params.appendAll(urlSearchParams);
+        }
+        return this.http.get(this.resourceUrl + '/purchase-order-item-finder', options)
+            .map((res: Response) => this.convertResponse(res));
+    }
+
 }

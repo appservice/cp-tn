@@ -4,12 +4,18 @@ Main page styles
 ========================================================================== */
 
 .hipster {
-    display: inline-block;
-    width: 347px;
-    height: 497px;
-    background: url("../../content/images/Pinion_gear_Icon_256.png") no-repeat center top;
-    background-size: contain;
+    //display: inline-block;
+    //width: 347px;
+    //height: 497px;
+    //background: url("../../content/images/tlo.jpg") no-repeat center top;
+    //background-size: contain;
 }
+
+.main-page-background {
+    background: url("../../content/images/tlo.jpg") no-repeat center top;
+
+}
+
 
 /* wait autoprefixer update to allow simple generation of high pixel density media query */
 @media
@@ -20,7 +26,7 @@ only screen and (        min-device-pixel-ratio: 2),
 only screen and (                min-resolution: 192dpi),
 only screen and (                min-resolution: 2dppx) {
     .hipster {
-        background: url("../../content/images/Pinion_gear_Icon_256.png") no-repeat center top;
+        background: url("../../content/images/tlo.jpg") no-repeat center top;
         background-size: contain;
     }
 }

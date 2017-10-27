@@ -167,7 +167,7 @@ public class TechnologyCardPdfCreator {
         for (Operation operation : estimation.getOperations()) {
             Image image = barcodeImage(operation.getId());
 
-            addRowTable2(table, String.valueOf(operation.getSequenceNumber()), operation.getMachine().getShortcut(), image, operation.getDescription());
+            addRowTable2(table, String.valueOf(operation.getSequenceNumber()), operation.getMachine().getName(), image, operation.getDescription());
             i++;
         }
 
