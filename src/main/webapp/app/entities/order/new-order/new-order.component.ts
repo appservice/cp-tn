@@ -36,6 +36,8 @@ export class NewOrderComponent implements OnInit, OnDestroy {
     closeResult: string;
     clickedRow: number;
     isReadOnly: boolean = false;
+    editForm
+    isDrawingUpload: boolean;
 
     dropdownList = [];
 
@@ -120,6 +122,7 @@ export class NewOrderComponent implements OnInit, OnDestroy {
     onFileArrayChange(event: Attachment[]) {
         this.attachments = event;
         console.log('event from parent object: ', event);
+        this.isDrawingUpload=event.length>0;
 
     }
 

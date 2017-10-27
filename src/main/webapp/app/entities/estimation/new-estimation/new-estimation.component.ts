@@ -359,18 +359,18 @@ export class NewEstimationComponent implements OnInit, OnDestroy {
 
     private insertOperationFromTechnologyCard(technologyCard: TechnologyCard): void {
         console.log(technologyCard);
-        if(!this.estimation.material|| this.estimation.material==null){
-            this.estimation.material=technologyCard.material;
+        if (!this.estimation.material || this.estimation.material == null) {
+            this.estimation.material = technologyCard.material;
 
         }
         for (let operation of technologyCard.operations) {
-            let newOperation=new Operation();
-            newOperation.description=operation.description;
-            newOperation.estimatedTime=operation.estimatedTime;
-            let machines=this.machines.filter(m=>m.id===operation.machine.id);
+            let newOperation = new Operation();
+            newOperation.description = operation.description;
+            newOperation.estimatedTime = operation.estimatedTime;
+            let machines = this.machines.filter(m => m.id === operation.machine.id);
 
-            newOperation.machine=machines[0];
-            newOperation.sequenceNumber=operation.sequenceNumber;
+            newOperation.machine = machines[0];
+            newOperation.sequenceNumber = operation.sequenceNumber;
 
             this.estimation.operations.push(newOperation);
 
@@ -394,7 +394,7 @@ export class NewEstimationComponent implements OnInit, OnDestroy {
         //
     }
 
-    clonePriceFromSummary(){
-        this.estimation.estimatedCost=this.calculateTotal()+this.calculateDiscount();
+    clonePriceFromSummary() {
+        this.estimation.estimatedCost = this.calculateTotal() + this.calculateDiscount();
     }
 }

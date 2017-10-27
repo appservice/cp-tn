@@ -1,17 +1,20 @@
-import { Injectable } from '@angular/core';
-import { Http, Response } from '@angular/http';
-import { Observable } from 'rxjs/Rx';
+import {Injectable} from '@angular/core';
+import {BaseRequestOptions, Http, Response, URLSearchParams} from '@angular/http';
+import {Observable} from 'rxjs/Rx';
 
-import { SERVER_API_URL } from '../../app.constants';
-import { User } from './user.model';
-import { ResponseWrapper } from '../model/response-wrapper.model';
-import { createRequestOption } from '../model/request-util';
+import {SERVER_API_URL} from '../../app.constants';
+import {User} from './user.model';
+import {ResponseWrapper} from '../model/response-wrapper.model';
+import {createRequestOption} from '../model/request-util';
 
 @Injectable()
 export class UserService {
     private resourceUrl = SERVER_API_URL + 'api/users';
+    private resourceSearchBySentenceUrl = 'api/users/by-sentence';
 
-    constructor(private http: Http) { }
+
+    constructor(private http: Http) {
+    }
 
     create(user: User): Observable<ResponseWrapper> {
         return this.http.post(this.resourceUrl, user)
@@ -47,5 +50,17 @@ export class UserService {
     private convertResponse(res: Response): ResponseWrapper {
         const jsonResponse = res.json();
         return new ResponseWrapper(res.headers, jsonResponse, res.status);
+    }
+
+
+    searchBySentence(sentence: string): Observable<ResponseWrapper> {
+        const options: BaseRequestOptions = new BaseRequestOptions();
+        const params: URLSearchParams = new URLSearchParams();
+        params.set('sentence', sentence);
+        options.params = params;
+
+        // const options = createRequestOption(req);
+        return this.http.get(this.resourceSearchBySentenceUrl, options)
+            .map((res: any) => this.convertResponse(res).json);
     }
 }

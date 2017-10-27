@@ -16,25 +16,23 @@
                 </div>
                 <div class="col-lg-2">
                     <label for="title_external_number_field">Nr. ref</label>
-                    <input type="text" id="title_external_number_field" class="form-control" name="title"
-                           [(ngModel)]="order.referenceNumber" [disabled]="isReadOnly"/>
-                </div>
-                <div class="col-lg-2">
-                    <label for="title_field">Tytuł</label>
-                    <input type="text" id="title_field" class="form-control" name="title" [(ngModel)]="order.name" [disabled]="isReadOnly"/>
-                </div>
-                <!--<div class="col-lg-2">
-                    <label for="sap_number_field">Nr SAP</label>
-                    <input type="text" id="sap_number_field" class="form-control" name="sap_number"
-                           [(ngModel)]="order.sapNumber"  [disabled]="isReadOnly"/>
-                    &lt;!&ndash;<div [hidden]="!(editForm.controls.sap_number?.dirty && editForm.controls.sap_number?.invalid)">
+                    <input type="text" id="title_external_number_field" class="form-control" name="referenceNumber"
+                           [(ngModel)]="order.referenceNumber" [disabled]="isReadOnly" required/>
+                    <div [hidden]="!(editForm.controls.referenceNumber?.dirty && editForm.controls.referenceNumber?.invalid)">
                         <small class="form-text text-danger"
-                               [hidden]="!editForm.controls.sap_number?.errors?.required"
+                               [hidden]="!editForm.controls.referenceNumber?.errors?.required"
                                jhiTranslate="entity.validation.required">
                             This field is required.
                         </small>
-                    </div>&ndash;&gt;
-                </div>-->
+                    </div>
+                </div>
+                <div class="col-lg-2">
+                    <label for="title_field">Tytuł</label>
+                    <input type="text" id="title_field" class="form-control" name="name" [(ngModel)]="order.name" [disabled]="isReadOnly"/>
+
+                </div>
+
+
                 <div class="form-group col-lg-2">
                     <label for="field_client">Klient</label>
                     <select class="form-control" id="field_client" name="client" [(ngModel)]="order.clientId" required [disabled]="isReadOnly">
@@ -82,19 +80,18 @@
                             </tr>
                             </thead>
                             <tbody>
-                            <!--            <tr *ngFor="let item of order.estimations;let i = index" tn-pre-estimation [estimation]="item"
-                                            (deleteRow)="onDeleteRow($event,i)" [rowIndex]="i" [editForm]="editForm"></tr>-->
+
                             <tr *ngFor="let estimation of order.estimations;let rowIndex = index">
                                 <td>{{rowIndex+1}}</td>
                                 <!--<td><input type="text" [(ngModel)]="estimation.id" class="form-control"/></td>-->
                                 <td>
                                     <input type="text" class="form-control" [(ngModel)]="estimation.itemName"
 
-                                           name="estimation_itemName_{{rowIndex}}" required [disabled]="isReadOnly">
+                                           name="estimation_itemName_{{rowIndex}}" required [disabled]="isReadOnly" #itemName="ngModel">
                                     <div
-                                        [hidden]="!(editForm.controls.estimation_itemName?.dirty && editForm.controls.estimation_itemName.invalid)">
+                                        [hidden]="!(itemName?.dirty && itemName.invalid)">
                                         <small class="form-text text-danger"
-                                               [hidden]="!editForm.controls.estimation_itemName?.errors?.required"
+                                               [hidden]="!itemName?.errors?.required"
                                                jhiTranslate="entity.validation.required">
                                             This field is required.
                                         </small>
@@ -106,11 +103,11 @@
                                 </td>
                                 <td style="max-width: 80px">
                                     <input type="text" class="form-control" [(ngModel)]="estimation.amount"
-                                           name="estimation_amount_{{rowIndex}}" required [disabled]="isReadOnly"/>
+                                           name="estimation_amount_{{rowIndex}}" required [disabled]="isReadOnly" #amount="ngModel"/>
                                     <div
-                                        [hidden]="!(editForm.controls.estimation_amount?.dirty && editForm.controls.estimation_amount?.invalid)">
+                                        [hidden]="!(amount?.dirty && amount?.invalid)">
                                         <small class="form-text text-danger"
-                                               [hidden]="!editForm.controls.estimation_amount?.errors?.required"
+                                               [hidden]="!amount.errors?.required"
                                                jhiTranslate="entity.validation.required">
                                             This field is required.
                                         </small>
@@ -124,17 +121,27 @@
                                             <input id="field_closeDate" type="text" class="form-control"
                                                    name="estimation_realization_date_{{rowIndex}}"
                                                    ngbDatepicker #realizationDateDp="ngbDatepicker"
-                                                   [(ngModel)]="estimation.neededRealizationDate" [disabled]="isReadOnly"/>
+                                                   [(ngModel)]="estimation.neededRealizationDate" [disabled]="isReadOnly" required #neededRealisationDate="ngModel"/>
                                             <span class="input-group-btn">
-                    <button type="button" class="btn btn-default" (click)="realizationDateDp.toggle()"
-                            (keyup)="realizationDateDp.toggle()" [disabled]="isReadOnly"><i class="fa fa-calendar"></i></button>
-                </span>
+                                             <button type="button" class="btn btn-default" (click)="realizationDateDp.toggle()" (keyup)="realizationDateDp.toggle()"
+                                                     [disabled]="isReadOnly"><i class="fa fa-calendar"></i></button>
+                                             </span>
+                                        </div>
+                                        <div
+                                            [hidden]="!(neededRealisationDate?.dirty && neededRealisationDate?.invalid)">
+                                            <small class="form-text text-danger"
+                                                   [hidden]="!neededRealisationDate?.errors?.required"
+                                                   jhiTranslate="entity.validation.required">
+                                                This field is required.
+                                            </small>
                                         </div>
                                     </div>
                                 </td>
                                 <td style="width: 100px">
 
-                                    <button class="btn btn-outline-dark" type="button" (click)="openModal(content,rowIndex)">
+                                    <button class="btn " type="button" (click)="openModal(content,rowIndex)"
+                                            [ngClass]="{'btn-outline-danger':!isDrawingUpload,'btn-outline-dark': isDrawingUpload}"
+                                            ngbTooltip="Załączenie rysunku jest wymagane">
                                         <strong *ngIf="!estimation.drawing">0</strong>
                                         <strong *ngIf="estimation.drawing">{{estimation.drawing.attachments.length}}</strong>
                                         <i class="fa fa-paperclip"></i>
@@ -168,14 +175,14 @@
 
         <div class="text-center">
 
-            <button class="btn btn-outline-primary " type="submit" [disabled]="editForm.form.invalid || isSaving"
+            <button class="btn btn-outline-primary " type="submit" [disabled]="editForm.form.invalid || isSaving|| !isDrawingUpload || order.estimations.length===0"
                     *ngIf="order.orderStatus =='WORKING_COPY' || order.orderStatus==null">
                 <span class="fa fa-save"></span>&nbsp;Kopia robocza
             </button>
             <button type="button" class="btn btn-outline-danger" (click)="previousState()"><span class="fa fa-arrow-left"></span> Powrót</button>
 
             <button class="btn btn-outline-primary" (click)="sendToEstimation();" *ngIf="order.orderStatus =='WORKING_COPY' || order.orderStatus==null"
-                    [disabled]="editForm.form.invalid || isSaving">
+                    [disabled]="editForm.form.invalid || isSaving || !isDrawingUpload || order.estimations.length===0">
                 <span class="fa fa-play"></span> Wyślij do wyceny
             </button>
         </div>

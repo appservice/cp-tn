@@ -7,7 +7,7 @@
         </a>
         <a class="navbar-brand logo float-left" routerLink="/" (click)="collapseNavbar()">
             <span class="logo-img"></span>
-            <span  class="navbar-title">Narzędziownia</span> <span
+            <span class="navbar-title">Narzędziownia</span> <span
             class="navbar-version">{{version}}</span>
         </a>
     </div>
@@ -58,10 +58,26 @@
                         </a>
                     </li>
                     <li>
-                        <a class="dropdown-item" routerLink="purchase-order-item-finder"  routerLinkActive="active"
+                        <a class="dropdown-item" routerLink="purchase-order-item-finder" routerLinkActive="active"
                            [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
                             <i class="fa fa-fw fa-search" aria-hidden="true"></i>
                             <span>Szukaj zamówienie po detalu</span>
+                        </a>
+                    </li>
+                    <li>
+                        <hr/>
+                    </li>
+                    <li>
+                        <a class="dropdown-item"  routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
+                            <i class="fa fa-fw fa-exclamation-triangle text-danger" aria-hidden="true"></i>
+                            <span>Zlecenia awaryjne</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="dropdown-item"  routerLinkActive="active"
+                           [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
+                            <i class="fa fa-fw fa-search" aria-hidden="true"></i>
+                            <span>Szukaj zlec. awaryjne po detalu</span>
                         </a>
                     </li>
 
@@ -203,7 +219,7 @@
                 <ul class="dropdown-menu" ngbDropdownMenu>
                     <li>
                         <a class="dropdown-item" routerLink="operator" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
-                            <i class="fa fa-fw fa-asterisk" aria-hidden="true"></i>
+                            <i class="fa fa-fw fa-id-card" aria-hidden="true"></i>
                             <span jhiTranslate="global.menu.entities.operator">Operator</span>
                         </a>
                     </li>

@@ -8,8 +8,8 @@ export class OrderFilter {
                 public internalNumber?: string,
                 public orderStatus?: string,
                 public clientName?: string,
-                public  validFrom?: IMyDateModel,
-                public  validTo?: IMyDateModel//NgbDateStruct,
+                public  validFrom?:NgbDateStruct,// IMyDateModel,
+                public  validTo?: NgbDateStruct,// IMyDateModel//NgbDateStruct,
                 ) {
 
 
@@ -18,7 +18,7 @@ export class OrderFilter {
     getValidFromString(): string {
         if (this.validFrom) {
             // return this.validFrom.year+"-"+this.validFrom.month+"-"+this.validFrom.day;
-            return this.validFrom.jsdate.toISOString();//new Date(this.validFrom.year, this.validFrom.month - 1, this.validFrom.day).toISOString();
+            return new Date(this.validFrom.year, this.validFrom.month - 1, this.validFrom.day).toISOString();//this.validFrom.jsdate.toISOString();//
 
         }
     }
@@ -27,7 +27,7 @@ export class OrderFilter {
         if (this.validTo) {
             console.log(this.validTo);
             // return this.validFrom.year+"-"+this.validFrom.month+"-"+this.validFrom.day;
-            return new Date(this.validTo.date.year, this.validTo.date.month - 1, this.validTo.date.day + 1).toISOString();
+            return new Date(this.validTo.year, this.validTo.month - 1, this.validTo.day + 1).toISOString();
 
         }
     }

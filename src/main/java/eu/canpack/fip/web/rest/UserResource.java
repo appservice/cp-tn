@@ -18,6 +18,7 @@ import io.swagger.annotations.ApiParam;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -216,5 +217,14 @@ public class UserResource {
         return StreamSupport
             .stream(userSearchRepository.search(queryStringQuery(query)).spliterator(), false)
             .collect(Collectors.toList());
+    }
+
+
+    @GetMapping("/users/by-sentence")
+    public List<User> getUserBySentece(@RequestParam(name = "sentence")String sentence){
+        log.debug("Search user by sentence: {}", sentence);
+        Pageable pageable = new PageRequest(0, 20);
+      return  userRepository.findUserByLoginIsContaining( sentence, pageable).getContent();
+
     }
 }
