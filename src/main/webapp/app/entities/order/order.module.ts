@@ -37,11 +37,17 @@ import {ExcelService} from '../../tn-components/excel.service';
 import {InquiryItemFinderComponent} from './inquiry-item-finder/inquiry-item-finder.component';
 import {MyDatePickerModule} from 'mydatepicker';
 import {PurchaseOrderItemFinderComponent} from './purchase-order-item-finder/purchase-order-item-finder.component';
+import {emergencyOderRoute, EmergencyOrderResolvePagingParams} from './emergency-order/emregency-order.route';
+import {NewEmergencyOrderComponent} from './emergency-order/new-order/new-emergency-order.component';
+import {EmergencyOrderComponent} from './emergency-order/emergency-order.component';
+import {EmergencyOrderDetailComponent} from './emergency-order/emergency-order-detail/emergency-order-detail.component';
+import {EmergencyOrderItemFinderComponent} from './emergency-order/emergency-order-item-finder/emergency_order-item-finder.component';
 
 
 const ENTITY_STATES = [
     ...orderRoute,
     ...orderPopupRoute,
+    ...emergencyOderRoute,
 ];
 
 @NgModule({
@@ -76,6 +82,10 @@ const ENTITY_STATES = [
         OrderSpreedSheetComponent,
         InquiryItemFinderComponent,
         PurchaseOrderItemFinderComponent,
+        NewEmergencyOrderComponent,
+        EmergencyOrderComponent,
+        EmergencyOrderDetailComponent,
+        EmergencyOrderItemFinderComponent,
 
 
     ],
@@ -96,6 +106,7 @@ const ENTITY_STATES = [
         OrderPopupService,
         OrderResolvePagingParams,
         ExcelService,
+        EmergencyOrderResolvePagingParams,
     ],
     schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })

@@ -119,7 +119,7 @@ public class OrderResource {
         orderTypeFilter.setEquals(OrderType.ESTIMATION);
         orderCriteria.setOrderType(orderTypeFilter);
         Page<OrderListDTO> page = orderQueryService.findByCriteriaAndClient(orderCriteria, pageable);//orderService.findAllByClientAndOrderType(pageable, OrderType.ESTIMATION);
-        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/orders");
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/orders/inquiries");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
 
@@ -138,7 +138,26 @@ public class OrderResource {
         orderCriteria.setOrderType(orderTypeFilter);
 
         Page<OrderListDTO> page = orderQueryService.findByCriteriaAndClient(orderCriteria, pageable);//findAllByClientAndOrderType(pageable, OrderType.PRODUCTION);
-        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/orders");
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/orders/production");
+        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+    }
+
+    /**
+     * GET  /orders : get all the orders.
+     *
+     * @param pageable the pagination information
+     * @return the ResponseEntity with status 200 (OK) and the list of orders in body
+     */
+    @GetMapping("/orders/emergency")
+    @Timed
+    public ResponseEntity<List<OrderListDTO>> getAllEmergencyOrders(OrderCriteria orderCriteria, @ApiParam Pageable pageable) {
+        log.debug("REST request to get a page of Emergency Orders");
+        OrderCriteria.OrderTypeFilter orderTypeFilter = new OrderCriteria.OrderTypeFilter();
+        orderTypeFilter.setEquals(OrderType.EMERGENCY);
+        orderCriteria.setOrderType(orderTypeFilter);
+
+        Page<OrderListDTO> page = orderQueryService.findByCriteriaAndClient(orderCriteria, pageable);//findAllByClientAndOrderType(pageable, OrderType.PRODUCTION);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/orders/emergency");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
 

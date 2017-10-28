@@ -101,13 +101,26 @@ public class ClientResource {
      * @param pageable the pagination information
      * @return the ResponseEntity with status 200 (OK) and the list of clients in body
      */
+    @GetMapping("/clients/not-pageable")
+    @Timed
+    public ResponseEntity<List<ClientDTO>> getAllClientsNotPageable(@ApiParam Pageable pageable) {
+        log.debug("REST request to get a page of Clients");
+        List<ClientDTO> clients = clientService.findAllNotPageable();
+        return new ResponseEntity<>(clients, HttpStatus.OK);
+    }
+
+    /**
+     * GET  /clients : get all the clients.
+     *
+     * @param pageable the pagination information
+     * @return the ResponseEntity with status 200 (OK) and the list of clients in body
+     */
     @GetMapping("/clients/to-typeahead")
     @Timed
     public ResponseEntity<List<ClientDTO>> findAllToTypeahead(@ApiParam Pageable pageable) {
         log.debug("REST request to get a page of Clients");
-        Page<ClientDTO> page = clientService.findAllToTypeahead(pageable);
-        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/clients/to-typeahead");
-        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+        List<ClientDTO> response = clientService.findAllToTypeahead(pageable);
+        return new ResponseEntity<>(response,  HttpStatus.OK);
     }
 
     /**

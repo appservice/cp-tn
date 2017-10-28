@@ -1,25 +1,28 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {Client} from '../../client/client.model';
-import {ClientService} from '../../client/client.service';
-import {ResponseWrapper} from '../../../shared/model/response-wrapper.model';
-import {JhiAlertService, JhiEventManager} from 'ng-jhipster';
-import {Order, OrderStatus, OrderType} from '../order.model';
-import {Attachment} from '../../../tn-components/tn-file-uploader/attachment.model';
-import {OrderService} from '../order.service';
+
 import {Observable} from 'rxjs/Rx';
 import {ActivatedRoute, Router} from '@angular/router';
 import {Subscription} from 'rxjs/Subscription';
-import {Drawing} from '../../drawing/drawing.model';
+import {isDefined} from '@angular/compiler/src/util';
 import {ModalDismissReasons, NgbModal} from '@ng-bootstrap/ng-bootstrap';
-import {Estimation} from '../../estimation/estimation.model';
+import {Client} from '../../../client/client.model';
+import {Order, OrderStatus, OrderType} from '../../order.model';
+import {Attachment} from '../../../../tn-components/tn-file-uploader/attachment.model';
+import {JhiAlertService, JhiEventManager} from 'ng-jhipster';
+import {ClientService} from '../../../client/client.service';
+import {OrderService} from '../../order.service';
+import {ResponseWrapper} from '../../../../shared/model/response-wrapper.model';
+import {Drawing} from '../../../drawing/drawing.model';
+import {Estimation} from '../../../estimation/estimation.model';
+
 
 @Component({
-    selector: 'jhi-new-order',
-    templateUrl: './new-order.component.html',
+    selector: 'tn-new-emergency-order',
+    templateUrl: './new-emergency-order.component.html',
     styles: [],
 
 })
-export class NewOrderComponent implements OnInit, OnDestroy {
+export class NewEmergencyOrderComponent implements OnInit, OnDestroy {
 
     title: string;
     clients: Client[];
@@ -35,9 +38,7 @@ export class NewOrderComponent implements OnInit, OnDestroy {
     clickedRow: number;
     isReadOnly: boolean = false;
     editForm
-    isDrawingUpload: boolean = true;
-
-    dropdownList = [];
+    isDrawingUpload: boolean=true;
 
     constructor(private alertService: JhiAlertService,
                 private clientService: ClientService,
@@ -57,22 +58,22 @@ export class NewOrderComponent implements OnInit, OnDestroy {
         this.clientService.findAllToTypeahead()
             .subscribe((res: ResponseWrapper) => {
                 this.clients = res.json;
-                if (this.clients.length == 1) {
-                    this.order.clientId = this.clients[0].id;
+                if(this.clients.length==1){
+                    this.order.clientId=this.clients[0].id;
                 }
             }, (res: ResponseWrapper) => this.onError(res.json));
 
-        this.order.orderType = OrderType.ESTIMATION;
+        this.order.orderType = OrderType.EMERGENCY;
 
         this.subscription = this.route.params.subscribe((params) => {
             console.log(params);
             if (params['id']) {
                 console.log('params exiest');
                 this.load(params['id']);
-                this.title = 'Edytuj zapytanie ofertowe';
+                this.title = 'Edytuj zlecenie awaryjne';
 
             } else {
-                this.title = 'Nowe zapytanie ofertowe';
+                this.title = 'Nowe zlecenie awaryjne';
             }
 
         });
@@ -87,25 +88,18 @@ export class NewOrderComponent implements OnInit, OnDestroy {
     }
 
     addEstimation() {
-        // const drawing: Drawing = {id: null, attachments: []}
+       // const drawing: Drawing = {id: null, attachments: []}
         this.order.estimations.push({
             id: null, amount: null,
-
-            //     drawing: drawing,
-            estimationRemarks: []
+       //     drawing: drawing,
+            estimationRemarks:[]
         });
-        this.isDrawingUpload=false;
     }
 
     onDeleteRow(index: number) {
         // console.log(event);
         console.log(index);
         this.order.estimations.splice(index, 1);
-        let isUploadedAttachment=true;
-        for(let estimaiton of this.order.estimations){
-            isUploadedAttachment=isUploadedAttachment&& this.checkIfAttachmentExist(estimaiton);
-        }
-        this.isDrawingUpload=isUploadedAttachment;
     }
 
     onWorkingCopyBtnClick() {
@@ -127,16 +121,15 @@ export class NewOrderComponent implements OnInit, OnDestroy {
     onFileArrayChange(event: Attachment[]) {
         this.attachments = event;
         console.log('event from parent object: ', event);
-        this.isDrawingUpload = event.length > 0;
+        this.isDrawingUpload=event.length>0;
 
     }
 
 
+
     save() {
         this.isSaving = true;
-        // for(let estimation of this.order.estimations){
-        //     estimation.drawing.name=estimation.description;
-        // }
+
         if (this.order.id !== undefined) {
             this.subscribeToSaveResponse(
                 this.orderService.update(this.order));
@@ -154,7 +147,7 @@ export class NewOrderComponent implements OnInit, OnDestroy {
     private onSaveSuccess(result: Order) {
         this.eventManager.broadcast({name: 'orderListModification', content: 'OK'});
         this.isSaving = false;
-        this.router.navigate(['order']);
+        this.router.navigate(['emergency-order']);
         // this.activeModal.dismiss(result);
     }
 
@@ -172,11 +165,8 @@ export class NewOrderComponent implements OnInit, OnDestroy {
         this.orderService.find(id).subscribe((order) => {
             this.order = order;
 
-            console.log('order status: ', order.orderStatus.toString());
-            console.log('enum status: ', OrderStatus['WORKING_COPY']);
-            console.log('enum 3', order.orderStatus.constructor.name);
-            //     console.log('enum 3', ]);
-            this.isReadOnly = order.orderStatus != null && order.orderStatus != 'WORKING_COPY';
+       //     console.log('enum 3', ]);
+             this.isReadOnly =order.orderStatus != null && order.orderStatus != 'WORKING_COPY';
 
         });
     }

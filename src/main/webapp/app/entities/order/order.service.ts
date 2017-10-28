@@ -69,6 +69,15 @@ export class OrderService {
             .map((res: Response) => this.convertResponse(res));
     }
 
+    getAllEmergencyOrders(req?: any, urlSearchParams?: URLSearchParams): Observable<ResponseWrapper> {
+        const options = createRequestOption(req);
+        if (urlSearchParams) {
+            options.params.appendAll(urlSearchParams);
+        }
+        return this.http.get(this.resourceUrl + '/emergency', options)
+            .map((res: Response) => this.convertResponse(res));
+    }
+
     getAllProductionOrdersForEdit(req?: any, urlSearchParams?: URLSearchParams): Observable<ResponseWrapper> {
         const options = createRequestOption(req);
         if (urlSearchParams) {

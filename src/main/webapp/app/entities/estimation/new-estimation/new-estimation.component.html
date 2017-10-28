@@ -392,7 +392,8 @@
         </ngb-tab>
         <ngb-tab  id="4" >
             <ng-template ngbTabTitle>
-                <span  [ngClass]="{'badge badge-danger': !estimation.estimatedCost}">Podsumowanie kosztów</span>
+
+              <span   [ngClass]="{'badge badge-danger tab-danger-badge-size': !estimation.estimatedCost}">Podsumowanie kosztów</span>
             </ng-template>
             <ng-template ngbTabContent>
 

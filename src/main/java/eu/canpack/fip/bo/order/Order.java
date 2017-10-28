@@ -36,11 +36,14 @@ public class Order implements Serializable {
     @Column(name = "internal_number", nullable = false)
     private String internalNumber;
 
-    @Column(name="number")
-    private Integer number;
+    @Column(name="inuqiry_number")
+    private Integer inquiryNumber;
 
     @Column(name="purchase_order_number")
     private Integer purchaseOrderNumber;
+
+    @Column(name="emergency_order_number")
+    private Integer emergencyOrderNumber;
 
     @Column(name="year")
     private Integer year;
@@ -268,12 +271,12 @@ public class Order implements Serializable {
         this.estimationMaker = estimationMaker;
     }
 
-    public Integer getNumber() {
-        return number;
+    public Integer getInquiryNumber() {
+        return inquiryNumber;
     }
 
-    public void setNumber(Integer number) {
-        this.number = number;
+    public void setInquiryNumber(Integer number) {
+        this.inquiryNumber = number;
     }
 
     public Integer getYear() {
@@ -297,6 +300,13 @@ public class Order implements Serializable {
         return this;
     }
 
+    public Integer getEmergencyOrderNumber() {
+        return emergencyOrderNumber;
+    }
+
+    public void setEmergencyOrderNumber(Integer emergencyOrderNumber) {
+        this.emergencyOrderNumber = emergencyOrderNumber;
+    }
 
     public Integer getPurchaseOrderNumber() {
         return purchaseOrderNumber;

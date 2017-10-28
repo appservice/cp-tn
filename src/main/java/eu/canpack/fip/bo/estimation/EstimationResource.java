@@ -197,5 +197,16 @@ public class EstimationResource {
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
 
     }
+    @GetMapping("/estimations/emergency-order-item-finder")
+    public ResponseEntity<List<EstimationShowDTO>> findEmergencyOrderByCriteria(EstimationCriteria estimationCriteria,@ApiParam Pageable pageable){
+        if(estimationCriteria.getOrderTypeFilter()==null){
+            estimationCriteria.setOrderTypeFilter(new EstimationCriteria.OrderTypeFilter());
+        }
+        estimationCriteria.getOrderTypeFilter().setEquals(OrderType.EMERGENCY);
+        Page<EstimationShowDTO> page = estimationService.getAllInquiriesByCriteriaAndClient(estimationCriteria, pageable);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "api/estimations/inquiry-item-finder");
+        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+
+    }
 
 }

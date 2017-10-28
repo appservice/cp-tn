@@ -41,7 +41,6 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import static eu.canpack.fip.security.AuthoritiesConstants.SAP_INTRODUCER;
 import static org.elasticsearch.index.query.QueryBuilders.queryStringQuery;
 
 /**
@@ -172,7 +171,7 @@ public class OrderService {
         Order orderFromDb = orderRepository.findOne(orderDTO.getId());
         Order order = orderMapper.toEntity(orderDTO);
         order.setYear(orderFromDb.getYear());
-        order.setNumber(orderFromDb.getNumber());
+        order.setInquiryNumber(orderFromDb.getInquiryNumber());
         List<Estimation> newEstimations = orderDTO.getEstimations().stream()
             .filter(es -> es.getId() == null)
             .map(estDTO -> {
@@ -387,9 +386,25 @@ public class OrderService {
 
     private void prepareDocumentNumber(Order order) {
         int year = LocalDate.now().getYear();
-        int number = orderRepository.getDocNumber(year) + 1;
+        int number=0;
+        switch (order.getOrderType()) {
+            case ESTIMATION:
+                number = orderRepository.getInquiryNumber(year) + 1;
+                order.setInquiryNumber(number);
+                break;
+            case EMERGENCY:
+                number=orderRepository.getEmergencyOrderNumber(year)+1;
+                order.setEmergencyOrderNumber(number);
+                break;
+            case PRODUCTION:
+                number=orderRepository.getPurchaseOrderDocNumber(year)+1;
+                order.setPurchaseOrderNumber(number);
+                break;
+
+        }
         order.setYear(year);
-        order.setNumber(number);
+
+
 
         order.setInternalNumber(number + "/" + year + "/" + order.getOrderType().getShortcut());
 
@@ -534,7 +549,7 @@ public class OrderService {
         order.setCreatedAt(now);
         order.createdBy(loggedUser);
         preparePurchaseOrderDocumentNumber(order);
-        if(!orderDTO.getOrderStatus().equals(OrderStatus.WORKING_COPY)){
+        if (!orderDTO.getOrderStatus().equals(OrderStatus.WORKING_COPY)) {
             order.setOrderStatus(OrderStatus.CREATING_SAP_ORDER);
 
         }
@@ -605,8 +620,8 @@ public class OrderService {
         order.setOrderStatus(OrderStatus.IN_PRODUCTION);
 
         order.getEstimations()
-            .forEach(e->e.setInProduction(true));
-      //  order.setEstimationFinsihDate(ZonedDateTime.now());
+            .forEach(e -> e.setInProduction(true));
+        //  order.setEstimationFinsihDate(ZonedDateTime.now());
 
         orderRepository.save(order);
     }

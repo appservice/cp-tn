@@ -1,34 +1,15 @@
 <div>
     <h2>
         <span>{{title}}</span>
-        <button class="btn btn-primary float-right create-order" [routerLink]="['/new-order']">
-            <!--"['/', { outlets: { popup: ['order-new'] } }]">-->
+        <button class="btn btn-primary float-right create-order" [routerLink]="['/new-emergency-order']">
             <span class="fa fa-plus"></span>
             <span class="hidden-sm-down">
-            Nowe zapytanie ofertowe
+            Nowe zlecenie awaryjne
             </span>
         </button>
     </h2>
     <jhi-alert></jhi-alert>
-    <!--<div class="row">
-        <div class="col-sm-12">
-            <form name="searchForm" class="form-inline">
-                <div class="input-group w-100 mt-3">
-                    <input type="text" class="form-control" [(ngModel)]="currentSearch" id="currentSearch" name="currentSearch" placeholder="{{ 'tnApp.order.home.search' | translate }}">
-                    <button class="input-group-addon btn btn-info" (click)="search(currentSearch)">
-                        <span class="fa fa-search"></span>
-                    </button>
-                    <button class="input-group-addon btn btn-danger" (click)="clear()" *ngIf="currentSearch">
-                        <span class="fa fa-trash-o"></span>
-                    </button>
-                </div>
-            </form>
-        </div>
-    </div>-->
 
-    <!--    <div class="card">
-
-            <div class="card-body">-->
     <div class="row" style="margin-top: 40px">
         <div class="col-md-2">
             <!--<label>Numer rys.</label>-->
@@ -100,20 +81,7 @@
                 class="fa fa-trash-o"></span> Wyczyść filtr
             </button>
         </div>
-        <!--<div class="col-md-2"><div class="input-group">
-            <input class="form-control "  placeholder="data od" ngx-mydatepicker name="mydate"
-                   [(ngModel)]="model" #dp="ngx-mydatepicker"  (inputFieldChanged)="onInputFieldChanged($event)" [options]="myOptions"
-            (dateChanged)="onDateChanged($event)" [ngClass]="{'is-invalid':!validDate}">
 
-            <span class="input-group-btn">
-            &lt;!&ndash;<button type="button" class="btn btn-default" (click)="dp.clearDate()">&ndash;&gt;
-                &lt;!&ndash;<i class="fa fa-remove"></i>&ndash;&gt;
-                &lt;!&ndash;</button>&ndash;&gt;
-            <button type="button" class="btn btn-default" (click)="dp.toggleCalendar()">
-                <i class="fa fa-calendar"></i>
-            </button>
-        </span>
-        </div></div>-->
     </div>
 
 
@@ -144,8 +112,8 @@
         </thead>
         <tbody>
         <tr *ngFor="let order of orders ;trackBy: trackId">
-            <td><a [routerLink]="['../order', order.id ]">{{order.id}}</a></td>
-            <td><a [routerLink]="['../order', order.id ]">{{order.internalNumber}}</a></td>
+            <td><a [routerLink]="['../emergency-order', order.id ]">{{order.id}}</a></td>
+            <td><a [routerLink]="['../emergency-order', order.id ]">{{order.internalNumber}}</a></td>
             <td>{{order.referenceNumber}}</td>
             <!--<td jhiTranslate="{{'tnApp.OrderType.' + order.orderType}}">{{order.orderType}}</td>-->
             <td>{{order.name}}</td>
@@ -159,13 +127,7 @@
             </td>
             <td class="text-right">
                 <div class="btn-group flex-btn-group-container">
-                    <!--<button type="submit"
-                            [routerLink]="['../order', order.id ]"
-                            class="btn btn-info btn-sm">
-                        <span class="fa fa-eye"></span>
-                        <span class="hidden-md-down" jhiTranslate="entity.action.view">View</span>
-                    </button>-->
-                    <!-- [routerLink]="['/', { outlets: { popup: 'order/'+ order.id + '/edit'} }]"-->
+
                     <button type="submit" *ngIf="order.orderStatus=='WORKING_COPY'"
                             [routerLink]="['/', { outlets: { popup: 'order/'+ order.id + '/delete'} }]"
                             replaceUrl="true"
@@ -174,7 +136,7 @@
                         <span class="hidden-md-down" jhiTranslate="entity.action.delete">Delete</span>
                     </button>
                     <button type="submit" *ngIf="order.orderStatus=='WORKING_COPY'"
-                            [routerLink]="[ '../order', order.id , 'edit']"
+                            [routerLink]="[ '../emergency-order', order.id , 'edit']"
                             class="btn btn-primary btn-sm">
                         <span class="fa fa-list"></span>
                         <span class="hidden-md-down">Edytuj</span>

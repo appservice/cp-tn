@@ -12,7 +12,6 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
-import eu.canpack.fip.bo.order.Order;
 
 import java.util.Set;
 
@@ -22,8 +21,11 @@ import java.util.Set;
  */
 @Repository
 public interface OrderRepository extends JpaRepository<Order, Long>, JpaSpecificationExecutor<Order> {
-    @Query("select coalesce(max(number), '0') as max_number from Order where year = ?1")
-    int getDocNumber(int year);
+    @Query("select coalesce(max(inquiryNumber), '0') as max_number from Order where year = ?1")
+    int getInquiryNumber(int year);
+
+    @Query("select coalesce(max(emergencyOrderNumber), '0') as max_number from Order where year = ?1")
+    int getEmergencyOrderNumber(int year);
 
     @Query("select coalesce(max(purchaseOrderNumber), '0') as max_number from Order where year = ?1")
     int getPurchaseOrderDocNumber(int year);

@@ -4,7 +4,7 @@ package eu.canpack.fip.bo.order.enumeration;
  * The OrderType enumeration.
  */
 public enum OrderType {
-    ESTIMATION("WYCENA","W"), SERVICE("SERWIS","S"), PRODUCTION("PRODUKCJA","P");
+    ESTIMATION("WYCENA","W"), EMERGENCY("AWARIA", "A"), PRODUCTION("PRODUKCJA", "P");
 
     private String plName;
     private String shortcut;

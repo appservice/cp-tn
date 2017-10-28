@@ -99,15 +99,7 @@
                                 </td>
                                 <td style="max-width: 150px;">
                                     <input type="text" class="form-control" name="estimation_drawing_{{rowIndex}}"
-                                           [(ngModel)]="estimation.itemNumber" [disabled]="isReadOnly" required #itemNumber="ngModel"/>
-                                    <div
-                                        [hidden]="!(itemNumber?.dirty && itemNumber.invalid)">
-                                        <small class="form-text text-danger"
-                                               [hidden]="!itemNumber?.errors?.required"
-                                               jhiTranslate="entity.validation.required">
-                                            This field is required.
-                                        </small>
-                                    </div>
+                                           [(ngModel)]="estimation.itemNumber" [disabled]="isReadOnly"/>
                                 </td>
                                 <td style="max-width: 80px">
                                     <input type="text" class="form-control" [(ngModel)]="estimation.amount"
@@ -215,3 +207,4 @@
         <button type="button" class="btn btn-secondary" (click)="c('Close click')">Close</button>
     </div>
 </ng-template>
+<!--<p-chips [(ngModel)]="myValues">test</p-chips>-->

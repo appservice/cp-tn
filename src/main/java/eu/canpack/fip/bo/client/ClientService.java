@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static org.elasticsearch.index.query.QueryBuilders.*;
 
@@ -73,22 +74,34 @@ public class ClientService {
     /**
      * Get all the clients.
      *
+     * @return the list of entities
+     */
+    @Transactional(readOnly = true)
+    public List<ClientDTO> findAllNotPageable() {
+        log.debug("Request to get all Clients");
+        return clientRepository.findAll().stream()
+            .map(clientMapper::toDto).collect(Collectors.toList());
+    }
+
+    /**
+     * Get all the clients.
+     *
      * @param pageable the pagination information
      * @return the list of entities
      */
     @Transactional(readOnly = true)
-    public Page<ClientDTO> findAllToTypeahead(Pageable pageable) {
+    public List<ClientDTO> findAllToTypeahead(Pageable pageable) {
         User loggedUser = userService.getLoggedUser();
         if (loggedUser.getClient() != null) {
             List<ClientDTO> clientDTOS = new ArrayList<>();
             ClientDTO clientDTO = clientMapper.toDto(loggedUser.getClient());
             clientDTOS.add(clientDTO);
-            return new PageImpl<ClientDTO>(clientDTOS, pageable, 1);
+            return clientDTOS;
 
         }
         log.debug("Request to get all Clients");
-        return clientRepository.findAll(pageable)
-            .map(clientMapper::toDto);
+        return clientRepository.findAll().stream()
+            .map(clientMapper::toDto).collect(Collectors.toList());
     }
 
     /**

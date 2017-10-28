@@ -1,5 +1,5 @@
 <h2>
-    Wyszukaj zamówienie po detalu
+    Wyszukaj zlecenie awaryjne po detalu
 </h2>
 <br/>
 
@@ -18,24 +18,7 @@
                    [(ngModel)]="estimationFilter.itemNumber" placeholder="Numer rys."
                    (keydown)="onEnterClickFilter($event)">
         </div>
-        <!--        <div class="col-md-2">
-                    &lt;!&ndash;<label>Nazwa</label>&ndash;&gt;
-                    <input type="text" class="form-control" name="filterClientName" [(ngModel)]="estimationFilter.clientName"
-                           placeholder="Nazwa klienta" (keydown)="onEnterClickFilter($event)">
-                </div>-->
 
-        <!--<div class="col-md-2">
-            &lt;!&ndash;<label class="form-control-label" jhiTranslate="tnApp.order.orderStatus" for="field_orderStatus">Order Status</label>&ndash;&gt;
-            <select class="form-control" name="orderStatus" [(ngModel)]="orderFilter.orderStatus"
-                    id="field_orderStatus">
-                <option value="undefined" disabled selected hidden>Status zamówienia</option>
-                <option value="null" disabled selected hidden>Status zamówienia</option>
-                <option value="WORKING_COPY">KOPIA ROBOCZA</option>
-                &lt;!&ndash;jhiTranslate="tnApp.OrderStatus.FOR_ESTIMATION"&ndash;&gt;
-                <option value="IN_ESTIMATION">W TRAKCIE WYCENY</option>
-                <option value="SENT_OFFER_TO_CLIENT">OFERTA UKOŃCZONA</option>
-            </select>
-        </div>-->
 
         <!--<div class="row" style="margin-top: 10px">-->
         <div class="col-md-5">
@@ -72,7 +55,7 @@
 
         <tr *ngFor="let estimation of estimations;let rowIndex = index">
             <td>{{estimation.id}}</td>
-            <td><a [routerLink]="['../purchase-order', estimation.orderId ]">{{estimation.orderInternalNumber}}</a></td>
+            <td><a [routerLink]="['../emergency-order', estimation.orderId ]">{{estimation.orderInternalNumber}}</a></td>
             <!--<td><input type="text" [(ngModel)]="estimation.id" class="form-control"/></td>-->
             <td>{{estimation.itemName}}</td>
             <td style="max-width: 150px;">

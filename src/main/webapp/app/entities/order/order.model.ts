@@ -3,7 +3,7 @@ import {Estimation} from '../estimation/estimation.model';
 
 export const enum OrderType {
     ESTIMATION = 'ESTIMATION',
-    SERVICE = 'SERVICE',
+    EMERGENCY = 'EMERGENCY',
     PRODUCTION = 'PRODUCTION'
 }
 
