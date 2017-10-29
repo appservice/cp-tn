@@ -18,7 +18,7 @@ import io.github.jhipster.service.QueryService;
 
 import eu.canpack.fip.repository.search.CooperationSearchRepository;
 
-import eu.canpack.fip.service.mapper.CooperationMapper;
+import eu.canpack.fip.bo.cooperation.dto.CooperationMapper;
 
 /**
  * Service for executing complex queries for Cooperation entities in the database.

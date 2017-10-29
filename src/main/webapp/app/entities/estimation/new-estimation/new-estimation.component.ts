@@ -22,6 +22,7 @@ import {TechnologyCardFinderComponent} from '../../technology-card/technology-ca
 import {TechnologyCard} from '../../technology-card/technology-card.model';
 import {DrawingFinderComponent} from '../../drawing/drawing-finder/drawing-finder.component';
 import {Operation} from '../../operation/operation.model';
+import {Cooperation} from '../../cooperation/cooperation.model';
 
 @Component({
     selector: 'new-estimation',
@@ -32,6 +33,7 @@ import {Operation} from '../../operation/operation.model';
 export class NewEstimationComponent implements OnInit, OnDestroy {
     private commercialPartsTotalCost: number = 0;
     private operationsTotalCost: number = 0;
+    private cooperationTotalCost: number = 0;
 
     estimation: Estimation;
     order: OrderSimpleDTO;
@@ -63,6 +65,7 @@ export class NewEstimationComponent implements OnInit, OnDestroy {
         this.estimation.discount = 0;
         this.estimation.operations = [];
         this.estimation.commercialParts = [];
+        this.estimation.cooperationList = [];
         this.order = new OrderSimpleDTO();
 
     }
@@ -102,6 +105,7 @@ export class NewEstimationComponent implements OnInit, OnDestroy {
             precision: 2,
         };
         this.calculateCommercialPartsTotalCost();
+        this.calculateCooperationTotalCost();
 
 
     }
@@ -129,6 +133,14 @@ export class NewEstimationComponent implements OnInit, OnDestroy {
         });
     }
 
+    addCooperation() {
+        this.estimation.cooperationList.push({
+            id: null,
+            amount: 1,
+
+        });
+    }
+
     onDeleteRow(index: number) {
         console.log(index);
         this.estimation.operations.splice(index, 1);
@@ -139,6 +151,12 @@ export class NewEstimationComponent implements OnInit, OnDestroy {
         console.log(index);
         this.estimation.commercialParts.splice(index, 1);
         this.calculateCommercialPartsTotalCost();
+    }
+
+    onDeleteCooperation(index: number) {
+        console.log(index);
+        this.estimation.cooperationList.splice(index, 1);
+        this.calculateCooperationTotalCost();
     }
 
     onSaveBtnClick() {
@@ -205,6 +223,7 @@ export class NewEstimationComponent implements OnInit, OnDestroy {
             this.estimation = estimation;
             this.calculateOperationsTotalCost();
             this.calculateCommercialPartsTotalCost();
+            this.calculateCooperationTotalCost();
 
             this.orderService.findOrderSimpleDto(estimation.orderId).subscribe((order => {
                 this.order = order;
@@ -291,6 +310,15 @@ export class NewEstimationComponent implements OnInit, OnDestroy {
         }
     }
 
+    calculateCooperationTotalCost() {
+        this.cooperationTotalCost = 0;
+        for (const cooperation of this.estimation.cooperationList) {
+            if (cooperation.amount != null && cooperation.price != null) {
+                this.cooperationTotalCost = this.cooperationTotalCost + cooperation.amount * cooperation.price;
+            }
+        }
+    }
+
     compareMachine(m1: Machine, m2: Machine): boolean {
         if (!isNullOrUndefined(m1) && !isNullOrUndefined(m2)) {
             return m1.id === m2.id;
@@ -299,7 +327,7 @@ export class NewEstimationComponent implements OnInit, OnDestroy {
     }
 
     calculateTotal(): number {
-        return this.commercialPartsTotalCost + this.operationsTotalCost + this.estimation.materialPrice;
+        return this.commercialPartsTotalCost + this.operationsTotalCost + this.estimation.materialPrice + this.cooperationTotalCost;
     }
 
     calculateDiscount(): number {
@@ -374,8 +402,9 @@ export class NewEstimationComponent implements OnInit, OnDestroy {
 
             this.estimation.operations.push(newOperation);
 
-            this.calculateOperationsTotalCost();
         }
+        this.calculateOperationsTotalCost();
+
     }
 
 

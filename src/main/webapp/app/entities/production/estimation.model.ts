@@ -2,6 +2,7 @@ import { BaseEntity } from './../../shared';
 import {Drawing} from '../drawing/drawing.model';
 import {Operation} from '../operation/operation.model';
 import {CommercialPart} from '../estimation/new-estimation/commercial-part.model';
+import {Cooperation} from '../cooperation/cooperation.model';
 
 export class Estimation implements BaseEntity {
     constructor(
@@ -27,6 +28,7 @@ export class Estimation implements BaseEntity {
         public createdAt?: any,
         public createdBy?: string,
         public sapNumber?: string,
+        public cooperationList?: Cooperation[]
     ) {
     }
 }

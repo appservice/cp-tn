@@ -42,7 +42,6 @@ export class TechnologyCardFinderComponent implements OnInit {
         let urlSearchParams = new URLSearchParams();
         urlSearchParams.append('description.contains', this.nameFilter);
         urlSearchParams.append('drawingNumber.contains', this.drawingNumberFilter);
-        console.log(urlSearchParams);
 
         this.technologyCardService.query({
             'page': (this.page - 1),
@@ -54,7 +53,6 @@ export class TechnologyCardFinderComponent implements OnInit {
     }
 
     loadPage(page: number) {
-        console.log('load page: ', page);
         if (page !== this.previousPage) {
             this.previousPage = page;
             this.findTechnologyCard();
@@ -62,7 +60,6 @@ export class TechnologyCardFinderComponent implements OnInit {
     }
 
     private onSuccess(data, headers) {
-        console.log(headers);
         this.links = this.parseLinks.parse(headers.get('link'));
         this.totalItems = headers.get('X-Total-Count');
         this.queryCount = this.totalItems;

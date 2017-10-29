@@ -8,7 +8,7 @@ import eu.canpack.fip.bo.cooperation.CooperationRepository;
 import eu.canpack.fip.bo.cooperation.CooperationService;
 import eu.canpack.fip.repository.search.CooperationSearchRepository;
 import eu.canpack.fip.bo.cooperation.dto.CooperationDTO;
-import eu.canpack.fip.service.mapper.CooperationMapper;
+import eu.canpack.fip.bo.cooperation.dto.CooperationMapper;
 import eu.canpack.fip.web.rest.errors.ExceptionTranslator;
 import eu.canpack.fip.bo.cooperation.CooperationQueryService;
 

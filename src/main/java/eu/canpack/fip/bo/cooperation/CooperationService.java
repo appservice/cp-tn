@@ -2,7 +2,7 @@ package eu.canpack.fip.bo.cooperation;
 
 import eu.canpack.fip.bo.cooperation.dto.CooperationDTO;
 import eu.canpack.fip.repository.search.CooperationSearchRepository;
-import eu.canpack.fip.service.mapper.CooperationMapper;
+import eu.canpack.fip.bo.cooperation.dto.CooperationMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;

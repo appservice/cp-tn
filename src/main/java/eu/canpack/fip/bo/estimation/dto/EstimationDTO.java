@@ -1,6 +1,7 @@
 package eu.canpack.fip.bo.estimation.dto;
 
 
+import eu.canpack.fip.bo.cooperation.dto.CooperationDTO;
 import eu.canpack.fip.bo.drawing.dto.DrawingDTO;
 import eu.canpack.fip.bo.operation.OperationDTO;
 import eu.canpack.fip.bo.commercialPart.CommercialPartDTO;
@@ -57,6 +58,8 @@ public class EstimationDTO implements Serializable {
     private List<OperationDTO> operations;
 
     private List<CommercialPartDTO> commercialParts;
+
+    private List<CooperationDTO> cooperationList;
 
     private LocalDate neededRealizationDate;
 
@@ -259,6 +262,14 @@ public class EstimationDTO implements Serializable {
 
     public void setSapNumber(String sapNumber) {
         this.sapNumber = sapNumber;
+    }
+
+    public List<CooperationDTO> getCooperationList() {
+        return cooperationList;
+    }
+
+    public void setCooperationList(List<CooperationDTO> cooperationList) {
+        this.cooperationList = cooperationList;
     }
 
     @Override

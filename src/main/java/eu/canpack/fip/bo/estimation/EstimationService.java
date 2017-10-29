@@ -1,6 +1,7 @@
 package eu.canpack.fip.bo.estimation;
 
 import eu.canpack.fip.bo.client.Client;
+import eu.canpack.fip.bo.cooperation.Cooperation;
 import eu.canpack.fip.bo.estimation.dto.EstimationCriteria;
 import eu.canpack.fip.bo.estimation.dto.EstimationDTO;
 import eu.canpack.fip.bo.estimation.dto.EstimationShowDTO;
@@ -21,6 +22,7 @@ import eu.canpack.fip.repository.UserRepository;
 import eu.canpack.fip.repository.search.EstimationSearchRepository;
 import eu.canpack.fip.bo.commercialPart.CommercialPartMapper;
 import eu.canpack.fip.service.UserService;
+import eu.canpack.fip.bo.cooperation.dto.CooperationMapper;
 import io.github.jhipster.service.filter.LongFilter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,7 +34,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.io.ByteArrayOutputStream;
 import java.time.ZonedDateTime;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -71,7 +72,9 @@ public class EstimationService {
 
     private final MachineRepository machineRepository;
 
-    public EstimationService(EstimationRepository estimationRepository, EstimationMapper estimationMapper, EstimationSearchRepository estimationSearchRepository, OperationMapper operationMapper, CommercialPartMapper commercialPartMapper, UserRepository userRepository, TechnologyCardPdfCreator technologyCardPdfCreator, UserService userService, OrderRepository orderRepository, EstimationQueryService estimationQueryService, MachineRepository machineRepository) {
+    private final CooperationMapper cooperationMapper;
+
+    public EstimationService(EstimationRepository estimationRepository, EstimationMapper estimationMapper, EstimationSearchRepository estimationSearchRepository, OperationMapper operationMapper, CommercialPartMapper commercialPartMapper, UserRepository userRepository, TechnologyCardPdfCreator technologyCardPdfCreator, UserService userService, OrderRepository orderRepository, EstimationQueryService estimationQueryService, MachineRepository machineRepository, CooperationMapper cooperationMapper) {
         this.estimationRepository = estimationRepository;
         this.estimationMapper = estimationMapper;
         this.estimationSearchRepository = estimationSearchRepository;
@@ -85,6 +88,7 @@ public class EstimationService {
 
         this.estimationQueryService = estimationQueryService;
         this.machineRepository = machineRepository;
+        this.cooperationMapper = cooperationMapper;
     }
 
     /**
@@ -120,6 +124,10 @@ public class EstimationService {
         List<CommercialPart> commercialParts = commercialPartMapper.toEntity(estimationDTO.getCommercialParts());
         commercialParts.forEach(cp -> cp.setEstimation(finalEstimation));
         estimation.setCommercialParts(commercialParts);
+
+        List<Cooperation> cooperationList = cooperationMapper.toEntity(estimationDTO.getCooperationList());
+        cooperationList.forEach(co->co.setEstimation(finalEstimation));
+        estimation.setCooperationList(cooperationList);
 
 
         estimation.setCreatedAt(ZonedDateTime.now());
