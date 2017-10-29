@@ -11,6 +11,7 @@ import { TnDrawingModule } from './drawing/drawing.module';
 import {TnProductionModule} from './production/production.module'
 import { TnTechnologyCardModule } from './technology-card/technology-card.module';
 import { TnOperatorModule } from './operator/operator.module';
+import { TnCooperationModule } from './cooperation/cooperation.module';
 /* jhipster-needle-add-entity-module-import - JHipster will add entity modules imports here */
 
 @NgModule({
@@ -26,6 +27,7 @@ import { TnOperatorModule } from './operator/operator.module';
         TnProductionModule,
         TnTechnologyCardModule,
         TnOperatorModule,
+        TnCooperationModule,
         /* jhipster-needle-add-entity-module - JHipster will add entity modules here */
     ],
     declarations: [],

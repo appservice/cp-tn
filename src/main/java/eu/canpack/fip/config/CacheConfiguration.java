@@ -1,5 +1,6 @@
 package eu.canpack.fip.config;
 
+import eu.canpack.fip.bo.cooperation.Cooperation;
 import eu.canpack.fip.bo.machine.MachineDtl;
 import eu.canpack.fip.bo.operation.OperationEvent;
 import eu.canpack.fip.bo.operator.Operator;
@@ -61,6 +62,7 @@ public class CacheConfiguration {
             cm.createCache(Estimation.class.getName() + ".operations", jcacheConfiguration);
             cm.createCache(Estimation.class.getName() + ".commercialParts", jcacheConfiguration);
             cm.createCache(Estimation.class.getName() + ".estimationRemarks", jcacheConfiguration);
+            cm.createCache(Estimation.class.getName() + ".cooperationList", jcacheConfiguration);
             cm.createCache(Operation.class.getName(), jcacheConfiguration);
             cm.createCache(Operation.class.getName() + ".operationEvents", jcacheConfiguration);
 
@@ -94,6 +96,7 @@ public class CacheConfiguration {
             cm.createCache(TechnologyCard.class.getName() + ".operations", jcacheConfiguration);
             cm.createCache(Operator.class.getName(), jcacheConfiguration);
             cm.createCache(Operator.class.getName() + ".operationEvents", jcacheConfiguration);
+            cm.createCache(Cooperation.class.getName(), jcacheConfiguration);
             // jhipster-needle-ehcache-add-entry
         };
     }

@@ -22,6 +22,7 @@ public interface EstimationCreateMapper  {
 //    Estimation toEntity(EstimationDTO estimationDTO);
 
     @Mapping(target = "operations", ignore = true)
+    @Mapping(target = "cooperationList", ignore = true)
     @Mapping(target = "material", ignore = true)
     @Mapping(target = "materialPrice", ignore = true)
 //    @Mapping(target = "amount", ignore = true)

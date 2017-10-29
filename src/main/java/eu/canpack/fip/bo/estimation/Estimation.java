@@ -1,6 +1,7 @@
 package eu.canpack.fip.bo.estimation;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import eu.canpack.fip.bo.cooperation.Cooperation;
 import eu.canpack.fip.bo.remark.EstimationRemark;
 import eu.canpack.fip.bo.drawing.Drawing;
 import eu.canpack.fip.bo.order.Order;
@@ -99,6 +100,12 @@ public class Estimation implements Serializable {
     @JsonIgnore
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private List<EstimationRemark> estimationRemarks = new ArrayList<>();
+
+
+    @OneToMany(mappedBy = "estimation",orphanRemoval = true, cascade = CascadeType.ALL)
+    @JsonIgnore
+    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+    private List<Cooperation> cooperationList = new ArrayList<>();
 
 
     @Column(name = "discount", precision = 8, scale = 2)
@@ -410,6 +417,14 @@ public class Estimation implements Serializable {
 
     public void setRealized(Boolean realized) {
         this.realized = realized;
+    }
+
+    public List<Cooperation> getCooperationList() {
+        return cooperationList;
+    }
+
+    public void setCooperationList(List<Cooperation> cooperationList) {
+        this.cooperationList = cooperationList;
     }
 
     @Override
