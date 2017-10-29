@@ -81,6 +81,9 @@ export class NewEmergencyOrderComponent implements OnInit, OnDestroy {
 
     private onError(error) {
         this.alertService.error(error.message, null, null);
+        console.log(error);
+        this.order.orderStatus = null;
+
     }
 
     trackClientById(index: number, item: Client) {

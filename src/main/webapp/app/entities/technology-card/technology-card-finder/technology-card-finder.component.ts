@@ -39,7 +39,7 @@ export class TechnologyCardFinderComponent implements OnInit {
     }
 
     findTechnologyCard() {
-        let urlSearchParams=new URLSearchParams();
+        let urlSearchParams = new URLSearchParams();
         urlSearchParams.append('description.contains', this.nameFilter);
         urlSearchParams.append('drawingNumber.contains', this.drawingNumberFilter);
         console.log(urlSearchParams);
@@ -48,7 +48,7 @@ export class TechnologyCardFinderComponent implements OnInit {
             'page': (this.page - 1),
             'size': this.itemsPerPage,
 
-        },urlSearchParams).subscribe((res: ResponseWrapper) => {
+        }, urlSearchParams).subscribe((res: ResponseWrapper) => {
             this.onSuccess(res.json, res.headers);
         });
     }
@@ -79,10 +79,11 @@ export class TechnologyCardFinderComponent implements OnInit {
     }
 
 
-    clearFilter(){
-        this.nameFilter=null;
-        this.drawingNumberFilter=null;
+    clearFilter() {
+        this.nameFilter = null;
+        this.drawingNumberFilter = null;
     }
+
     // private onError(error) {
     //     this.alertService.error(error.message, null, null);
     // }

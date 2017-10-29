@@ -45,9 +45,7 @@ export class EmergencyOrderDetailComponent implements OnInit, OnDestroy {
                 private router: Router,
                 private route: ActivatedRoute,
                 private modalService: NgbModal,
-                private excelService: ExcelService,
-
-    ) {
+                private excelService: ExcelService,) {
         this.order = new Order();
         this.order.estimations = [];
 
@@ -175,7 +173,7 @@ export class EmergencyOrderDetailComponent implements OnInit, OnDestroy {
     }
 
     convertToDate(ngBootstrapDate: any): Date {
-        if(!ngBootstrapDate && ngBootstrapDate!==null){
+        if (!ngBootstrapDate && ngBootstrapDate !== null) {
             if (typeof ngBootstrapDate === 'string') {
                 return null;
                 // return new Date( ngBootstrapDate);

@@ -3,16 +3,16 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs/Rx';
 import { JhiEventManager, JhiParseLinks, JhiPaginationUtil, JhiLanguageService, JhiAlertService } from 'ng-jhipster';
 
-import { Order } from '../order.model';
-import { OrderService } from '../order.service';
-import { ITEMS_PER_PAGE, Principal, ResponseWrapper } from '../../../shared';
-import { PaginationConfig } from '../../../blocks/config/uib-pagination.config';
+import { Order } from '../../order.model';
+import { OrderService } from '../../order.service';
+import { ITEMS_PER_PAGE, Principal, ResponseWrapper } from '../../../../shared';
+import { PaginationConfig } from '../../../../blocks/config/uib-pagination.config';
 
 @Component({
-    selector: 'archived-orders',
-    templateUrl: './archive-orders.component.html'
+    selector: 'order-in-estimation',
+    templateUrl: './order-in-estimation.component.html'
 })
-export class ArchiveOrdersComponent implements OnInit, OnDestroy {
+export class OrderInEstimationComponent implements OnInit, OnDestroy {
 
 currentAccount: any;
     orders: Order[];
@@ -53,7 +53,7 @@ currentAccount: any;
 
     loadAll() {
         if (this.currentSearch) {
-            this.orderService.archivedOrders({
+            this.orderService.ordersInEstimation({
                 query: this.currentSearch,
                 size: this.itemsPerPage,
                 sort: this.sort()}).subscribe(
@@ -62,7 +62,7 @@ currentAccount: any;
                 );
             return;
         }
-        this.orderService.archivedOrders({
+        this.orderService.ordersInEstimation({
             page: this.page - 1,
             size: this.itemsPerPage,
             sort: this.sort()}).subscribe(
@@ -77,7 +77,7 @@ currentAccount: any;
         }
     }
     transition() {
-        this.router.navigate(['/orders/archived'], {queryParams:
+        this.router.navigate(['/orders/in-estimation'], {queryParams:
             {
                 page: this.page,
                 size: this.itemsPerPage,
@@ -91,7 +91,7 @@ currentAccount: any;
     clear() {
         this.page = 0;
         this.currentSearch = '';
-        this.router.navigate(['/archived-orders', {
+        this.router.navigate(['/orders-to-estimation', {
             page: this.page,
             sort: this.predicate + ',' + (this.reverse ? 'asc' : 'desc')
         }]);
@@ -103,7 +103,7 @@ currentAccount: any;
         }
         this.page = 0;
         this.currentSearch = query;
-        this.router.navigate(['/archived-orders', {
+        this.router.navigate(['/order-to-estimation', {
             search: this.currentSearch,
             page: this.page,
             sort: this.predicate + ',' + (this.reverse ? 'asc' : 'desc')

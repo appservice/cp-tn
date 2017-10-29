@@ -10,14 +10,13 @@
                    [ngbTypeahead]="searchUser"
                    [inputFormatter]="formatter"
                    [resultFormatter]="resultFormatter"
-                   [editable]="false" (selectItem)="onSelectItem($event)"
-            />
+                   [editable]="false"/><!-- (selectItem)="onSelectItem($event)"-->
         </div>
 
 
-    <div class="col-md-3">
-        <button class="btn btn-outline-dark" type="submit">ok</button>
-    </div>
+        <div class="col-md-3">
+            <button class="btn btn-outline-dark" type="submit">ok</button>
+        </div>
     </div>
 
 </form>

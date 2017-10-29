@@ -1,5 +1,5 @@
 import {Component, OnInit, Input, Output, EventEmitter} from '@angular/core';
-import {Estimation} from '../../../estimation/estimation.model';
+import {Estimation} from '../../../../estimation/estimation.model';
 import {NgForm} from '@angular/forms';
 
 @Component({

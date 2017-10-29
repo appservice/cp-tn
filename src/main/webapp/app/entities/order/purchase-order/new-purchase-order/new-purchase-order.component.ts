@@ -1,25 +1,26 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {Client} from '../../client/client.model';
-import {ClientService} from '../../client/client.service';
-import {ResponseWrapper} from '../../../shared/model/response-wrapper.model';
+import {Client} from '../../../client/client.model';
+import {ClientService} from '../../../client/client.service';
+import {ResponseWrapper} from '../../../../shared/model/response-wrapper.model';
 import {JhiAlertService, JhiEventManager} from 'ng-jhipster';
-import {Order, OrderStatus, OrderType} from '../order.model';
-import {Attachment} from '../../../tn-components/tn-file-uploader/attachment.model';
-import {OrderService} from '../order.service';
+import {Order, OrderType, OrderStatus} from '../../order.model';
+import {Attachment} from '../../../../tn-components/tn-file-uploader/attachment.model';
+import {OrderService} from '../../order.service';
 import {Observable} from 'rxjs/Rx';
 import {ActivatedRoute, Router} from '@angular/router';
 import {Subscription} from 'rxjs/Subscription';
-import {Drawing} from '../../drawing/drawing.model';
+import {isDefined} from '@angular/compiler/src/util';
+import {Drawing} from '../../../drawing/drawing.model';
 import {ModalDismissReasons, NgbModal} from '@ng-bootstrap/ng-bootstrap';
-import {Estimation} from '../../estimation/estimation.model';
+import {Estimation} from '../../../estimation/estimation.model';
 
 @Component({
-    selector: 'jhi-new-order',
-    templateUrl: './new-order.component.html',
+    selector: 'tn-new-purchase-order',
+    templateUrl: './new-purchase-order.component.html',
     styles: [],
 
 })
-export class NewOrderComponent implements OnInit, OnDestroy {
+export class NewPurchaseOrderComponent implements OnInit, OnDestroy {
 
     title: string;
     clients: Client[];
@@ -34,8 +35,7 @@ export class NewOrderComponent implements OnInit, OnDestroy {
     closeResult: string;
     clickedRow: number;
     isReadOnly: boolean = false;
-    editForm
-    isDrawingUpload: boolean = true;
+    purchaseOrderId: number;
 
     dropdownList = [];
 
@@ -54,25 +54,23 @@ export class NewOrderComponent implements OnInit, OnDestroy {
     ngOnInit() {
         this.isSaving = false;
 
-        this.clientService.findAllToTypeahead()
+        this.clientService.query()
             .subscribe((res: ResponseWrapper) => {
                 this.clients = res.json;
-                if (this.clients.length == 1) {
-                    this.order.clientId = this.clients[0].id;
-                }
             }, (res: ResponseWrapper) => this.onError(res.json));
 
         this.order.orderType = OrderType.ESTIMATION;
 
         this.subscription = this.route.params.subscribe((params) => {
             console.log(params);
+            if (params['inquiryId']) {
+                console.log('new purcahse order');
+                this.loadNewPurchaseOrder(params['inquiryId']);
+                this.title = 'Nowe zamówienie';
+            }
             if (params['id']) {
-                console.log('params exiest');
-                this.load(params['id']);
-                this.title = 'Edytuj zapytanie ofertowe';
-
-            } else {
-                this.title = 'Nowe zapytanie ofertowe';
+                console.log('edit purcahse order');
+                this.loadEditedPurchaseOrder(params['id']);
             }
 
         });
@@ -86,26 +84,10 @@ export class NewOrderComponent implements OnInit, OnDestroy {
         return item.id;
     }
 
-    addEstimation() {
-        // const drawing: Drawing = {id: null, attachments: []}
-        this.order.estimations.push({
-            id: null, amount: null,
-
-            //     drawing: drawing,
-            estimationRemarks: []
-        });
-        this.isDrawingUpload=false;
-    }
-
     onDeleteRow(index: number) {
         // console.log(event);
         console.log(index);
         this.order.estimations.splice(index, 1);
-        let isUploadedAttachment=true;
-        for(let estimaiton of this.order.estimations){
-            isUploadedAttachment=isUploadedAttachment&& this.checkIfAttachmentExist(estimaiton);
-        }
-        this.isDrawingUpload=isUploadedAttachment;
     }
 
     onWorkingCopyBtnClick() {
@@ -126,23 +108,19 @@ export class NewOrderComponent implements OnInit, OnDestroy {
 
     onFileArrayChange(event: Attachment[]) {
         this.attachments = event;
-        console.log('event from parent object: ', event);
-        this.isDrawingUpload = event.length > 0;
-
     }
-
 
     save() {
         this.isSaving = true;
         // for(let estimation of this.order.estimations){
         //     estimation.drawing.name=estimation.description;
         // }
-        if (this.order.id !== undefined) {
+        if (this.order.id !== undefined && this.order.id !== null) {
             this.subscribeToSaveResponse(
                 this.orderService.update(this.order));
         } else {
             this.subscribeToSaveResponse(
-                this.orderService.create(this.order));
+                this.orderService.createNewPurchaseOrder(this.order));
         }
     }
 
@@ -154,7 +132,7 @@ export class NewOrderComponent implements OnInit, OnDestroy {
     private onSaveSuccess(result: Order) {
         this.eventManager.broadcast({name: 'orderListModification', content: 'OK'});
         this.isSaving = false;
-        this.router.navigate(['order']);
+        this.router.navigate(['purchase-order']);
         // this.activeModal.dismiss(result);
     }
 
@@ -168,17 +146,35 @@ export class NewOrderComponent implements OnInit, OnDestroy {
         this.onError(error);
     }
 
-    load(id) {
-        this.orderService.find(id).subscribe((order) => {
+    loadNewPurchaseOrder(id) {
+        this.orderService.findEstimated(id).subscribe((order) => {
             this.order = order;
+            console.log(order);
 
             console.log('order status: ', order.orderStatus.toString());
             console.log('enum status: ', OrderStatus['WORKING_COPY']);
             console.log('enum 3', order.orderStatus.constructor.name);
             //     console.log('enum 3', ]);
-            this.isReadOnly = order.orderStatus != null && order.orderStatus != 'WORKING_COPY';
-
+            this.isReadOnly = order.orderStatus != null && order.orderStatus !== 'WORKING_COPY';
+            order.internalNumber = null;
+            order.inquiryId = order.id;
+            order.id = null;
+            // order.name = null;
+            order.orderType = OrderType.PRODUCTION;
+            order.sapNumber = null;
+            order.orderStatus = null;
+            order.createdAt = null;
+            order.description = null;
+            order.referenceNumber = null;
         });
+    }
+
+    loadEditedPurchaseOrder(id) {
+
+        this.orderService.find(id).subscribe((order) => {
+            this.order = order;
+        });
+        this.title = 'Edytuj Zamówienie'
     }
 
     ngOnDestroy() {
@@ -195,7 +191,6 @@ export class NewOrderComponent implements OnInit, OnDestroy {
             const drawing: Drawing = {id: null, attachments: []};
             this.order.estimations[row].drawing = drawing;
         }
-        console.log('clickedRow: ', row);
         this.clickedRow = row;
         this.modalService.open(content, {size: 'lg'}).result.then((result) => {
             this.closeResult = `Closed with: ${result}`;
@@ -214,22 +209,22 @@ export class NewOrderComponent implements OnInit, OnDestroy {
         }
     }
 
-    sendToEstimation() {
+    sendToProduction() {
         console.log('Sent to estimation');
 
-        this.order.orderStatus = 'SENT_TO_ESTIMATION';//OrderStatus.SENT_TO_ESTIMATION;
+        this.order.orderStatus = 'IN_PRODUCTION'; // OrderStatus.SENT_TO_ESTIMATION;
         this.save();
     }
 
-    checkIfAttachmentExist(estimation: Estimation): boolean {
-
-        if (estimation.drawing) {
-            if (estimation.drawing.attachments.length > 0) {
-
-                return true;
-            }
+    calculateTotalValue(): number {
+        let total = 0;
+        for (const estimation of this.order.estimations) {
+            total = total + estimation.estimatedCost * estimation.amount;
         }
-        this.isDrawingUpload = false;
-        return false;
+        return total;
+    }
+
+    createNewPurchaseOrder(order: Order) {
+
     }
 }

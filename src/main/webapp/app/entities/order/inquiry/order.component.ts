@@ -3,13 +3,13 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {Subscription} from 'rxjs/Rx';
 import {JhiEventManager, JhiParseLinks, JhiPaginationUtil, JhiLanguageService, JhiAlertService} from 'ng-jhipster';
 
-import {Order, OrderType} from './order.model';
-import {OrderService} from './order.service';
-import {ITEMS_PER_PAGE, Principal, ResponseWrapper} from '../../shared';
-import {PaginationConfig} from '../../blocks/config/uib-pagination.config';
-import {OrderFilter} from './order-filter.model';
+import {Order, OrderType} from '../order.model';
+import {OrderService} from '../order.service';
+import {ITEMS_PER_PAGE, Principal, ResponseWrapper} from '../../../shared';
+import {PaginationConfig} from '../../../blocks/config/uib-pagination.config';
+import {OrderFilter} from '../order-filter.model';
 import {URLSearchParams} from '@angular/http';
-import {ExcelService} from '../../tn-components/excel.service';
+import {ExcelService} from '../../../tn-components/excel.service';
 import {IMyDateModel, IMyInputFieldChanged, INgxMyDpOptions} from 'ngx-mydatepicker';
 
 

@@ -4,23 +4,23 @@ import { Resolve, ActivatedRouteSnapshot, RouterStateSnapshot, Routes, CanActiva
 import { UserRouteAccessService } from '../../shared';
 import { JhiPaginationUtil } from 'ng-jhipster';
 
-import { OrderComponent } from './order.component';
+import { OrderComponent } from './inquiry/order.component';
 import { OrderPopupComponent } from './order-dialog.component';
 import { OrderDeletePopupComponent } from './order-delete-dialog.component';
 
 import { Principal } from '../../shared';
-import {NewOrderComponent} from './new-order/new-order.component';
-import {OrderToEstimationComponent} from "./orders-to-estimation/order-to-estimation.component";
-import {OrderInEstimationComponent} from './orders-in-estimation/order-in-estimation.component';
-import {EstimatedOrderComponent} from './estimated-order/estimated-order.component';
-import {OrderDetailComponent} from './order-detail/order-detail.component';
-import {NewPurchaseOrderComponent} from './new-purchase-order/new-purchase-order.component';
+import {NewOrderComponent} from './inquiry/new-order/new-order.component';
+import {OrderToEstimationComponent} from "./inquiry/orders-to-estimation/order-to-estimation.component";
+import {OrderInEstimationComponent} from './inquiry/orders-in-estimation/order-in-estimation.component';
+import {EstimatedOrderComponent} from './inquiry/estimated-order/estimated-order.component';
+import {OrderDetailComponent} from './inquiry/order-detail/order-detail.component';
+import {NewPurchaseOrderComponent} from './purchase-order/new-purchase-order/new-purchase-order.component';
 import {OrderType} from './order.model';
 import {PurchaseOrderComponent} from './purchase-order/purchase-order.component';
-import {ArchiveOrdersComponent} from './archive-orders/archive-orders.component';
-import {PurchaseOrderDetailComponent} from './purchase-order-detail/purchase-order-detail.component';
-import {InquiryItemFinderComponent} from './inquiry-item-finder/inquiry-item-finder.component';
-import {PurchaseOrderItemFinderComponent} from './purchase-order-item-finder/purchase-order-item-finder.component';
+import {ArchiveOrdersComponent} from './inquiry/archive-orders/archive-orders.component';
+import {PurchaseOrderDetailComponent} from './purchase-order/purchase-order-detail/purchase-order-detail.component';
+import {InquiryItemFinderComponent} from './inquiry/inquiry-item-finder/inquiry-item-finder.component';
+import {PurchaseOrderItemFinderComponent} from './purchase-order/purchase-order-item-finder/purchase-order-item-finder.component';
 
 
 @Injectable()

@@ -1,26 +1,26 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {Client} from '../../client/client.model';
-import {ClientService} from '../../client/client.service';
-import {ResponseWrapper} from '../../../shared/model/response-wrapper.model';
+import {Client} from '../../../client/client.model';
+import {ClientService} from '../../../client/client.service';
+import {ResponseWrapper} from '../../../../shared/model/response-wrapper.model';
 import {JhiAlertService, JhiEventManager} from 'ng-jhipster';
-import {Order, OrderStatus, OrderType} from '../order.model';
-import {Attachment} from '../../../tn-components/tn-file-uploader/attachment.model';
-import {OrderService} from '../order.service';
+import {Order, OrderStatus, OrderType} from '../../order.model';
+import {Attachment} from '../../../../tn-components/tn-file-uploader/attachment.model';
+import {OrderService} from '../../order.service';
 import {Observable} from 'rxjs/Rx';
 import {ActivatedRoute, Router} from '@angular/router';
 import {Subscription} from 'rxjs/Subscription';
-import {Drawing} from '../../drawing/drawing.model';
-import {ModalDismissReasons, NgbDatepicker, NgbModal} from '@ng-bootstrap/ng-bootstrap';
-import {Estimation} from '../../production/estimation.model';
-import {MoveToArchiveDialogComponent} from './move-to-archive-dialog.component';
+import {ModalDismissReasons, NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import {EstimationRemark} from '../../../estimation-remark/estimation-remark.model';
+import {Drawing} from '../../../drawing/drawing.model';
 
 @Component({
-    selector: 'estimated-order',
-    templateUrl: './estimated-order.component.html',
+    selector: 'tn-purchase-order-detail',
+    templateUrl: './purchase-order-detail.component.html',
     styles: [],
+    // styleUrls: ['./order-detail.component.css'],
 
 })
-export class EstimatedOrderComponent implements OnInit, OnDestroy {
+export class PurchaseOrderDetailComponent implements OnInit, OnDestroy {
 
     title: string;
     clients: Client[];
@@ -35,7 +35,6 @@ export class EstimatedOrderComponent implements OnInit, OnDestroy {
     closeResult: string;
     clickedRow: number;
     isReadOnly: boolean = false;
-
     dropdownList = [];
 
     constructor(private alertService: JhiAlertService,
@@ -61,14 +60,9 @@ export class EstimatedOrderComponent implements OnInit, OnDestroy {
         this.order.orderType = OrderType.ESTIMATION;
 
         this.subscription = this.route.params.subscribe((params) => {
-            // console.log(params);
+            console.log(params);
             if (params['id']) {
-                // console.log('params exiest');
                 this.load(params['id']);
-                this.title = 'Edytuj zlecenie';
-
-            } else {
-                this.title = 'Nowe zlecenie';
             }
 
         });
@@ -82,23 +76,9 @@ export class EstimatedOrderComponent implements OnInit, OnDestroy {
         return item.id;
     }
 
-    addEstimation() {
-        const drawing: Drawing = {id: null, attachments: []}
-        this.order.estimations.push({
-            id: null, amount: null,
-            drawing: drawing
-        });
-    }
-
-    onDeleteRow(index: number) {
-        // console.log(event);
-        // console.log(index);
-        this.order.estimations.splice(index, 1);
-    }
-
     onWorkingCopyBtnClick() {
-        // console.log('save is cliccked');
-        // console.log(this.order);
+        console.log('save is cliccked');
+        console.log(this.order);
         this.order.orderStatus = 'WORKING_COPY';//OrderStatus.WORKING_COPY;
         this.save();
     }
@@ -107,17 +87,10 @@ export class EstimatedOrderComponent implements OnInit, OnDestroy {
         window.history.back();
     }
 
-    onFileChange() {
-        console.log(this.optionsModel);
-        // this.save();
-    }
-
     onFileArrayChange(event: Attachment[]) {
         this.attachments = event;
-        // console.log('event from parent object: ', event);
-
+        console.log('event from parent object: ', event);
     }
-
 
     save() {
         this.isSaving = true;
@@ -158,13 +131,12 @@ export class EstimatedOrderComponent implements OnInit, OnDestroy {
     load(id) {
         this.orderService.find(id).subscribe((order) => {
             this.order = order;
-
-            // console.log('order status: ',order.orderStatus.toString());
-            // console.log('enum status: ',OrderStatus['WORKING_COPY']);
-            // console.log('enum 3', order.orderStatus.constructor.name);
+            console.log('order status: ', order.orderStatus.toString());
+            console.log('enum status: ', OrderStatus['WORKING_COPY']);
+            console.log('enum 3', order.orderStatus.constructor.name);
+            console.log('order ', order)
             //     console.log('enum 3', ]);
-            this.isReadOnly = order.orderStatus != null && order.orderStatus != 'WORKING_COPY';
-
+            this.isReadOnly = order.orderStatus != null && order.orderStatus !== 'WORKING_COPY';
         });
     }
 
@@ -173,12 +145,12 @@ export class EstimatedOrderComponent implements OnInit, OnDestroy {
         // this.eventManager.destroy(this.eventSubscriber);
     }
 
-    getOptions(index: number): number[] {
-        return this.optionsMap.get(index);
-    }
-
     openModal(content, row: number) {
-        // console.log('clickedRow: ', row);
+        if (!this.order.estimations[row].drawing) {
+            const drawing: Drawing = {id: null, attachments: []};
+            this.order.estimations[row].drawing = drawing;
+        }
+        console.log('clickedRow: ', row);
         this.clickedRow = row;
         this.modalService.open(content, {size: 'lg'}).result.then((result) => {
             this.closeResult = `Closed with: ${result}`;
@@ -197,44 +169,19 @@ export class EstimatedOrderComponent implements OnInit, OnDestroy {
         }
     }
 
-    sendToEstimation() {
-        // console.log('Sent to estimation');
-
-        this.save();
-    }
-
     convertToDate(ngBootstrapDate: any): Date {
-
-        if (ngBootstrapDate && ngBootstrapDate !== null) {
-
-
-            if (typeof ngBootstrapDate === 'string') {
-                return null;
-                // return new Date( ngBootstrapDate);
-            }
-
-            return new Date(ngBootstrapDate.year, ngBootstrapDate.month, ngBootstrapDate.day);
+        if (typeof ngBootstrapDate === 'string') {
+            return null;
+            // return new Date( ngBootstrapDate);
         }
-        return null;
+        return new Date(ngBootstrapDate.year, ngBootstrapDate.month, ngBootstrapDate.day);
     }
 
-    isPrintingDisabled(): boolean {
-        let isPrintable = false;
-        for (let estimation  of this.order.estimations) {
-            isPrintable = isPrintable || estimation.checked;
+    isProductionCreateBtnDisabled(): boolean {
+        let isDisabled = false;
+        for (let estimation of this.order.estimations) {
+            isDisabled = isDisabled || estimation.estimatedCost !== null
         }
-        return !isPrintable;
+        return isDisabled;
     }
-
-
-    createPdfOffer() {
-        this.orderService.createPdfOffer(this.order);
-    }
-
-    moveToArchive() {
-        const modalRef = this.modalService.open(MoveToArchiveDialogComponent);
-        modalRef.componentInstance.order = this.order;
-    }
-
-
 }

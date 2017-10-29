@@ -3,9 +3,9 @@ import {ActivatedRoute, Router} from '@angular/router';
 
 import {NgbActiveModal, NgbModalRef} from '@ng-bootstrap/ng-bootstrap';
 import {JhiEventManager} from 'ng-jhipster';
-import {Order} from '../order.model';
-import {OrderService} from '../order.service';
-import {OrderPopupService} from '../order-popup.service';
+import {Order} from '../../order.model';
+import {OrderService} from '../../order.service';
+import {OrderPopupService} from '../../order-popup.service';
 
 @Component({
     selector: 'tn-move-to-archive-dialog',

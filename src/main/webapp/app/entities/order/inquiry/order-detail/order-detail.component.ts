@@ -1,26 +1,27 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {Client} from '../../client/client.model';
-import {ClientService} from '../../client/client.service';
-import {ResponseWrapper} from '../../../shared/model/response-wrapper.model';
+import {Client} from '../../../client/client.model';
+import {ClientService} from '../../../client/client.service';
+import {ResponseWrapper} from '../../../../shared/model/response-wrapper.model';
 import {JhiAlertService, JhiEventManager} from 'ng-jhipster';
-import {Order, OrderStatus, OrderType} from '../order.model';
-import {Attachment} from '../../../tn-components/tn-file-uploader/attachment.model';
-import {OrderService} from '../order.service';
+import {Order, OrderStatus, OrderType} from '../../order.model';
+import {Attachment} from '../../../../tn-components/tn-file-uploader/attachment.model';
+import {OrderService} from '../../order.service';
 import {Observable} from 'rxjs/Rx';
 import {ActivatedRoute, Router} from '@angular/router';
 import {Subscription} from 'rxjs/Subscription';
 import {ModalDismissReasons, NgbModal} from '@ng-bootstrap/ng-bootstrap';
-import {EstimationRemark} from '../../estimation-remark/estimation-remark.model';
-import {Drawing} from '../../drawing/drawing.model';
+import {EstimationRemark} from '../../../estimation-remark/estimation-remark.model';
+import {Drawing} from '../../../drawing/drawing.model';
+import {ExcelService} from '../../../../tn-components/excel.service';
 
 @Component({
-    selector: 'tn-purchase-order-detail',
-    templateUrl: './purchase-order-detail.component.html',
-    styles: [],
-    // styleUrls: ['./order-detail.component.css'],
+    selector: 'tn-order-detail',
+    templateUrl: './order-detail.component.html',
+    // styles: [],
+    styleUrls: ['./order-detail.component.css'],
 
 })
-export class PurchaseOrderDetailComponent implements OnInit, OnDestroy {
+export class OrderDetailComponent implements OnInit, OnDestroy {
 
     title: string;
     clients: Client[];
@@ -35,6 +36,7 @@ export class PurchaseOrderDetailComponent implements OnInit, OnDestroy {
     closeResult: string;
     clickedRow: number;
     isReadOnly: boolean = false;
+
     dropdownList = [];
 
     constructor(private alertService: JhiAlertService,
@@ -43,7 +45,10 @@ export class PurchaseOrderDetailComponent implements OnInit, OnDestroy {
                 private eventManager: JhiEventManager,
                 private router: Router,
                 private route: ActivatedRoute,
-                private modalService: NgbModal) {
+                private modalService: NgbModal,
+                private excelService: ExcelService,
+
+    ) {
         this.order = new Order();
         this.order.estimations = [];
 
@@ -63,6 +68,7 @@ export class PurchaseOrderDetailComponent implements OnInit, OnDestroy {
             console.log(params);
             if (params['id']) {
                 this.load(params['id']);
+
             }
 
         });
@@ -89,7 +95,6 @@ export class PurchaseOrderDetailComponent implements OnInit, OnDestroy {
 
     onFileArrayChange(event: Attachment[]) {
         this.attachments = event;
-        console.log('event from parent object: ', event);
     }
 
     save() {
@@ -131,12 +136,14 @@ export class PurchaseOrderDetailComponent implements OnInit, OnDestroy {
     load(id) {
         this.orderService.find(id).subscribe((order) => {
             this.order = order;
+
             console.log('order status: ', order.orderStatus.toString());
             console.log('enum status: ', OrderStatus['WORKING_COPY']);
             console.log('enum 3', order.orderStatus.constructor.name);
             console.log('order ', order)
             //     console.log('enum 3', ]);
-            this.isReadOnly = order.orderStatus != null && order.orderStatus !== 'WORKING_COPY';
+            this.isReadOnly = order.orderStatus != null && order.orderStatus != 'WORKING_COPY';
+
         });
     }
 
@@ -150,7 +157,6 @@ export class PurchaseOrderDetailComponent implements OnInit, OnDestroy {
             const drawing: Drawing = {id: null, attachments: []};
             this.order.estimations[row].drawing = drawing;
         }
-        console.log('clickedRow: ', row);
         this.clickedRow = row;
         this.modalService.open(content, {size: 'lg'}).result.then((result) => {
             this.closeResult = `Closed with: ${result}`;
@@ -170,11 +176,15 @@ export class PurchaseOrderDetailComponent implements OnInit, OnDestroy {
     }
 
     convertToDate(ngBootstrapDate: any): Date {
-        if (typeof ngBootstrapDate === 'string') {
-            return null;
-            // return new Date( ngBootstrapDate);
+        if(!ngBootstrapDate && ngBootstrapDate!==null){
+            if (typeof ngBootstrapDate === 'string') {
+                return null;
+                // return new Date( ngBootstrapDate);
+            }
+            return new Date(ngBootstrapDate.year, ngBootstrapDate.month, ngBootstrapDate.day);
         }
-        return new Date(ngBootstrapDate.year, ngBootstrapDate.month, ngBootstrapDate.day);
+
+        return null;
     }
 
     isProductionCreateBtnDisabled(): boolean {
@@ -184,4 +194,5 @@ export class PurchaseOrderDetailComponent implements OnInit, OnDestroy {
         }
         return isDisabled;
     }
+
 }

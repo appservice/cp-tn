@@ -6,13 +6,13 @@ import {URLSearchParams} from '@angular/http';
 
 import {ModalDismissReasons, NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {Estimation} from '../../../estimation/estimation.model';
-import {EstimationFilter} from '../../inquiry-item-finder/estimation-filter.model';
 import {Attachment} from '../../../../tn-components/tn-file-uploader/attachment.model';
 import {EstimationService} from '../../../estimation/estimation.service';
 import {Principal} from '../../../../shared/auth/principal.service';
 import {ITEMS_PER_PAGE} from '../../../../shared/constants/pagination.constants';
 import {ResponseWrapper} from '../../../../shared/model/response-wrapper.model';
 import {Drawing} from '../../../drawing/drawing.model';
+import {EstimationFilter} from '../../estimation-filter.model';
 
 
 

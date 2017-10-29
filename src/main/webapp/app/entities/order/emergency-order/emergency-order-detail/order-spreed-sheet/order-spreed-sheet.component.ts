@@ -1,6 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
+import {Estimation} from '../../../../estimation/estimation.model';
 
-import {Estimation} from '../../../estimation/estimation.model';
 
 @Component({
     selector: 'tn-order-spreed-sheet',

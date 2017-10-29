@@ -30,7 +30,6 @@ public class OrderDTO implements Serializable {
     @NotNull
     private OrderType orderType;
 
-    @NotNull
     private String name;
 
     private String description;
@@ -81,7 +80,7 @@ public class OrderDTO implements Serializable {
             this.estimationMakerName = o.getEstimationMaker().getFirstName() + " " + o.getEstimationMaker().getLastName();
         }
         this.estimationFinishDate=o.getEstimationFinsihDate();
-        
+
        // this.estimations = estimations;
     }
 

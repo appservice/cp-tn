@@ -139,8 +139,8 @@
                                 </td>
                                 <td style="width: 100px">
 
-                                    <button class="btn " type="button" (click)="openModal(content,rowIndex)"
-                                            [ngClass]="{'btn-outline-danger':!checkIfAttachmentExist(estimation),'btn-outline-dark': checkIfAttachmentExist(estimation)}"
+                                    <button class="btn btn-outline-dark" type="button" (click)="openModal(content,rowIndex)"
+
                                             ngbTooltip="Załączenie rysunku jest wymagane">
                                         <strong *ngIf="!estimation.drawing">0</strong>
                                         <strong *ngIf="estimation.drawing">{{estimation.drawing.attachments.length}}</strong>
@@ -175,7 +175,7 @@
 
         <div class="text-center">
 
-            <button class="btn btn-outline-primary " type="submit" [disabled]="editForm.form.invalid || isSaving|| !isDrawingUpload || order.estimations.length===0"
+            <button class="btn btn-outline-primary " type="submit" [disabled]="editForm.form.invalid || isSaving || order.estimations.length===0"
                     *ngIf="order.orderStatus =='WORKING_COPY' || order.orderStatus==null">
                 <span class="fa fa-save"></span>&nbsp;Kopia robocza
             </button>

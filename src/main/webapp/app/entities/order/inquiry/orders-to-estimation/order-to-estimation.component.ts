@@ -3,10 +3,10 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs/Rx';
 import { JhiEventManager, JhiParseLinks, JhiPaginationUtil, JhiLanguageService, JhiAlertService } from 'ng-jhipster';
 
-import { Order } from '../order.model';
-import { OrderService } from '../order.service';
-import { ITEMS_PER_PAGE, Principal, ResponseWrapper } from '../../../shared';
-import { PaginationConfig } from '../../../blocks/config/uib-pagination.config';
+import { OrderService } from '../../order.service';
+import { ITEMS_PER_PAGE, Principal, ResponseWrapper } from '../../../../shared';
+import { PaginationConfig } from '../../../../blocks/config/uib-pagination.config';
+import {Order} from '../../order.model';
 
 @Component({
     selector: 'order-to-estimation',

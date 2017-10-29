@@ -31,7 +31,6 @@
         </div>
 
         <div class="col-md-2">
-            <!--<label class="form-control-label" jhiTranslate="tnApp.order.orderStatus" for="field_orderStatus">Order Status</label>-->
             <select class="form-control" name="orderStatus" [(ngModel)]="orderFilter.orderStatus"
                     id="field_orderStatus">
                 <option value="undefined" disabled selected hidden>Status zamówienia</option>
@@ -44,8 +43,7 @@
         </div>
 
         <div class="form-group col-md-2">
-            <!--<my-date-picker locale="pl"  [(ngModel)]="orderFilter.validFrom" placeholder="Utworzono po:"></my-date-picker>-->
-            <!--<label class="form-control-label" jhiTranslate="tnApp.order.closeDate" for="field_closeDate">Close Date</label>-->
+
             <div class="input-group">
                 <input type="text" class="form-control"
                        name="validFromFilter"
@@ -58,9 +56,7 @@
             </div>
         </div>
         <div class="form-group col-md-2">
-            <!--<my-date-picker locale="pl"  [(ngModel)]="orderFilter.validTo" placeholder="Utworzono przed:"></my-date-picker>-->
-            <!--<my-date-picker locale="pl"  [(ngModel)]="orderFilter.validTo"  placeholder="Utworzono przed:"></my-date-picker>-->
-            <!--<label class="form-control-label" jhiTranslate="tnApp.order.closeDate" for="field_closeDate">Close Date</label>-->
+
             <div class="input-group">
                 <input type="text" class="form-control" name="validToFilter" ngbDatepicker #createdToEnd="ngbDatepicker" [displayMonths]="true" [showWeekdays]="true"
                        [(ngModel)]="orderFilter.validTo" placeholder="Utworzono przed:" />
@@ -98,11 +94,9 @@
             <th jhiSortBy="internalNumber"><span>Nr wewnętrzny</span> <span class="fa fa-sort"></span></th>
             <th jhiSortBy="description"><span>Nr Klienta</span> <span class="fa fa-sort"></span></th>
 
-            <!--<th jhiSortBy="orderType"><span jhiTranslate="tnApp.order.orderType">Order Type</span> <span class="fa fa-sort"></span></th>-->
             <th jhiSortBy="name"><span jhiTranslate="tnApp.order.name">Name</span> <span
                 class="fa fa-sort"></span></th>
             <th jhiSortBy="createdAt"><span j>Data utworzenia</span> <span class="fa fa-sort"></span></th>
-            <!--<th jhiSortBy="closeDate"><span jhiTranslate="tnApp.order.closeDate">Close Date</span> <span class="fa fa-sort"></span></th>-->
             <th jhiSortBy="orderStatus"><span jhiTranslate="tnApp.order.orderStatus">Order Status</span>
                 <span class="fa fa-sort"></span></th>
             <th jhiSortBy="clientId"><span jhiTranslate="tnApp.order.client">Client</span> <span
@@ -159,10 +153,5 @@
 </div>
 </div>
 
-<!--<my-date-picker locale="pl" [placeholder]="data" [options]="" ></my-date-picker>-->
-<!--<tn-date-picker></tn-date-picker>-->
 
-<!--<ngbd-datepicker-i18n></ngbd-datepicker-i18n>-->
-<!--<ngbd-datepicker-i18n></ngbd-datepicker-i18n>-->
-<!--<button class="btn btn-outline-dark" type="button" (click)="exportAsExcelFile()"><span class="fa fa-file-excel-o"></span> exportuj do excel</button>-->
 

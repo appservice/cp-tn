@@ -3,15 +3,15 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {Subscription} from 'rxjs/Rx';
 import {JhiEventManager, JhiParseLinks, JhiPaginationUtil, JhiLanguageService, JhiAlertService} from 'ng-jhipster';
 import {URLSearchParams} from '@angular/http';
-import {EstimationService} from '../../estimation/estimation.service';
-import {Principal} from '../../../shared/auth/principal.service';
-import {ITEMS_PER_PAGE} from '../../../shared/constants/pagination.constants';
-import {ResponseWrapper} from '../../../shared/model/response-wrapper.model';
-import {Estimation} from '../../estimation/estimation.model';
-import {EstimationFilter} from './estimation-filter.model';
-import {Drawing} from '../../drawing/drawing.model';
+import {EstimationService} from '../../../estimation/estimation.service';
+import {Principal} from '../../../../shared/auth/principal.service';
+import {ITEMS_PER_PAGE} from '../../../../shared/constants/pagination.constants';
+import {ResponseWrapper} from '../../../../shared/model/response-wrapper.model';
+import {Estimation} from '../../../estimation/estimation.model';
+import {EstimationFilter} from '../../estimation-filter.model';
+import {Drawing} from '../../../drawing/drawing.model';
 import {ModalDismissReasons, NgbModal} from '@ng-bootstrap/ng-bootstrap';
-import {Attachment} from '../../../tn-components/tn-file-uploader/attachment.model';
+import {Attachment} from '../../../../tn-components/tn-file-uploader/attachment.model';
 
 
 @Component({
