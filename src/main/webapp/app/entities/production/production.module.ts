@@ -16,6 +16,7 @@ import {ProductionStanComponent} from './production.component';
 import {OrdersInProductionComponent} from './orders-in-production/orders-in-production.component';
 import {OrderInProductionDetailComponent} from './order-in-production-detail/order-in-production-detail.component';
 import {TechnologyEditComponent} from './technology-edit/technology-edit.component';
+import {ProductionService} from './production.service';
 
 const ENTITY_STATES = [
     ...productionRoute,
@@ -46,7 +47,9 @@ const ENTITY_STATES = [
 
     ],
     providers: [
-        EstimationService
+        EstimationService,
+        ProductionService
+
         ,
         EstimationResolvePagingParams,
     ],

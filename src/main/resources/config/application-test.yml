@@ -103,4 +103,7 @@ spring:
 ## http://www.jhipster.tech/common-application-properties/
 ## ===================================================================
 #
-#application:
+
+application:
+    drawingDirectoryPath: uploaded_from_tn
+

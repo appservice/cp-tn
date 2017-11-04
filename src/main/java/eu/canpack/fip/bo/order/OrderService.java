@@ -31,7 +31,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityManager;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.ZonedDateTime;
@@ -65,12 +64,11 @@ public class OrderService {
     private final AttachmentRepository attachmentRepository;
     private final EstimationRepository estimationRepository;
 
-    private final EntityManager entityManager;
 
 
     private final UserService userService;
 
-    public OrderService(OrderRepository orderRepository, OrderMapper orderMapper, OrderSearchRepository orderSearchRepository, UserRepository userRepository, DrawingRepository drawingRepository, AttachmentRepository attachmentRepository, EstimationRepository estimationRepository, EntityManager entityManager, UserService userService) {
+    public OrderService(OrderRepository orderRepository, OrderMapper orderMapper, OrderSearchRepository orderSearchRepository, UserRepository userRepository, DrawingRepository drawingRepository, AttachmentRepository attachmentRepository, EstimationRepository estimationRepository,  UserService userService) {
         this.orderRepository = orderRepository;
         this.orderMapper = orderMapper;
         this.orderSearchRepository = orderSearchRepository;
@@ -78,7 +76,6 @@ public class OrderService {
         this.drawingRepository = drawingRepository;
         this.attachmentRepository = attachmentRepository;
         this.estimationRepository = estimationRepository;
-        this.entityManager = entityManager;
         this.userService = userService;
     }
 

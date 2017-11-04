@@ -14,6 +14,7 @@ export class User {
     public password?: string;
     public clientId?: number;
     public clientName?: string;
+    public phone?: string;
 
 
     constructor(id?: any,
@@ -30,7 +31,8 @@ export class User {
                 lastModifiedDate?: Date,
                 password?: string,
                 clientId?: number,
-                clientName?: string) {
+                clientName?: string,
+                phone?: string) {
         this.id = id ? id : null;
         this.login = login ? login : null;
         this.firstName = firstName ? firstName : null;
@@ -46,5 +48,6 @@ export class User {
         this.password = password ? password : null;
         this.clientId = clientId ? clientId : null;
         this.clientName = clientName ? clientName : null;
+        this.phone = phone ? phone : null;
     }
 }

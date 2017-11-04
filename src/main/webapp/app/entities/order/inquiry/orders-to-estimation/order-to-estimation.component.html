@@ -34,8 +34,7 @@
                 <th jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span> <span class="fa fa-sort"></span></th>
                 <th jhiSortBy="internalNumber"><span jhiTranslate="tnApp.order.internalNumber">Internal Number</span>
                     <span class="fa fa-sort"></span></th>
-                <th jhiSortBy="sapNumber"><span jhiTranslate="tnApp.order.sapNumber">Sap Number</span> <span
-                    class="fa fa-sort"></span></th>
+
                 <th jhiSortBy="orderType"><span jhiTranslate="tnApp.order.orderType">Order Type</span> <span
                     class="fa fa-sort"></span></th>
                 <th jhiSortBy="name"><span jhiTranslate="tnApp.order.name">Name</span> <span class="fa fa-sort"></span>
@@ -53,7 +52,6 @@
             <tr *ngFor="let order of orders ;trackBy: trackId">
                 <td><a [routerLink]="['../order', order.id ]">{{order.id}}</a></td>
                 <td><a [routerLink]="['../order', order.id ]">{{order.internalNumber}}</a></td>
-                <td>{{order.sapNumber}}</td>
                 <td jhiTranslate="{{'tnApp.OrderType.' + order.orderType}}">{{order.orderType}}</td>
                 <td>{{order.name}}</td>
                 <td>{{order.createdAt|date:'dd-MM-yyyy'}}</td>

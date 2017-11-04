@@ -44,8 +44,8 @@ public class Order2PdfCreator {
         "Tel.: +48 14 670 28 11, E-mail: officecpfip@canpack.eu\n"+
         "Sąd Rejonowy w Rzeszowie, XII Wydział Gospodarczy KRS: 0000228547\n"+
         "Wysokość kapitału zakładowego: 75 853 000,00 PLN\n"+
-        "REGON 180017966, NIP 872 222 84 78\n"+
-        "Konto bankowe: 05 1060 0076 0000 3210 0019 2932 (PLN), 79 1060 0076 0000 3210 0019 2958 (EUR)\n";
+        "REGON 180017966, NIP 872 222 84 78\n";//+
+//        "Konto bankowe: 05 1060 0076 0000 3210 0019 2932 (PLN), 79 1060 0076 0000 3210 0019 2958 (EUR)\n";
 
     private final OrderRepository orderRepository;
 

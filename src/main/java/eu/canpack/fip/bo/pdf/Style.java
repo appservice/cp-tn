@@ -45,7 +45,7 @@ import java.awt.*;
             cell.setPaddingBottom(7f);
 
             // background color
-            cell.setBackgroundColor(Color.LIGHT_GRAY);
+            cell.setBackgroundColor(new Color(238,236,226));
 
             // border
 //            cell.setBorder(1);

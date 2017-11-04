@@ -8,6 +8,7 @@ import eu.canpack.fip.bo.order.dto.OrderSimpleDTO;
 import eu.canpack.fip.bo.order.enumeration.OrderStatus;
 import eu.canpack.fip.bo.order.enumeration.OrderType;
 import eu.canpack.fip.bo.pdf.Order2PdfCreator;
+import eu.canpack.fip.bo.pdf.Order3PdfCreator;
 import eu.canpack.fip.web.rest.util.HeaderUtil;
 import eu.canpack.fip.web.rest.util.PaginationUtil;
 import io.swagger.annotations.ApiParam;
@@ -47,15 +48,15 @@ public class OrderResource {
 
     private final OrderMapper orderMapper;
 
-    private final Order2PdfCreator order2PdfCreator;
+    private final Order3PdfCreator order3PdfCreator;
 
     private final OrderQueryService orderQueryService;
 
 
-    public OrderResource(OrderService orderService, OrderMapper orderMapper, Order2PdfCreator order2PdfCreator, OrderQueryService orderQueryService) {
+    public OrderResource(OrderService orderService, OrderMapper orderMapper, Order3PdfCreator order3PdfCreator, OrderQueryService orderQueryService) {
         this.orderService = orderService;
         this.orderMapper = orderMapper;
-        this.order2PdfCreator = order2PdfCreator;
+        this.order3PdfCreator = order3PdfCreator;
         this.orderQueryService = orderQueryService;
     }
 
@@ -169,7 +170,7 @@ public class OrderResource {
      */
     @GetMapping("/orders/production-edit")
     @Timed
-    public ResponseEntity<List<OrderListDTO>> getAllProductionOrdersForEdit( @ApiParam Pageable pageable) {
+    public ResponseEntity<List<OrderListDTO>> getAllProductionOrdersForEdit(@ApiParam Pageable pageable) {
         log.debug("REST request to get a page of Orders");
 
 
@@ -314,7 +315,7 @@ public class OrderResource {
     @Timed
     public ResponseEntity<OrderDTO> insertSapNumbers(@RequestBody OrderDTO orderDTO) {
         log.debug("orderDTO", orderDTO);
-       OrderDTO response= orderService.insertSapNumbers(orderDTO);
+        OrderDTO response = orderService.insertSapNumbers(orderDTO);
 
         return ResponseEntity.ok(response);
     }
@@ -335,7 +336,7 @@ public class OrderResource {
 
         ByteArrayOutputStream os = new ByteArrayOutputStream();
 
-        order2PdfCreator.createPdf(orderDTO, os);
+        order3PdfCreator.createPdf(orderDTO, os);
 
         InputStream inputStream = new ByteArrayInputStream(os.toByteArray());
         InputStreamResource inputStreamResource = new InputStreamResource(inputStream);
@@ -371,7 +372,8 @@ public class OrderResource {
 
     /**
      * GET  /orders : get all the orders.
-     *ez
+     * ez
+     *
      * @param pageable the pagination information
      * @return the ResponseEntity with status 200 (OK) and the list of orders in body
      */

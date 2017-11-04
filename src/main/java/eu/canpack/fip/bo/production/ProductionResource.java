@@ -13,8 +13,13 @@ import eu.canpack.fip.bo.order.dto.OrderDTO;
 import eu.canpack.fip.bo.pdf.OrderSummary2PdfCreator;
 import eu.canpack.fip.bo.pdf.PdfUtilService;
 import eu.canpack.fip.bo.pdf.TechnologyCardPdfCreator;
+import eu.canpack.fip.web.rest.util.PaginationUtil;
+import io.swagger.annotations.ApiParam;
 import org.springframework.core.io.InputStreamResource;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
@@ -35,13 +40,15 @@ public class ProductionResource {
     private final PdfUtilService pdfUtilService;
     private final TechnologyCardPdfCreator technologyCardPdfCreator;
     private final OrderSummary2PdfCreator orderSummaryPdfCreator;
+    private final ProductionService productionService;
 
-    public ProductionResource(EstimationRepository estimationRepository, PdfUtilService pdfUtilService, TechnologyCardPdfCreator technologyCardPdfCreator, OrderSummary2PdfCreator orderSummaryPdfCreator) {
+    public ProductionResource(EstimationRepository estimationRepository, PdfUtilService pdfUtilService, TechnologyCardPdfCreator technologyCardPdfCreator, OrderSummary2PdfCreator orderSummaryPdfCreator, ProductionService productionService) {
         this.estimationRepository = estimationRepository;
         this.pdfUtilService = pdfUtilService;
         this.technologyCardPdfCreator = technologyCardPdfCreator;
 
         this.orderSummaryPdfCreator = orderSummaryPdfCreator;
+        this.productionService = productionService;
     }
 
 
@@ -51,27 +58,26 @@ public class ProductionResource {
         ByteArrayOutputStream os = new ByteArrayOutputStream();
 
 
-
-        List<Estimation> estimations=orderDTO.getEstimations().stream()
+        List<Estimation> estimations = orderDTO.getEstimations().stream()
             .filter(EstimationCreateDTO::isChecked)
             .map(e -> estimationRepository.findOne(e.getId())).collect(Collectors.toList());
 
-        ByteArrayOutputStream[] outputStreams = new ByteArrayOutputStream[estimations.size()+1];
+        ByteArrayOutputStream[] outputStreams = new ByteArrayOutputStream[estimations.size() + 1];
         ByteArrayOutputStream baosMainPage = new ByteArrayOutputStream();
-        orderSummaryPdfCreator.createPdf(estimations.get(0).getOrder(),estimations,baosMainPage);
+        orderSummaryPdfCreator.createPdf(estimations.get(0).getOrder(), estimations, baosMainPage);
 
-        outputStreams[0]=baosMainPage;
+        outputStreams[0] = baosMainPage;
 
-        int i=1;
-        for(Estimation estimation:estimations){
-            try(ByteArrayOutputStream baos=new ByteArrayOutputStream()){
+        int i = 1;
+        for (Estimation estimation : estimations) {
+            try (ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
                 technologyCardPdfCreator.createPdf(estimation, baos);
-                outputStreams[i]=baos;
+                outputStreams[i] = baos;
                 i++;
             }
 
         }
-        pdfUtilService.margePdfs(os,outputStreams);
+        pdfUtilService.margePdfs(os, outputStreams);
 
 
         InputStream inputStream = new ByteArrayInputStream(os.toByteArray());
@@ -83,9 +89,17 @@ public class ProductionResource {
 //        }
 
 
-
         return ResponseEntity.ok().header(HttpHeaders.CONTENT_DISPOSITION, "attachment;filename=" + "oferta.pdf")
             .contentType(MediaType.APPLICATION_PDF).body(inputStreamResource);
 
+    }
+
+    @GetMapping("production/items-actual-in-production")
+    public ResponseEntity<List<ProductionItemDTO>> showItemsActualInProduction(@ApiParam Pageable pageable) {
+        Page<ProductionItemDTO> page = productionService.showActualProduction(pageable);
+
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/production/items-actual-in-production");
+
+        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
 }

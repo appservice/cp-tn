@@ -17,7 +17,7 @@ public class Order2PdfCreatorStyle {
 
      static PdfPCell createLabelCell(String text) {
         // font
-        Font font = new Font(PdfUtil.getArialUnicodeBaseFont(), 12, Font.BOLD, Color.BLACK);
+        Font font = new Font(PdfUtil.getArialUnicodeBaseFont(), 10, Font.BOLD, Color.BLACK);
 
         // create cell
         PdfPCell cell = new PdfPCell(new Phrase(text, font));
@@ -61,9 +61,11 @@ public class Order2PdfCreatorStyle {
 
         // create cell
         PdfPCell cell = new PdfPCell(new Phrase(text, font));
+        cell.setBorderWidth(0);
+      //  cell.setHorizontalAlignment();
 
         // set style
-        Style.value2CellStyle(cell);
+       // Style.value2CellStyle(cell);
         return cell;
     }
     // create cells

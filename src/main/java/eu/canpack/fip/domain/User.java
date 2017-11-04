@@ -11,6 +11,7 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.validator.constraints.Email;
 import org.springframework.data.elasticsearch.annotations.Document;
 
+import javax.annotation.RegEx;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
@@ -99,6 +100,9 @@ public class User extends AbstractAuditingEntity implements Serializable {
 
     @ManyToOne
     private Client client;
+
+    @Column(name = "phone", length = 20)
+    private String phone;
 
     public Long getId() {
         return id;
@@ -212,7 +216,13 @@ public class User extends AbstractAuditingEntity implements Serializable {
         this.client = client;
     }
 
+    public String getPhone() {
+        return phone;
+    }
 
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
 
     @Override
     public boolean equals(Object o) {

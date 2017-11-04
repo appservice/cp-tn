@@ -7,6 +7,8 @@ import { Estimation } from './estimation.model';
 import { EstimationService } from './estimation.service';
 import { ITEMS_PER_PAGE, Principal, ResponseWrapper } from '../../shared';
 import { PaginationConfig } from '../../blocks/config/uib-pagination.config';
+import {ProductionService} from './production.service';
+import {ProductionItem} from './production-item.model';
 
 @Component({
     selector: 'jhi-estimation',
@@ -15,7 +17,7 @@ import { PaginationConfig } from '../../blocks/config/uib-pagination.config';
 export class ProductionStanComponent implements OnInit, OnDestroy {
 
 currentAccount: any;
-    estimations: Estimation[];
+    productionItems: ProductionItem[];
     error: any;
     success: any;
     eventSubscriber: Subscription;
@@ -31,7 +33,6 @@ currentAccount: any;
     reverse: any;
 
     constructor(
-        private estimationService: EstimationService,
         private parseLinks: JhiParseLinks,
         private alertService: JhiAlertService,
         private principal: Principal,
@@ -39,7 +40,8 @@ currentAccount: any;
         private router: Router,
         private eventManager: JhiEventManager,
         private paginationUtil: JhiPaginationUtil,
-        private paginationConfig: PaginationConfig
+        private paginationConfig: PaginationConfig,
+        private productionService: ProductionService,
     ) {
         this.itemsPerPage = ITEMS_PER_PAGE;
         this.routeData = this.activatedRoute.data.subscribe((data) => {
@@ -52,17 +54,8 @@ currentAccount: any;
     }
 
     loadAll() {
-        if (this.currentSearch) {
-            this.estimationService.search({
-                query: this.currentSearch,
-                size: this.itemsPerPage,
-                sort: this.sort()}).subscribe(
-                    (res: ResponseWrapper) => this.onSuccess(res.json, res.headers),
-                    (res: ResponseWrapper) => this.onError(res.json)
-                );
-            return;
-        }
-        this.estimationService.query({
+
+        this.productionService.getItemsActualInProduction({
             page: this.page - 1,
             size: this.itemsPerPage,
             sort: this.sort()}).subscribe(
@@ -97,19 +90,7 @@ currentAccount: any;
         }]);
         this.loadAll();
     }
-    search(query) {
-        if (!query) {
-            return this.clear();
-        }
-        this.page = 0;
-        this.currentSearch = query;
-        this.router.navigate(['/estimation', {
-            search: this.currentSearch,
-            page: this.page,
-            sort: this.predicate + ',' + (this.reverse ? 'asc' : 'desc')
-        }]);
-        this.loadAll();
-    }
+
     ngOnInit() {
         this.loadAll();
         this.principal.identity().then((account) => {
@@ -141,14 +122,11 @@ currentAccount: any;
         this.links = this.parseLinks.parse(headers.get('link'));
         this.totalItems = headers.get('X-Total-Count');
         this.queryCount = this.totalItems;
-        // this.page = pagingParams.page;
-        this.estimations = data;
+        this.productionItems = data;
     }
     private onError(error) {
         this.alertService.error(error.message, null, null);
     }
 
-    getTechnologyCardPdf(estimation: Estimation) {
-        this.estimationService.download(estimation);
-    }
+
 }

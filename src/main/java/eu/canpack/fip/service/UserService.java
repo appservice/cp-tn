@@ -140,6 +140,15 @@ public class UserService {
             );
             user.setAuthorities(authorities);
         }
+        if(userDTO.getClientId()!=null){
+            Client client=new Client();
+            client.setId(userDTO.getClientId());
+            user.setClient(client);
+        }else{
+            user.setClient(null);
+        }
+        user.setPhone(userDTO.getPhone());
+
         String encryptedPassword = passwordEncoder.encode(RandomUtil.generatePassword());
         user.setPassword(encryptedPassword);
         user.setResetKey(RandomUtil.generateResetKey());
@@ -202,6 +211,7 @@ public class UserService {
                 }else{
                     user.setClient(null);
                 }
+                user.setPhone(userDTO.getPhone());
 
                 userSearchRepository.save(user);
                 cacheManager.getCache("users").evict(user.getLogin());

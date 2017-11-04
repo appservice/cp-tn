@@ -35,7 +35,7 @@ apply plugin: 'idea'
 defaultTasks 'bootRun'
 
 group = 'eu.canpack.fip'
-version = '0.0.9'
+version = '0.1.1'
 
 description = ''
 
@@ -240,6 +240,11 @@ dependencies {
         exclude group: 'com.vaadin.external.google', module: 'android-json'
     }
     //jhipster-needle-gradle-dependency - JHipster will add additional dependencies here
+    // https://mvnrepository.com/artifact/org.spockframework/spock-core
+    testCompile group: 'org.spockframework', name: 'spock-core', version: '1.1-groovy-2.4'
+    testCompile group: 'org.spockframework', name: 'spock-spring', version: '1.1-groovy-2.4'
+
+
 }
 
 clean {

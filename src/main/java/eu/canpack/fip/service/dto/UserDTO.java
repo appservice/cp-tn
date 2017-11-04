@@ -58,6 +58,8 @@ public class UserDTO {
 
     private String clientName;
 
+    private String phone;
+
     public UserDTO() {
         // Empty constructor needed for Jackson.
     }
@@ -67,13 +69,13 @@ public class UserDTO {
             user.getEmail(), user.getActivated(), user.getImageUrl(), user.getLangKey(),
             user.getCreatedBy(), user.getCreatedDate(), user.getLastModifiedBy(), user.getLastModifiedDate(),
             user.getAuthorities().stream().map(Authority::getName)
-                .collect(Collectors.toSet()), user.getClient());
+                .collect(Collectors.toSet()), user.getClient(),user.getPhone());
     }
 
     public UserDTO(Long id, String login, String firstName, String lastName,
         String email, boolean activated, String imageUrl, String langKey,
         String createdBy, Instant createdDate, String lastModifiedBy, Instant lastModifiedDate,
-        Set<String> authorities, Client client) {
+        Set<String> authorities, Client client,String phone) {
 
         this.id = id;
         this.login = login;
@@ -92,6 +94,8 @@ public class UserDTO {
             this.clientId=client.getId();
             this.clientName=client.getName();
         }
+        this.phone=phone;
+
     }
 
     public Long getId() {
@@ -172,6 +176,14 @@ public class UserDTO {
 
     public void setClientId(Long clientId) {
         this.clientId = clientId;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 
     @Override

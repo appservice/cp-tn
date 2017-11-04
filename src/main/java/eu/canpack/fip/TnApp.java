@@ -12,6 +12,7 @@ import org.springframework.boot.actuate.autoconfigure.*;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.liquibase.LiquibaseProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.boot.system.ApplicationPidFileWriter;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.core.env.Environment;
 
@@ -63,6 +64,7 @@ public class TnApp {
     public static void main(String[] args) throws UnknownHostException {
         SpringApplication app = new SpringApplication(TnApp.class);
         DefaultProfileUtil.addDefaultProfile(app);
+//        app.addListeners(new ApplicationPidFileWriter("app.pid"));
         Environment env = app.run(args).getEnvironment();
         String protocol = "http";
         if (env.getProperty("server.ssl.key-store") != null) {

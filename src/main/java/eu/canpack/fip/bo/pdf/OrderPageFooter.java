@@ -6,6 +6,8 @@ import com.lowagie.text.Font;
 import com.lowagie.text.Phrase;
 import com.lowagie.text.pdf.*;
 
+import java.awt.*;
+
 /**
  * CP S.A.
  * Created by lukasz.mochel on 21.08.2017.
@@ -51,13 +53,14 @@ class OrderPageFooter extends PdfPageEventHelper {
           table.getDefaultCell().setFixedHeight(20);
             PdfPCell cell = new PdfPCell();
             cell.setBorder (0);
-//            cell.setBorderWidthTop (1);
+            cell.setBorderWidthTop(1.5f);
+            cell.setBorderColorTop(new Color(199,60,50));
             cell.setHorizontalAlignment(Element.ALIGN_CENTER);
             cell.setPhrase(new Phrase(text, normalSmall));
             table.addCell(cell);
         table.setTotalWidth(document.getPageSize().getWidth()
                                     - document.leftMargin() - document.rightMargin());
-        table.writeSelectedRows(0, -1, document.leftMargin(), document.bottom()+55, cb);
+        table.writeSelectedRows(0, -1, document.leftMargin(), document.bottom()+45, cb);
 
     }
 

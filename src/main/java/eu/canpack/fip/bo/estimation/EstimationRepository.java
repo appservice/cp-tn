@@ -1,6 +1,7 @@
 package eu.canpack.fip.bo.estimation;
 
 import eu.canpack.fip.bo.estimation.Estimation;
+import eu.canpack.fip.bo.production.ProductionItemDTO;
 import eu.canpack.fip.domain.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -31,5 +32,13 @@ public interface EstimationRepository extends JpaRepository<Estimation, Long> ,J
         " ")
     Page<Estimation> findAllToFinish(Pageable pageable,
                                      @Param("loggedUser") User loggedUser);
+
+
+    @Query("select new eu.canpack.fip.bo.production.ProductionItemDTO(e) from Estimation e " +
+        "join e.order o " +
+      //  "join fetch e.operations " +
+        "where o.orderStatus = eu.canpack.fip.bo.order.enumeration.OrderStatus.IN_PRODUCTION ")
+    Page<ProductionItemDTO> getItemsActualInProduction(Pageable pageable);
+
 
 }
