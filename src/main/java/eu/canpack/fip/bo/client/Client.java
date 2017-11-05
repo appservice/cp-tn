@@ -31,6 +31,12 @@ public class Client implements Serializable {
     @Column(name = "name", nullable = false)
     private String name;
 
+    @Column(name="address", length = 1024)
+    private String address;
+
+    @Column(name="nip", length = 15)
+    private String nip;
+
     @Column(name = "shortcut")
     private String shortcut;
 
@@ -110,6 +116,22 @@ public class Client implements Serializable {
 
     public void setUsers(List<User> users) {
         this.users = users;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public String getNip() {
+        return nip;
+    }
+
+    public void setNip(String nip) {
+        this.nip = nip;
     }
 
     @Override

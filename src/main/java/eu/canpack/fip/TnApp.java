@@ -64,7 +64,7 @@ public class TnApp {
     public static void main(String[] args) throws UnknownHostException {
         SpringApplication app = new SpringApplication(TnApp.class);
         DefaultProfileUtil.addDefaultProfile(app);
-//        app.addListeners(new ApplicationPidFileWriter("app.pid"));
+        app.addListeners(new ApplicationPidFileWriter("app.pid"));
         Environment env = app.run(args).getEnvironment();
         String protocol = "http";
         if (env.getProperty("server.ssl.key-store") != null) {

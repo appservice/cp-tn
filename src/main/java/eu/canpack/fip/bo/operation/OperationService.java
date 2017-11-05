@@ -1,5 +1,9 @@
 package eu.canpack.fip.bo.operation;
 
+import eu.canpack.fip.bo.operation.dto.OperationDTO;
+import eu.canpack.fip.bo.operation.dto.OperationMapper;
+import eu.canpack.fip.bo.operation.dto.OperationWideDTO;
+import eu.canpack.fip.bo.operation.dto.OperationWideMapper;
 import eu.canpack.fip.repository.search.OperationSearchRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,10 +30,13 @@ public class OperationService {
 
     private final OperationSearchRepository operationSearchRepository;
 
-    public OperationService(OperationRepository operationRepository, OperationMapper operationMapper, OperationSearchRepository operationSearchRepository) {
+    private final OperationWideMapper operationWideMapper;
+
+    public OperationService(OperationRepository operationRepository, OperationMapper operationMapper, OperationSearchRepository operationSearchRepository, OperationWideMapper operationWideMapper) {
         this.operationRepository = operationRepository;
         this.operationMapper = operationMapper;
         this.operationSearchRepository = operationSearchRepository;
+        this.operationWideMapper = operationWideMapper;
     }
 
     /**
@@ -48,10 +55,10 @@ public class OperationService {
     }
 
     /**
-     *  Get all the operations.
+     * Get all the operations.
      *
-     *  @param pageable the pagination information
-     *  @return the list of entities
+     * @param pageable the pagination information
+     * @return the list of entities
      */
     @Transactional(readOnly = true)
     public Page<OperationDTO> findAll(Pageable pageable) {
@@ -61,10 +68,10 @@ public class OperationService {
     }
 
     /**
-     *  Get one operation by id.
+     * Get one operation by id.
      *
-     *  @param id the id of the entity
-     *  @return the entity
+     * @param id the id of the entity
+     * @return the entity
      */
     @Transactional(readOnly = true)
     public OperationDTO findOne(Long id) {
@@ -74,9 +81,24 @@ public class OperationService {
     }
 
     /**
-     *  Delete the  operation by id.
+     * Get one operation by id.
      *
-     *  @param id the id of the entity
+     * @param id the id of the entity
+     * @return the entity
+     */
+    @Transactional(readOnly = true)
+    public OperationWideDTO findOneWide(Long id) {
+        log.debug("Request findOneWide to get Operation with wide dto : {}", id);
+        Operation operation = operationRepository.findOne(id);
+        OperationWideDTO operationWideDTO = operationWideMapper.toDto(operation);
+        log.debug("operationWideDTO: {}", operationWideDTO);
+        return operationWideDTO;
+    }
+
+    /**
+     * Delete the  operation by id.
+     *
+     * @param id the id of the entity
      */
     public void delete(Long id) {
         log.debug("Request to delete Operation : {}", id);
@@ -87,9 +109,9 @@ public class OperationService {
     /**
      * Search for the operation corresponding to the query.
      *
-     *  @param query the query of the search
-     *  @param pageable the pagination information
-     *  @return the list of entities
+     * @param query    the query of the search
+     * @param pageable the pagination information
+     * @return the list of entities
      */
     @Transactional(readOnly = true)
     public Page<OperationDTO> search(String query, Pageable pageable) {

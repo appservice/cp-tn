@@ -64,17 +64,17 @@ export class PurchaseOrderComponent implements OnInit, OnDestroy {
         if(this.orderType==OrderType.PRODUCTION){
 
 
-            if (this.currentSearch) {
-                this.orderService.getAllProductionOrders({
-                    query: this.currentSearch,
-                    size: this.itemsPerPage,
-                    sort: this.sort()
-                }).subscribe(
-                    (res: ResponseWrapper) => this.onSuccess(res.json, res.headers),
-                    (res: ResponseWrapper) => this.onError(res.json)
-                );
-                return;
-            }
+            // if (this.currentSearch) {
+            //     this.orderService.getAllProductionOrders({
+            //         query: this.currentSearch,
+            //         size: this.itemsPerPage,
+            //         sort: this.sort()
+            //     }).subscribe(
+            //         (res: ResponseWrapper) => this.onSuccess(res.json, res.headers),
+            //         (res: ResponseWrapper) => this.onError(res.json)
+            //     );
+            //     return;
+            // }
             let urlSearchParams = new URLSearchParams();
             urlSearchParams.append('internalNumber.contains', this.orderFilter.internalNumber);
             urlSearchParams.append('referenceNumber.contains', this.orderFilter.referenceNumber);
@@ -101,7 +101,7 @@ export class PurchaseOrderComponent implements OnInit, OnDestroy {
     }
 
     transition() {
-        this.router.navigate(['/order'], {
+        this.router.navigate(['/purchase-order'], {
             queryParams:
                 {
                     page: this.page,

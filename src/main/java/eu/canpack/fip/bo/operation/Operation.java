@@ -2,6 +2,9 @@ package eu.canpack.fip.bo.operation;
 
 import eu.canpack.fip.bo.estimation.Estimation;
 import eu.canpack.fip.bo.machine.Machine;
+import eu.canpack.fip.bo.operation.enumeration.OperationStatus;
+import eu.canpack.fip.bo.operation.enumeration.OperationType;
+import eu.canpack.fip.bo.operation.enumeration.ProductionStatus;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.springframework.data.elasticsearch.annotations.Document;
@@ -205,6 +208,8 @@ public class Operation implements Serializable {
     public void setOperationEvents(List<OperationEvent> operationEvents) {
         this.operationEvents = operationEvents;
     }
+
+
 
     @Override
     public boolean equals(Object o) {

@@ -3,7 +3,7 @@ package eu.canpack.fip.bo.estimation.dto;
 
 import eu.canpack.fip.bo.cooperation.dto.CooperationDTO;
 import eu.canpack.fip.bo.drawing.dto.DrawingDTO;
-import eu.canpack.fip.bo.operation.OperationDTO;
+import eu.canpack.fip.bo.operation.dto.OperationDTO;
 import eu.canpack.fip.bo.commercialPart.CommercialPartDTO;
 import eu.canpack.fip.bo.remark.EstimationRemarkDTO;
 

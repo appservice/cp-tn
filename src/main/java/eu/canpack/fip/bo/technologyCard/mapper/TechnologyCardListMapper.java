@@ -1,7 +1,7 @@
 package eu.canpack.fip.bo.technologyCard.mapper;
 
 import eu.canpack.fip.bo.drawing.DrawingMapper;
-import eu.canpack.fip.bo.operation.OperationMapper;
+import eu.canpack.fip.bo.operation.dto.OperationMapper;
 
 import eu.canpack.fip.bo.technologyCard.TechnologyCard;
 import eu.canpack.fip.service.mapper.EntityMapper;

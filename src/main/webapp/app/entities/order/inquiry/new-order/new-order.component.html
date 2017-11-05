@@ -110,7 +110,7 @@
                                     </div>
                                 </td>
                                 <td style="max-width: 80px">
-                                    <input type="text" class="form-control" [(ngModel)]="estimation.amount"
+                                    <input type="number" class="form-control" [(ngModel)]="estimation.amount"
                                            name="estimation_amount_{{rowIndex}}" required [disabled]="isReadOnly" #amount="ngModel"/>
                                     <div
                                         [hidden]="!(amount?.dirty && amount?.invalid)">

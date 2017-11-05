@@ -1,4 +1,4 @@
-package eu.canpack.fip.bo.operation;
+package eu.canpack.fip.bo.operation.dto;
 
 import eu.canpack.fip.bo.estimation.Estimation;
 import org.mapstruct.Mapper;

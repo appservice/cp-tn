@@ -8,6 +8,7 @@ import {ProductionStanComponent} from './production.component';
 import {OrdersInProductionComponent} from './orders-in-production/orders-in-production.component';
 import {OrderInProductionDetailComponent} from './order-in-production-detail/order-in-production-detail.component';
 import {TechnologyEditComponent} from './technology-edit/technology-edit.component';
+import {EmergencyOrderTechnologyEditComponent} from './emergency-order-technology-edit/emergency-order-technology-edit.component';
 
 @Injectable()
 export class EstimationResolvePagingParams implements Resolve<any> {
@@ -65,6 +66,15 @@ export const productionRoute: Routes = [
     {
         path: 'orders-in-production/technology/:id/edit',
         component: TechnologyEditComponent,
+        data: {
+            authorities: ['ROLE_USER'],
+            pageTitle: 'tnApp.production.home.title'
+        },
+        canActivate: [UserRouteAccessService]
+    },
+    {
+        path: 'orders-in-production/emergency-order-technology/:id/edit',
+        component: EmergencyOrderTechnologyEditComponent,
         data: {
             authorities: ['ROLE_USER'],
             pageTitle: 'tnApp.production.home.title'

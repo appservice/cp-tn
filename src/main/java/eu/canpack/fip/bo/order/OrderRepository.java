@@ -52,10 +52,12 @@ public interface OrderRepository extends JpaRepository<Order, Long>, JpaSpecific
 
     Page<Order> findAllByOrderType(OrderType orderType, Pageable pageable);
 
-    @Query("select o from Order o " +
+/*    @Query("select o from Order o " +
         "where o.orderType=:orderType " +
-        "and o.orderStatus in :orderStatuses")
-    Page<Order> findAllByOrderTypeAndOrderStatusIn(@Param("orderType") OrderType orderType, @Param("orderStatuses") Set<OrderStatus> orderStatuses, Pageable pageable);
+        "and o.orderStatus in :orderStatuses")*/
+    @Query("select o from Order o " +
+        "where o.orderStatus in :orderStatuses")
+    Page<Order> findAllByOrderTypeAndOrderStatusIn(/*@Param("orderType") OrderType orderType,*/ @Param("orderStatuses") Set<OrderStatus> orderStatuses, Pageable pageable);
 
     @Query("select o from Order o " +
         "where o.estimationMaker.id=:currentUserId " +

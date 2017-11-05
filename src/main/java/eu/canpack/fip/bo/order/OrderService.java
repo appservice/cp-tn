@@ -10,7 +10,7 @@ import eu.canpack.fip.bo.estimation.Estimation;
 import eu.canpack.fip.bo.estimation.dto.EstimationCreateDTO;
 import eu.canpack.fip.bo.estimation.EstimationRepository;
 import eu.canpack.fip.bo.operation.Operation;
-import eu.canpack.fip.bo.operation.OperationType;
+import eu.canpack.fip.bo.operation.enumeration.OperationType;
 import eu.canpack.fip.bo.order.dto.OrderDTO;
 import eu.canpack.fip.bo.order.dto.OrderListDTO;
 import eu.canpack.fip.bo.order.dto.OrderSimpleDTO;
@@ -581,13 +581,15 @@ public class OrderService {
         Set<OrderStatus> orderStatuses = new HashSet<>();
         if (SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.TECHNOLOGIST)) {
             orderStatuses.add(OrderStatus.TECHNOLOGY_VERIFICATION);
+            orderStatuses.add(OrderStatus.TECHNOLOGY_CREATION);
+
         }
         if (SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.SAP_INTRODUCER)) {
             orderStatuses.add(OrderStatus.CREATING_SAP_ORDER);
         }
         log.debug("order statusses", orderStatuses);
         if (!orderStatuses.isEmpty()) {
-            Page<Order> orders = orderRepository.findAllByOrderTypeAndOrderStatusIn(OrderType.PRODUCTION, orderStatuses, pageable);
+            Page<Order> orders = orderRepository.findAllByOrderTypeAndOrderStatusIn( orderStatuses, pageable);//OrderType.PRODUCTION,
             return orders.map(orderMapper::toDto);
         }
 

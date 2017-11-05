@@ -1,6 +1,8 @@
 package eu.canpack.fip.bo.operation;
 
 import com.codahale.metrics.annotation.Timed;
+import eu.canpack.fip.bo.operation.dto.OperationDTO;
+import eu.canpack.fip.bo.operation.dto.OperationWideDTO;
 import eu.canpack.fip.web.rest.util.HeaderUtil;
 import eu.canpack.fip.web.rest.util.PaginationUtil;
 import io.swagger.annotations.ApiParam;
@@ -106,6 +108,20 @@ public class OperationResource {
     public ResponseEntity<OperationDTO> getOperation(@PathVariable Long id) {
         log.debug("REST request to get Operation : {}", id);
         OperationDTO operationDTO = operationService.findOne(id);
+        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(operationDTO));
+    }
+
+    /**
+     * GET  /operations/:id : get the "id" operation.
+     *
+     * @param id the id of the operationDTO to retrieve
+     * @return the ResponseEntity with status 200 (OK) and with body the operationDTO, or with status 404 (Not Found)
+     */
+    @GetMapping("/operations/{id}/wide")
+    @Timed
+    public ResponseEntity<OperationWideDTO> getOperationWide(@PathVariable Long id) {
+        log.debug("REST request to get Operation wide : {}", id);
+        OperationWideDTO operationDTO = operationService.findOneWide(id);
         return ResponseUtil.wrapOrNotFound(Optional.ofNullable(operationDTO));
     }
 

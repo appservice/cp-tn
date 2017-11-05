@@ -68,11 +68,11 @@
                                 <td>
                                     <input type="text" class="form-control" [(ngModel)]="estimation.itemName"
 
-                                           name="estimation_itemName_{{rowIndex}}" required [disabled]="isReadOnly">
+                                           name="estimation_itemName_{{rowIndex}}" required [disabled]="isReadOnly" #itemNameInput="ngModel">
                                     <div
-                                        [hidden]="!(editForm.controls.estimation_itemName_0?.dirty && editForm.controls.estimation_itemName?.invalid)">
+                                        [hidden]="!(itemNameInput?.dirty && itemNameInput?.invalid)">
                                         <small class="form-text text-danger"
-                                               [hidden]="!editForm.controls.estimation_itemName?.errors?.required"
+                                               [hidden]="!itemNameInput?.errors?.required"
                                                jhiTranslate="entity.validation.required">
                                             This field is required.
                                         </small>
@@ -83,12 +83,12 @@
                                            [(ngModel)]="estimation.itemNumber" disabled/>
                                 </td>
                                 <td style="max-width: 80px">
-                                    <input type="text" class="form-control" [(ngModel)]="estimation.amount"
-                                           name="estimation_amount_{{rowIndex}}" required />
+                                    <input type="number" class="form-control" [(ngModel)]="estimation.amount"
+                                           name="estimation_amount_{{rowIndex}}" required #amountInput="ngModel"/>
                                     <div
-                                        [hidden]="!(editForm.controls.estimation_amount?.dirty && editForm.controls.estimation_amount?.invalid)">
+                                        [hidden]="!(amountInput?.dirty && amountInput?.invalid)">
                                         <small class="form-text text-danger"
-                                               [hidden]="!editForm.controls.estimation_amount?.errors?.required"
+                                               [hidden]="!amountInput?.errors?.required"
                                                jhiTranslate="entity.validation.required">
                                             This field is required.
                                         </small>

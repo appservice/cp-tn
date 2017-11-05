@@ -1,8 +1,8 @@
-package eu.canpack.fip.bo.operation;
+package eu.canpack.fip.bo.operation.dto;
 
 import eu.canpack.fip.bo.estimation.EstimationMapper;
-import eu.canpack.fip.bo.machine.Machine;
 import eu.canpack.fip.bo.machine.MachineMapper;
+import eu.canpack.fip.bo.operation.Operation;
 import eu.canpack.fip.service.mapper.EntityMapper;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;

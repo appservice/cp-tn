@@ -2,7 +2,7 @@ package eu.canpack.fip.bo.estimation;
 
 import eu.canpack.fip.bo.drawing.Drawing;
 import eu.canpack.fip.bo.estimation.dto.EstimationDTO;
-import eu.canpack.fip.bo.operation.OperationMapper;
+import eu.canpack.fip.bo.operation.dto.OperationMapper;
 import eu.canpack.fip.bo.order.OrderMapper;
 
 import eu.canpack.fip.bo.drawing.DrawingMapper;

@@ -5,6 +5,8 @@ export class Client implements BaseEntity {
         public id?: number,
         public name?: string,
         public shortcut?: string,
+        public address ?: string,
+        public nip ?: string,
         public orders?: BaseEntity[],
     ) {
     }

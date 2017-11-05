@@ -210,7 +210,7 @@ export class NewEmergencyOrderComponent implements OnInit, OnDestroy {
     sendToEstimation() {
         console.log('Sent to estimation');
 
-        this.order.orderStatus = 'SENT_TO_ESTIMATION';//OrderStatus.SENT_TO_ESTIMATION;
+        this.order.orderStatus = 'TECHNOLOGY_CREATION';//OrderStatus.SENT_TO_ESTIMATION;
         this.save();
     }
 

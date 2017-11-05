@@ -2,8 +2,8 @@ package eu.canpack.fip.bo.production;
 
 import eu.canpack.fip.bo.estimation.Estimation;
 import eu.canpack.fip.bo.operation.Operation;
-import eu.canpack.fip.bo.operation.OperationStatus;
-import eu.canpack.fip.bo.operation.ProductionStatus;
+import eu.canpack.fip.bo.operation.enumeration.OperationStatus;
+import eu.canpack.fip.bo.operation.enumeration.ProductionStatus;
 import eu.canpack.fip.bo.order.enumeration.OrderType;
 
 import java.util.Comparator;

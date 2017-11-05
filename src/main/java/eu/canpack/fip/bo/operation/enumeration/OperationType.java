@@ -1,4 +1,4 @@
-package eu.canpack.fip.bo.operation;
+package eu.canpack.fip.bo.operation.enumeration;
 
 /**
  * CP S.A.

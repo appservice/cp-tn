@@ -87,7 +87,7 @@ export class OrdersInProductionComponent implements OnInit, OnDestroy {
     }
 
     transition() {
-        this.router.navigate(['/order'], {
+        this.router.navigate(['/orders-in-production'], {
             queryParams:
                 {
                     page: this.page,
@@ -102,7 +102,7 @@ export class OrdersInProductionComponent implements OnInit, OnDestroy {
     clear() {
         this.page = 0;
         this.currentSearch = '';
-        this.router.navigate(['/order', {
+        this.router.navigate(['/orders-in-production', {
             page: this.page,
             sort: this.predicate + ',' + (this.reverse ? 'asc' : 'desc')
         }]);

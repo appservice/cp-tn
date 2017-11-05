@@ -1,6 +1,7 @@
 package eu.canpack.fip.bo.operation;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import eu.canpack.fip.bo.operation.enumeration.OperationEventType;
 import eu.canpack.fip.bo.operator.Operator;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
@@ -24,9 +25,14 @@ public class OperationEvent implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private ZonedDateTime start;
+    @Column(name = "crated_at")
+    private ZonedDateTime createdAt;
 
-    private ZonedDateTime stop;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "operation_event_type")
+    private OperationEventType operationEventType;
+
+//    private ZonedDateTime stop;
 
     @ManyToOne
     @JsonIgnore
@@ -46,21 +52,6 @@ public class OperationEvent implements Serializable {
         this.id = id;
     }
 
-    public ZonedDateTime getStart() {
-        return start;
-    }
-
-    public void setStart(ZonedDateTime start) {
-        this.start = start;
-    }
-
-    public ZonedDateTime getStop() {
-        return stop;
-    }
-
-    public void setStop(ZonedDateTime stop) {
-        this.stop = stop;
-    }
 
     public Operator getOperator() {
         return operator;
@@ -76,6 +67,22 @@ public class OperationEvent implements Serializable {
 
     public void setOperation(Operation operation) {
         this.operation = operation;
+    }
+
+    public ZonedDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(ZonedDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public OperationEventType getOperationEventType() {
+        return operationEventType;
+    }
+
+    public void setOperationEventType(OperationEventType operationEventType) {
+        this.operationEventType = operationEventType;
     }
 
     @Override
@@ -97,9 +104,10 @@ public class OperationEvent implements Serializable {
     public String toString() {
         return "OperationEvent{" +
             "id=" + id +
-            ", start=" + start +
-            ", stop=" + stop +
+            ", createdAt=" + createdAt +
+            ", operationEventType=" + operationEventType +
             ", operator=" + operator +
+            ", operation=" + operation +
             '}';
     }
 }

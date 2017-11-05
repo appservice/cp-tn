@@ -65,7 +65,7 @@ export class EmergencyOrderComponent implements OnInit, OnDestroy {
 
     loadAll() {
         if (this.orderType == OrderType.EMERGENCY) {
-            this.title = 'Zlecenia awaryjne';
+            this.title = 'Zlecenia awaryjne/usługowe';
 
             let urlSearchParams = new URLSearchParams();
             urlSearchParams.append('internalNumber.contains', this.orderFilter.internalNumber);
@@ -94,7 +94,7 @@ export class EmergencyOrderComponent implements OnInit, OnDestroy {
     }
 
     transition() {
-        this.router.navigate(['/order'], {
+        this.router.navigate(['/emergency-order'], {
             queryParams:
                 {
                     page: this.page,

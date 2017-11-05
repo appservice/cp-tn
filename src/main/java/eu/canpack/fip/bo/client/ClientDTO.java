@@ -17,6 +17,10 @@ public class ClientDTO implements Serializable {
 
     private String shortcut;
 
+    private String address;
+
+    private String nip;
+
     public Long getId() {
         return id;
     }
@@ -41,6 +45,24 @@ public class ClientDTO implements Serializable {
         this.shortcut = shortcut;
     }
 
+    public String getAddress() {
+        return address;
+    }
+
+    public String getNip() {
+        return nip;
+    }
+
+    public void setNip(String nip) {
+        this.nip = nip;
+    }
+
+    public void setAddress(String address) {
+
+
+        this.address = address;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -51,7 +73,7 @@ public class ClientDTO implements Serializable {
         }
 
         ClientDTO clientDTO = (ClientDTO) o;
-        if(clientDTO.getId() == null || getId() == null) {
+        if (clientDTO.getId() == null || getId() == null) {
             return false;
         }
         return Objects.equals(getId(), clientDTO.getId());
@@ -65,9 +87,11 @@ public class ClientDTO implements Serializable {
     @Override
     public String toString() {
         return "ClientDTO{" +
-            "id=" + getId() +
-            ", name='" + getName() + "'" +
-            ", shortcut='" + getShortcut() + "'" +
-            "}";
+            "id=" + id +
+            ", name='" + name + '\'' +
+            ", shortcut='" + shortcut + '\'' +
+            ", address='" + address + '\'' +
+            ", nip='" + nip + '\'' +
+            '}';
     }
 }

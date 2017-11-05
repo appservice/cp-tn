@@ -9,6 +9,7 @@ import com.lowagie.text.pdf.PdfWriter;
 import eu.canpack.fip.bo.estimation.Estimation;
 import eu.canpack.fip.bo.operation.Operation;
 import eu.canpack.fip.bo.order.Order;
+import eu.canpack.fip.bo.order.enumeration.OrderType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -61,7 +62,7 @@ public class OrderSummary2PdfCreator {
             doc.add(orderNumberPgh);
 
 
-            doc.add(new Paragraph(" ",new Font(baseFont)));
+            doc.add(new Paragraph(" ", new Font(baseFont)));
 
             Paragraph paragraph = createParagraphWith2Fonts("Klient: ", order.getClient().getName());
             paragraph.setAlignment(Element.ALIGN_CENTER);
@@ -75,7 +76,7 @@ public class OrderSummary2PdfCreator {
 
 
             doc.add(new Paragraph(" "));
-            doc.add(new Paragraph("Data wydruku: "+LocalDate.now().format(dateFormatter)));
+            doc.add(new Paragraph("Data wydruku: " + LocalDate.now().format(dateFormatter)));
             doc.add(new Paragraph(" "));
 
             doc.add(prepareTableOfOperation(estimations));
@@ -143,13 +144,18 @@ public class OrderSummary2PdfCreator {
             cell = createValueCell(amountSb.toString());
             pdfPTable.addCell(cell);
 
-            cell = createValueCell(formatBigDecimal(calculateWorkingHourPerItem(estimation)));
-            pdfPTable.addCell(cell);
+            //if emergency order then not fill rbh fields
+            if (estimation.getOrder().getOrderType() != OrderType.EMERGENCY) {
+                cell = createValueCell(formatBigDecimal(calculateWorkingHourPerItem(estimation)));
+                pdfPTable.addCell(cell);
 
-            BigDecimal sumOfWhorkingHours = calculateWorkingHourPerItem(estimation).multiply(new BigDecimal(estimation.getAmount()));
-            cell = createValueCell(formatBigDecimal(sumOfWhorkingHours));
-            pdfPTable.addCell(cell);
-
+                BigDecimal sumOfWhorkingHours = calculateWorkingHourPerItem(estimation).multiply(new BigDecimal(estimation.getAmount()));
+                cell = createValueCell(formatBigDecimal(sumOfWhorkingHours));
+                pdfPTable.addCell(cell);
+            } else {
+                pdfPTable.addCell("");
+                pdfPTable.addCell("");
+            }
             pdfPTable.addCell("");
             pdfPTable.addCell("");
 
