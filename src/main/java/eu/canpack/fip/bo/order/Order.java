@@ -96,6 +96,11 @@ public class Order implements Serializable {
     @Column(name="estimation_finish_date")
     private ZonedDateTime estimationFinsihDate;
 
+    @Column(name="offer_remarks",length = 1024)
+    private String offerRemarks;
+
+
+
     public Long getId() {
         return id;
     }
@@ -314,6 +319,15 @@ public class Order implements Serializable {
 
     public void setPurchaseOrderNumber(Integer purchaseOrderNumber) {
         this.purchaseOrderNumber = purchaseOrderNumber;
+    }
+
+
+    public String getOfferRemarks() {
+        return offerRemarks;
+    }
+
+    public void setOfferRemarks(String offerRemarks) {
+        this.offerRemarks = offerRemarks;
     }
 
     @Override
