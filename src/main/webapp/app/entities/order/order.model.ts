@@ -30,6 +30,7 @@ export class Order implements BaseEntity {
                 public estimationMakerName?: string,
                 public remark ?: string,
                 public inquiryId?: number,
-                public estimationFinishDate?: any,) {
+                public estimationFinishDate?: any,
+                public mpk?: string,) {
     }
 }

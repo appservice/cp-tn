@@ -67,15 +67,16 @@
                         <table class="table table-striped">
                             <thead>
                             <tr>
-                                <th>LP</th>
+                                <th style="width: 50px">LP</th>
                                 <th>Nazwa:</th>
-                                <th>Nr rys:</th>
-                                <th>Ilość:</th>
-                                <th>Jedn:</th>
-                                <th style="width: 180px">Proponowana data realizacji:</th>
-                                <th>Pliki:</th>
-                                <th>Uwagi:</th>
-                                <th></th>
+                                <th style="width:200px;">Nr rys:</th>
+                                <th style="width:110px">Ilość:</th>
+                                <th style="width:80px;">Jedn:</th>
+                                <th style="width:170px;">MPK/Index</th>
+                                <th style="width:180px">Proponowana data realizacji:</th>
+                                <th style="width:80px;">Pliki:</th>
+                                <th style="width:200px">Uwagi:</th>
+                                <th style="width:130px;"></th>
 
                             </tr>
                             </thead>
@@ -97,12 +98,12 @@
                                         </small>
                                     </div>
                                 </td>
-                                <td style="max-width: 150px;">
+                                <td>
                                     <input type="text" class="form-control" name="estimation_drawing_{{rowIndex}}"
                                            [(ngModel)]="estimation.itemNumber" [disabled]="isReadOnly"/>
                                 </td>
-                                <td style="max-width: 80px">
-                                    <input type="text" class="form-control" [(ngModel)]="estimation.amount"
+                                <td>
+                                    <input type="number" class="form-control" [(ngModel)]="estimation.amount"
                                            name="estimation_amount_{{rowIndex}}" required [disabled]="isReadOnly" #amount="ngModel"/>
                                     <div
                                         [hidden]="!(amount?.dirty && amount?.invalid)">
@@ -114,7 +115,9 @@
                                     </div>
                                 </td>
                                 <td> SZT</td>
-                                <td style="max-width: 150px">
+                                <td><input type="text" class="form-control" [(ngModel)]="estimation.mpk" name="estimation_mpk_{{rowIndex}}"></td>
+
+                                <td >
                                     <div class="form-group">
                                         <!--<label class="form-control-label" jhiTranslate="tnApp.order.closeDate" for="field_closeDate">Close Date</label>-->
                                         <div class="input-group">
@@ -137,7 +140,7 @@
                                         </div>
                                     </div>
                                 </td>
-                                <td style="width: 100px">
+                                <td >
 
                                     <button class="btn btn-outline-dark" type="button" (click)="openModal(content,rowIndex)"
 
