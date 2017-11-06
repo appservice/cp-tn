@@ -14,12 +14,6 @@ import java.util.List;
 @Mapper(componentModel = "spring", uses = {DrawingMapper.class})
 public interface EstimationCreateMapper  {
 
-//    @Mapping(source = "order.id", target = "orderId")
-//    EstimationDTO toDto(Estimation estimation);
-
-//    @Mapping(target = "operations", ignore = true)
-//    @Mapping(source = "orderId", target = "order")
-//    Estimation toEntity(EstimationDTO estimationDTO);
 
     @Mapping(target = "operations", ignore = true)
     @Mapping(target = "cooperationList", ignore = true)
@@ -31,7 +25,6 @@ public interface EstimationCreateMapper  {
     @Mapping(target = "finalCost", ignore = true)
     @Mapping( target = "order",ignore = true)
     @Mapping( target = "estimationRemarks",ignore = true)
-//    @Mapping(target = "drawing", ignore =true)
     Estimation toEntity(EstimationCreateDTO estimationCreateDTO);
 
 

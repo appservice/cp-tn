@@ -72,6 +72,7 @@
                                 <th>Nr rys:</th>
                                 <th>Ilość:</th>
                                 <th>Jedn:</th>
+                                <th>MPK/Index</th>
                                 <th style="width: 180px">Proponowana data realizacji:</th>
                                 <th>Pliki:</th>
                                 <th>Uwagi:</th>
@@ -82,7 +83,7 @@
                             <tbody>
 
                             <tr *ngFor="let estimation of order.estimations;let rowIndex = index">
-                                <td>{{rowIndex+1}}</td>
+                                <td style="width: 50px">{{rowIndex+1}}</td>
                                 <!--<td><input type="text" [(ngModel)]="estimation.id" class="form-control"/></td>-->
                                 <td>
                                     <input type="text" class="form-control" [(ngModel)]="estimation.itemName"
@@ -121,7 +122,8 @@
                                         </small>
                                     </div>
                                 </td>
-                                <td> SZT</td>
+                                <td style="width: 80px"><input type="text" class="form-control" disabled value="SZT"></td>
+                                <td style="width: 170px" ><input type="text" class="form-control" [(ngModel)]="estimation.mpk" name="estimation_mpk_{{rowIndex}}"></td>
                                 <td style="max-width: 150px">
                                     <div class="form-group">
                                         <!--<label class="form-control-label" jhiTranslate="tnApp.order.closeDate" for="field_closeDate">Close Date</label>-->
@@ -145,7 +147,7 @@
                                         </div>
                                     </div>
                                 </td>
-                                <td style="width: 100px">
+                                <td style="width: 80px">
 
                                     <button class="btn " type="button" (click)="openModal(content,rowIndex)"
                                             [ngClass]="{'btn-outline-danger':!checkIfAttachmentExist(estimation),'btn-outline-dark': checkIfAttachmentExist(estimation)}"
@@ -156,11 +158,11 @@
                                     </button>
 
                                 </td>
-                                <td>
+                                <td style="width: 200px">
 
                                     <textarea class="form-control text-area" rows="1" [(ngModel)]="estimation.remark" name="estimation_remarks_{{rowIndex}}"></textarea>
                                 </td>
-                                <td>
+                                <td style="width:130px;">
                                     <tn-estimation-remark [estimationRemarks]="estimation.estimationRemarks"
                                                           *ngIf="estimation.estimationRemarks!=null && estimation.estimationRemarks.length>0"></tn-estimation-remark>
                                     <button type="button" class="btn btn-outline-dark" (click)="onDeleteRow(rowIndex);" [disabled]="isReadOnly"><span class="fa fa-remove"></span>

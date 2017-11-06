@@ -176,14 +176,17 @@ export class OrderDetailComponent implements OnInit, OnDestroy {
     }
 
     convertToDate(ngBootstrapDate: any): Date {
-        if(!ngBootstrapDate && ngBootstrapDate!==null){
+
+      if(ngBootstrapDate && ngBootstrapDate!=null){
             if (typeof ngBootstrapDate === 'string') {
                 return null;
                 // return new Date( ngBootstrapDate);
             }
-            return new Date(ngBootstrapDate.year, ngBootstrapDate.month, ngBootstrapDate.day);
-        }
-
+            let date= new Date(ngBootstrapDate.year, ngBootstrapDate.month-1, ngBootstrapDate.day);
+            // console.log(date);
+            return date;
+       }
+       console.log('test', ngBootstrapDate);
         return null;
     }
 

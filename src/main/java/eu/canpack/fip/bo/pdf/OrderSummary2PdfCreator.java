@@ -99,11 +99,12 @@ public class OrderSummary2PdfCreator {
 
 
     private PdfPTable prepareTableOfOperation(List<Estimation> estimations) {
-        PdfPTable pdfPTable = new PdfPTable(new float[]{0.5f, 6, 1, 1.5f, 1, 1, 1.5f, 1.5f});
+        PdfPTable pdfPTable = new PdfPTable(new float[]{0.5f, 5, 1,1.5f, 1.5f, 1, 1, 1.5f, 1.5f});
         pdfPTable.setWidthPercentage(100);
         pdfPTable.addCell(createLabelCell(""));
         pdfPTable.addCell(createLabelCell("Przedmiot"));
         pdfPTable.addCell(createLabelCell("Ilość"));
+        pdfPTable.addCell(createLabelCell("MPK/Index"));
         pdfPTable.addCell(createLabelCell("Termin wyk."));
         pdfPTable.addCell(createLabelCell("Rbh/szt"));
         pdfPTable.addCell(createLabelCell("\u2211 Rbh"));
@@ -134,6 +135,14 @@ public class OrderSummary2PdfCreator {
 
             //ilość
             cell = createValueCell(String.valueOf(estimation.getAmount()));
+            pdfPTable.addCell(cell);
+
+            //ilość
+            StringBuilder mpk = new StringBuilder("");
+            if(estimation.getMpk()!=null){
+                mpk.append(estimation.getMpk());
+            }
+            cell = createValueCell(mpk.toString());
             pdfPTable.addCell(cell);
 
             //data realizacji

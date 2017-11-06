@@ -3,6 +3,7 @@ package eu.canpack.fip.bo.estimation.dto;
 
 import eu.canpack.fip.bo.drawing.dto.DrawingDTO;
 import eu.canpack.fip.bo.estimation.Estimation;
+import eu.canpack.fip.bo.order.enumeration.OrderType;
 import eu.canpack.fip.bo.remark.EstimationRemark;
 import eu.canpack.fip.bo.remark.EstimationRemarkDTO;
 
@@ -20,34 +21,62 @@ import java.util.stream.Collectors;
  */
 public class EstimationCreateDTO implements Serializable {
 
+    public String mpk;
+    public Boolean notRealizable;
     private Long id;
-
     @NotNull
     @Min(value = 0)
     private Integer amount;
-
     private String description;
-
     private Long orderId;
-
     private DrawingDTO drawing;
-
     private String itemNumber;
     private String itemName;
-
     private LocalDate neededRealizationDate;
-
     private BigDecimal estimatedCost;
-
     private boolean checked;
-
     private LocalDate estimatedRealizationDate;
-
     private String remark;
-
     private List<EstimationRemarkDTO> estimationRemarks;
-
     private String sapNumber;
+
+    public EstimationCreateDTO() {
+    }
+
+    public EstimationCreateDTO(Estimation estimation) {
+        this.id = estimation.getId();
+        this.amount = estimation.getAmount();
+        this.description = estimation.getDescription();
+        this.orderId = estimation.getOrder().getId();
+        this.neededRealizationDate = estimation.getNeededRealizationDate();
+        if (estimation.getDrawing() != null) {
+            this.drawing = new DrawingDTO(estimation.getDrawing());
+
+        }
+        this.estimatedCost = estimation.getEstimatedCost();
+        if (estimation.getEstimatedCost() != null && estimation.getEstimatedRealizationDate() != null
+            || estimation.getOrder().getOrderType() == OrderType.EMERGENCY && !estimation.getOperations().isEmpty()) {
+            setChecked(true);
+        }
+        List<EstimationRemark> remarks = estimation.getEstimationRemarks();
+        this.estimationRemarks = remarks.stream().map(r -> {
+            EstimationRemarkDTO erDTO = new EstimationRemarkDTO();
+            erDTO.setCreatedAt(r.getCreatedAt());
+            erDTO.setCreatedById(r.getCreatedBy().getId());
+            erDTO.setCreatedByName(r.getCreatedBy().getFirstName() + " " + r.getCreatedBy().getLastName());
+            erDTO.setId(r.getId());
+            erDTO.setEstimationId(r.getEstimation().getId());
+            erDTO.setRemark(r.getRemark());
+            return erDTO;
+        }).collect(Collectors.toList());
+        this.estimatedRealizationDate = estimation.getEstimatedRealizationDate();
+
+        this.itemName = estimation.getItemName();
+        this.itemNumber = estimation.getItemNumber();
+        this.sapNumber = estimation.getSapNumber();
+        this.mpk = estimation.getMpk();
+        this.notRealizable = estimation.isNotRealizable();
+    }
 
     public String getItemNumber() {
         return itemNumber;
@@ -64,43 +93,6 @@ public class EstimationCreateDTO implements Serializable {
     public void setItemName(String itemName) {
         this.itemName = itemName;
     }
-
-    public EstimationCreateDTO() {
-    }
-
-
-    public EstimationCreateDTO(Estimation estimation) {
-        this.id = estimation.getId();
-        this.amount = estimation.getAmount();
-        this.description = estimation.getDescription();
-        this.orderId = estimation.getOrder().getId();
-        this.neededRealizationDate = estimation.getNeededRealizationDate();
-        if (estimation.getDrawing() != null) {
-            this.drawing = new DrawingDTO(estimation.getDrawing());
-
-        }
-        this.estimatedCost = estimation.getEstimatedCost();
-        if (this.estimatedCost != null) {
-            setChecked(true);
-        }
-        List<EstimationRemark> remarks = estimation.getEstimationRemarks();
-        this.estimationRemarks = remarks.stream().map(r -> {
-            EstimationRemarkDTO erDTO = new EstimationRemarkDTO();
-            erDTO.setCreatedAt(r.getCreatedAt());
-            erDTO.setCreatedById(r.getCreatedBy().getId());
-            erDTO.setCreatedByName(r.getCreatedBy().getFirstName() + " " + r.getCreatedBy().getLastName());
-            erDTO.setId(r.getId());
-            erDTO.setEstimationId(r.getEstimation().getId());
-            erDTO.setRemark(r.getRemark());
-            return erDTO;
-        }).collect(Collectors.toList());
-        this.estimatedRealizationDate = estimation.getEstimatedRealizationDate();
-
-        this.itemName=estimation.getItemName();
-        this.itemNumber=estimation.getItemNumber();
-        this.sapNumber=estimation.getSapNumber();
-    }
-
 
     public String getSapNumber() {
         return sapNumber;
@@ -132,6 +124,14 @@ public class EstimationCreateDTO implements Serializable {
 
     public void setAmount(Integer amount) {
         this.amount = amount;
+    }
+
+    public String getMpk() {
+        return mpk;
+    }
+
+    public void setMpk(String mpk) {
+        this.mpk = mpk;
     }
 
     public String getDescription() {
@@ -235,6 +235,7 @@ public class EstimationCreateDTO implements Serializable {
             ", estimatedRealizationDate=" + estimatedRealizationDate +
             ", remark='" + remark + '\'' +
             ", estimationRemarks=" + estimationRemarks +
+            ", mpk=" + mpk +
             '}';
     }
 }

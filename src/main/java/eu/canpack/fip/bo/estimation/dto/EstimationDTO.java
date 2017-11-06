@@ -77,6 +77,8 @@ public class EstimationDTO implements Serializable {
 
     private String sapNumber;
 
+    private String mpk;
+
     public String getItemName() {
         return itemName;
     }
@@ -272,6 +274,14 @@ public class EstimationDTO implements Serializable {
         this.cooperationList = cooperationList;
     }
 
+    public String getMpk() {
+        return mpk;
+    }
+
+    public void setMpk(String mpk) {
+        this.mpk = mpk;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -305,14 +315,22 @@ public class EstimationDTO implements Serializable {
             ", estimatedCost=" + estimatedCost +
             ", finalCost=" + finalCost +
             ", orderId=" + orderId +
+            ", orderInternalNumber='" + orderInternalNumber + '\'' +
+            ", itemName='" + itemName + '\'' +
+            ", itemNumber='" + itemNumber + '\'' +
             ", drawing=" + drawing +
             ", operations=" + operations +
             ", commercialParts=" + commercialParts +
+            ", cooperationList=" + cooperationList +
             ", neededRealizationDate=" + neededRealizationDate +
             ", estimatedRealizationDate=" + estimatedRealizationDate +
-            ", remark=" + remark +
-            ", sapNumber=" + sapNumber +
-
+            ", discount=" + discount +
+            ", createdAt=" + createdAt +
+            ", createdBy='" + createdBy + '\'' +
+            ", estimationRemarks=" + estimationRemarks +
+            ", remark='" + remark + '\'' +
+            ", sapNumber='" + sapNumber + '\'' +
+            ", mpk='" + mpk + '\'' +
             '}';
     }
 }

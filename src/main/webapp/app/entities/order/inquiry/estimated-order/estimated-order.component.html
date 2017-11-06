@@ -74,6 +74,7 @@
                                 <th>Nr rys:</th>
                                 <th>Ilość:</th>
                                 <th>Jedn:</th>
+                                <th>MPK/Index</th>
                                 <th style="width: 180px">Prop. data realizacji:</th>
                                 <th>Cena/SZT:</th>
                                 <th>Termin realizacji:</th>
@@ -99,6 +100,7 @@
                                 </td>
                                 <td style="max-width: 80px">{{estimation.amount}}</td>
                                 <td> SZT</td>
+                                <td> {{estimation.mpk}}</td>
                                 <td style="max-width: 150px">
 
                                     {{convertToDate(estimation.neededRealizationDate)|date:'dd-MM-yyyy'}}
@@ -129,6 +131,15 @@
 
 
                     </ng-template>
+                </ngb-tab>
+                <ngb-tab title="Uwagi do oferty" id="2">
+                    <ng-template ngbTabContent>
+                        <br />
+                        <br />
+                        <br />
+
+                    </ng-template>
+
                 </ngb-tab>
                 <!--<ngb-tab title="Pliki" id="2">
                     <ng-template ngbTabContent>

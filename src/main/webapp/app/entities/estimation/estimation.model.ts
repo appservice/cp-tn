@@ -33,6 +33,8 @@ export class Estimation implements BaseEntity {
                 public sapNumber ?: string,
                 public remark?: string,
                 public cooperationList?: Cooperation[],
+                public mpk?: string,
+                public notRealizable?: boolean,
                 ) {
     }
 }

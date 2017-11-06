@@ -61,5 +61,6 @@
     <include file="config/liquibase/changelog/20171104221751_extended_client_entity.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20171105232254_changed_operation_event.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20171106011250_added_offer_remarks.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20171106210839_added_mpk.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-constraints-changelog - JHipster will add liquibase constraints changelogs here -->
 </databaseChangeLog>

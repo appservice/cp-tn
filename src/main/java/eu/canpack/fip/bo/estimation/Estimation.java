@@ -126,6 +126,13 @@ public class Estimation implements Serializable {
     @Column(name="is_realized")
     private Boolean realized=false;
 
+
+    @Column(name="mpk")
+    private String mpk;
+
+    @Column(name="not_realizable")
+    private Boolean notRealizable=false;
+
     public String getItemName() {
         return itemName;
     }
@@ -427,6 +434,33 @@ public class Estimation implements Serializable {
         this.cooperationList = cooperationList;
     }
 
+    public String getMpk() {
+        return mpk;
+    }
+
+    public void setMpk(String mpk) {
+        this.mpk = mpk;
+    }
+
+    public Boolean isNotRealizable() {
+        return notRealizable;
+    }
+
+    public void setNotRealizable(Boolean notRealizable) {
+        this.notRealizable = notRealizable;
+    }
+
+    public Estimation mpk(final String mpk) {
+        this.mpk = mpk;
+        return this;
+    }
+
+    public Estimation notRealizable(final Boolean notRealizable) {
+        this.notRealizable = notRealizable;
+        return this;
+    }
+
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -472,6 +506,8 @@ public class Estimation implements Serializable {
             ", createdBy=" + createdBy +
             ", createdAt=" + createdAt +
             ", sapNumber='" + sapNumber + '\'' +
+            ", mpk='" + mpk + '\'' +
+
             '}';
     }
 }

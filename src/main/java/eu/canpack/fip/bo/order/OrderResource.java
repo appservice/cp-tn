@@ -111,7 +111,7 @@ public class OrderResource {
     @GetMapping("/orders/inquiries")
     @Timed
     public ResponseEntity<List<OrderListDTO>> getAllInquiries(OrderCriteria orderCriteria, @ApiParam Pageable pageable) {
-        log.debug("REST request to get a page of Orders");
+        log.debug("REST request to get a page of Orders2");
 //        if (orderCriteria == null) {
 //            orderCriteria = new OrderCriteria();
 //        }
@@ -136,12 +136,15 @@ public class OrderResource {
         log.debug("REST request to get a page of Orders");
         OrderCriteria.OrderTypeFilter orderTypeFilter = new OrderCriteria.OrderTypeFilter();
         orderTypeFilter.setEquals(OrderType.PRODUCTION);
+
         orderCriteria.setOrderType(orderTypeFilter);
+
 
         Page<OrderListDTO> page = orderQueryService.findByCriteriaAndClient(orderCriteria, pageable);//findAllByClientAndOrderType(pageable, OrderType.PRODUCTION);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/orders/production");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
+
 
     /**
      * GET  /orders : get all the orders.
@@ -156,7 +159,6 @@ public class OrderResource {
         OrderCriteria.OrderTypeFilter orderTypeFilter = new OrderCriteria.OrderTypeFilter();
         orderTypeFilter.setEquals(OrderType.EMERGENCY);
         orderCriteria.setOrderType(orderTypeFilter);
-
         Page<OrderListDTO> page = orderQueryService.findByCriteriaAndClient(orderCriteria, pageable);//findAllByClientAndOrderType(pageable, OrderType.PRODUCTION);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/orders/emergency");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);

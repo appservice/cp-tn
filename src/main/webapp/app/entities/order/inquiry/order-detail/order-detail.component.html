@@ -64,12 +64,13 @@
                                     <thead>
                                     <tr>
                                         <th>LP</th>
-                                        <th>Nazwa:</th>
-                                        <th>Nr rys:</th>
-                                        <th>Ilość:</th>
-                                        <th>Jedn:</th>
-                                        <th style="width: 180px">Prop. data realiz.:</th>
-                                        <th>Pliki:</th>
+                                        <th>Nazwa</th>
+                                        <th>Nr rys.</th>
+                                        <th>Ilość</th>
+                                        <th>Jedn</th>
+                                        <th>MPK/Index</th>
+                                        <th style="width: 180px">Prop. data realiz.</th>
+                                        <th>Pliki</th>
                                         <th>Cena/Szt</th>
                                         <th>Termin wyk.</th>
                                         <th>Uwagi</th>
@@ -86,6 +87,7 @@
                                         </td>
                                         <td style="max-width: 80px">{{estimation.amount}}</td>
                                         <td> SZT</td>
+                                        <td>{{estimation.mpk}}</td>
                                         <td style="max-width: 150px">
                                             {{convertToDate(estimation.neededRealizationDate)|date:'dd-MM-yyyy'}}
                                         </td>

@@ -112,7 +112,9 @@ public class OrderService {
                 .estimatedCost(estDTO.getEstimatedCost())
                 .estimatedRealizationDate(estDTO.getEstimatedRealizationDate())
                 .itemName(estDTO.getItemName())
-                .itemNumber(estDTO.getItemNumber());
+                .itemNumber(estDTO.getItemNumber())
+                .mpk(estDTO.getMpk());
+
 
             updateRemark(loggedUser, estDTO, estimation);
 
@@ -178,7 +180,8 @@ public class OrderService {
                     .neededRealizationDate(estDTO.getNeededRealizationDate())
                     .amount(estDTO.getAmount())
                     .itemName(estDTO.getItemName())
-                    .itemNumber(estDTO.getItemNumber());
+                    .itemNumber(estDTO.getItemNumber())
+                    .mpk(estDTO.getMpk());
 
 
                 updateRemark(loggedUser, estDTO, estimation);
@@ -215,6 +218,7 @@ public class OrderService {
                 estimation.setDescription(estDTO.getDescription());
                 estimation.setItemName(estDTO.getItemName());
                 estimation.setItemNumber(estDTO.getItemNumber());
+                estimation.setMpk(estDTO.getMpk());
 
                 updateRemark(loggedUser, estDTO, estimation);
 
@@ -301,6 +305,7 @@ public class OrderService {
     @Transactional(readOnly = true)
     public OrderListDTO findOne(Long id) {
         log.debug("Request to get Order : {}", id);
+
         Order order = orderRepository.findOne(id);
         return orderMapper.toDto(order);
     }
@@ -442,6 +447,8 @@ public class OrderService {
     }
 
     void moveOrderToArchive(Long id) {
+        log.debug("moveOrderToArchive with id {}", id);
+
         Order order = orderRepository.findOne(id);
         order.setOrderStatus(OrderStatus.SENT_OFFER_TO_CLIENT);
         order.setEstimationFinsihDate(ZonedDateTime.now());
@@ -480,6 +487,7 @@ public class OrderService {
             newEstimation.setMaterial(est.getMaterial());
             newEstimation.setNeededRealizationDate(est.getNeededRealizationDate());
             newEstimation.setMaterialPrice(est.getMaterialPrice());
+            newEstimation.setMpk(est.getMpk());
 
             if (estDTO.getRemark() != null && !estDTO.getRemark().trim().isEmpty()) {
                 EstimationRemark estimationRemark = new EstimationRemark();
@@ -518,30 +526,6 @@ public class OrderService {
             order.getEstimations().add(newEstimation);
         }
 
-//            .map(SerializationUtils::clone)
-
-
-////            .peek(session::evict)
-//
-//            .peek(estim -> estim.getCommercialParts()
-//                .forEach(cp -> {
-////                    session.evict(cp);
-//                    cp.setId(null);
-//                    cp.setEstimation(estim);
-//                }))
-//            .peek(e -> e.getOperations().forEach(o -> {
-////                session.evict(o);
-//                o.setId(null);
-//                o.setEstimation(e);}
-//            ))
-//            .peek((e -> e.setOrder(order)))
-//            .peek(e->e.setEstimationRemarks(Collections.emptyList()))
-////            .peek(entityManager::detach)
-//            .peek(estimation -> estimation.setId(null))
-//            .collect(Collectors.toList());
-//        log.debug("size of estimations: {}", estimations.size());
-//
-//        order.setEstimations(estimations);
 
         order.setCreatedAt(now);
         order.createdBy(loggedUser);
@@ -555,26 +539,7 @@ public class OrderService {
     }
 
 
-//    public Object deepCopy(Object input) {
-//
-//        Object output = null;
-//        try {
-//            // Writes the object
-//            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-//            ObjectOutputStream objectOutputStream = new ObjectOutputStream(byteArrayOutputStream);
-//            objectOutputStream.writeObject(input);
-//
-//            // Reads the object
-//            ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(byteArrayOutputStream.toByteArray());
-//            ObjectInputStream objectInputStream = new ObjectInputStream(byteArrayInputStream);
-//            output = objectInputStream.readObject();
-//
-//        } catch (Exception e) {
-//            log.error("Can not deep copied object", e);
-//            e.printStackTrace();
-//        }
-//        return output;
-//    }
+
 
     @Transactional(readOnly = true)
     public Page<OrderListDTO> findOrderInProducitionForEdit(Pageable pageable) {
