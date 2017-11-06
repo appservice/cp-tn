@@ -137,7 +137,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         switchUserFilter.setUserDetailsService(userDetailsService);
         switchUserFilter.setSwitchUserUrl("/login/impersonate");
 //            switchUserFilter.setExitUserUrl();
-        switchUserFilter.setSwitchAuthorityRole("ADMIN");
+        switchUserFilter.setSwitchAuthorityRole(AuthoritiesConstants.ADMIN);
 //            switchUserFilter.setSwitchUserUrl("/logout/impersonate");
         switchUserFilter.setFailureHandler(authenticationFailureHandler());
         switchUserFilter.setSuccessHandler(switchUserSuccessHandler);

@@ -134,7 +134,7 @@
                     </li>
                 </ul>
             </li>
-            <li *jhiHasAnyAuthority="['ROLE_TECHNOLOGIST','ROLE_MANAGER','ROLE_SAP_INTRODUCER']" ngbDropdown class="nav-item dropdown pointer"
+            <li *jhiHasAnyAuthority="['ROLE_TECHNOLOGIST','ROLE_MANAGER','ROLE_SAP_INTRODUCER','ROLE_TEAM_LEADER']" ngbDropdown class="nav-item dropdown pointer"
                 routerLinkActive="active"
                 [routerLinkActiveOptions]="{exact: true}">
                 <a class="nav-link dropdown-toggle" ngbDropdownToggle href="javascript:void(0);" id="production-menu">
@@ -155,7 +155,7 @@
                         </a>
                     </li>
                     <li>
-                        <a *jhiHasAnyAuthority="['ROLE_TECHNOLOGIST','ROLE_MANAGER']" class="dropdown-item" routerLink="production" routerLinkActive="active"
+                        <a *jhiHasAnyAuthority="['ROLE_TECHNOLOGIST','ROLE_MANAGER','ROLE_TEAM_LEADER']" class="dropdown-item" routerLink="production" routerLinkActive="active"
                            [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
                             <i class="fa fa-fw fa-line-chart" aria-hidden="true"></i>
                             <span>Aktulanie w produkcji</span>

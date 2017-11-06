@@ -116,7 +116,7 @@ public class UserResource {
                 .body(null);
         } else {
             User newUser = userService.createUser(managedUserVM);
-            mailService.sendCreationEmail(newUser);
+           // mailService.sendCreationEmail(newUser);
             return ResponseEntity.created(new URI("/api/users/" + newUser.getLogin()))
                 .headers(HeaderUtil.createAlert( "userManagement.created", newUser.getLogin()))
                 .body(newUser);
@@ -221,6 +221,7 @@ public class UserResource {
 
 
     @GetMapping("/users/by-sentence")
+    @Secured({AuthoritiesConstants.ADMIN,AuthoritiesConstants.ROLE_DEV})
     public List<User> getUserBySentece(@RequestParam(name = "sentence")String sentence){
         log.debug("Search user by sentence: {}", sentence);
         Pageable pageable = new PageRequest(0, 20);

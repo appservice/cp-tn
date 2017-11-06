@@ -584,6 +584,10 @@ public class OrderService {
             orderStatuses.add(OrderStatus.TECHNOLOGY_CREATION);
 
         }
+        if (SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.TEAM_LEADER)) {
+            orderStatuses.add(OrderStatus.TECHNOLOGY_CREATION);
+
+        }
         if (SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.SAP_INTRODUCER)) {
             orderStatuses.add(OrderStatus.CREATING_SAP_ORDER);
         }

@@ -1,6 +1,7 @@
 package eu.canpack.fip.service;
 
 import eu.canpack.fip.bo.client.Client;
+import eu.canpack.fip.config.ApplicationProperties;
 import eu.canpack.fip.domain.Authority;
 import eu.canpack.fip.domain.User;
 import eu.canpack.fip.repository.AuthorityRepository;
@@ -18,7 +19,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.cache.CacheManager;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -47,12 +47,15 @@ public class UserService {
 
     private final CacheManager cacheManager;
 
-    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, UserSearchRepository userSearchRepository, AuthorityRepository authorityRepository, CacheManager cacheManager) {
+    private final ApplicationProperties applicationProperties;
+
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, UserSearchRepository userSearchRepository, AuthorityRepository authorityRepository, CacheManager cacheManager, ApplicationProperties applicationProperties) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.userSearchRepository = userSearchRepository;
         this.authorityRepository = authorityRepository;
         this.cacheManager = cacheManager;
+        this.applicationProperties = applicationProperties;
     }
 
     public Optional<User> activateRegistration(String key) {
@@ -149,7 +152,7 @@ public class UserService {
         }
         user.setPhone(userDTO.getPhone());
 
-        String encryptedPassword = passwordEncoder.encode(RandomUtil.generatePassword());
+        String encryptedPassword = passwordEncoder.encode(applicationProperties.getInitialPassword());//RandomUtil.generatePassword()
         user.setPassword(encryptedPassword);
         user.setResetKey(RandomUtil.generateResetKey());
         user.setResetDate(Instant.now());
