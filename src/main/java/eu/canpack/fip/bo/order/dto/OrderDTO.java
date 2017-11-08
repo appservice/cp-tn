@@ -54,6 +54,8 @@ public class OrderDTO implements Serializable {
 
     private ZonedDateTime estimationFinishDate;
 
+    private String offerRemarks;
+
     public OrderDTO() {
 
     }
@@ -80,6 +82,7 @@ public class OrderDTO implements Serializable {
             this.estimationMakerName = o.getEstimationMaker().getFirstName() + " " + o.getEstimationMaker().getLastName();
         }
         this.estimationFinishDate=o.getEstimationFinsihDate();
+        this.offerRemarks=o.getOfferRemarks();
 
        // this.estimations = estimations;
     }
@@ -212,6 +215,14 @@ public class OrderDTO implements Serializable {
         this.estimationMakerName = estimationMakerName;
     }
 
+    public String getOfferRemarks() {
+        return offerRemarks;
+    }
+
+    public void setOfferRemarks(String offerRemarks) {
+        this.offerRemarks = offerRemarks;
+    }
+
     @Override
     public String toString() {
         return "OrderDTO{" +
@@ -228,6 +239,7 @@ public class OrderDTO implements Serializable {
             ", clientShortcut='" + clientShortcut + '\'' +
             ", inquiryId=" + inquiryId +
             ", estimations=" + estimations +
+            ", offerRemarks=" + offerRemarks +
             '}';
     }
 }

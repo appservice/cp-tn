@@ -104,6 +104,27 @@ public class MachineResource {
     }
 
     /**
+     * GET  /machines/not-pageable : get all the machines.
+     *
+     * @param pageable the pagination information
+     * @return the ResponseEntity with status 200 (OK) and the list of machines in body
+     */
+    @GetMapping("/machines/not-pageable")
+    @Timed
+    public ResponseEntity<List<MachineDTO>> getAllMachinesNotPageable(@ApiParam Pageable pageable, @RequestParam(name = "operationDate", required = false) LocalDate operationDate) {
+        log.debug("REST request to get a page of Machines not pageable by operationDate: {}", operationDate);
+        List<MachineDTO> list;
+        if (operationDate == null) {
+            list = machineService.findAllNotPageable(LocalDate.now());
+        } else {
+            list = machineService.findAllNotPageable(operationDate);
+
+        }
+
+        return new ResponseEntity<>(list,  HttpStatus.OK);
+    }
+
+    /**
      * GET  /machines/:id : get the "id" machine.
      *
      * @param id the id of the machineDTO to retrieve

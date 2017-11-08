@@ -45,13 +45,13 @@ public class Order3PdfCreator {
         "Sąd Rejonowy w Rzeszowie, XII Wydział Gospodarczy KRS: 0000228547\n" +
         "Wysokość kapitału zakładowego: 75 853 000,00 PLN\n" +
         "REGON 180017966, NIP 872 222 84 78\n";//+
-    private static BaseFont baseFont;
+    private static BaseFont baseFont = PdfUtil.getArialUnicodeBaseFont();
+    ;
     //        "Konto bankowe: 05 1060 0076 0000 3210 0019 2932 (PLN), 79 1060 0076 0000 3210 0019 2958 (EUR)\n";
     private final OrderRepository orderRepository;
 
     public Order3PdfCreator(OrderRepository orderRepository) {
         this.orderRepository = orderRepository;
-        baseFont = PdfUtil.getArialUnicodeBaseFont();
 
     }
 
@@ -81,7 +81,7 @@ public class Order3PdfCreator {
 
             Color companyNameColor = new Color(35, 60, 183);
             doc.add(new Paragraph("Can-Pack Food and Industrial Packaging Sp. z o.o.", new Font(baseFont, 14, Font.BOLD, companyNameColor)));
-            doc.add(new Paragraph("Dział Narzędziiownia", new Font(baseFont, 14, Font.NORMAL, companyNameColor)));
+            doc.add(new Paragraph("Dział Narzędziownia", new Font(baseFont, 14, Font.NORMAL, companyNameColor)));
             Font fontCompanyNameSmaller = new Font(baseFont, 10, Font.NORMAL);
             doc.add(new Paragraph("32-800 Brzesko, ul Starowiejska 28", fontCompanyNameSmaller));
             doc.add(new Paragraph("Tel: +48 14 66 20 101", fontCompanyNameSmaller));
@@ -89,6 +89,7 @@ public class Order3PdfCreator {
 
             Font orderNumberFont = new Font(baseFont, 16, Font.BOLD, Color.BLACK);
 
+            doc.add(new Paragraph(" "));
             Paragraph orderNumberPgh = new Paragraph("Oferta nr: " + order.getInternalNumber(), orderNumberFont);
             orderNumberPgh.setAlignment(Element.ALIGN_CENTER);
             doc.add(orderNumberPgh);
@@ -112,9 +113,10 @@ public class Order3PdfCreator {
             doc.add(table2);
             doc.add(new Paragraph(" "));
             Font remarksFont = new Font(baseFont, 10);
-            doc.add(new Paragraph("Podane ceny są w PLN i nie zawierają podatku VAT.", remarksFont));
-            doc.add(new Paragraph("Oferta ważna 2 tyg.", remarksFont));
-            doc.add(new Paragraph("Dziękujemy za zainteresowanie naszą firmą.", remarksFont));
+
+            if (order.getOfferRemarks() != null) {
+                doc.add(new Paragraph(order.getOfferRemarks(), remarksFont));
+            }
 
             doc.close();
 
@@ -156,7 +158,7 @@ public class Order3PdfCreator {
         //phone
         StringBuilder phoneSb = new StringBuilder("tel: ");
         if (order.getCreatedBy().getPhone() != null) {
-            phoneSb.append(order.getCreatedBy().getPhone());
+            phoneSb.append(order.getEstimationMaker().getPhone());
         }
         table.addCell(createValue2Cell(phoneSb.toString()));
 
@@ -174,14 +176,14 @@ public class Order3PdfCreator {
         table.setWidthPercentage(100);
 
         // set relative columns width
-        table.setWidths(new float[]{0.4f, 3f, 1f, 0.7f, 1f, 1f, 1f});
+        table.setWidths(new float[]{0.4f, 3f, 1.2f, 0.7f, 1f, 1f, 1f});
 
 
         //-----------------Table Cells Label/Value------------------
 
         // 1st Row
         table.addCell(createLabelCell("LP"));
-        table.addCell(createLabelCell("Nazwa czesci"));
+        table.addCell(createLabelCell("Nazwa"));
         table.addCell(createLabelCell("Nr rysunku"));
         table.addCell(createLabelCell("Ilość szt"));
         table.addCell(createLabelCell("Data realizacji"));

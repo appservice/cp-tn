@@ -105,3 +105,4 @@ jhipster:
 
 application:
     initialPassword: Start.123
+    initialOfferRemarks: Podane ceny są w PLN i nie zawierają podatku VAT.|Oferta ważna 2 tyg.|Dziękujemy za zainteresowanie naszą firmą.

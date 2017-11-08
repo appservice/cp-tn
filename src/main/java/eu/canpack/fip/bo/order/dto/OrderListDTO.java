@@ -151,6 +151,7 @@ public class OrderListDTO implements Serializable {
         this.buttons = buttons;
     }
 
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {

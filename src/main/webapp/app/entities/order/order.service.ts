@@ -257,7 +257,6 @@ export class OrderService {
     }
 
 
-
     createNewPurchaseOrder(order: Order): Observable<Order> {
         const copy = this.convert(order);
         return this.http.post("api/purchase-orders", copy).map((res: Response) => {
@@ -268,14 +267,20 @@ export class OrderService {
     }
 
 
-
     insertSapNumber(order: Order): Observable<Order> {
         const copy = this.convert(order);
-        return this.http.put(this.resourceUrl+'/insert-sap-numbers', copy).map((res: Response) => {
+        return this.http.put(this.resourceUrl + '/insert-sap-numbers', copy).map((res: Response) => {
             const jsonResponse = res.json();
             this.convertItemFromServer(jsonResponse);
             return jsonResponse;
         });
     }
 
+
+    saveOfferRemarks(id: number, text: string): Observable<Response> {
+
+        return this.http.put(this.resourceUrl + '/' + id + '/add-offer-remarks', text).map((res: Response) => {
+            return res;
+        });
+    }
 }

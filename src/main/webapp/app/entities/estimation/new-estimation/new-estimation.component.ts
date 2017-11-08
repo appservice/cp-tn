@@ -34,6 +34,8 @@ export class NewEstimationComponent implements OnInit, OnDestroy {
     private commercialPartsTotalCost: number = 0;
     private operationsTotalCost: number = 0;
     private cooperationTotalCost: number = 0;
+    private sumOfWorkingHours: number = 0;
+
 
     estimation: Estimation;
     order: OrderSimpleDTO;
@@ -73,7 +75,7 @@ export class NewEstimationComponent implements OnInit, OnDestroy {
     ngOnInit() {
         this.isSaving = false;
 
-        this.machineService.query()
+        this.machineService.getAllNotPageable()
             .subscribe((res: ResponseWrapper) => {
                 this.machines = res.json;
 

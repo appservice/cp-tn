@@ -13,6 +13,8 @@ import {Drawing} from '../../../drawing/drawing.model';
 import {ModalDismissReasons, NgbDatepicker, NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {Estimation} from '../../../production/estimation.model';
 import {MoveToArchiveDialogComponent} from './move-to-archive-dialog.component';
+import {debounceTime} from 'rxjs/operator/debounceTime';
+import {Subject} from "rxjs/Subject";
 
 
 @Component({
@@ -36,6 +38,8 @@ export class EstimatedOrderComponent implements OnInit, OnDestroy {
     closeResult: string;
     clickedRow: number;
     isReadOnly: boolean = false;
+    alert: any;
+    private _success = new Subject<any>();
 
     dropdownList = [];
 
@@ -62,7 +66,6 @@ export class EstimatedOrderComponent implements OnInit, OnDestroy {
         this.order.orderType = OrderType.ESTIMATION;
 
         this.subscription = this.route.params.subscribe((params) => {
-            // console.log(params);
             if (params['id']) {
                 // console.log('params exiest');
                 this.load(params['id']);
@@ -73,6 +76,10 @@ export class EstimatedOrderComponent implements OnInit, OnDestroy {
             }
 
         });
+
+        this._success.subscribe((alert) => this.alert = alert);
+        debounceTime.call(this._success, 3000).subscribe(() => this.alert = null);
+
     }
 
     private onError(error) {
@@ -235,6 +242,21 @@ export class EstimatedOrderComponent implements OnInit, OnDestroy {
     moveToArchive() {
         const modalRef = this.modalService.open(MoveToArchiveDialogComponent);
         modalRef.componentInstance.order = this.order;
+    }
+
+
+    addOfferRemarks() {
+        this.orderService.saveOfferRemarks(this.order.id, this.order.offerRemarks).subscribe((res) => {
+            this._success.next({
+                type: 'success',
+                message: 'Zaktualizowano.',
+            });
+
+        });
+    }
+
+    public closeAlert() {
+        this.alert = null;
     }
 
 

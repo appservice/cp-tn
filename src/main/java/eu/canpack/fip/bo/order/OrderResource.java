@@ -7,12 +7,11 @@ import eu.canpack.fip.bo.order.dto.OrderListDTO;
 import eu.canpack.fip.bo.order.dto.OrderSimpleDTO;
 import eu.canpack.fip.bo.order.enumeration.OrderStatus;
 import eu.canpack.fip.bo.order.enumeration.OrderType;
-import eu.canpack.fip.bo.pdf.Order2PdfCreator;
 import eu.canpack.fip.bo.pdf.Order3PdfCreator;
 import eu.canpack.fip.web.rest.util.HeaderUtil;
 import eu.canpack.fip.web.rest.util.PaginationUtil;
-import io.swagger.annotations.ApiParam;
 import io.github.jhipster.web.util.ResponseUtil;
+import io.swagger.annotations.ApiParam;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.io.InputStreamResource;
@@ -31,7 +30,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
-
 import java.util.List;
 import java.util.Optional;
 
@@ -393,4 +391,12 @@ public class OrderResource {
     }
 
 
+    @PutMapping("/orders/{id}/add-offer-remarks")
+    @Timed
+    public ResponseEntity<Void> addOfferRemarks(@PathVariable Long id, @RequestBody String text) {
+        log.debug(" add offer remarks for order with id {}, text: {}",id,text);
+        orderService.saveOfferRemarks(id, text);
+
+        return ResponseEntity.ok().build();
+    }
 }

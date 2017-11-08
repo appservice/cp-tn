@@ -13,6 +13,8 @@ public class ApplicationProperties {
 
     private String initialPassword;
 
+    private String initialOfferRemarks;
+
     public String getDrawingDirectoryPath() {
         return drawingDirectoryPath;
     }
@@ -27,5 +29,13 @@ public class ApplicationProperties {
 
     public void setInitialPassword(String initialPassword) {
         this.initialPassword = initialPassword;
+    }
+
+    public String getInitialOfferRemarks() {
+        return initialOfferRemarks;
+    }
+
+    public void setInitialOfferRemarks(String initialOfferRemarks) {
+        this.initialOfferRemarks = initialOfferRemarks;
     }
 }

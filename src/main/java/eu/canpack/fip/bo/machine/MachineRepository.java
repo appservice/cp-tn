@@ -30,6 +30,12 @@ public interface MachineRepository extends JpaRepository<Machine,Long> {
     @Query(" select new eu.canpack.fip.bo.machine.MachineDTO(m,dtl) from Machine m " +
         "left join m.machineDtls dtl " +
         "where (dtl.validFrom<=:operationDate or dtl.validFrom is null) " +
+        "and (dtl.validTo>=:operationDate or dtl.validTo is NULL)")
+    List<MachineDTO> findAllByOperationDateNotPageable(@Param("operationDate")LocalDate operationDate);
+
+    @Query(" select new eu.canpack.fip.bo.machine.MachineDTO(m,dtl) from Machine m " +
+        "left join m.machineDtls dtl " +
+        "where (dtl.validFrom<=:operationDate or dtl.validFrom is null) " +
         "and (dtl.validTo>=:operationDate or dtl.validTo is NULL) " +
         "and m.id in :machineIds")
     List<MachineDTO> findAllByOperationDate(@Param("operationDate")LocalDate operationDate, @Param("machineIds") Set<Long> machineIds);

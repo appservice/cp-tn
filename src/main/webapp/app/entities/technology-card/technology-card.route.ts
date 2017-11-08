@@ -64,7 +64,9 @@ export const technologyCardRoute: Routes = [
         component: NewTechnologyCardComponent,
         data: {
             authorities: ['ROLE_USER'],
-            pageTitle: 'tnApp.technologyCard.home.title'
+            pageTitle: 'tnApp.technologyCard.home.title',
+            readOnly: false,
+
         },
         canActivate: [UserRouteAccessService],
     }

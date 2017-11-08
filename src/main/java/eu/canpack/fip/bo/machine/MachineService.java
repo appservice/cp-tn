@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
 
 import static org.elasticsearch.index.query.QueryBuilders.*;
@@ -154,6 +155,13 @@ public class MachineService {
     public Page<MachineDTO> findAll(LocalDate operationDate, Pageable pageable) {
         log.debug("Request to get all Machines");
         return machineRepository.findAllByOperationDate(operationDate, pageable);
+    }
+
+    public List<MachineDTO>findAllNotPageable(LocalDate operationDate){
+        log.debug("Request to get all Machines for date {} not pageable",operationDate);
+
+        return machineRepository.findAllByOperationDateNotPageable(operationDate);
+
     }
 
     /**

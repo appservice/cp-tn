@@ -103,7 +103,7 @@
         </div>
         <div class="form-group">
             <label >Telefon</label>
-            <input type="text" class="form-control" name="lastName" #phoneInput="ngModel"
+            <input type="text" class="form-control" name="phone" #phoneInput="ngModel"
                    [(ngModel)]="user.phone" maxlength="20">
 
             <div *ngIf="phoneInput.dirty && phoneInput.invalid">

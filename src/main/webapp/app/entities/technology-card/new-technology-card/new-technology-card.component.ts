@@ -54,8 +54,7 @@ export class NewTechnologyCardComponent implements OnInit, OnDestroy {
                 private modalService: NgbModal,
                 private unitService: UnitService,
                 private technologyCardService: TechnologyCardService,
-                private activatedRoute: ActivatedRoute,
-                private orderService: OrderService) {
+                private activatedRoute: ActivatedRoute,) {
         this.technologyCard = new TechnologyCard();
         this.technologyCard.operations = [];
 
@@ -66,7 +65,6 @@ export class NewTechnologyCardComponent implements OnInit, OnDestroy {
 
 
         this.subscription = this.route.params.subscribe((params) => {
-            console.log(params);
             if (params['id']) {
                 this.title = "Edytuj kartę technologizną"
                 this.load(params['id']);

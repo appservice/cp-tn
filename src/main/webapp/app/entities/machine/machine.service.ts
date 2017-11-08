@@ -43,6 +43,13 @@ export class MachineService {
     }
 
 
+    getAllNotPageable(): Observable<ResponseWrapper> {
+
+        return this.http.get(this.resourceUrl+'/not-pageable')
+            .map((res: Response) => this.convertResponse(res));
+    }
+
+
 
     delete(id: number): Observable<Response> {
         return this.http.delete(`${this.resourceUrl}/${id}`);

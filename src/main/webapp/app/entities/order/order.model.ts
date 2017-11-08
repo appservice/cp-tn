@@ -31,6 +31,7 @@ export class Order implements BaseEntity {
                 public remark ?: string,
                 public inquiryId?: number,
                 public estimationFinishDate?: any,
-                public mpk?: string,) {
+                public mpk?: string,
+                public offerRemarks?: string) {
     }
 }

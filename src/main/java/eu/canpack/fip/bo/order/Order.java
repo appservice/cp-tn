@@ -350,22 +350,7 @@ public class Order implements Serializable {
         return Objects.hashCode(getId());
     }
 
-    @Override
-    public String toString() {
-        return "Order{" +
-            "id=" + getId() +
-            ", internalNumber='" + getInternalNumber() + "'" +
-            ", sapNumber='" + getSapNumber() + "'" +
-            ", orderType='" + getOrderType() + "'" +
-            ", name='" + getName() + "'" +
-            ", description='" + getDescription() + "'" +
-            ", closeDate='" + getCloseDate() + "'" +
-            ", orderStatus='" + getOrderStatus() + "'" +
-            ", estimationMaker='" + estimationMaker + "'" +
-            ", createdBy='" + getCreatedBy() + "'" +
-            ", createdAt='" + getCreatedAt() + "'" +
-            "}";
-    }
+
 
     public Order createdBy(User createdBy) {
         this.createdBy = createdBy;
@@ -380,5 +365,31 @@ public class Order implements Serializable {
     public Order estimationMaker(User estimationMaker) {
         this.estimationMaker = estimationMaker;
         return this;
+    }
+
+    @Override
+    public String toString() {
+        return "Order{" +
+            "id=" + id +
+            ", internalNumber='" + internalNumber + '\'' +
+            ", inquiryNumber=" + inquiryNumber +
+            ", purchaseOrderNumber=" + purchaseOrderNumber +
+            ", emergencyOrderNumber=" + emergencyOrderNumber +
+            ", year=" + year +
+            ", sapNumber='" + sapNumber + '\'' +
+            ", orderType=" + orderType +
+            ", referenceNumber='" + referenceNumber + '\'' +
+            ", name='" + name + '\'' +
+            ", description='" + description + '\'' +
+            ", closeDate=" + closeDate +
+            ", orderStatus=" + orderStatus +
+//            ", estimations=" + estimations +
+            ", client=" + client +
+            ", createdBy=" + createdBy +
+            ", estimationMaker=" + estimationMaker +
+            ", createdAt=" + createdAt +
+            ", estimationFinsihDate=" + estimationFinsihDate +
+            ", offerRemarks='" + offerRemarks + '\'' +
+            '}';
     }
 }

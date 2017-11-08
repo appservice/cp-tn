@@ -17,6 +17,7 @@ import eu.canpack.fip.bo.order.dto.OrderSimpleDTO;
 import eu.canpack.fip.bo.order.enumeration.OrderStatus;
 import eu.canpack.fip.bo.order.enumeration.OrderType;
 import eu.canpack.fip.bo.remark.EstimationRemark;
+import eu.canpack.fip.config.ApplicationProperties;
 import eu.canpack.fip.domain.User;
 import eu.canpack.fip.repository.UserRepository;
 import eu.canpack.fip.repository.search.OrderSearchRepository;
@@ -64,11 +65,14 @@ public class OrderService {
     private final AttachmentRepository attachmentRepository;
     private final EstimationRepository estimationRepository;
 
+    private final ApplicationProperties applicationProperties;
+
 
 
     private final UserService userService;
 
-    public OrderService(OrderRepository orderRepository, OrderMapper orderMapper, OrderSearchRepository orderSearchRepository, UserRepository userRepository, DrawingRepository drawingRepository, AttachmentRepository attachmentRepository, EstimationRepository estimationRepository,  UserService userService) {
+    public OrderService(OrderRepository orderRepository, OrderMapper orderMapper, OrderSearchRepository orderSearchRepository, UserRepository userRepository, DrawingRepository drawingRepository, AttachmentRepository attachmentRepository,
+                        EstimationRepository estimationRepository,  UserService userService,ApplicationProperties applicationProperties) {
         this.orderRepository = orderRepository;
         this.orderMapper = orderMapper;
         this.orderSearchRepository = orderSearchRepository;
@@ -77,6 +81,7 @@ public class OrderService {
         this.attachmentRepository = attachmentRepository;
         this.estimationRepository = estimationRepository;
         this.userService = userService;
+        this.applicationProperties=applicationProperties;
     }
 
     /**
@@ -148,6 +153,7 @@ public class OrderService {
 
         }).collect(Collectors.toList());
         order.setEstimations(estimations);
+        order.setOfferRemarks(applicationProperties.getInitialOfferRemarks().replace("|","\n"));
 
 
         order.createdAt(now);
@@ -592,5 +598,11 @@ public class OrderService {
         //  order.setEstimationFinsihDate(ZonedDateTime.now());
 
         orderRepository.save(order);
+    }
+
+
+    public void saveOfferRemarks(Long orderId, String text){
+        Order order = orderRepository.findOne(orderId);
+        order.setOfferRemarks(text);
     }
 }

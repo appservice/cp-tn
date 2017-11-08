@@ -40,6 +40,7 @@ public class Client implements Serializable {
     @Column(name = "shortcut")
     private String shortcut;
 
+
     @OneToMany(mappedBy = "client")
     @JsonIgnore
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)

@@ -44,9 +44,6 @@ public class Order2PdfCreatorStyle {
          cell.setPaddingTop(5f);
          cell.setPaddingBottom(5f);
 
-         // border
-//            cell.setBorder(1);
-//            cell.setBorderWidthBottom(0.5f);
 
          // height
          cell.setMinimumHeight(18f);

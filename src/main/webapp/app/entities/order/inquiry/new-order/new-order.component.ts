@@ -25,8 +25,6 @@ export class NewOrderComponent implements OnInit, OnDestroy {
     clients: Client[];
     order: Order;
     isSaving: boolean;
-    // optionsModel: number[];
-    // selectedAttachments: SelectItem[]=[];
     attachments: Attachment[] = [];
     subscription: Subscription;
     optionsMap: Map<number, number[]> = new Map<number, number[]>();
