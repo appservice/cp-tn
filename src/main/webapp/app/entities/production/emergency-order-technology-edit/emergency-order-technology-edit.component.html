@@ -107,7 +107,7 @@
 
                             <div class="col-md-4">
                                 <label>Materiał</label>
-                                <input class="form-control" name="material" [(ngModel)]="estimation.material" />
+                                <input class="form-control" name="material" [(ngModel)]="estimation.material"/>
 
                             </div>
                             <div class="col-md-4"><label>Cena materiału [PLN]/SZT</label>
@@ -156,24 +156,29 @@
                     <tr *ngFor="let operation of estimation.operations;let rowIndex=index">
                         <td>
                             <input type=number class="form-control" [(ngModel)]="operation.sequenceNumber"
-                                   name="operation_sequence_nb_{{rowIndex}}" style="width: 70px;"/><!---->
+                                   name="operation_sequence_nb_{{rowIndex}}" style="width: 70px;" required #operationInsert="ngModel"/>
+                            <div [hidden]="!(operationInsert?.dirty && operationInsert?.invalid)">
+                                <small class="form-text text-danger"
+                                       [hidden]="!operationInsert?.errors?.required"
+                                       jhiTranslate="entity.validation.required">
+                                    This field is required.
+                                </small>
+                            </div>
                         </td>
 
                         <td style="width: 250px">               <!-- <input class="form-control" />-->
                             <select class="form-control" id="field_machine_{{rowIndex}}" name="machine_{{rowIndex}}"
-                                    [(ngModel)]="operation.machine"
-                                    required [compareWith]="compareMachine">
+                                    [(ngModel)]="operation.machine" required [compareWith]="compareMachine" #machine="ngModel">
 
-                                <option *ngFor="let machineOpt of machines; trackBy: trackMachineById"
-                                        [ngValue]="machineOpt">
+                                <option *ngFor="let machineOpt of machines; trackBy: trackMachineById" [ngValue]="machineOpt">
                                     {{machineOpt.name}}
 
                                 </option>
                             </select>
 
-                            <div [hidden]="!(editForm.controls.client?.dirty && editForm.controls.client?.invalid)">
+                            <div [hidden]="!(machine?.dirty && machine?.invalid)">
                                 <small class="form-text text-danger"
-                                       [hidden]="!editForm.controls.client?.errors?.required"
+                                       [hidden]="!machine?.errors?.required"
                                        jhiTranslate="entity.validation.required">
                                     This field is required.
                                 </small>
@@ -311,234 +316,234 @@
                 </button>
             </ng-template>
         </ngb-tab>
-<!--        <ngb-tab title="Kooperacja ({{estimation.cooperationList.length}})" id="3">
-            <ng-template ngbTabContent>
+        <!--        <ngb-tab title="Kooperacja ({{estimation.cooperationList.length}})" id="3">
+                    <ng-template ngbTabContent>
 
-                <table class="table table-striped">
-                    <thead>
-
-
-                    <tr>
-                        <th style="width: 60px;">Poz.</th>
-                        &lt;!&ndash;<th>Id:</th>&ndash;&gt;
-                        <th style="width: 300px">Kontrahent:</th>
-                        <th>Opis operacji:</th>
-                        <th style="width: 100px">Ilość:</th>
-                        <th style="width: 100px">Jedn.:</th>
-                        <th style="width: 150px">Cena [PLN]</th>
-                        <th style="width: 150px">Wartość [PLN]</th>
-                        <th style="width: 60px;"></th>
-
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr *ngFor="let cooperation of estimation.cooperationList;let rowIndex=index">
-                        <td><input class="form-control" value="{{(rowIndex+1)}}" disabled style="width: 50px;"/></td>
-
-                        <td><input type="text" class="form-control" [(ngModel)]="cooperation.counterparty"
-                                   name="cooperation_name_{{rowIndex}}" required></td>
-
-                        <td><input type="text" class="form-control" [(ngModel)]="cooperation.name"
-                                   name="cooperation_name_{{rowIndex}}" required></td>
-                        <td><input type="number" class="form-control" [(ngModel)]="cooperation.amount"
-                                   name="cooperation_amount_{{rowIndex}}"
-                                   (ngModelChange)="calculateCooperationTotalCost()" required/></td>
-                        <td>
-                            <input type="text" class="form-control" value="SZT" disabled/>
-
-                        </td>
-                        <td>
-
-                            <input currencyMask [options]="currencyMaskOpt" class="form-control"
-                                   [(ngModel)]="cooperation.price" name="cooperation_price_{{rowIndex}}"
-                                   (ngModelChange)="calculateCooperationTotalCost()" required/></td>
-                        <td>
-
-                            <input class="form-control"
-                                   value="{{(cooperation.amount*cooperation.price)|currency:'PLN':false}} "
-                                   disabled
-                                   *ngIf="cooperation.amount!=null && cooperation.price!=null;else other_content"/>
-
-                            <ng-template #other_content><input class="form-control" disabled value=""/></ng-template>
-                        </td>
-
-                        <td style="width: 60px;">
-                            <button type="button" class="btn btn-outline-dark" (click)="onDeleteCooperation(rowIndex);">x</button>
-                        </td>
-                    </tr>
-
-
-                    </tbody>
-                    <tfoot>
-                    <tr>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td class="text-right strong">Suma:</td>
-                        <td class="strong font-weight-bold">{{cooperationTotalCost|currency:'PLN':false}}</td>
-                    </tr>
-                    </tfoot>
-
-                </table>
-                <button type="button" class="btn" (click)="addCooperation();" style="width: 200px"><i
-                    class="fa fa-plus"></i>
-                    Dodaj
-                </button>
-            </ng-template>
-        </ngb-tab>
-
-        <ngb-tab title="Uwagi " id="4">
-            <ng-template ngbTabContent>
-
-
-                <div class="row">
-                    <div class="col-md-6" style="margin-top: 30px">
                         <table class="table table-striped">
                             <thead>
-                            </thead>
 
+
+                            <tr>
+                                <th style="width: 60px;">Poz.</th>
+                                &lt;!&ndash;<th>Id:</th>&ndash;&gt;
+                                <th style="width: 300px">Kontrahent:</th>
+                                <th>Opis operacji:</th>
+                                <th style="width: 100px">Ilość:</th>
+                                <th style="width: 100px">Jedn.:</th>
+                                <th style="width: 150px">Cena [PLN]</th>
+                                <th style="width: 150px">Wartość [PLN]</th>
+                                <th style="width: 60px;"></th>
+
+                            </tr>
+                            </thead>
                             <tbody>
-                            <tr *ngFor="let remark of estimation.estimationRemarks">
+                            <tr *ngFor="let cooperation of estimation.cooperationList;let rowIndex=index">
+                                <td><input class="form-control" value="{{(rowIndex+1)}}" disabled style="width: 50px;"/></td>
+
+                                <td><input type="text" class="form-control" [(ngModel)]="cooperation.counterparty"
+                                           name="cooperation_name_{{rowIndex}}" required></td>
+
+                                <td><input type="text" class="form-control" [(ngModel)]="cooperation.name"
+                                           name="cooperation_name_{{rowIndex}}" required></td>
+                                <td><input type="number" class="form-control" [(ngModel)]="cooperation.amount"
+                                           name="cooperation_amount_{{rowIndex}}"
+                                           (ngModelChange)="calculateCooperationTotalCost()" required/></td>
                                 <td>
-                                    <div><strong>{{remark.remark}}</strong></div>
-                                    <div class="small">{{remark.createdByName}} {{remark.createdAt|date:'dd-MM-yyyy HH:mm'}}
-                                    </div>
+                                    <input type="text" class="form-control" value="SZT" disabled/>
 
                                 </td>
+                                <td>
 
+                                    <input currencyMask [options]="currencyMaskOpt" class="form-control"
+                                           [(ngModel)]="cooperation.price" name="cooperation_price_{{rowIndex}}"
+                                           (ngModelChange)="calculateCooperationTotalCost()" required/></td>
+                                <td>
+
+                                    <input class="form-control"
+                                           value="{{(cooperation.amount*cooperation.price)|currency:'PLN':false}} "
+                                           disabled
+                                           *ngIf="cooperation.amount!=null && cooperation.price!=null;else other_content"/>
+
+                                    <ng-template #other_content><input class="form-control" disabled value=""/></ng-template>
+                                </td>
+
+                                <td style="width: 60px;">
+                                    <button type="button" class="btn btn-outline-dark" (click)="onDeleteCooperation(rowIndex);">x</button>
+                                </td>
                             </tr>
-                            </tbody>
-                            </tfoot>
 
-                        </table>
-
-                    </div>
-                    <div class="col-md-6" style="margin-top: 5px">
-                        <div class="row">
-                            <div class="col-12">
-
-                                <label for="estimation_remark_field">Dodaj nową uwagę:</label>
-                                <textarea class="form-control text-area" name="estimation_remark"
-                                          id="estimation_remark_field" [(ngModel)]="estimation.remark"></textarea>
-
-
-                            </div>
-                        </div>
-                    </div>
-            </ng-template>
-        </ngb-tab>
-
-        <ngb-tab id="5">
-            <ng-template ngbTabTitle>
-                <strong>Podsumowanie kosztów</strong> <span [ngClass]="{'fa fa-warning text-danger': !estimation.estimatedCost}"></span>
-            </ng-template>
-            <ng-template ngbTabContent>
-
-
-                <div class="row">
-                    <div class="col-md-6">
-                        <table class="table table-striped">
-                            <thead>
-                            <tr>
-                                <th>LP.</th>
-                                <th>Nazwa:</th>
-                                <th>Wartość [PLN]</th>
-
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <tr>
-                                <td>1</td>
-                                <td>Koszt materiału</td>
-                                <td>{{estimation.materialPrice|currency:'PLN':false}}</td>
-                            </tr>
-                            <tr>
-                                <td>2</td>
-                                <td>Koszt operacji</td>
-                                <td>{{operationsTotalCost|currency:'PLN':false}}</td>
-                            </tr>
-                            <tr>
-                                <td>3</td>
-                                <td>Koszt częsci handlowych</td>
-                                <td>{{commercialPartsTotalCost|currency:'PLN':false}}</td>
-                            </tr>
-                            <tr>
-                                <td>4</td>
-                                <td>Koszt kooperacji</td>
-                                <td>{{cooperationTotalCost|currency:'PLN':false}}</td>
-                            </tr>
 
                             </tbody>
                             <tfoot>
-                            <tr *ngIf="estimation.discount!==0">
-                                <td></td>
-                                <td class="text-right strong">Marża:</td>
-                                <td class="strong font-weight-bold">
-                                    {{calculateDiscount()|currency:'PLN':false}}
-                                </td>
-                            </tr>
                             <tr>
                                 <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
                                 <td class="text-right strong">Suma:</td>
-                                <td class="strong font-weight-bold">
-                                    {{(calculateTotal()+calculateDiscount())|currency:'PLN':false}}
-                                </td>
+                                <td class="strong font-weight-bold">{{cooperationTotalCost|currency:'PLN':false}}</td>
                             </tr>
-
                             </tfoot>
 
                         </table>
-                    </div>
-                    <div class="col-md-6" style="margin-top: 20px">
+                        <button type="button" class="btn" (click)="addCooperation();" style="width: 200px"><i
+                            class="fa fa-plus"></i>
+                            Dodaj
+                        </button>
+                    </ng-template>
+                </ngb-tab>
+
+                <ngb-tab title="Uwagi " id="4">
+                    <ng-template ngbTabContent>
+
 
                         <div class="row">
-                            <div class="col-12">
-                                <label>Marża [%]</label>
-                                <input type="number" class="form-control" [(ngModel)]="estimation.discount"
-                                       name="final_discount" (ngModelChange)="calculateOperationsTotalCost()"/>
+                            <div class="col-md-6" style="margin-top: 30px">
+                                <table class="table table-striped">
+                                    <thead>
+                                    </thead>
+
+                                    <tbody>
+                                    <tr *ngFor="let remark of estimation.estimationRemarks">
+                                        <td>
+                                            <div><strong>{{remark.remark}}</strong></div>
+                                            <div class="small">{{remark.createdByName}} {{remark.createdAt|date:'dd-MM-yyyy HH:mm'}}
+                                            </div>
+
+                                        </td>
+
+                                    </tr>
+                                    </tbody>
+                                    </tfoot>
+
+                                </table>
+
                             </div>
-                        </div>
-                        <div class="row" style="margin-top: 20px">
-                            <div class="col-12">
-                                <label>Cena dla klienta</label>
-                                <div class="input-group">
-                                    <input class="form-control" currencyMask [options]="currencyMaskOpt"
-                                           [(ngModel)]="estimation.estimatedCost" name="final_cost"/>
-                                    <span class="input-group-btn">
-                             <button class="btn" type="button" (click)="clonePriceFromSummary()">Kopiuj cenę z podsumowania</button>
-                                 </span>
+                            <div class="col-md-6" style="margin-top: 5px">
+                                <div class="row">
+                                    <div class="col-12">
+
+                                        <label for="estimation_remark_field">Dodaj nową uwagę:</label>
+                                        <textarea class="form-control text-area" name="estimation_remark"
+                                                  id="estimation_remark_field" [(ngModel)]="estimation.remark"></textarea>
+
+
+                                    </div>
                                 </div>
-
                             </div>
-                        </div>
-                        <div class="row" style="margin-top: 20px">
-                            <div class="col-12">
+                    </ng-template>
+                </ngb-tab>
 
-                                <label>Szacowana data realizacji</label>
-                                <div class="form-group">
-                                    &lt;!&ndash;<label class="form-control-label" jhiTranslate="tnApp.order.closeDate" for="field_closeDate">Close Date</label>&ndash;&gt;
-                                    <div class="input-group">
-                                        <input id="field_closeDate" type="text" class="form-control"
-                                               name="estimation_realization_date_{{rowIndex}}"
-                                               ngbDatepicker #realizationDateDp="ngbDatepicker"
-                                               [(ngModel)]="estimation.estimatedRealizationDate"
-                                               [disabled]="isReadOnly"/>
-                                        <span class="input-group-btn">
-                    <button type="button" class="btn btn-default" (click)="realizationDateDp.toggle()"
-                            (keyup)="realizationDateDp.toggle()" [disabled]="isReadOnly"><i class="fa fa-calendar"></i></button>
-                </span>
+                <ngb-tab id="5">
+                    <ng-template ngbTabTitle>
+                        <strong>Podsumowanie kosztów</strong> <span [ngClass]="{'fa fa-warning text-danger': !estimation.estimatedCost}"></span>
+                    </ng-template>
+                    <ng-template ngbTabContent>
+
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <table class="table table-striped">
+                                    <thead>
+                                    <tr>
+                                        <th>LP.</th>
+                                        <th>Nazwa:</th>
+                                        <th>Wartość [PLN]</th>
+
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>Koszt materiału</td>
+                                        <td>{{estimation.materialPrice|currency:'PLN':false}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>2</td>
+                                        <td>Koszt operacji</td>
+                                        <td>{{operationsTotalCost|currency:'PLN':false}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>3</td>
+                                        <td>Koszt częsci handlowych</td>
+                                        <td>{{commercialPartsTotalCost|currency:'PLN':false}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>4</td>
+                                        <td>Koszt kooperacji</td>
+                                        <td>{{cooperationTotalCost|currency:'PLN':false}}</td>
+                                    </tr>
+
+                                    </tbody>
+                                    <tfoot>
+                                    <tr *ngIf="estimation.discount!==0">
+                                        <td></td>
+                                        <td class="text-right strong">Marża:</td>
+                                        <td class="strong font-weight-bold">
+                                            {{calculateDiscount()|currency:'PLN':false}}
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td></td>
+                                        <td class="text-right strong">Suma:</td>
+                                        <td class="strong font-weight-bold">
+                                            {{(calculateTotal()+calculateDiscount())|currency:'PLN':false}}
+                                        </td>
+                                    </tr>
+
+                                    </tfoot>
+
+                                </table>
+                            </div>
+                            <div class="col-md-6" style="margin-top: 20px">
+
+                                <div class="row">
+                                    <div class="col-12">
+                                        <label>Marża [%]</label>
+                                        <input type="number" class="form-control" [(ngModel)]="estimation.discount"
+                                               name="final_discount" (ngModelChange)="calculateOperationsTotalCost()"/>
+                                    </div>
+                                </div>
+                                <div class="row" style="margin-top: 20px">
+                                    <div class="col-12">
+                                        <label>Cena dla klienta</label>
+                                        <div class="input-group">
+                                            <input class="form-control" currencyMask [options]="currencyMaskOpt"
+                                                   [(ngModel)]="estimation.estimatedCost" name="final_cost"/>
+                                            <span class="input-group-btn">
+                                     <button class="btn" type="button" (click)="clonePriceFromSummary()">Kopiuj cenę z podsumowania</button>
+                                         </span>
+                                        </div>
+
+                                    </div>
+                                </div>
+                                <div class="row" style="margin-top: 20px">
+                                    <div class="col-12">
+
+                                        <label>Szacowana data realizacji</label>
+                                        <div class="form-group">
+                                            &lt;!&ndash;<label class="form-control-label" jhiTranslate="tnApp.order.closeDate" for="field_closeDate">Close Date</label>&ndash;&gt;
+                                            <div class="input-group">
+                                                <input id="field_closeDate" type="text" class="form-control"
+                                                       name="estimation_realization_date_{{rowIndex}}"
+                                                       ngbDatepicker #realizationDateDp="ngbDatepicker"
+                                                       [(ngModel)]="estimation.estimatedRealizationDate"
+                                                       [disabled]="isReadOnly"/>
+                                                <span class="input-group-btn">
+                            <button type="button" class="btn btn-default" (click)="realizationDateDp.toggle()"
+                                    (keyup)="realizationDateDp.toggle()" [disabled]="isReadOnly"><i class="fa fa-calendar"></i></button>
+                        </span>
+                                            </div>
+                                        </div>
+
                                     </div>
                                 </div>
 
                             </div>
                         </div>
-
-                    </div>
-                </div>
-            </ng-template>
-        </ngb-tab>-->
+                    </ng-template>
+                </ngb-tab>-->
     </ngb-tabset>
 
 

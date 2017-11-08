@@ -82,7 +82,7 @@ export class EmergencyOrderTechnologyEditComponent implements OnInit, OnDestroy 
             }
 
         });
-        this.machineService.query()
+        this.machineService.getAllNotPageable()
             .subscribe((res: ResponseWrapper) => {
                 this.machines = res.json;
 
@@ -105,6 +105,7 @@ export class EmergencyOrderTechnologyEditComponent implements OnInit, OnDestroy 
         };
         this.calculateCommercialPartsTotalCost();
         this.calculateCooperationTotalCost();
+        this.calculateSumOfWorkingHours();
 
 
     }
@@ -222,6 +223,7 @@ export class EmergencyOrderTechnologyEditComponent implements OnInit, OnDestroy 
             this.calculateOperationsTotalCost();
             this.calculateCommercialPartsTotalCost();
             this.calculateCooperationTotalCost();
+            this.calculateSumOfWorkingHours();
 
 
             this.orderService.findOrderSimpleDto(estimation.orderId).subscribe((order => {
@@ -394,16 +396,7 @@ export class EmergencyOrderTechnologyEditComponent implements OnInit, OnDestroy 
 
     }
 
-    // promisetechnologyCard: Promise<TechnologyCard>;
-    //
-    // private insertOperationFromTechnologyCard(technologyCard: TechnologyCard): void {
-    //     console.log(technologyCard);
-    //     for (let operation of technologyCard.operations) {
-    //         operation.id = null;
-    //         this.estimation.operations.push(operation);
-    //         this.calculateOperationsTotalCost();
-    //     }
-    // }
+
 
     openDrawingCardModal() {
 

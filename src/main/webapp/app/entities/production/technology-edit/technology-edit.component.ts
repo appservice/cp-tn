@@ -33,6 +33,7 @@ export class TechnologyEditComponent implements OnInit, OnDestroy {
     private commercialPartsTotalCost: number = 0;
     private operationsTotalCost: number = 0;
     private cooperationTotalCost: number = 0;
+    private sumOfWorkingHours: number = 0;
 
 
     estimation: Estimation;
@@ -64,7 +65,7 @@ export class TechnologyEditComponent implements OnInit, OnDestroy {
         this.estimation.discount = 0;
         this.estimation.operations = [];
         this.estimation.commercialParts = [];
-        this.estimation.cooperationList=[];
+        this.estimation.cooperationList = [];
         this.order = new OrderSimpleDTO();
 
     }
@@ -80,7 +81,7 @@ export class TechnologyEditComponent implements OnInit, OnDestroy {
             }
 
         });
-        this.machineService.query()
+        this.machineService.getAllNotPageable()
             .subscribe((res: ResponseWrapper) => {
                 this.machines = res.json;
 
@@ -287,14 +288,20 @@ export class TechnologyEditComponent implements OnInit, OnDestroy {
 
     calculateOperationsTotalCost() {
         this.operationsTotalCost = 0;
+        this.sumOfWorkingHours = 0;
 
         for (const operation of this.estimation.operations) {
-            if (operation.estimatedTime != null && operation.machine.workingHourPrice != null) {
-                this.operationsTotalCost = this.operationsTotalCost + operation.estimatedTime * operation.machine.workingHourPrice;
+            if (operation.estimatedTime != null) {
+                this.sumOfWorkingHours = this.sumOfWorkingHours + operation.estimatedTime;
+                if (operation.machine && operation.machine.workingHourPrice != null) {
+                    this.operationsTotalCost = this.operationsTotalCost + operation.estimatedTime * operation.machine.workingHourPrice;
+
+                }
 
             }
         }
     }
+
 
     calculateCommercialPartsTotalCost() {
         this.commercialPartsTotalCost = 0;
@@ -323,7 +330,7 @@ export class TechnologyEditComponent implements OnInit, OnDestroy {
     }
 
     calculateTotal(): number {
-        return this.commercialPartsTotalCost + this.operationsTotalCost + this.estimation.materialPrice+ this.cooperationTotalCost;
+        return this.commercialPartsTotalCost + this.operationsTotalCost + this.estimation.materialPrice + this.cooperationTotalCost;
     }
 
     calculateDiscount(): number {
@@ -420,7 +427,7 @@ export class TechnologyEditComponent implements OnInit, OnDestroy {
         //
     }
 
-    clonePriceFromSummary(){
-        this.estimation.estimatedCost=this.calculateTotal()+this.calculateDiscount();
+    clonePriceFromSummary() {
+        this.estimation.estimatedCost = this.calculateTotal() + this.calculateDiscount();
     }
 }

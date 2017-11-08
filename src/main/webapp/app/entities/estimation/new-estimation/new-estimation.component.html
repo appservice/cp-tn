@@ -170,8 +170,7 @@
                                     [(ngModel)]="operation.machine" (ngModelChange)="calculateOperationsTotalCost()"
                                     required [compareWith]="compareMachine" #machine="ngModel">
 
-                                <option *ngFor="let machineOpt of machines; trackBy: trackMachineById"
-                                        [ngValue]="machineOpt">
+                                <option *ngFor="let machineOpt of machines; trackBy: trackMachineById" [ngValue]="machineOpt">
                                     {{machineOpt.name}}
 
                                 </option>
@@ -233,8 +232,8 @@
                     <tr>
                         <td></td>
                         <td></td>
-                        <td></td>
                         <td class="text-right strong">Suma:</td>
+                        <td class="strong font-weight-bold">{{sumOfWorkingHours|number:'1.0-2'}} [rbh]</td>
                         <td class="strong font-weight-bold">{{operationsTotalCost|currency:'PLN':false}}</td>
                         <td></td>
                     </tr>

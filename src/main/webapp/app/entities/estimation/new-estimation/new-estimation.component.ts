@@ -81,7 +81,6 @@ export class NewEstimationComponent implements OnInit, OnDestroy {
 
 
                 this.subscription = this.route.params.subscribe((params) => {
-                    console.log(params);
                     if (params['id']) {
                         console.log('params exiest');
                         this.load(params['id']);
@@ -294,10 +293,15 @@ export class NewEstimationComponent implements OnInit, OnDestroy {
 
     calculateOperationsTotalCost() {
         this.operationsTotalCost = 0;
+        this.sumOfWorkingHours = 0;
 
         for (const operation of this.estimation.operations) {
-            if (operation.estimatedTime != null && operation.machine.workingHourPrice != null) {
-                this.operationsTotalCost = this.operationsTotalCost + operation.estimatedTime * operation.machine.workingHourPrice;
+            if (operation.estimatedTime != null) {
+                this.sumOfWorkingHours = this.sumOfWorkingHours + operation.estimatedTime;
+                if (operation.machine && operation.machine.workingHourPrice != null) {
+                    this.operationsTotalCost = this.operationsTotalCost + operation.estimatedTime * operation.machine.workingHourPrice;
+
+                }
 
             }
         }
