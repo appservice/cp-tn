@@ -198,11 +198,11 @@
 
                         </td><!-- [ngbTypeahead]="search"-->
                         <td><textarea class="form-control" autosize="" rows="1" [(ngModel)]="operation.description"
-                                      name="operation_dscription_{{rowIndex}}"></textarea></td>
+                                      name="operation_dscription_{{rowIndex}}" required></textarea></td>
                         <td>
                             <input type="number" class="form-control" [(ngModel)]="operation.estimatedTime"
                                    name="operation_estimatedTime_{{rowIndex}}"
-                                   (ngModelChange)="calculateOperationsTotalCost()"/></td>
+                                   (ngModelChange)="calculateOperationsTotalCost()" required/></td>
                         <td>
 
                             <input *ngIf="operation.estimatedTime!=null && operation.machine!=null;else other_content"
@@ -281,19 +281,19 @@
                         <td><input class="form-control" value="{{(rowIndex+1)}}" disabled style="width: 50px;"/></td>
 
                         <td><input type="text" class="form-control" [(ngModel)]="commercialPart.name"
-                                   value="Lozysko 6203 2RS SKF" name="commecialPart_name_{{rowIndex}}"></td>
+                                   value="Lozysko 6203 2RS SKF" name="commecialPart_name_{{rowIndex}}" required></td>
                         <td><input type="number" class="form-control" [(ngModel)]="commercialPart.amount"
                                    name="commecialpart_amount_{{rowIndex}}"
-                                   (ngModelChange)="calculateCommercialPartsTotalCost()"/></td>
+                                   (ngModelChange)="calculateCommercialPartsTotalCost()" required/></td>
                         <td><input type="text" class="form-control" [(ngModel)]="commercialPart.unit"
                                    [ngbTypeahead]="searchUnit" name="commercialpart_unit_{{rowIndex}}"
                                    [inputFormatter]="formatter"
                                    [resultFormatter]="resultFormatter"
-                                   [editable]="false" (selectItem)="onSelectItem($event)"
+                                   [editable]="false" (selectItem)="onSelectItem($event)" required
                         /></td>
                         <td><input currencyMask [options]="currencyMaskOpt" class="form-control"
                                    [(ngModel)]="commercialPart.price" name="commercialPart_price_{{rowIndex}}"
-                                   (ngModelChange)="calculateCommercialPartsTotalCost()"/></td>
+                                   (ngModelChange)="calculateCommercialPartsTotalCost()" required/></td>
                         <td>
 
                             <input class="form-control"
@@ -526,7 +526,7 @@
                                 <label>Cena dla klienta</label>
                                 <div class="input-group">
                                     <input class="form-control" currencyMask [options]="currencyMaskOpt"
-                                           [(ngModel)]="estimation.estimatedCost" name="final_cost"/>
+                                           [(ngModel)]="estimation.estimatedCost" name="final_cost" disabled/>
                                     <span class="input-group-btn">
                              <button class="btn" type="button" (click)="clonePriceFromSummary()">Kopiuj cenę z podsumowania</button>
                                  </span>
@@ -545,7 +545,7 @@
                                                name="estimation_realization_date_{{rowIndex}}"
                                                ngbDatepicker #realizationDateDp="ngbDatepicker"
                                                [(ngModel)]="estimation.estimatedRealizationDate"
-                                               [disabled]="isReadOnly"/>
+                                               [disabled]="isReadOnly" [required]="estimation.estimatedCost"/>
                                         <span class="input-group-btn">
                     <button type="button" class="btn btn-default" (click)="realizationDateDp.toggle()"
                             (keyup)="realizationDateDp.toggle()" [disabled]="isReadOnly"><i class="fa fa-calendar"></i></button>

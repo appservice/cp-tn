@@ -566,15 +566,24 @@
                                     <!--<label class="form-control-label" jhiTranslate="tnApp.order.closeDate" for="field_closeDate">Close Date</label>-->
                                     <div class="input-group">
                                         <input id="field_closeDate" type="text" class="form-control"
-                                               name="estimation_realization_date_{{rowIndex}}"
+                                               name="estimation_realization_date"
                                                ngbDatepicker #realizationDateDp="ngbDatepicker"
                                                [(ngModel)]="estimation.estimatedRealizationDate"
-                                               [disabled]="isReadOnly"/>
+                                               [disabled]="isReadOnly" [required]="estimation.estimatedCost">
+
                                         <span class="input-group-btn">
                     <button type="button" class="btn btn-default" (click)="realizationDateDp.toggle()"
                             (keyup)="realizationDateDp.toggle()" [disabled]="isReadOnly"><i class="fa fa-calendar"></i></button>
                 </span>
+
                                     </div>
+                                </div>
+                                <div [hidden]="!(editForm.controls.estimation_realization_date?.dirty && editForm.controls.estimation_realization_date?.invalid)">
+                                    <small class="form-text text-danger"
+                                           [hidden]="!editForm.controls.estimation_realization_date?.errors?.required"
+                                           jhiTranslate="entity.validation.required">
+                                        This field is required.
+                                    </small>
                                 </div>
 
                             </div>
