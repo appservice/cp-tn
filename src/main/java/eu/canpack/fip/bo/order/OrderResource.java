@@ -118,6 +118,7 @@ public class OrderResource {
         orderTypeFilter.setEquals(OrderType.ESTIMATION);
         orderCriteria.setOrderType(orderTypeFilter);
         Page<OrderListDTO> page = orderQueryService.findByCriteriaAndClient(orderCriteria, pageable);//orderService.findAllByClientAndOrderType(pageable, OrderType.ESTIMATION);
+
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/orders/inquiries");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
@@ -205,6 +206,21 @@ public class OrderResource {
     public ResponseEntity<OrderDTO> getOrder(@PathVariable Long id) {
         log.debug("REST request to get Order : {}", id);
         OrderDTO order = orderService.getOrder(id);
+        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(order));
+    }
+
+    /**
+     * GET  /orders/:id : get the "id" order.
+     *
+     * @param id the id of the orderDTO to retrieve
+     * @return the ResponseEntity with status 200 (OK) and with body the orderDTO, or with status 404 (Not Found)
+     */
+    @GetMapping("/inquiries/{id}")
+    @Timed
+    public ResponseEntity<OrderDTO> getInquiry(@PathVariable Long id) {
+        log.debug("REST request to get Order : {}", id);
+        OrderDTO order = orderService.getInquiryForClient(id);
+
         return ResponseUtil.wrapOrNotFound(Optional.ofNullable(order));
     }
 

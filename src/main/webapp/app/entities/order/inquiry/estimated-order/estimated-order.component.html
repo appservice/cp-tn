@@ -7,7 +7,7 @@
             Wycena
 
         </h2>
-        <fieldset >
+        <fieldset>
             <div class="row">
                 <div class="col-lg-2">
                     <label for="internal_number_field">Nr Wewn.</label>
@@ -70,14 +70,15 @@
                             <thead>
                             <tr>
                                 <th>LP</th>
-                                <th>Nazwa:</th>
-                                <th>Nr rys:</th>
-                                <th>Ilość:</th>
-                                <th>Jedn:</th>
+                                <th>Nazwa</th>
+                                <th>Nr rys.</th>
+                                <th>Ilość</th>
+                                <th>Jedn.</th>
                                 <th>MPK/Index</th>
-                                <th style="width: 180px">Prop. data realizacji:</th>
-                                <th>Cena/SZT:</th>
-                                <th>Termin realizacji:</th>
+                                <th style="width: 180px">Prop. data realizacji</th>
+                                <th>Cena/SZT</th>
+                                <th style="width: 120px;">Cena widoczna dla klienta</th>
+                                <th>Termin realizacji</th>
                                 <th></th>
 
                                 <th></th>
@@ -91,11 +92,11 @@
                                 <td>{{rowIndex+1}}</td>
                                 <!--<td><input type="text" [(ngModel)]="estimation.id" class="form-control"/></td>-->
                                 <td>
-                                  <a  (click)="openModal(content,rowIndex)" *ngIf="estimation.drawing" class="card-link"> {{estimation.itemName}}</a>
-                                    <span *ngIf="!estimation.drawing"> {{estimation.itemName}}</span>
+                                    <a (click)="openModal(content,rowIndex)" *ngIf="estimation.drawing" [routerLink]="">{{estimation.itemName}}</a>
+                                    <span *ngIf="!estimation.drawing">{{estimation.itemName}}</span>
                                 </td>
                                 <td style="max-width: 150px;">
-                                  {{estimation.itemNumber}}
+                                    {{estimation.itemNumber}}
                                 </td>
                                 <td style="max-width: 80px">{{estimation.amount}}</td>
                                 <td> SZT</td>
@@ -107,12 +108,16 @@
 
                                 <td style="width: 100px">
 
-                                   {{estimation.estimatedCost|currency:'PLN'}}
+                                    {{estimation.estimatedCost|currency:'PLN'}}
 
                                 </td>
+                                <td>
+                                    <button type="button" class="btn btn-danger btn-sm" *ngIf="!estimation.pricePublished" (click)="publishPrice(estimation, true)">Nie</button><!--(click)="setActive(user, true)" -->
+                                    <button type="button" class="btn btn-success btn-sm"  *ngIf="estimation.pricePublished" (click)="publishPrice(estimation, false)">Tak</button>
+
                                 <td>{{estimation.estimatedRealizationDate|date:'dd-MM-yyyy'}}</td>
                                 <td>
-                                    <label class="custom-control custom-checkbox mb-3 mr-sm-3 mb-sm-0 tn-checkbox">
+                                    <label class="custom-control custom-checkbox text-dark mb-3 mr-sm-3 mb-sm-0 tn-checkbox">
                                         <input type="checkbox" class="custom-control-input" name="checked_{{rowIndex}}" [(ngModel)]="estimation.checked">
                                         <span class="custom-control-indicator"></span>
                                     </label>
@@ -134,7 +139,7 @@
                 <ngb-tab title="Uwagi do oferty" id="2">
                     <ng-template ngbTabContent>
 
-                        <div class="row align-content-center" style="margin-top: 20px" >
+                        <div class="row align-content-center" style="margin-top: 20px">
                             <div class="col-md-8">
                                 <textarea class="form-control border-primary" rows="10" [(ngModel)]="order.offerRemarks" name="offerRemarks"></textarea>
                             </div>
@@ -148,9 +153,8 @@
                             </div>
 
 
-
                         </div>
-                        <br />
+                        <br/>
 
 
                     </ng-template>
@@ -167,12 +171,14 @@
                 Drukuj ofertę
             </button>
 
-            <button type="button" class="btn btn-outline-danger" (click)="previousState()" >
+            <button type="button" class="btn btn-outline-danger" (click)="previousState()">
                 <span class="fa fa-arrow-left"></span>
-                Powrót</button>
-            <button type="button" class="btn btn-outline-primary" (click)="moveToArchive()" >
+                Powrót
+            </button>
+            <button type="button" class="btn btn-outline-primary" (click)="moveToArchive()">
                 <span class="fa fa-archive"></span>
-                Przenieś do archiwum</button>
+                Przenieś do archiwum
+            </button>
 
 
         </div>

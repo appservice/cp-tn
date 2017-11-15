@@ -40,7 +40,7 @@
             </thead>
             <tbody>
             <tr *ngFor="let technologyCard of technologyCards ;trackBy: trackId">
-                <td><a [routerLink]="['../technology-card', technologyCard.id ]">{{technologyCard.id}}</a></td>
+                <td>{{technologyCard.id}}</td>
                 <td>
                     <div *ngIf="technologyCard.drawingId">
                         <a [routerLink]="['../drawing', technologyCard.drawingId  ]" >{{technologyCard.drawingNumber}}</a>

@@ -143,7 +143,9 @@ public class TechnologyCardService {
             .description(estimationDTO.getDescription())
             .material(estimationDTO.getMaterial())
             .mass(estimationDTO.getMass())
-            .amount(estimationDTO.getAmount());
+            .amount(estimationDTO.getAmount())
+            .materialType(estimationDTO.getMaterialType());
+
         if (estimationDTO.getDrawing() !=  null && estimationDTO.getDrawing().getId()!=null) {
             Drawing drawing = drawingRepository.findOne(estimationDTO.getDrawing().getId());
             drawing.getTechnologyCards().add(technologyCard);

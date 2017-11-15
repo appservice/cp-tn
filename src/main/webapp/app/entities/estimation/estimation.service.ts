@@ -139,4 +139,7 @@ export class EstimationService {
             .map((res: Response) => this.convertResponse(res));
     }
 
+    publishPrice(estimationId: number, isPublished: boolean): Observable<Response> {
+        return this.http.put(`${this.resourceUrl}/${estimationId}/publishPrice`, {'published': isPublished});
+    }
 }

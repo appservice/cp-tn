@@ -34,6 +34,11 @@ public class TechnologyCard implements Serializable {
     @Column(name = "material", length = 256, nullable = false)
     private String material;
 
+
+    @Size(max = 128)
+    @Column(name = "material_type", length = 256, nullable = false)
+    private String materialType;
+
     @Column(name = "mass")
     private Double mass;
 
@@ -194,6 +199,20 @@ public class TechnologyCard implements Serializable {
             return this.createdBy.getFirstName()+" "+this.createdBy.getLastName();
         return null;
     }
+
+    public String getMaterialType() {
+        return materialType;
+    }
+
+    public void setMaterialType(String materialType) {
+        this.materialType = materialType;
+    }
+
+    public TechnologyCard materialType(final String materialType) {
+        this.materialType = materialType;
+        return this;
+    }
+
 
     @Override
     public boolean equals(Object o) {

@@ -208,4 +208,24 @@ public class EstimationResource {
 
     }
 
+    @PutMapping("/estimations/{id}/publishPrice")
+    public ResponseEntity<Void> publishPrice(@RequestBody PublishedPriceDTO publishedPriceDTO, @PathVariable(name = "id") Long id){
+        estimationService.publishPrice(id,publishedPriceDTO.isPublished());
+        return ResponseEntity.ok().build();
+    }
+
+    private static class PublishedPriceDTO{
+
+
+        private Boolean published;
+
+        public Boolean isPublished() {
+            return published;
+        }
+
+        public void setPublished(Boolean published) {
+            this.published = published;
+        }
+    }
+
 }

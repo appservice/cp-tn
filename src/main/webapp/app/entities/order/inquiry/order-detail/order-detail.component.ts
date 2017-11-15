@@ -134,7 +134,7 @@ export class OrderDetailComponent implements OnInit, OnDestroy {
     }
 
     load(id) {
-        this.orderService.find(id).subscribe((order) => {
+        this.orderService.findInquiry(id).subscribe((order) => {
             this.order = order;
 
             console.log('order status: ', order.orderStatus.toString());
@@ -195,6 +195,9 @@ export class OrderDetailComponent implements OnInit, OnDestroy {
         for (let estimation of this.order.estimations) {
             isDisabled = isDisabled || estimation.estimatedCost !== null
         }
+        // if(this.order.orderStatus=='CREATED_PURCHASE_ORDER'){
+        //     isDisabled=false;
+        // }
         return isDisabled;
     }
 

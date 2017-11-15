@@ -6,6 +6,7 @@ export class TechnologyCard implements BaseEntity {
     constructor(
         public id?: number,
         public material?: string,
+        public materialType?: string,
         public mass?: number,
         public description?: string,
         public createdAt?: any,

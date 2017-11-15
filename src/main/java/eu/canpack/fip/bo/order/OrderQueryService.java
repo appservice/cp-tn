@@ -157,6 +157,7 @@ public class OrderQueryService extends QueryService<Order> {
         final Specifications<Order> specification = createSpecification(criteria);
 
         final Page<Order> result = OrderRepository.findAll(specification, page);
+
         return result.map(OrderMapper::toDto);
     }
 

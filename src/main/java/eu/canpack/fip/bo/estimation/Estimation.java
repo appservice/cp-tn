@@ -133,6 +133,14 @@ public class Estimation implements Serializable {
     @Column(name="not_realizable")
     private Boolean notRealizable=false;
 
+    @Column(name = "price_published ",columnDefinition = "BOOLEAN DEFAULT FALSE")
+    private Boolean pricePublished=false;
+
+    @Column(name="material_type")
+    private String materialType;
+
+
+
     public String getItemName() {
         return itemName;
     }
@@ -460,6 +468,22 @@ public class Estimation implements Serializable {
         return this;
     }
 
+
+    public Boolean isPricePublished() {
+        return pricePublished;
+    }
+
+    public void setPricePublished(Boolean pricePublished) {
+        this.pricePublished = pricePublished;
+    }
+
+    public String getMaterialType() {
+        return materialType;
+    }
+
+    public void setMaterialType(String materialType) {
+        this.materialType = materialType;
+    }
 
     @Override
     public boolean equals(Object o) {

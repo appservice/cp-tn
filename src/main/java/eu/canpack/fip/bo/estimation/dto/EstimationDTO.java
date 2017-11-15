@@ -79,6 +79,10 @@ public class EstimationDTO implements Serializable {
 
     private String mpk;
 
+    private String materialType;
+
+    private Boolean pricePublished;
+
     public String getItemName() {
         return itemName;
     }
@@ -282,6 +286,22 @@ public class EstimationDTO implements Serializable {
         this.mpk = mpk;
     }
 
+    public String getMaterialType() {
+        return materialType;
+    }
+
+    public void setMaterialType(String materialType) {
+        this.materialType = materialType;
+    }
+
+    public Boolean getPricePublished() {
+        return pricePublished;
+    }
+
+    public void setPricePublished(Boolean pricePublished) {
+        this.pricePublished = pricePublished;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -331,6 +351,7 @@ public class EstimationDTO implements Serializable {
             ", remark='" + remark + '\'' +
             ", sapNumber='" + sapNumber + '\'' +
             ", mpk='" + mpk + '\'' +
+            ", materialType='" + materialType + '\'' +
             '}';
     }
 }

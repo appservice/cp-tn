@@ -26,6 +26,8 @@ import {DrawingFinderComponent} from '../../drawing/drawing-finder/drawing-finde
 })
 export class NewTechnologyCardComponent implements OnInit, OnDestroy {
 
+    private sumOfWorkingHours: number = 0;
+
 
     technologyCard: TechnologyCard;
     order: OrderSimpleDTO;
@@ -182,6 +184,7 @@ export class NewTechnologyCardComponent implements OnInit, OnDestroy {
     load(id) {
         this.technologyCardService.find(id).subscribe((technologyCard) => {
             this.technologyCard = technologyCard;
+            this.calculateTotalWorkingHours();
 
 
         });
@@ -252,38 +255,6 @@ export class NewTechnologyCardComponent implements OnInit, OnDestroy {
         // this.estimationService.download(this.technologyCard);
     }
 
-    messages: any[] = ['Message 5'];
-
-    messageMapping: { [k: string]: string } = {
-        '=0': 'No messages.',
-        '=1': '# tydzień',
-        '=2': '# tygodnie',
-        '=3': '# tygodnie',
-        '=4': '# tygodnie',
-        'other': '# tygodni'
-    };
-
-
-    // exportToTechnologyCard() {
-    //     this.isExporting = true;
-    //     console.log('test export technology card');
-    //     console.log('est: ', this.technologyCard);
-    //     this.technologyCardService.exportToTechnologyCard(this.estimation).subscribe(res => {
-    //         const modalRef = this.modalService.open(TnAlert);
-    //         modalRef.componentInstance.header = 'Uwaga';
-    //         modalRef.componentInstance.content = 'Dane zostały wyeksportowane do karty technologicznej nr: '+res.json().id;
-    //             this.isExporting = false;
-    //         }, (error: any) => {
-    //             this.isExporting = false;
-    //
-    //         const modalRef = this.modalService.open(TnAlert);
-    //         modalRef.componentInstance.header = 'Uwaga';
-    //         modalRef.componentInstance.content = 'Błąd podczas eksportu! '
-    //         }
-    //     );
-    //     //  console.log(response());
-    // }
-
 
     openDrawingCardModal() {
 
@@ -297,6 +268,18 @@ export class NewTechnologyCardComponent implements OnInit, OnDestroy {
         }, (reason: any) => {
             console.log(reason)
         });
-        // modalRef.componentInstance.name = 'World';
     }
+
+
+    calculateTotalWorkingHours() {
+        this.sumOfWorkingHours = 0;
+
+        for (const operation of this.technologyCard.operations) {
+            if (operation.estimatedTime != null) {
+                this.sumOfWorkingHours = this.sumOfWorkingHours + operation.estimatedTime;
+
+            }
+        }
+    }
+
 }

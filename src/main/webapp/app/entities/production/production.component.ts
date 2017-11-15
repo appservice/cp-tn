@@ -11,7 +11,7 @@ import {ProductionService} from './production.service';
 import {ProductionItem} from './production-item.model';
 
 @Component({
-    selector: 'jhi-estimation',
+    selector: 'jhi-production',
     templateUrl: './production.component.html'
 })
 export class ProductionStanComponent implements OnInit, OnDestroy {
@@ -35,7 +35,7 @@ currentAccount: any;
     constructor(
         private parseLinks: JhiParseLinks,
         private alertService: JhiAlertService,
-        private principal: Principal,
+        // private principal: Principal,
         private activatedRoute: ActivatedRoute,
         private router: Router,
         private eventManager: JhiEventManager,
@@ -43,7 +43,7 @@ currentAccount: any;
         private paginationConfig: PaginationConfig,
         private productionService: ProductionService,
     ) {
-        this.itemsPerPage = ITEMS_PER_PAGE;
+        this.itemsPerPage = 3;//ITEMS_PER_PAGE;
         this.routeData = this.activatedRoute.data.subscribe((data) => {
             this.page = data['pagingParams'].page;
             this.previousPage = data['pagingParams'].page;
@@ -70,7 +70,7 @@ currentAccount: any;
         }
     }
     transition() {
-        this.router.navigate(['/estimation'], {queryParams:
+        this.router.navigate(['/production'], {queryParams:
             {
                 page: this.page,
                 size: this.itemsPerPage,
@@ -84,7 +84,7 @@ currentAccount: any;
     clear() {
         this.page = 0;
         this.currentSearch = '';
-        this.router.navigate(['/estimation', {
+        this.router.navigate(['/production', {
             page: this.page,
             sort: this.predicate + ',' + (this.reverse ? 'asc' : 'desc')
         }]);
@@ -93,9 +93,9 @@ currentAccount: any;
 
     ngOnInit() {
         this.loadAll();
-        this.principal.identity().then((account) => {
-            this.currentAccount = account;
-        });
+        // this.principal.identity().then((account) => {
+        //     this.currentAccount = account;
+        // });
         this.registerChangeInEstimations();
     }
 
@@ -107,7 +107,7 @@ currentAccount: any;
         return item.id;
     }
     registerChangeInEstimations() {
-        this.eventSubscriber = this.eventManager.subscribe('estimationListModification', (response) => this.loadAll());
+        this.eventSubscriber = this.eventManager.subscribe('itemsInProductionModification', (response) => this.loadAll());
     }
 
     sort() {

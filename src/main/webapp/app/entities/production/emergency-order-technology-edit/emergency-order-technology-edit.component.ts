@@ -380,6 +380,10 @@ export class EmergencyOrderTechnologyEditComponent implements OnInit, OnDestroy 
             this.estimation.material = technologyCard.material;
 
         }
+        if (!this.estimation.materialType || this.estimation.materialType == null) {
+            this.estimation.materialType = technologyCard.materialType;
+
+        }
         for (let operation of technologyCard.operations) {
             let newOperation = new Operation();
             newOperation.description = operation.description;

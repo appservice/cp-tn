@@ -28,9 +28,7 @@
 
                                 </div>
                             </div>
-                            <!--<div class="row">-->
-                            <!--<div class="col-12">{{order.referenceNumber}} <strong></strong></div>-->
-                            <!--</div>-->
+
                             <div class="row">
                                 <div class="col-12">
                                     <i class="fa fa-calendar"></i>
@@ -49,8 +47,8 @@
 
                             <div class="row">
                                 <div class="col-12">
-                                    <a (click)="openDrawingCardModal()">Rysunek:</a>
-                                    <a (click)="openModal(content)"><strong>{{estimation.itemNumber}}</strong></a>
+                                    <a (click)="openDrawingCardModal()" [routerLink]="">Rysunek:</a>
+                                    <a (click)="openModal(content)"  [routerLink]=""><strong>{{estimation.itemNumber}}</strong></a>
 
                                 </div>
                             </div>
@@ -105,7 +103,19 @@
                     <div class="card card-body bg-light">
                         <div class="row">
 
-                            <div class="col-md-4">
+                            <div class="col-md-3">
+                                <label>Gatunek materiału</label>
+                                <input class="form-control" name="materialType" [(ngModel)]="estimation.materialType" required/>
+                                <div [hidden]="!(editForm.controls.materialType?.dirty && editForm.controls.materialType?.invalid)">
+                                    <small class="form-text text-danger"
+                                           [hidden]="!editForm.controls.materialType?.errors?.required"
+                                           jhiTranslate="entity.validation.required">
+                                        This field is required.
+                                    </small>
+                                </div>
+                            </div>
+
+                            <div class="col-md-3">
                                 <label>Materiał</label>
                                 <input class="form-control" name="material" [(ngModel)]="estimation.material" required/>
                                 <div [hidden]="!(editForm.controls.material?.dirty && editForm.controls.material?.invalid)">
@@ -116,12 +126,12 @@
                                     </small>
                                 </div>
                             </div>
-                            <div class="col-md-4"><label>Cena materiału [PLN]/SZT</label>
+                            <div class="col-md-3"><label>Cena materiału [PLN]/SZT</label>
                                 <input class="form-control" name="material_price" [(ngModel)]="estimation.materialPrice"
                                        currencyMask
                                        [options]="currencyMaskOpt"/>
                             </div><!-- currencyMask  -->
-                            <div class="col-md-4"><label>Masa [kg]</label>
+                            <div class="col-md-3"><label>Masa [kg]</label>
                                 <input name="weight" class="form-control" type="number" [(ngModel)]="estimation.mass"/>
                             </div>
 

@@ -62,8 +62,13 @@ public class TechnologyCardPdfCreator {
             orderNumberPgh2.setAlignment(Element.ALIGN_CENTER);
             doc.add(orderNumberPgh2);
 
+            doc.add(new Paragraph(" "));
 
             Font dateFont = new Font(baseFont, 14, Font.NORMAL, Color.BLACK);
+
+           if(estimation.getSapNumber()!=null){
+                doc.add(new Paragraph("Numer zlecenia SAP: "+estimation.getSapNumber(),dateFont));
+            }
             doc.add(new Paragraph("Klient: " + estimation.getOrder().getClient().getName(), dateFont));
             String referenceClientNumber="Numer zlec. klienta:";
             if(estimation.getOrder().getReferenceNumber()!=null){
@@ -125,7 +130,11 @@ public class TechnologyCardPdfCreator {
         table.addCell(createValue2Cell(String.valueOf(estimation.getAmount())));
 
         table.addCell(createLabelCell("Materiał:"));
-        table.addCell(createValue2Cell(estimation.getMaterial()));
+        StringBuilder materialSb = new StringBuilder(estimation.getMaterial());
+        if(estimation.getMaterialType()!=null){
+            materialSb.append(" "+estimation.getMaterialType());
+        }
+        table.addCell(createValue2Cell(materialSb.toString()));
 
         table.addCell(createLabelCell(""));
         table.addCell(createValue2Cell(""));

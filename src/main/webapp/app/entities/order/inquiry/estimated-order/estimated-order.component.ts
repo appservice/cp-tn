@@ -15,6 +15,7 @@ import {Estimation} from '../../../production/estimation.model';
 import {MoveToArchiveDialogComponent} from './move-to-archive-dialog.component';
 import {debounceTime} from 'rxjs/operator/debounceTime';
 import {Subject} from "rxjs/Subject";
+import {EstimationService} from "../../../estimation/estimation.service";
 
 
 @Component({
@@ -46,6 +47,7 @@ export class EstimatedOrderComponent implements OnInit, OnDestroy {
     constructor(private alertService: JhiAlertService,
                 private clientService: ClientService,
                 private orderService: OrderService,
+                private estimationService: EstimationService,
                 private eventManager: JhiEventManager,
                 private router: Router,
                 private route: ActivatedRoute,
@@ -259,5 +261,14 @@ export class EstimatedOrderComponent implements OnInit, OnDestroy {
         this.alert = null;
     }
 
+    publishPrice(estimation: Estimation, isPublic: boolean) {
+        console.log(estimation, isPublic);
+        this.estimationService.publishPrice(estimation.id, isPublic).subscribe((resp) => {
+            estimation.pricePublished=isPublic;
+            console.log(resp)
+        }, (error: any) => {
+            console.log(error);
+        });
+    }
 
 }

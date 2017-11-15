@@ -19,7 +19,7 @@
                 <!--<th jhiSortBy="mass"><span jhiTranslate="tnApp.estimation.mass">Mass</span> <span class="fa fa-sort"></span></th>-->
                 <th jhiSortBy="drawing.number"><span>Nr rys.</span> <span class="fa fa-sort"></span></th>
                 <th jhiSortBy="description"><span>Nazwa</span> <span class="fa fa-sort"></span></th>
-                <th jhiSortBy="amount"><span >Ilość [SZT]</span> <span
+                <th jhiSortBy="amount"><span>Ilość [SZT]</span> <span
                     class="fa fa-sort"></span></th>
 
 
@@ -40,9 +40,10 @@
                 <td>{{productionItem.orderNumber}}</td>
                 <td style="width: 300px;">
 
-                    <div class="progress  progress-custom" >
+                    <div class="progress  progress-custom">
                         <div class="progress-bar  progress-bar-custom text-center" role="progressbar" [attr.aria-valuenow]="productionItem.productionProgress"
-                              aria-valuemin="0" aria-valuemax="100"
+                             [ngClass]="{'progress-bar-custom-100-prc':productionItem.productionProgress>99}"
+                             aria-valuemin="0" aria-valuemax="100"
                              style="height: 30px;font-size:14pt;" [ngStyle]="{'width':productionItem.productionProgress+'%'}">
                             <span style="line-height: 30px">{{productionItem.productionProgress}}%</span>
                         </div>
@@ -51,131 +52,6 @@
                 <td>{{productionItem.nextOperationPlace}}</td>
 
             </tr>
-          <!--  <tr>
-                <td>2</td>
-                <td>MD-02-00</td>
-                <td>Marka czołowa</td>
-                &lt;!&ndash;<td></td>&ndash;&gt;
-                &lt;!&ndash;<td></td>&ndash;&gt;
-                <td>2</td>
-                <td>12/2017/W</td>
-                <td style="width: 300px;">
-                    <div class="progress  progress-custom">
-                        <div class="progress-bar  progress-bar-custom " role="progressbar"
-                             aria-valuenow="40" aria-valuemin="0" aria-valuemax="100"
-                             style="width: 20%; height: 30px;font-size:14pt;">
-                            <span style="line-height: 30px">  20%</span>
-                        </div>
-                    </div>
-                </td>
-                <td>Frezarka uniwersalna</td>
-
-            </tr>
-            <tr>
-                <td>3</td>
-                <td>ATX-03-00/A</td>
-                <td>Sworzeń łącznika przegubu</td>
-                &lt;!&ndash;<td></td>&ndash;&gt;
-                &lt;!&ndash;<td></td>&ndash;&gt;
-                <td>7</td>
-                <td>16/2017/W</td>
-                <td style="width: 300px;">
-                    <div class="progress  progress-custom">
-                        <div class="progress-bar  progress-bar-custom " role="progressbar"
-                             aria-valuenow="40" aria-valuemin="0" aria-valuemax="100"
-                             style="width: 94%; height: 30px;font-size:14pt">
-                            <span style="line-height: 30px">   94%</span>
-                        </div>
-                    </div>
-                </td>
-                <td>Kontola jakości</td>
-
-            </tr>
-            <tr>
-                <td>4</td>
-                <td>LT8-03-00/A</td>
-                <td>Koło łańcuchowe</td>
-                &lt;!&ndash;<td></td>&ndash;&gt;
-                &lt;!&ndash;<td></td>&ndash;&gt;
-                <td>1</td>
-                <td>12/2017/W</td>
-                <td style="width: 300px;">
-                    <div class="progress  progress-custom">
-                        <div class="progress-bar  progress-bar-custom " role="progressbar"
-                             aria-valuenow="40" aria-valuemin="0" aria-valuemax="100"
-                             style="width: 78%; height: 30px;font-size:14pt">
-                            <span style="line-height: 30px">   78%</span>
-                        </div>
-                    </div>
-                </td>
-                <td>Obróbka cieplna</td>
-
-            </tr>
-            <tr>
-                <td>5</td>
-                <td>AT-01-00</td>
-                <td>Rolka zamykarki</td>
-                &lt;!&ndash;<td></td>&ndash;&gt;
-                &lt;!&ndash;<td></td>&ndash;&gt;
-                <td>12</td>
-                <td>5/2017/W</td>
-                <td style="width: 300px;">
-                    <div class="progress  progress-custom">
-                        <div class="progress-bar  progress-bar-custom " role="progressbar"
-                             aria-valuenow="40" aria-valuemin="0" aria-valuemax="100"
-                             style="width: 2%; height: 30px;font-size:14pt">
-                            <span style="line-height: 30px">   2%</span>
-                        </div>
-                    </div>
-                </td>
-                <td >Piła taśmowa</td>
-
-            </tr>-->
-            <!--<tr *ngFor="let estimation of estimations ;trackBy: trackId">
-                <td><a [routerLink]="['../estimation', estimation.id ]">{{estimation.id}}</a></td>
-                <td>{{estimation.drawing.number}}</td>
-                <td>{{estimation.description}}</td>
-                <td>{{estimation.amount}}</td>
-                &lt;!&ndash;<td>{{estimation.internalNumber}}</td>&ndash;&gt;
-                <td>{{estimation.material}}</td>
-                &lt;!&ndash;<td>{{estimation.materialPrice}}</td>&ndash;&gt;
-                &lt;!&ndash;<td>{{estimation.mass}}</td>&ndash;&gt;
-
-
-                <td>{{estimation.estimatedCost|currency:'PLN':false}}</td>
-                &lt;!&ndash;<td>{{estimation.finalCost}}</td>&ndash;&gt;
-                <td>
-                    <div *ngIf="estimation.orderId">
-                        <a [routerLink]="['../order', estimation.orderId  ]" >{{estimation.orderInternalNumber}}</a>
-                    </div>
-                </td>
-                <td class="text-right">
-                    <div class="btn-group flex-btn-group-container">
-                        <button type="submit"
-                                [routerLink]="['../estimation', estimation.id ]"
-                                class="btn btn-info btn-sm">
-                            <span class="fa fa-eye"></span>
-                            <span class="hidden-md-down" jhiTranslate="entity.action.view">View</span>
-                        </button>
-                        <button type="submit"
-                                [routerLink]="['/estimation/'+ estimation.id +'/edit']"
-
-                                class="btn btn-primary btn-sm">  &lt;!&ndash;replaceUrl="true"&ndash;&gt;
-                            <span class="fa fa-pencil"></span>
-                            <span class="hidden-md-down" jhiTranslate="entity.action.edit">Edit</span>
-                        </button>
-                        <button type="submit"
-                                [routerLink]="['/', { outlets: { popup: 'estimation/'+ estimation.id + '/delete'} }]"
-                                replaceUrl="true"
-                                class="btn btn-danger btn-sm">
-                            <span class="fa fa-remove"></span>
-                            <span class="hidden-md-down" jhiTranslate="entity.action.delete">Delete</span>
-                        </button>
-                        <button class="btn btn-info btn-sm" (click)="getTechnologyCardPdf(estimation);" type="button"><span class="fa fa-print"></span> Drukuj kartę obiegową
-                        </button>
-                    </div>
-                </td>
-            </tr>-->
             </tbody>
         </table>
     </div>
@@ -184,7 +60,7 @@
             <jhi-item-count [page]="page" [total]="queryCount" [itemsPerPage]="itemsPerPage"></jhi-item-count>
         </div>
         <div class="row justify-content-center">
-            <ngb-pagination [collectionSize]="totalItems" [(page)]="page"
+            <ngb-pagination [collectionSize]="totalItems" [(page)]="page"  [pageSize]="itemsPerPage"
                             (pageChange)="loadPage(page)"></ngb-pagination>
         </div>
     </div>

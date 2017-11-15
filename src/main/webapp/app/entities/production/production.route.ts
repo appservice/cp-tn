@@ -11,7 +11,7 @@ import {TechnologyEditComponent} from './technology-edit/technology-edit.compone
 import {EmergencyOrderTechnologyEditComponent} from './emergency-order-technology-edit/emergency-order-technology-edit.component';
 
 @Injectable()
-export class EstimationResolvePagingParams implements Resolve<any> {
+export class ItemsInProductionPagingParams implements Resolve<any> {
 
     constructor(private paginationUtil: JhiPaginationUtil) {}
 
@@ -31,7 +31,7 @@ export const productionRoute: Routes = [
         path: 'production',
         component: ProductionStanComponent,
         resolve: {
-            'pagingParams': EstimationResolvePagingParams
+            'pagingParams': ItemsInProductionPagingParams
         },
         data: {
             authorities: ['ROLE_USER'],
@@ -43,7 +43,7 @@ export const productionRoute: Routes = [
         path: 'orders-in-production',
         component: OrdersInProductionComponent,
         resolve: {
-            'pagingParams': EstimationResolvePagingParams
+            'pagingParams': ItemsInProductionPagingParams
         },
         data: {
             authorities: ['ROLE_USER'],
@@ -55,7 +55,7 @@ export const productionRoute: Routes = [
         path: 'orders-in-production/:id/detail',
         component: OrderInProductionDetailComponent,
         resolve: {
-            'pagingParams': EstimationResolvePagingParams
+            'pagingParams': ItemsInProductionPagingParams
         },
         data: {
             authorities: ['ROLE_USER'],

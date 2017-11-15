@@ -11,6 +11,7 @@ export class Estimation implements BaseEntity {
                 public itemNumber?: string,
                 public itemName?: string,
                 public material?: string,
+                public materialType?: string,
                 public materialPrice?: number,
                 public amount?: number,
                 public mass?: number,
@@ -34,7 +35,7 @@ export class Estimation implements BaseEntity {
                 public remark?: string,
                 public cooperationList?: Cooperation[],
                 public mpk?: string,
-                public notRealizable?: boolean,
-                ) {
+                public pricePublished?: boolean,
+                public notRealizable?: boolean,) {
     }
 }

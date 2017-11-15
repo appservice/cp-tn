@@ -8,7 +8,7 @@ import {
 
     productionRoute,
     estimationPopupRoute,
-    EstimationResolvePagingParams,
+    ItemsInProductionPagingParams,
 } from './';
 import {TnComponentsModule} from '../../tn-components/tn-components.module';
 import {CurrencyMaskModule} from 'ng2-currency-mask';
@@ -54,7 +54,7 @@ const ENTITY_STATES = [
         ProductionService
 
         ,
-        EstimationResolvePagingParams,
+        ItemsInProductionPagingParams,
     ],
     schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })

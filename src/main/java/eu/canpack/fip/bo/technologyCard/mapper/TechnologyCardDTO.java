@@ -3,6 +3,7 @@ package eu.canpack.fip.bo.technologyCard.mapper;
 
 import eu.canpack.fip.bo.drawing.dto.DrawingDTO;
 import eu.canpack.fip.bo.operation.Operation;
+import eu.canpack.fip.bo.operation.dto.OperationDTO;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -22,6 +23,10 @@ public class TechnologyCardDTO implements Serializable {
     @Size(max = 256)
     private String material;
 
+
+    @Size(max = 128)
+    private String materialType;
+
     private Double mass;
 
     private String description;
@@ -34,7 +39,7 @@ public class TechnologyCardDTO implements Serializable {
 
     private String drawingNumber;
 
-    private List<Operation> operations;
+    private List<OperationDTO> operations;
 
     private String createdByName;
 
@@ -100,9 +105,6 @@ public class TechnologyCardDTO implements Serializable {
         this.drawingNumber = drawingNumber;
     }
 
-    public List<Operation> getOperations() {
-        return operations;
-    }
 
     public DrawingDTO getDrawing() {
         return drawing;
@@ -112,9 +114,6 @@ public class TechnologyCardDTO implements Serializable {
         this.drawing = drawing;
     }
 
-    public void setOperations(List<Operation> operations) {
-        this.operations = operations;
-    }
 
     public String getCreatedByName() {
         return createdByName;
@@ -130,6 +129,22 @@ public class TechnologyCardDTO implements Serializable {
 
     public void setCreatedById(Long createdById) {
         this.createdById = createdById;
+    }
+
+    public List<OperationDTO> getOperations() {
+        return operations;
+    }
+
+    public void setOperations(List<OperationDTO> operations) {
+        this.operations = operations;
+    }
+
+    public String getMaterialType() {
+        return materialType;
+    }
+
+    public void setMaterialType(String materialType) {
+        this.materialType = materialType;
     }
 
     @Override
@@ -155,13 +170,19 @@ public class TechnologyCardDTO implements Serializable {
 
     @Override
     public String toString() {
-        return "TechnologyCardListDTO{" +
-            "id=" + getId() +
-            ", material='" + getMaterial() + "'" +
-            ", mass='" + getMass() + "'" +
-            ", description='" + getDescription() + "'" +
-            ", createdAt='" + getCreatedAt() + "'" +
-            ", amount='" + getAmount() + "'" +
-            "}";
+        return "TechnologyCardDTO{" +
+            "id=" + id +
+            ", material='" + material + '\'' +
+            ", mass=" + mass +
+            ", description='" + description + '\'' +
+            ", createdAt=" + createdAt +
+            ", amount=" + amount +
+            ", drawing=" + drawing +
+            ", drawingNumber='" + drawingNumber + '\'' +
+            ", operations=" + operations +
+            ", createdByName='" + createdByName + '\'' +
+            ", createdById=" + createdById +
+            ", materialType=" + materialType +
+            '}';
     }
 }

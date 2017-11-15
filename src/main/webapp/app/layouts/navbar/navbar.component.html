@@ -413,7 +413,7 @@
                             </ul>
                         </li>-->
             <li ngbDropdown class="nav-item dropdown pointer" routerLinkActive="active" placement="bottom-right"
-                [routerLinkActiveOptions]="{exact: true}">
+                [routerLinkActiveOptions]="{exact: true}" *jhiHasAnyAuthority="['ROLE_USER']">
                 <a class="nav-link dropdown-toggle" ngbDropdownToggle href="javascript:void(0);" id="account-menu">
                  <span *ngIf="!getImageUrl()">
                     <i class="fa fa-user" aria-hidden="true"></i>
@@ -441,18 +441,13 @@
                             <span jhiTranslate="global.menu.account.password">Password</span>
                         </a>
                     </li>
-                    <li *ngSwitchCase="true">
-                        <a class="dropdown-item" (click)="logout()" id="logout">
-                            <i class="fa fa-fw fa-sign-out" aria-hidden="true"></i>
-                            <span jhiTranslate="global.menu.account.logout">Sign out</span>
-                        </a>
-                    </li>
-                    <li *ngSwitchCase="false">
-                        <a class="dropdown-item" (click)="login()" id="login">
-                            <i class="fa fa-fw fa-sign-in" aria-hidden="true"></i>
-                            <span jhiTranslate="global.menu.account.login">Sign in</span>
-                        </a>
-                    </li>
+                    <!--<li *ngSwitchCase="true">-->
+                        <!--<a class="dropdown-item" (click)="logout()" id="logout">-->
+                            <!--<i class="fa fa-fw fa-sign-out" aria-hidden="true"></i>-->
+                            <!--<span jhiTranslate="global.menu.account.logout">Sign out</span>-->
+                        <!--</a>-->
+                    <!--</li>-->
+
                     <!--  <li *ngSwitchCase="false">
                                             <a class="dropdown-item" routerLink="register" routerLinkActive="active" (click)="collapseNavbar()">
                                                 <i class="fa fa-fw fa-registered" aria-hidden="true"></i>
@@ -460,6 +455,18 @@
                                             </a>
                                         </li>-->
                 </ul>
+            </li>
+            <li *ngSwitchCase="false"  class="nav-item">
+            <a class="nav-link" (click)="login()" id="login">
+                <i class="fa fa-fw fa-sign-in" aria-hidden="true"></i>
+                <span jhiTranslate="global.menu.account.login">Sign in</span>
+            </a>
+        </li>
+            <li *ngSwitchCase="true" class="nav-item">
+                <a class="nav-link" (click)="logout()" id="logout">
+                    <i class="fa fa-fw fa-sign-out" aria-hidden="true"></i>
+                    <span jhiTranslate="global.menu.account.logout">Sign out</span>
+                </a>
             </li>
         </ul>
     </div>

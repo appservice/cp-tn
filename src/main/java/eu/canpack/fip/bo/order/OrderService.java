@@ -68,11 +68,10 @@ public class OrderService {
     private final ApplicationProperties applicationProperties;
 
 
-
     private final UserService userService;
 
     public OrderService(OrderRepository orderRepository, OrderMapper orderMapper, OrderSearchRepository orderSearchRepository, UserRepository userRepository, DrawingRepository drawingRepository, AttachmentRepository attachmentRepository,
-                        EstimationRepository estimationRepository,  UserService userService,ApplicationProperties applicationProperties) {
+                        EstimationRepository estimationRepository, UserService userService, ApplicationProperties applicationProperties) {
         this.orderRepository = orderRepository;
         this.orderMapper = orderMapper;
         this.orderSearchRepository = orderSearchRepository;
@@ -81,7 +80,7 @@ public class OrderService {
         this.attachmentRepository = attachmentRepository;
         this.estimationRepository = estimationRepository;
         this.userService = userService;
-        this.applicationProperties=applicationProperties;
+        this.applicationProperties = applicationProperties;
     }
 
     /**
@@ -153,7 +152,7 @@ public class OrderService {
 
         }).collect(Collectors.toList());
         order.setEstimations(estimations);
-        order.setOfferRemarks(applicationProperties.getInitialOfferRemarks().replace("|","\n"));
+        order.setOfferRemarks(applicationProperties.getInitialOfferRemarks().replace("|", "\n"));
 
 
         order.createdAt(now);
@@ -345,6 +344,33 @@ public class OrderService {
      * @return the entity
      */
     @Transactional(readOnly = true)
+    public OrderDTO getInquiryForClient(Long id) {
+        log.debug("Request to get Order : {}", id);
+        Order order = orderRepository.findOne(id);
+        if (order.getOrderType() != OrderType.ESTIMATION) {
+            return null;
+        }
+
+
+        OrderDTO orderDTO = new OrderDTO(order);
+
+        order.getEstimations().size();
+
+        List<EstimationCreateDTO> estimationCreateDTOS = order.getEstimations().stream()
+            .map(estimation->new EstimationCreateDTO(estimation,estimation.isPricePublished()))
+            .collect(Collectors.toList());
+        orderDTO.setEstimations(estimationCreateDTOS);
+        return orderDTO;
+
+    }
+
+    /**
+     * Get one order by id.
+     *
+     * @param id the id of the entity
+     * @return the entity
+     */
+    @Transactional(readOnly = true)
     public OrderDTO getOrderEstimated(Long id) {
         log.debug("Request to get Order estimated : {}", id);
         Order order = orderRepository.findOne(id);
@@ -394,18 +420,18 @@ public class OrderService {
 
     private void prepareDocumentNumber(Order order) {
         int year = LocalDate.now().getYear();
-        int number=0;
+        int number = 0;
         switch (order.getOrderType()) {
             case ESTIMATION:
                 number = orderRepository.getInquiryNumber(year) + 1;
                 order.setInquiryNumber(number);
                 break;
             case EMERGENCY:
-                number=orderRepository.getEmergencyOrderNumber(year)+1;
+                number = orderRepository.getEmergencyOrderNumber(year) + 1;
                 order.setEmergencyOrderNumber(number);
                 break;
             case PRODUCTION:
-                number=orderRepository.getPurchaseOrderDocNumber(year)+1;
+                number = orderRepository.getPurchaseOrderDocNumber(year) + 1;
                 order.setPurchaseOrderNumber(number);
                 break;
 
@@ -413,8 +439,7 @@ public class OrderService {
         order.setYear(year);
 
 
-
-        order.setInternalNumber(number + "/" + year + "/" + order.getOrderType().getShortcut());
+        order.setInternalNumber(number + "/" + year + "/" + order.getOrderType().getPlName());
 
     }
 
@@ -424,7 +449,7 @@ public class OrderService {
         order.setYear(year);
         order.setPurchaseOrderNumber(number);
 
-        order.setInternalNumber(number + "/" + year + "/" + order.getOrderType().getShortcut());
+        order.setInternalNumber(number + "/" + year + "/" + order.getOrderType().getPlName());
 
     }
 
@@ -466,6 +491,7 @@ public class OrderService {
     public Order createPurchaseOrder(OrderDTO orderDTO) {
 
         log.debug("createPurchaseOrder orderDTO: {}", orderDTO);
+        Order inquiry = orderRepository.findOne(orderDTO.getInquiryId());
         Order order = orderMapper.toEntity(orderDTO);
         order.setId(null);
 
@@ -540,11 +566,11 @@ public class OrderService {
             order.setOrderStatus(OrderStatus.CREATING_SAP_ORDER);
 
         }
+
+        inquiry.setOrderStatus(OrderStatus.CREATED_PURCHASE_ORDER);
         return orderRepository.save(order);
 
     }
-
-
 
 
     @Transactional(readOnly = true)
@@ -564,7 +590,7 @@ public class OrderService {
         }
         log.debug("order statusses", orderStatuses);
         if (!orderStatuses.isEmpty()) {
-            Page<Order> orders = orderRepository.findAllByOrderTypeAndOrderStatusIn( orderStatuses, pageable);//OrderType.PRODUCTION,
+            Page<Order> orders = orderRepository.findAllByOrderTypeAndOrderStatusIn(orderStatuses, pageable);//OrderType.PRODUCTION,
             return orders.map(orderMapper::toDto);
         }
 
@@ -601,7 +627,7 @@ public class OrderService {
     }
 
 
-    public void saveOfferRemarks(Long orderId, String text){
+    public void saveOfferRemarks(Long orderId, String text) {
         Order order = orderRepository.findOne(orderId);
         order.setOfferRemarks(text);
     }

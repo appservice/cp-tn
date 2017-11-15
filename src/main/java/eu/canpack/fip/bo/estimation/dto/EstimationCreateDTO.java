@@ -39,6 +39,8 @@ public class EstimationCreateDTO implements Serializable {
     private String remark;
     private List<EstimationRemarkDTO> estimationRemarks;
     private String sapNumber;
+    private Boolean pricePublished;
+  //  private String materialType;
 
     public EstimationCreateDTO() {
     }
@@ -76,6 +78,20 @@ public class EstimationCreateDTO implements Serializable {
         this.sapNumber = estimation.getSapNumber();
         this.mpk = estimation.getMpk();
         this.notRealizable = estimation.isNotRealizable();
+        this.pricePublished=estimation.isPricePublished();
+      //  this.materialType= estimation.getMaterialType();
+    }
+
+   public EstimationCreateDTO(Estimation estimation,Boolean showPrice){
+
+        this(estimation);
+        if(showPrice!=null){
+            if(!showPrice){
+                this.setEstimatedCost(null);
+
+            }
+        }
+
     }
 
     public String getItemNumber() {
@@ -188,6 +204,14 @@ public class EstimationCreateDTO implements Serializable {
 
     public void setEstimationRemarks(List<EstimationRemarkDTO> estimationRemarks) {
         this.estimationRemarks = estimationRemarks;
+    }
+
+    public Boolean isPricePublished() {
+        return pricePublished;
+    }
+
+    public void setPricePublished(Boolean pricePublished) {
+        this.pricePublished = pricePublished;
     }
 
     @Override

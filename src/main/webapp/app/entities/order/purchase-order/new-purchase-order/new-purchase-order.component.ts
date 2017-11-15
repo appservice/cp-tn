@@ -164,8 +164,8 @@ export class NewPurchaseOrderComponent implements OnInit, OnDestroy {
             order.sapNumber = null;
             order.orderStatus = null;
             order.createdAt = null;
-            order.description = null;
-            order.referenceNumber = null;
+            // order.description = null;
+            // order.referenceNumber = null;
         });
     }
 

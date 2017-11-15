@@ -276,6 +276,13 @@ public class EstimationService {
             criteria.getClientId().setEquals(client.getId());
         }
         Page<Estimation> estimationPage = estimationQueryService.findByCriteria(criteria, pageable);
-        return estimationPage.map(EstimationShowDTO::new);
+        return estimationPage.map(est->new EstimationShowDTO(est,est.isPricePublished()));
+    }
+
+
+    public void publishPrice(Long estimationId, Boolean isPublished){
+      Estimation estimation=  estimationRepository.findOne(estimationId);
+        estimation.setPricePublished(isPublished);
+
     }
 }

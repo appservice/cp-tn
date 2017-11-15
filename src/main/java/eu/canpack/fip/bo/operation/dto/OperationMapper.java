@@ -20,6 +20,7 @@ public interface OperationMapper extends EntityMapper<OperationDTO, Operation> {
 
     @Mapping(source = "estimationId", target = "estimation")
     @Mapping(source = "machine.id", target = "machine")
+    @Mapping(target = "operationEvents", ignore = true)
     Operation toEntity(OperationDTO operationDTO);
 
     default Operation fromId(Long id) {
@@ -31,12 +32,5 @@ public interface OperationMapper extends EntityMapper<OperationDTO, Operation> {
         return operation;
     }
 
-//    default Machine machineFromId(Long machineId) {
-//        if (machineId == null) {
-//            return null;
-//        }
-//        Machine machine = new Machine();
-//        machine.setId(machineId);
-//        return machine;
-//    }
+
 }

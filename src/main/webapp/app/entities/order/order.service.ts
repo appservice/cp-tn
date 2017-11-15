@@ -45,6 +45,14 @@ export class OrderService {
         });
     }
 
+    findInquiry(id: number): Observable<Order> {
+        return this.http.get(`api/inquiries/${id}`).map((res: Response) => {
+            const jsonResponse = res.json();
+            this.convertItemFromServer(jsonResponse);
+            return jsonResponse;
+        });
+    }
+
     query(req?: any): Observable<ResponseWrapper> {
         const options = createRequestOption(req);
         return this.http.get(this.resourceUrl, options)

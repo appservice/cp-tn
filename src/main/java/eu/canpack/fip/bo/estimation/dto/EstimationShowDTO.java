@@ -114,6 +114,12 @@ public class EstimationShowDTO implements Serializable {
         this.itemNumber=estimation.getItemNumber();
     }
 
+    public EstimationShowDTO(Estimation estimation,Boolean isPricePublised) {
+        this(estimation);
+        if(!isPricePublised){
+            this.setEstimatedCost(null);
+        }
+    }
 
     public DrawingDTO getDrawing() {
         return drawing;
