@@ -21,7 +21,7 @@
         <div class="col-md-2">
             <!--<label>Nazwa</label>-->
             <input type="text" class="form-control" name="filterReferenceNumber"
-                   [(ngModel)]="orderFilter.referenceNumber" placeholder="Numer klienta"
+                   [(ngModel)]="orderFilter.referenceNumber" placeholder="Numer zamówienia klienta"
                    (keydown)="onEnterClickFilter($event)">
         </div>
         <div class="col-md-2">
@@ -37,8 +37,9 @@
                 <option value="null" disabled selected hidden>Status zamówienia</option>
                 <option value="WORKING_COPY">KOPIA ROBOCZA</option>
                 <!--jhiTranslate="tnApp.OrderStatus.FOR_ESTIMATION"-->
-                <option value="IN_ESTIMATION">W TRAKCIE WYCENY</option>
-                <option value="SENT_OFFER_TO_CLIENT">OFERTA UKOŃCZONA</option>
+                <option value="TECHNOLOGY_CREATION">TWORZENIE TECHNOLOGII</option>
+                <option value="IN_PRODUCTION">W PRODUKCJI</option>
+                <option value="FINISHED">UKOŃCZONO</option>
             </select>
         </div>
 
@@ -121,20 +122,20 @@
             </td>
             <td class="text-right">
                 <div class="btn-group flex-btn-group-container">
-
-                    <button type="submit" *ngIf="order.orderStatus=='WORKING_COPY'"
-                            [routerLink]="['/', { outlets: { popup: 'order/'+ order.id + '/delete'} }]"
-                            replaceUrl="true"
-                            class="btn btn-danger btn-sm">
-                        <span class="fa fa-remove"></span>
-                        <span class="hidden-md-down" jhiTranslate="entity.action.delete">Delete</span>
-                    </button>
                     <button type="submit" *ngIf="order.orderStatus=='WORKING_COPY'"
                             [routerLink]="[ '../emergency-order', order.id , 'edit']"
                             class="btn btn-primary btn-sm">
                         <span class="fa fa-list"></span>
                         <span class="hidden-md-down">Edytuj</span>
                     </button>
+                    <button type="submit" *ngIf="order.orderStatus=='WORKING_COPY' || currentAccount.authorities.indexOf('ROLE_MANAGER')>-1""
+                            [routerLink]="['/', { outlets: { popup: 'order/'+ order.id + '/delete'} }]"
+                            replaceUrl="true"
+                            class="btn btn-danger btn-sm">
+                        <span class="fa fa-remove"></span>
+                        <span class="hidden-md-down" jhiTranslate="entity.action.delete">Delete</span>
+                    </button>
+
 
                 </div>
             </td>

@@ -9,6 +9,7 @@ import {OrdersInProductionComponent} from './orders-in-production/orders-in-prod
 import {OrderInProductionDetailComponent} from './order-in-production-detail/order-in-production-detail.component';
 import {TechnologyEditComponent} from './technology-edit/technology-edit.component';
 import {EmergencyOrderTechnologyEditComponent} from './emergency-order-technology-edit/emergency-order-technology-edit.component';
+import {OperationListModalComponent, OperationListPopupComponent} from './operation-list-modal-component/operation-list-modal-component.component';
 
 @Injectable()
 export class ItemsInProductionPagingParams implements Resolve<any> {
@@ -84,10 +85,10 @@ export const productionRoute: Routes = [
 
 ];
 
-export const estimationPopupRoute: Routes = [/*
+export const productionPopupRoute: Routes = [
     {
-        path: 'estimation-new',
-        component: EstimationPopupComponent,
+        path: 'production-new',
+        component: OperationListPopupComponent,
         data: {
             authorities: ['ROLE_USER'],
             pageTitle: 'tnApp.estimation.home.title'
@@ -96,15 +97,15 @@ export const estimationPopupRoute: Routes = [/*
         outlet: 'popup'
     },
     {
-        path: 'estimation/:id/edit',
-        component: EstimationPopupComponent,
+        path: 'production/:id/showOperations',
+        component: OperationListPopupComponent,
         data: {
             authorities: ['ROLE_USER'],
             pageTitle: 'tnApp.estimation.home.title'
         },
         canActivate: [UserRouteAccessService],
         outlet: 'popup'
-    },*/
+    },
     // {
     //     path: 'estimation/:id/delete',
     //     component: EstimationDeletePopupComponent,

@@ -7,8 +7,9 @@ import {
     EstimationService,
 
     productionRoute,
-    estimationPopupRoute,
+    productionPopupRoute,
     ItemsInProductionPagingParams,
+    OperationListPopupComponent,
 } from './';
 import {TnComponentsModule} from '../../tn-components/tn-components.module';
 import {CurrencyMaskModule} from 'ng2-currency-mask';
@@ -19,10 +20,12 @@ import {TechnologyEditComponent} from './technology-edit/technology-edit.compone
 import {ProductionService} from './production.service';
 import {EmergencyOrderDetailComponent} from '../order/emergency-order/emergency-order-detail/emergency-order-detail.component';
 import {EmergencyOrderTechnologyEditComponent} from './emergency-order-technology-edit/emergency-order-technology-edit.component';
+import {OperationListModalComponent} from "./operation-list-modal-component/operation-list-modal-component.component";
+import {OperationListPopupService} from "./operation-list-modal-component/operation-list-popup.service";
 
 const ENTITY_STATES = [
     ...productionRoute,
-    ...estimationPopupRoute,
+    ...productionPopupRoute,
 ];
 
 @NgModule({
@@ -39,21 +42,24 @@ const ENTITY_STATES = [
         OrdersInProductionComponent,
         OrderInProductionDetailComponent,
         TechnologyEditComponent,
-        EmergencyOrderTechnologyEditComponent
+        EmergencyOrderTechnologyEditComponent,
+        OperationListModalComponent,
+        OperationListPopupComponent,
 
 
     ],
     entryComponents: [
         ProductionStanComponent,
         OrdersInProductionComponent,
+        OperationListModalComponent,
+        OperationListPopupComponent
 
 
     ],
     providers: [
         EstimationService,
-        ProductionService
-
-        ,
+        ProductionService,
+        OperationListPopupService,
         ItemsInProductionPagingParams,
     ],
     schemas: [CUSTOM_ELEMENTS_SCHEMA]

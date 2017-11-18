@@ -40,7 +40,7 @@
         <div class="col-md-2">
             <!--<label>Nazwa</label>-->
             <input type="text" class="form-control" name="filterReferenceNumber"
-                   [(ngModel)]="orderFilter.referenceNumber" placeholder="Numer klienta"
+                   [(ngModel)]="orderFilter.referenceNumber" placeholder="Numer zamówienia klienta"
                    (keydown)="onEnterClickFilter($event)">
         </div>
         <div class="col-md-2">
@@ -52,13 +52,14 @@
         <div class="col-md-2">
             <!--<label class="form-control-label" jhiTranslate="tnApp.order.orderStatus" for="field_orderStatus">Order Status</label>-->
             <select class="form-control" name="orderStatus" [(ngModel)]="orderFilter.orderStatus"
-                    id="field_orderStatus">
+                    id="field_orderStatus" (keydown)="onEnterClickFilter($event)">
                 <option value="undefined" disabled selected hidden>Status zamówienia</option>
                 <option value="null" disabled selected hidden>Status zamówienia</option>
                 <option value="WORKING_COPY">KOPIA ROBOCZA</option>
                 <!--jhiTranslate="tnApp.OrderStatus.FOR_ESTIMATION"-->
                 <option value="IN_ESTIMATION">W TRAKCIE WYCENY</option>
                 <option value="SENT_OFFER_TO_CLIENT">OFERTA UKOŃCZONA</option>
+                <option value="CREATED_PURCHASE_ORDER">ZAMÓWIENIE UTWORZONE</option>
             </select>
         </div>
 
@@ -68,8 +69,8 @@
             <div class="input-group">
                 <input type="text" class="form-control"
                        name="validFromFilter"
-                       [displayMonths]="true" [showWeekdays]="true"
-                       [(ngModel)]="orderFilter.validFrom" placeholder="Utworzono po:" ngbDatepicker="" #realizationDateDp="ngbDatepicker"/>
+                       [showWeekdays]="true"
+                       [(ngModel)]="orderFilter.validFrom" placeholder="Utworzono po:" ngbDatepicker #realizationDateDp="ngbDatepicker"/>
                 <span class="input-group-btn">
                     <button type="button" class="btn btn-default" (click)="realizationDateDp.toggle()"
                             (keyup)="realizationDateDp.toggle()"><i class="fa fa-calendar"></i></button>
@@ -81,7 +82,7 @@
             <!--<my-date-picker locale="pl"  [(ngModel)]="orderFilter.validTo"  placeholder="Utworzono przed:"></my-date-picker>-->
             <!--<label class="form-control-label" jhiTranslate="tnApp.order.closeDate" for="field_closeDate">Close Date</label>-->
             <div class="input-group">
-                <input type="text" class="form-control" name="validToFilter" ngbDatepicker #createdToEnd="ngbDatepicker" [displayMonths]="true" [showWeekdays]="true"
+                <input type="text" class="form-control" name="validToFilter" ngbDatepicker #createdToEnd="ngbDatepicker" [showWeekdays]="true"
                        [(ngModel)]="orderFilter.validTo" placeholder="Utworzono przed:"/>
                 <span class="input-group-btn">
                     <button type="button" class="btn btn-default" (click)="createdToEnd.toggle()"
@@ -159,26 +160,20 @@
             </td>
             <td class="text-right">
                 <div class="btn-group flex-btn-group-container">
-                    <!--<button type="submit"
-                            [routerLink]="['../order', order.id ]"
-                            class="btn btn-info btn-sm">
-                        <span class="fa fa-eye"></span>
-                        <span class="hidden-md-down" jhiTranslate="entity.action.view">View</span>
-                    </button>-->
-                    <!-- [routerLink]="['/', { outlets: { popup: 'order/'+ order.id + '/edit'} }]"-->
-                    <button type="submit" *ngIf="order.orderStatus=='WORKING_COPY'"
-                            [routerLink]="['/', { outlets: { popup: 'order/'+ order.id + '/delete'} }]"
-                            replaceUrl="true"
-                            class="btn btn-danger btn-sm">
-                        <span class="fa fa-remove"></span>
-                        <span class="hidden-md-down" jhiTranslate="entity.action.delete">Delete</span>
-                    </button>
                     <button type="submit" *ngIf="order.orderStatus=='WORKING_COPY'"
                             [routerLink]="[ '../order', order.id , 'edit']"
                             class="btn btn-primary btn-sm">
                         <span class="fa fa-list"></span>
                         <span class="hidden-md-down">Edytuj</span>
                     </button>
+                    <button type="submit" *ngIf="order.orderStatus=='WORKING_COPY' || currentAccount.authorities.indexOf('ROLE_MANAGER')>-1"
+                            [routerLink]="['/', { outlets: { popup: 'order/'+ order.id + '/delete'} }]"
+                            replaceUrl="true"
+                            class="btn btn-danger btn-sm">
+                        <span class="fa fa-remove"></span>
+                        <span class="hidden-md-down" jhiTranslate="entity.action.delete">Delete</span>
+                    </button>
+
 
                 </div>
             </td>

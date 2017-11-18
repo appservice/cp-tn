@@ -24,6 +24,7 @@ import eu.canpack.fip.repository.search.OrderSearchRepository;
 import eu.canpack.fip.security.AuthoritiesConstants;
 import eu.canpack.fip.security.SecurityUtils;
 import eu.canpack.fip.service.UserService;
+import eu.canpack.fip.web.rest.errors.CustomParameterizedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -400,8 +401,15 @@ public class OrderService {
      */
     public void delete(Long id) {
         log.debug("Request to delete Order : {}", id);
-        orderRepository.delete(id);
-        orderSearchRepository.delete(id);
+        Order order = orderRepository.findOne(id);
+        if(SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.MANAGER)
+        || order.getOrderStatus()==OrderStatus.WORKING_COPY){
+            orderRepository.delete(id);
+            orderSearchRepository.delete(id);
+        }else{
+            throw new CustomParameterizedException("error.userNotHaveSuitablePermissions");
+        }
+
     }
 
     /**

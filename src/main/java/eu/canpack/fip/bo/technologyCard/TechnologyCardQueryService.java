@@ -105,7 +105,7 @@ public class TechnologyCardQueryService extends QueryService<TechnologyCard> {
                 log.debug("drawingNumber {}",criteria.getDrawingNumber().getContains());
                 Specification<TechnologyCard> spec = (root, query, builder) -> {
                     Join<TechnologyCard,Drawing> joinToDrawing=root.join(eu.canpack.fip.bo.technologyCard.TechnologyCard_.drawing,JoinType.INNER);
-                   return builder.like(joinToDrawing.get(Drawing_.number), "%"+criteria.getDrawingNumber().getContains().trim()+"%" );
+                   return builder.like(builder.upper(joinToDrawing.get(Drawing_.number)), "%"+criteria.getDrawingNumber().getContains().trim().toUpperCase()+"%" );
                 };
                 specification=specification.and(spec);
 

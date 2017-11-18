@@ -9,12 +9,12 @@
         <div class="col-4">
             <!--<label for="drawing_number_field">Nr rysunku</label>-->
             <input type="text" class="form-control" id="drawing_number_field" name="drawing_number"
-                   placeholder="Nr rysunku" [(ngModel)]="drawingNumberFilter">
+                   placeholder="Nr rysunku" [(ngModel)]="drawingNumberFilter" (keydown)="onEnterClickFilter($event)">
 
         </div>
         <div class="col-5">
             <!--<label for="drawing_name_field">Nazwa</label>-->
-            <input type="text" class="form-control" id="drawing_name_field" name="drawing_name" placeholder="Nazwa"  [(ngModel)]="nameFilter" >
+            <input type="text" class="form-control" id="drawing_name_field" name="drawing_name" placeholder="Nazwa"  [(ngModel)]="nameFilter"  (keydown)="onEnterClickFilter($event)">
 
         </div>
         <div class="col-3"><span class="btn-group">

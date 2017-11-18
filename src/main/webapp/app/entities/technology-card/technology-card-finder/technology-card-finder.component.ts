@@ -81,6 +81,12 @@ export class TechnologyCardFinderComponent implements OnInit {
         this.drawingNumberFilter = null;
     }
 
+    onEnterClickFilter(event: any) {
+        if (event.keyCode == 13) {
+            this.findTechnologyCard();
+        }
+    }
+
     // private onError(error) {
     //     this.alertService.error(error.message, null, null);
     // }

@@ -43,7 +43,7 @@ currentAccount: any;
         private paginationConfig: PaginationConfig,
         private productionService: ProductionService,
     ) {
-        this.itemsPerPage = 3;//ITEMS_PER_PAGE;
+        this.itemsPerPage = ITEMS_PER_PAGE;
         this.routeData = this.activatedRoute.data.subscribe((data) => {
             this.page = data['pagingParams'].page;
             this.previousPage = data['pagingParams'].page;

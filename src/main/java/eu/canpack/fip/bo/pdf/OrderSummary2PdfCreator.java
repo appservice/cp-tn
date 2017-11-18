@@ -104,7 +104,7 @@ public class OrderSummary2PdfCreator {
 
 
     private PdfPTable prepareTableOfOperation(List<Estimation> estimations) {
-        PdfPTable pdfPTable = new PdfPTable(new float[]{0.5f, 5, 1,1.7f, 1.5f, 1, 1, 1.5f, 1.5f});
+        PdfPTable pdfPTable = new PdfPTable(new float[]{0.5f, 5, 1,1.8f, 1.5f, 1, 1, 1.5f, 1.5f});
         pdfPTable.setWidthPercentage(100);
         pdfPTable.addCell(createLabelCell(""));
         pdfPTable.addCell(createLabelCell("Przedmiot"));

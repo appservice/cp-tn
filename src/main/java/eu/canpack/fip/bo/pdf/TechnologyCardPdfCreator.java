@@ -97,14 +97,15 @@ public class TechnologyCardPdfCreator {
             Font fontTitle = new Font(baseFont, 16, Font.BOLD, Color.BLACK);
             Paragraph titleParagraph = new Paragraph("Karta obiegowa", fontTitle);
             titleParagraph.setAlignment(Element.ALIGN_CENTER);
-
-            Paragraph drawingNumberParagraph = new Paragraph("Nr rysunku: " + estimation.getItemNumber(), fontTitle);
-            drawingNumberParagraph.setAlignment(Element.ALIGN_CENTER);
-            addEmptyLine(drawingNumberParagraph, 2);
-
             doc.add(titleParagraph);
 
-            doc.add(drawingNumberParagraph);
+            if(estimation.getItemNumber()!=null){
+                Paragraph drawingNumberParagraph = new Paragraph("Nr rysunku: " + estimation.getItemNumber(), fontTitle);
+                drawingNumberParagraph.setAlignment(Element.ALIGN_CENTER);
+                addEmptyLine(drawingNumberParagraph, 2);
+                doc.add(drawingNumberParagraph);
+            }
+
 
             doc.add(crateTable1(estimation));
             doc.add(new Paragraph(" "));
@@ -130,7 +131,11 @@ public class TechnologyCardPdfCreator {
         table.addCell(createValue2Cell(String.valueOf(estimation.getAmount())));
 
         table.addCell(createLabelCell("Materiał:"));
-        StringBuilder materialSb = new StringBuilder(estimation.getMaterial());
+
+        StringBuilder materialSb = new StringBuilder();
+        if(estimation.getMaterial()!=null){
+            materialSb.append(estimation.getMaterial());
+        }
         if(estimation.getMaterialType()!=null){
             materialSb.append(" "+estimation.getMaterialType());
         }

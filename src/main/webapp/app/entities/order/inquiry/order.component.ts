@@ -11,6 +11,7 @@ import {OrderFilter} from '../order-filter.model';
 import {URLSearchParams} from '@angular/http';
 import {ExcelService} from '../../../tn-components/excel.service';
 import {IMyDateModel, IMyInputFieldChanged, INgxMyDpOptions} from 'ngx-mydatepicker';
+import {NgbDateStruct} from '@ng-bootstrap/ng-bootstrap';
 
 
 @Component({
@@ -251,5 +252,8 @@ export class OrderComponent implements OnInit, OnDestroy {
         console.log(event);
         this.validDate = true;
     }*/
-
+    isWeekend(date: NgbDateStruct) {
+        const d = new Date(date.year, date.month - 1, date.day);
+        return d.getDay() === 0 || d.getDay() === 6;
+    }
 }
