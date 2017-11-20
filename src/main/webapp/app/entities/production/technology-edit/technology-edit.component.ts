@@ -49,6 +49,7 @@ export class TechnologyEditComponent implements OnInit, OnDestroy {
     private searchingUnit = false;
     hideSearchingWhenUnsubscribed = new Observable(() => () => this.searchingUnit = false);
     searchFeild: boolean;
+    isReadOnly: boolean = false;
 
     currencyMaskOpt: CurrencyMaskConfig;
 
@@ -225,6 +226,9 @@ export class TechnologyEditComponent implements OnInit, OnDestroy {
 
             this.orderService.findOrderSimpleDto(estimation.orderId).subscribe((order => {
                 this.order = order;
+                if(this.order.orderStatus!=='TECHNOLOGY_VERIFICATION'){
+                    this.isReadOnly=true;
+                }
 
             }));
 
@@ -415,7 +419,9 @@ export class TechnologyEditComponent implements OnInit, OnDestroy {
     // }
 
     openDrawingCardModal() {
-
+        if(this.isReadOnly){
+            return;
+        }
         const modalRef = this.modalService.open(DrawingFinderComponent, {size: 'lg'});
 
         console.log(modalRef.result);

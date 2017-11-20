@@ -6,6 +6,7 @@ export class OrderSimpleDTO implements BaseEntity {
         public id?: number,
         public internalNumber?: string,
         public referenceNumber?: string,
+        public orderStatus?: string,
         // public sapNumber?: string,
         // public orderType?: OrderType,
         // public name?: string,

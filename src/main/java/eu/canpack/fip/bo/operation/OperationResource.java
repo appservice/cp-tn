@@ -2,6 +2,7 @@ package eu.canpack.fip.bo.operation;
 
 import com.codahale.metrics.annotation.Timed;
 import eu.canpack.fip.bo.operation.dto.OperationDTO;
+import eu.canpack.fip.bo.operation.dto.OperationReportDTO;
 import eu.canpack.fip.bo.operation.dto.OperationWideDTO;
 import eu.canpack.fip.web.rest.util.HeaderUtil;
 import eu.canpack.fip.web.rest.util.PaginationUtil;
@@ -143,7 +144,7 @@ public class OperationResource {
      * SEARCH  /_search/operations?query=:query : search for the operation corresponding
      * to the query.
      *
-     * @param query the query of the operation search
+     * @param query    the query of the operation search
      * @param pageable the pagination information
      * @return the result of the search
      */
@@ -156,4 +157,30 @@ public class OperationResource {
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
 
+
+    @GetMapping("/operations/{estimationId}/operationsReport")
+    public ResponseEntity<List<OperationReportDTO>> getOperationsReport(@PathVariable Long estimationId){
+        log.debug("REST request to search for a list of Operations report for estimationId {}", estimationId);
+        List<OperationReportDTO> result = operationService.getOperationReports(estimationId);
+        return ResponseEntity.ok(result);
+
+    }
+
+
+    @PutMapping("/operations/updateOperationsStatus")
+    public ResponseEntity<Void> updateOperationsStatus(@RequestBody  List<OperationReportDTO> operationReportList){
+        log.debug("REST request to search for update Operations report list {}", operationReportList);
+        operationService.updateOperationsStatus(operationReportList);
+       // List<OperationReportDTO> result = operationService.getOperationReports(estimationId);
+        return ResponseEntity.ok().build();
+
+    }
+
+    @PutMapping("/operations/{estimationId}/set-all-operations-finished")
+    public ResponseEntity<Void> setAllOperationsFinished(@PathVariable Long estimationId){
+        log.debug("REST request setAllOperationsFinished for estimationId {}", estimationId);
+        operationService.setAllOperationsFinished(estimationId);
+        return ResponseEntity.ok().build();
+
+    }
 }

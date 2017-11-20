@@ -304,3 +304,8 @@ ui bootstrap tweaks
 .operations-list-modal{
     width: 600px;
 }
+
+.modal-xxl .modal-lg {
+    max-width: 1024px;
+    min-width: 1024px;
+}

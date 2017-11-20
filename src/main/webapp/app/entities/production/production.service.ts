@@ -18,8 +18,11 @@ export class ProductionService {
     }
 
 
-    getItemsActualInProduction(req?: any): Observable<ResponseWrapper> {
+    getItemsActualInProduction(req?: any, urlSearchParams?: URLSearchParams): Observable<ResponseWrapper> {
         const options = createRequestOption(req);
+        if (urlSearchParams) {
+            options.params.appendAll(urlSearchParams);
+        }
         return this.http.get(this.resourceUrl+'/items-actual-in-production', options)
             .map((res: Response) => this.convertResponse(res));
     }
@@ -35,6 +38,7 @@ export class ProductionService {
         const copy: ProductionItem = Object.assign({}, cooperation);
         return copy;
     }
+
 
 
 

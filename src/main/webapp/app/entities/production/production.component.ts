@@ -1,14 +1,16 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { Subscription } from 'rxjs/Rx';
-import { JhiEventManager, JhiParseLinks, JhiPaginationUtil, JhiLanguageService, JhiAlertService } from 'ng-jhipster';
+import {Component, OnInit, OnDestroy} from '@angular/core';
+import {ActivatedRoute, Router} from '@angular/router';
+import {Subscription} from 'rxjs/Rx';
+import {JhiEventManager, JhiParseLinks, JhiPaginationUtil, JhiLanguageService, JhiAlertService} from 'ng-jhipster';
+import {URLSearchParams} from '@angular/http';
 
-import { Estimation } from './estimation.model';
-import { EstimationService } from './estimation.service';
-import { ITEMS_PER_PAGE, Principal, ResponseWrapper } from '../../shared';
-import { PaginationConfig } from '../../blocks/config/uib-pagination.config';
+import {Estimation} from './estimation.model';
+import {EstimationService} from './estimation.service';
+import {ITEMS_PER_PAGE, Principal, ResponseWrapper} from '../../shared';
+import {PaginationConfig} from '../../blocks/config/uib-pagination.config';
 import {ProductionService} from './production.service';
 import {ProductionItem} from './production-item.model';
+import {EstimationFilter} from "../order/estimation-filter.model";
 
 @Component({
     selector: 'jhi-production',
@@ -16,7 +18,7 @@ import {ProductionItem} from './production-item.model';
 })
 export class ProductionStanComponent implements OnInit, OnDestroy {
 
-currentAccount: any;
+    currentAccount: any;
     productionItems: ProductionItem[];
     error: any;
     success: any;
@@ -31,18 +33,18 @@ currentAccount: any;
     predicate: any;
     previousPage: any;
     reverse: any;
+    estimationFilter: EstimationFilter;
 
-    constructor(
-        private parseLinks: JhiParseLinks,
-        private alertService: JhiAlertService,
-        // private principal: Principal,
-        private activatedRoute: ActivatedRoute,
-        private router: Router,
-        private eventManager: JhiEventManager,
-        private paginationUtil: JhiPaginationUtil,
-        private paginationConfig: PaginationConfig,
-        private productionService: ProductionService,
-    ) {
+
+    constructor(private parseLinks: JhiParseLinks,
+                private alertService: JhiAlertService,
+                // private principal: Principal,
+                private activatedRoute: ActivatedRoute,
+                private router: Router,
+                private eventManager: JhiEventManager,
+                private paginationUtil: JhiPaginationUtil,
+                private paginationConfig: PaginationConfig,
+                private productionService: ProductionService,) {
         this.itemsPerPage = ITEMS_PER_PAGE;
         this.routeData = this.activatedRoute.data.subscribe((data) => {
             this.page = data['pagingParams'].page;
@@ -51,32 +53,52 @@ currentAccount: any;
             this.predicate = data['pagingParams'].predicate;
         });
         this.currentSearch = activatedRoute.snapshot.params['search'] ? activatedRoute.snapshot.params['search'] : '';
+        this.estimationFilter = new EstimationFilter();
+
     }
 
     loadAll() {
 
+
+        let urlSearchParams = new URLSearchParams();
+        if (this.estimationFilter.itemNumber !== null && this.estimationFilter.itemNumber !== '')
+            urlSearchParams.append('itemNumber.contains', this.estimationFilter.itemNumber);
+
+        if (this.estimationFilter.itemName !== null && this.estimationFilter.itemName !== '')
+            urlSearchParams.append('itemName.contains', this.estimationFilter.itemName);
+
+        if (this.estimationFilter.orderNumber !== null && this.estimationFilter.orderNumber !== '')
+        urlSearchParams.append('orderInternalNumber.contains', this.estimationFilter.orderNumber);
+
+        if (this.estimationFilter.clientName !== null && this.estimationFilter.clientName !== '')
+        urlSearchParams.append('clientName.contains', this.estimationFilter.clientName);
+
         this.productionService.getItemsActualInProduction({
             page: this.page - 1,
             size: this.itemsPerPage,
-            sort: this.sort()}).subscribe(
+            sort: this.sort()
+        }, urlSearchParams).subscribe(
             (res: ResponseWrapper) => this.onSuccess(res.json, res.headers),
             (res: ResponseWrapper) => this.onError(res.json)
         );
     }
+
     loadPage(page: number) {
         if (page !== this.previousPage) {
             this.previousPage = page;
             this.transition();
         }
     }
+
     transition() {
-        this.router.navigate(['/production'], {queryParams:
-            {
-                page: this.page,
-                size: this.itemsPerPage,
-                search: this.currentSearch,
-                sort: this.predicate + ',' + (this.reverse ? 'asc' : 'desc')
-            }
+        this.router.navigate(['/production'], {
+            queryParams:
+                {
+                    page: this.page,
+                    size: this.itemsPerPage,
+                    search: this.currentSearch,
+                    sort: this.predicate + ',' + (this.reverse ? 'asc' : 'desc')
+                }
         });
         this.loadAll();
     }
@@ -106,8 +128,9 @@ currentAccount: any;
     trackId(index: number, item: Estimation) {
         return item.id;
     }
+
     registerChangeInEstimations() {
-        this.eventSubscriber = this.eventManager.subscribe('itemsInProductionModification', (response) => this.loadAll());
+        this.eventSubscriber = this.eventManager.subscribe('itemsInProductionListModification', (response) => this.loadAll());
     }
 
     sort() {
@@ -124,9 +147,25 @@ currentAccount: any;
         this.queryCount = this.totalItems;
         this.productionItems = data;
     }
+
     private onError(error) {
         this.alertService.error(error.message, null, null);
     }
 
+
+    onEnterClickFilter(event: any) {
+        if (event.keyCode == 13) {
+            this.loadAll();
+        }
+
+    }
+
+    clearFilterAndLoadAll(): void {
+        this.estimationFilter.itemName = null;
+         this.estimationFilter.clientName = null;
+        this.estimationFilter.itemNumber = null;
+        this.estimationFilter.orderNumber = null;
+        this.loadAll();
+    }
 
 }

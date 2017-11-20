@@ -1,4 +1,5 @@
 export * from './operation.model';
+export * from './operation-report.model';
 export * from './operation-popup.service';
 export * from './operation.service';
 export * from './operation-dialog.component';
