@@ -5,5 +5,5 @@ package eu.canpack.fip.bo.operation.enumeration;
  * Created by lukasz.mochel on 05.11.2017.
  */
 public enum OperationEventType {
-    START, STOP, PAUSE
+    START, STOP, PAUSE, RESUME
 }

@@ -119,6 +119,10 @@
                                         <button type="button" class="btn btn-outline-dark" [routerLink]="['/orders-in-production/emergency-order-technology', estimation.id,'edit']"
                                                 *ngIf="order.orderStatus==='TECHNOLOGY_CREATION'"
                                                 >Utwórz technologię</button>
+                                        <button type="button" class="btn btn-outline-dark"  [routerLink]="['/orders-in-production/technology', estimation.id,'edit']"
+                                                *ngIf="order.orderStatus==='IN_PRODUCTION'"
+                                                >Pokarz technologię</button>
+
 
                                         <!--<button class="btn btn-primary float-right jh-create-entity create-estimation" routerLink='/estimation-new'>-->
 

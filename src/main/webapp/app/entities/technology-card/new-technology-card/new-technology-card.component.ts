@@ -85,7 +85,7 @@ export class NewTechnologyCardComponent implements OnInit, OnDestroy {
         this.activatedRoute.data.subscribe((data) => {
             this.readOnly = data['readOnly'];
         });
-        this.machineService.query()
+        this.machineService.getAllNotPageable()
             .subscribe((res: ResponseWrapper) => {
                 this.machines = res.json;
 

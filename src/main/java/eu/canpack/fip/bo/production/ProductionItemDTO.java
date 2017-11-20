@@ -3,8 +3,9 @@ package eu.canpack.fip.bo.production;
 import eu.canpack.fip.bo.estimation.Estimation;
 import eu.canpack.fip.bo.operation.Operation;
 import eu.canpack.fip.bo.operation.enumeration.OperationStatus;
-import eu.canpack.fip.bo.operation.enumeration.ProductionStatus;
 import eu.canpack.fip.bo.order.enumeration.OrderType;
+import eu.canpack.fip.security.AuthoritiesConstants;
+import eu.canpack.fip.security.SecurityUtils;
 
 import java.util.Comparator;
 
@@ -14,6 +15,8 @@ import java.util.Comparator;
  */
 public class ProductionItemDTO {
     private Long estimationId;
+
+    private String clientName;
 
     private String itemNumber;
 
@@ -33,6 +36,12 @@ public class ProductionItemDTO {
 
     private String nextOperationPlace;
 
+    private boolean readyForDispatch;
+
+    private boolean showProductionOrderLink;
+
+    private boolean showOperationsDetail;
+
 
     public ProductionItemDTO() {
     }
@@ -48,6 +57,17 @@ public class ProductionItemDTO {
         this.productionProgress = calculateProductionProgress(estimation);
         this.actualProductionPlace = getActualProductionPlace(estimation);
         this.nextOperationPlace = this.getNextOperationPlace(estimation);
+        if(this.productionProgress==100){
+            setReadyForDispatch(true);
+        }
+        this.clientName=estimation.getOrder().getClient().getShortcut();
+        if(SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.MANAGER) || SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.TEAM_LEADER)){
+            this.showOperationsDetail=true;
+        }
+        if(SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.TECHNOLOGIST) || SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.SAP_INTRODUCER)){
+            this.showProductionOrderLink =true;
+        }
+
 
 
     }
@@ -72,7 +92,7 @@ public class ProductionItemDTO {
     private String getNextOperationPlace(Estimation estimation) {
         return estimation.getOperations().stream()
             .sorted(Comparator.comparing(Operation::getSequenceNumber))
-            .filter(o -> o.getProductionStatus() != ProductionStatus.FINISHED)
+            .filter(o -> o.getOperationStatus() != OperationStatus.FINISHED)
             .findFirst().map(o -> o.getMachine().getName()).orElse(null);
     }
 
@@ -156,18 +176,56 @@ public class ProductionItemDTO {
         this.nextOperationPlace = nextOperationPlace;
     }
 
+    public boolean isReadyForDispatch() {
+        return readyForDispatch;
+    }
+
+    public void setReadyForDispatch(boolean readyForDispatch) {
+        this.readyForDispatch = readyForDispatch;
+    }
+
+    public String getClientName() {
+        return clientName;
+    }
+
+    public void setClientName(String clientName) {
+        this.clientName = clientName;
+    }
+
+    public boolean isShowProductionOrderLink() {
+        return showProductionOrderLink;
+    }
+
+    public void setShowProductionOrderLink(boolean showProductionOrderLink) {
+        this.showProductionOrderLink = showProductionOrderLink;
+    }
+
+    public boolean isShowOperationsDetail() {
+        return showOperationsDetail;
+    }
+
+    public void setShowOperationsDetail(boolean showOperationsDetail) {
+        this.showOperationsDetail = showOperationsDetail;
+    }
+
 
     @Override
     public String toString() {
         return "ProductionItemDTO{" +
             "estimationId=" + estimationId +
+            ", clientName='" + clientName + '\'' +
             ", itemNumber='" + itemNumber + '\'' +
             ", itemName='" + itemName + '\'' +
             ", amount=" + amount +
             ", orderNumber='" + orderNumber + '\'' +
+            ", orderId=" + orderId +
             ", orderType=" + orderType +
             ", productionProgress=" + productionProgress +
             ", actualProductionPlace='" + actualProductionPlace + '\'' +
+            ", nextOperationPlace='" + nextOperationPlace + '\'' +
+            ", readyForDispatch=" + readyForDispatch +
+            ", showProductionOrderLink=" + showProductionOrderLink +
+            ", showOperationsDetail=" + showOperationsDetail +
             '}';
     }
 }

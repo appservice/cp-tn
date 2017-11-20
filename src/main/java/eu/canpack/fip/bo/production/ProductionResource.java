@@ -9,6 +9,7 @@ import com.lowagie.text.DocumentException;
 import eu.canpack.fip.bo.estimation.Estimation;
 import eu.canpack.fip.bo.estimation.dto.EstimationCreateDTO;
 import eu.canpack.fip.bo.estimation.EstimationRepository;
+import eu.canpack.fip.bo.estimation.dto.EstimationCriteria;
 import eu.canpack.fip.bo.order.dto.OrderDTO;
 import eu.canpack.fip.bo.pdf.OrderSummary2PdfCreator;
 import eu.canpack.fip.bo.pdf.PdfUtilService;
@@ -95,11 +96,15 @@ public class ProductionResource {
     }
 
     @GetMapping("production/items-actual-in-production")
-    public ResponseEntity<List<ProductionItemDTO>> showItemsActualInProduction(@ApiParam Pageable pageable) {
-        Page<ProductionItemDTO> page = productionService.showActualProduction(pageable);
+    public ResponseEntity<List<ProductionItemDTO>> showItemsActualInProduction(EstimationCriteria estimationCriteria,@ApiParam Pageable pageable) {
+//        Page<ProductionItemDTO> page = productionService.showActualProduction(pageable);
+        Page<ProductionItemDTO> page = productionService.showActualInProductionByCriteriaAndClient(estimationCriteria,pageable);
 
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/production/items-actual-in-production");
 
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
+
+
+
 }

@@ -46,7 +46,7 @@ public class Client implements Serializable {
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<Order> orders = new HashSet<>();
 
-    @OneToMany(mappedBy = "client",cascade = CascadeType.ALL,orphanRemoval = true)
+    @OneToMany(mappedBy = "client",cascade = CascadeType.PERSIST)
     @JsonIgnore
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private List<User> users = new ArrayList<>();

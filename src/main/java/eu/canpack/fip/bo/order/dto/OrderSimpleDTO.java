@@ -2,6 +2,7 @@ package eu.canpack.fip.bo.order.dto;
 
 import eu.canpack.fip.bo.client.Client;
 import eu.canpack.fip.bo.order.Order;
+import eu.canpack.fip.bo.order.enumeration.OrderStatus;
 import eu.canpack.fip.domain.User;
 
 import java.time.ZonedDateTime;
@@ -16,6 +17,7 @@ public class OrderSimpleDTO {
     private String createdBy;
     private String internalNumber;
     private String referenceNumber;
+    private OrderStatus orderStatus;
     private ZonedDateTime createdAt;
 
     public OrderSimpleDTO() {
@@ -28,6 +30,7 @@ public class OrderSimpleDTO {
         this.internalNumber = order.getInternalNumber();
         this.referenceNumber = order.getReferenceNumber();
         this.createdAt=order.getCreatedAt();
+        this.orderStatus=order.getOrderStatus();
     }
 
     public Long getId() {
@@ -78,6 +81,14 @@ public class OrderSimpleDTO {
         this.createdAt = createdAt;
     }
 
+    public OrderStatus getOrderStatus() {
+        return orderStatus;
+    }
+
+    public void setOrderStatus(OrderStatus orderStatus) {
+        this.orderStatus = orderStatus;
+    }
+
     @Override
     public String toString() {
         return "OrderSimpleDTO{" +
@@ -86,6 +97,8 @@ public class OrderSimpleDTO {
             ", createdBy='" + createdBy + '\'' +
             ", internalNumber='" + internalNumber + '\'' +
             ", referenceNumber='" + referenceNumber + '\'' +
+            ", orderStatus='" + orderStatus + '\'' +
+
             '}';
     }
 }

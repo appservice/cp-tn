@@ -3,6 +3,9 @@ import { Router } from '@angular/router';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import {Estimation} from "../../estimation/estimation.model";
 import {EstimationService} from '../../estimation/estimation.service';
+import {OperationService} from '../../operation/operation.service';
+import {OperationReportDTO} from '../../operation/operation-report.model';
+import {ResponseWrapper} from "../../../shared/index";
 
 
 @Injectable()
@@ -12,7 +15,8 @@ export class OperationListPopupService {
     constructor(
         private modalService: NgbModal,
         private router: Router,
-        private estimationService: EstimationService
+        private estimationService: EstimationService,
+        private operationService: OperationService,
 
     ) {
         this.ngbModalRef = null;
@@ -26,23 +30,17 @@ export class OperationListPopupService {
             }
 
             if (id) {
-                this.estimationService.find(id).subscribe((client) => {
-                    this.ngbModalRef = this.clientModalRef(component, client);
+                this.operationService.getOperationsReport(id).subscribe((res: ResponseWrapper) => {
+                    this.ngbModalRef = this.clientModalRef(component, res.json);
                     resolve(this.ngbModalRef);
                 });
-            } else {
-                // setTimeout used as a workaround for getting ExpressionChangedAfterItHasBeenCheckedError
-                setTimeout(() => {
-                    this.ngbModalRef = this.clientModalRef(component, new Estimation());
-                    resolve(this.ngbModalRef);
-                }, 0);
-            }
+            };
         });
     }
 
-    clientModalRef(component: Component, client: Estimation): NgbModalRef {
-        const modalRef = this.modalService.open(component, { size: 'lg', backdrop: 'static',windowClass: 'operations-list-modal' });
-        modalRef.componentInstance.client = client;
+    clientModalRef(component: Component, operationsReportList: any): NgbModalRef {
+        const modalRef = this.modalService.open(component, { size: 'lg', backdrop: 'static',windowClass: 'modal-xxl'});//,windowClass: 'operations-list-modal'
+        modalRef.componentInstance.operationsReportList = operationsReportList;
         modalRef.result.then((result) => {
             this.router.navigate([{ outlets: { popup: null }}], { replaceUrl: true });
             this.ngbModalRef = null;

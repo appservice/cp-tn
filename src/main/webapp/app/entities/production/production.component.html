@@ -9,6 +9,47 @@
         </button>-->
     </h2>
     <jhi-alert></jhi-alert>
+    <div class="row" style="margin-top: 40px">
+
+        <div class="col-md-2">
+            <!--<label>Nazwa</label>-->
+            <input type="text" class="form-control" name="itemNumber"
+                   [(ngModel)]="estimationFilter.itemNumber" placeholder="Numer rys."
+                   (keydown)="onEnterClickFilter($event)">
+        </div>
+        <div class="col-md-2">
+            <!--<label>Numer rys.</label>-->
+            <input type="text" class="form-control" name="itemName"
+                   [(ngModel)]="estimationFilter.itemName" placeholder="Nazwa detalu"
+                   (keydown)="onEnterClickFilter($event)">
+
+        </div>
+        <div class="col-md-2">
+            <!--<label>Numer rys.</label>-->
+            <input type="text" class="form-control" name="orderNumberFilter"
+                   [(ngModel)]="estimationFilter.orderNumber" placeholder="Nr zamówienia"
+                   (keydown)="onEnterClickFilter($event)">
+
+        </div>
+        <div class="col-md-2">
+            <!--<label>Numer rys.</label>-->
+            <input type="text" class="form-control" name="clientNameFilter"
+                   [(ngModel)]="estimationFilter.clientName" placeholder="Nazwa klienta"
+                   (keydown)="onEnterClickFilter($event)">
+
+        </div>
+        <div class="col-md-4">
+            <label>&nbsp;</label>
+            <button class="btn btn-outline-dark" type="button" (click)="loadAll()"><span
+                class="fa fa-search"></span> Filtruj
+            </button>
+            <button class="btn btn-outline-dark" type="button" (click)="clearFilterAndLoadAll()"><span
+                class="fa fa-trash-o"></span> Wyczyść filtr
+            </button>
+        </div>
+        <!--</div>-->
+
+    </div>
 
     <br/>
     <div class="table-responsive" *ngIf="productionItems">
@@ -16,8 +57,9 @@
             <thead>
             <tr jhiSort [(predicate)]="predicate" [(ascending)]="reverse" [callback]="transition.bind(this)">
                 <th jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span> <span class="fa fa-sort"></span></th>
+                <th jhiSortBy="order.client.shortcut"><span >Client</span> <span class="fa fa-sort"></span></th>
                 <!--<th jhiSortBy="mass"><span jhiTranslate="tnApp.estimation.mass">Mass</span> <span class="fa fa-sort"></span></th>-->
-                <th jhiSortBy="drawing.number"><span>Nr rys.</span> <span class="fa fa-sort"></span></th>
+                <th jhiSortBy="drawing.number" style="width: 200px"><span>Nr rys.</span> <span class="fa fa-sort"></span></th>
                 <th jhiSortBy="description"><span>Nazwa</span> <span class="fa fa-sort"></span></th>
                 <th jhiSortBy="amount"><span>Ilość [SZT]</span> <span
                     class="fa fa-sort"></span></th>
@@ -33,15 +75,28 @@
             <tbody>
             <tr *ngFor="let productionItem of productionItems;let rowIndex = index">
                 <td>{{productionItem.estimationId}}</td>
+                <td>{{productionItem.clientName}}</td>
                 <td>{{productionItem.itemNumber}}</td>
                 <td>{{productionItem.itemName}}</td>
                 <!--<td></td>-->
                 <!--<td></td>-->
                 <td>{{productionItem.amount}}</td>
-                <td>{{productionItem.orderNumber}}</td>
+                <td>
+                    <a *ngIf="productionItem.showProductionOrderLink"   [routerLink]="['/orders-in-production/'+productionItem.orderId+'/detail']">{{productionItem.orderNumber}}</a>
+                    <span *ngIf="!productionItem.showProductionOrderLink">{{productionItem.orderNumber}}</span>
+                </td>
                 <td style="width: 300px;">
-
-                    <div class="progress  progress-custom">
+                    <a [routerLink]="['/', { outlets: { popup: 'production/'+ productionItem.estimationId+ '/showOperations'} }]" replaceUrl="true" *ngIf="productionItem.showProductionOrderLink">
+                        <div class="progress  progress-custom">
+                            <div class="progress-bar  progress-bar-custom text-center" role="progressbar" [attr.aria-valuenow]="productionItem.productionProgress"
+                                 [ngClass]="{'progress-bar-custom-100-prc':productionItem.productionProgress>99}"
+                                 aria-valuemin="0" aria-valuemax="100"
+                                 style="height: 30px;font-size:14pt;" [ngStyle]="{'width':productionItem.productionProgress+'%'}">
+                                <span style="line-height: 30px">{{productionItem.productionProgress}}%</span>
+                            </div>
+                        </div>
+                    </a>
+                    <div class="progress  progress-custom" *ngIf="!productionItem.showProductionOrderLink">
                         <div class="progress-bar  progress-bar-custom text-center" role="progressbar" [attr.aria-valuenow]="productionItem.productionProgress"
                              [ngClass]="{'progress-bar-custom-100-prc':productionItem.productionProgress>99}"
                              aria-valuemin="0" aria-valuemax="100"
@@ -62,7 +117,7 @@
             <jhi-item-count [page]="page" [total]="queryCount" [itemsPerPage]="itemsPerPage"></jhi-item-count>
         </div>
         <div class="row justify-content-center">
-            <ngb-pagination [collectionSize]="totalItems" [(page)]="page"  [pageSize]="itemsPerPage"
+            <ngb-pagination [collectionSize]="totalItems" [(page)]="page" [pageSize]="itemsPerPage"
                             (pageChange)="loadPage(page)"></ngb-pagination>
         </div>
     </div>

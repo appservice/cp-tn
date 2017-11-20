@@ -1,9 +1,10 @@
-import { Injectable } from '@angular/core';
-import { Http, Response } from '@angular/http';
-import { Observable } from 'rxjs/Rx';
+import {Injectable} from '@angular/core';
+import {Http, Response} from '@angular/http';
+import {Observable} from 'rxjs/Rx';
 
-import { Operation } from './operation.model';
-import { ResponseWrapper, createRequestOption } from '../../shared';
+import {Operation} from './operation.model';
+import {ResponseWrapper, createRequestOption} from '../../shared';
+import {OperationReportDTO} from "./operation-report.model";
 
 @Injectable()
 export class OperationService {
@@ -11,7 +12,8 @@ export class OperationService {
     private resourceUrl = 'api/operations';
     private resourceSearchUrl = 'api/_search/operations';
 
-    constructor(private http: Http) { }
+    constructor(private http: Http) {
+    }
 
     create(operation: Operation): Observable<Operation> {
         const copy = this.convert(operation);
@@ -58,4 +60,25 @@ export class OperationService {
         const copy: Operation = Object.assign({}, operation);
         return copy;
     }
+
+
+    getOperationsReport(estimationId: number): Observable<ResponseWrapper> {
+        return this.http.get(`${this.resourceUrl}/${estimationId}/operationsReport`).map((res: Response) => {
+            console.log(res);
+            return this.convertResponse(res);
+        });
+    }
+
+
+    updateOperationReportsStatus(operationReports: OperationReportDTO []){
+        // const copy = this.convert(operation);
+        return this.http.put(this.resourceUrl + '/updateOperationsStatus', operationReports);
+    }
+
+
+    setAllOperationsFinished(estimationId: number){
+        // const copy = this.convert(operation);
+        return this.http.put(`${this.resourceUrl}/${estimationId}/set-all-operations-finished`, null);
+    }
+
 }
