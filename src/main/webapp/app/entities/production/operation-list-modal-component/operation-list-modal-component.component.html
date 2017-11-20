@@ -1,0 +1,118 @@
+<form name="editForm" role="form" novalidate #editForm="ngForm" (ngSubmit)="save()"><!--(ngSubmit)="save()"-->
+
+    <div class="modal-header">
+        <h4 class="modal-title" id="myClientLabel">Lista operacji</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
+                (click)="clear()">&times;
+        </button>
+    </div>
+    <div class="modal-body">
+        <jhi-alert-error></jhi-alert-error>
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>Id</th>
+                <th>Miejsce op.</th>
+                <th>Status</th>
+                <th>Zdarzenia</th>
+
+
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let operationReport of operationsReportList;let rowIndex=index">
+                <td>{{operationReport.sequenceNumber}}</td>
+                <td>{{operationReport.machineName}}</td>
+                <td>
+                    <select class="form-control" id="field_client" name="operationStatus[{{rowIndex}}]" [(ngModel)]="operationReport.operationStatus">
+                        <option [ngValue]="null" ></option>
+                        <option value="STARTED">ROZPOCZĘTO</option>
+                        <option value="PAUSED">WSTRZYMANO</option>
+                        <option value="FINISHED">ZAKOŃCZONO</option>
+
+                    </select>
+                </td>
+                <td>
+                    <div class="row" *ngFor="let operationEvent of operationReport.operationEventList">
+                        <div class="col-4"><span class="fa fa-clock-o"></span> {{operationEvent.createdAt|date:'HH:mm'}} &nbsp;&nbsp;<span class="fa fa-calendar"></span>
+                            {{operationEvent.createdAt|date:'dd-MM-yyyy'}}
+                        </div>
+                        <div class="col-4">{{operationEvent.operator.firstName}} {{operationEvent.operator.lastName}}</div>
+                        <div class="col-4">{{operationEvent.operationEventType}}</div>
+                    </div>
+                </td>
+
+            </tr>
+           <!-- <tr>
+                <td>5</td>
+                <td>Piła taśmowa</td>
+                <td>
+                    <select class="form-control">
+                        <option value="Rozpoczęte">Rozpoczęte</option>
+                        <option>Wstrzymane</option>
+                        <option>Zakończone</option>
+                    </select>
+
+                </td>
+                <td>
+                    <div class="row">
+                        <div class="col-5"><span class="fa fa-clock-o"></span> 12:14 &nbsp;&nbsp;<span class="fa fa-calendar"></span> 11-11-2017</div>
+                        <div class="col-4">Jan Kowalski</div>
+                        <div class="col-3">Start</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-5"><span class="fa fa-clock-o"></span> 13:14 &nbsp;&nbsp;<span class="fa fa-calendar"></span> 11-11-2017</div>
+                        <div class="col-4">Jan Kowalski</div>
+                        <div class="col-3">Zakończenie</div>
+                    </div>
+
+                </td>
+
+            </tr>
+            <tr>
+                <td>10</td>
+                <td>Piła taśmowa</td>
+                <td>Rozpoczęta</td>
+                <td>
+                    <div class="row">
+                        <div class="col-5">12:14 11-11-2017</div>
+                        <div class="col-4">Jan Kowalski</div>
+                        <div class="col-3">Start</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-5">12:54 11-11-2017</div>
+                        <div class="col-4">Jan Kowalski</div>
+                        <div class="col-3">Wstrzymanie</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-5">12:14 12-11-2017</div>
+                        <div class="col-4">Jan Kowalski</div>
+                        <div class="col-3">Start</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-5">12:55 12-11-2017</div>
+                        <div class="col-4">Jan Kowalski</div>
+                        <div class="col-3">Zakończenie</div>
+                    </div>
+
+                </td>
+
+            </tr>
+-->
+
+            </tbody>
+        </table>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal" (click)="clear()">
+            <span class="fa fa-ban"></span>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+        </button>
+        <button type="submit" [disabled]="editForm.form.invalid || isSaving" class="btn btn-primary">
+            <span class="fa fa-save"></span>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+        </button>
+        <button type="button" [disabled]="editForm.form.invalid || isSaving" class="btn btn-primary" (click)="setAllOperationsFinished()">
+            <span class="fa fa-save"></span>&nbsp;<span >Ustaw wszystkie zakończone</span>
+        </button>
+
+    </div>
+</form>
