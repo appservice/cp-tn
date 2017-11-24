@@ -8,29 +8,33 @@
         <br/>
         <fieldset>
             <div class="row">
-                <div class="col-md-8">
+                <div class="col-md-9">
                     <div class="card bg-light ">
 
                         <div class="card-body">
-                            <h5 class="card-title">Dane zamówienia</h5>
+                            <h5 class="card-title">Dane zapytania</h5>
 
                             <div class="row">
-                                <div class="col-md-4">
-                                    <div>Numer zam. klienta: <strong>{{order.referenceNumber}}</strong></div>
+                                <div class="col-md-3">
+                                    <div>Numer klienta: <strong>{{order.referenceNumber}}</strong></div>
                                     <div> Klient: <strong>{{order.clientShortcut}}</strong></div>
 
                                 </div>
 
-                                <div class="col-md-4">
+                                <div class="col-md-3">
                                     <div>Utworzył: <strong>{{order.createdByName}}</strong></div>
                                     <div>Data utworz.: <strong>{{order.createdAt|date:"dd-MM-yyyy"}} <span
                                         class="fa fa-clock-o"></span> {{order.createdAt|date:"HH:mm"}}</strong></div>
 
                                 </div>
-                                <div class="col-md-4">
+                                <div class="col-md-3">
                                     <div> Status: <strong jhiTranslate="{{'tnApp.OrderStatus.' + order.orderStatus}}">{{order.orderStatus}}</strong>
                                     </div>
                                     <div> Uwagi: <strong>{{order.description}}</strong></div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div>Adres dostawy:</div>
+                                    <div><strong style="white-space: pre-line">{{order.deliveryAddress}}</strong></div>
                                 </div>
                             </div>
                         </div>

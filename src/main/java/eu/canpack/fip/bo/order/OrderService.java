@@ -3,6 +3,7 @@ package eu.canpack.fip.bo.order;
 import eu.canpack.fip.bo.attachment.Attachment;
 import eu.canpack.fip.bo.attachment.AttachmentRepository;
 import eu.canpack.fip.bo.client.Client;
+import eu.canpack.fip.bo.client.ClientRepository;
 import eu.canpack.fip.bo.commercialPart.CommercialPart;
 import eu.canpack.fip.bo.drawing.Drawing;
 import eu.canpack.fip.bo.drawing.DrawingRepository;
@@ -68,11 +69,13 @@ public class OrderService {
 
     private final ApplicationProperties applicationProperties;
 
+    private final ClientRepository clientRepository;
+
 
     private final UserService userService;
 
     public OrderService(OrderRepository orderRepository, OrderMapper orderMapper, OrderSearchRepository orderSearchRepository, UserRepository userRepository, DrawingRepository drawingRepository, AttachmentRepository attachmentRepository,
-                        EstimationRepository estimationRepository, UserService userService, ApplicationProperties applicationProperties) {
+                        EstimationRepository estimationRepository, UserService userService, ApplicationProperties applicationProperties, ClientRepository clientRepository) {
         this.orderRepository = orderRepository;
         this.orderMapper = orderMapper;
         this.orderSearchRepository = orderSearchRepository;
@@ -82,6 +85,7 @@ public class OrderService {
         this.estimationRepository = estimationRepository;
         this.userService = userService;
         this.applicationProperties = applicationProperties;
+        this.clientRepository = clientRepository;
     }
 
     /**
@@ -105,7 +109,10 @@ public class OrderService {
         Order order = orderMapper.toEntity(orderDTO);
         User loggedUser = userService.getLoggedUser();
 
+
         ZonedDateTime now = ZonedDateTime.now();
+        Client client=clientRepository.findOne(orderDTO.getClientId());
+        String annualOrderNumber=client.getAnnualOrderNumber();
 
         List<Estimation> estimations = orderDTO.getEstimations().stream().map(estDTO -> {
             log.debug("osdDTO: {}", estDTO);
@@ -120,6 +127,10 @@ public class OrderService {
                 .itemNumber(estDTO.getItemNumber())
                 .mpk(estDTO.getMpk());
 
+
+            if(annualOrderNumber!=null && !annualOrderNumber.isEmpty()){
+                estimation.setSapNumber(annualOrderNumber);
+            }
 
             updateRemark(loggedUser, estDTO, estimation);
 
@@ -174,6 +185,9 @@ public class OrderService {
 
         log.debug("Request to update Order : {}", orderDTO);
         Order orderFromDb = orderRepository.findOne(orderDTO.getId());
+        Client client=clientRepository.findOne(orderDTO.getClientId());
+        String annualOrderNumber=client.getAnnualOrderNumber();
+
         Order order = orderMapper.toEntity(orderDTO);
         order.setYear(orderFromDb.getYear());
         order.setInquiryNumber(orderFromDb.getInquiryNumber());
@@ -191,7 +205,9 @@ public class OrderService {
 
 
                 updateRemark(loggedUser, estDTO, estimation);
-
+                if(annualOrderNumber!=null && !annualOrderNumber.isEmpty()){
+                    estimation.setSapNumber(annualOrderNumber);
+                }
 
                 estimation.setId(estDTO.getId());
 
@@ -207,6 +223,7 @@ public class OrderService {
                         .map(a -> attachmentRepository.findOne(a.getId())).collect(Collectors.toList());
                     drawing.setAttachments(attahcments);
                     drawing.setCreatedAt(now);
+                    drawingRepository.save(drawing);
                     estimation.setDrawing(drawing);
                 }
                 return estimation;
@@ -528,6 +545,7 @@ public class OrderService {
             newEstimation.setNeededRealizationDate(est.getNeededRealizationDate());
             newEstimation.setMaterialPrice(est.getMaterialPrice());
             newEstimation.setMpk(est.getMpk());
+            newEstimation.setMaterialType(est.getMaterialType());
 
             if (estDTO.getRemark() != null && !estDTO.getRemark().trim().isEmpty()) {
                 EstimationRemark estimationRemark = new EstimationRemark();

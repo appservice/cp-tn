@@ -183,8 +183,11 @@ export class OrderService {
 
     }
 
-    archivedOrders(req?: any) {
+    archivedOrders(req?: any, urlSearchParams?: URLSearchParams) {
         const options = createRequestOption(req);
+        if (urlSearchParams) {
+            options.params.appendAll(urlSearchParams);
+        }
 
         return this.http
             .get(`${this.resourceUrl}/archived`, options).map((res: Response) => {

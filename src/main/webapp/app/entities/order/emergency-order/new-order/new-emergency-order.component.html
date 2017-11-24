@@ -55,7 +55,12 @@
                     <input type="text" id="description_field" name="description" [(ngModel)]="order.description"
                            class="form-control" [disabled]="isReadOnly"/>
                 </div>
+                <div class="col-lg-2">
+                    <label for="field_deliveryAddress">Adres dostawy</label>
 
+                    <textarea class="form-control" id="field_deliveryAddress" autosize="" rows="1" [(ngModel)]="order.deliveryAddress"
+                              name="deliveryAddress"  #deliveryAddress_input="ngModel" maxlength="1024"></textarea>
+                </div>
             </div>
             <br/>
 

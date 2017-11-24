@@ -192,4 +192,11 @@ export class EmergencyOrderDetailComponent implements OnInit, OnDestroy {
         return isDisabled;
     }
 
+    prepareBreakLine(text: string): string {
+        if (text && text !== null) {
+            return text.replace('\n', '<br />')
+
+        } else
+            return null;
+    }
 }

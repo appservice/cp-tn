@@ -56,6 +56,8 @@ public class OrderDTO implements Serializable {
 
     private String offerRemarks;
 
+    private String deliveryAddress;
+
     public OrderDTO() {
 
     }
@@ -83,6 +85,7 @@ public class OrderDTO implements Serializable {
         }
         this.estimationFinishDate=o.getEstimationFinsihDate();
         this.offerRemarks=o.getOfferRemarks();
+        this.deliveryAddress=o.getDeliveryAddress();
 
        // this.estimations = estimations;
     }
@@ -223,6 +226,14 @@ public class OrderDTO implements Serializable {
         this.offerRemarks = offerRemarks;
     }
 
+    public String getDeliveryAddress() {
+        return deliveryAddress;
+    }
+
+    public void setDeliveryAddress(String deliveryAddress) {
+        this.deliveryAddress = deliveryAddress;
+    }
+
     @Override
     public String toString() {
         return "OrderDTO{" +
@@ -240,6 +251,7 @@ public class OrderDTO implements Serializable {
             ", inquiryId=" + inquiryId +
             ", estimations=" + estimations +
             ", offerRemarks=" + offerRemarks +
+            ", deliveryAddress=" + deliveryAddress +
             '}';
     }
 }

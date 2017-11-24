@@ -15,6 +15,7 @@ export class ProductionItem {
                 public readyForDispatch ?: boolean,
                 public showProductionOrderLink ?: boolean,
                 public showOperationsDetail ?: boolean,
+                public estimatedRealizationDate ?: any,
 
 
                 ) {

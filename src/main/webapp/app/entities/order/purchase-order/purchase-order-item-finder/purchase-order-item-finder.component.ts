@@ -111,7 +111,7 @@ export class PurchaseOrderItemFinderComponent implements OnInit, OnDestroy {
     }
 
     transition() {
-        this.router.navigate(['/purcahse-order-item-finder'], {
+        this.router.navigate(['/purchase-order-item-finder'], {
             queryParams:
                 {
                     page: this.page,
@@ -167,6 +167,12 @@ export class PurchaseOrderItemFinderComponent implements OnInit, OnDestroy {
     onFileArrayChange(event: Attachment[]) {
         this.attachments = event;
         console.log('event from parent object: ', event);
+    }
+    loadPage(page: number) {
+        if (page !== this.previousPage) {
+            this.previousPage = page;
+            this.transition();
+        }
     }
 
 }

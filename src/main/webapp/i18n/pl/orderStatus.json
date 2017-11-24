@@ -2,7 +2,7 @@
     "tnApp": {
         "OrderStatus" : {
             "null": "",
-            "WORKING_COPY": "KOPA ROBOCZA",
+            "WORKING_COPY": "KOPIA ROBOCZA",
             "SENT_TO_ESTIMATION": "PRZEKAZANE DO WYCENY",
             "IN_ESTIMATION": "W TRAKCIE WYCENY",
             "IN_PRODUCTION": "W PRODUKCJI",

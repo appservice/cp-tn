@@ -99,6 +99,10 @@ public class Order implements Serializable {
     @Column(name="offer_remarks",length = 1024)
     private String offerRemarks;
 
+    @Column(name="delivery_address",length = 1024)
+    @Size(max = 1024)
+    private String deliveryAddress;
+
 
 
     public Long getId() {
@@ -330,6 +334,20 @@ public class Order implements Serializable {
         this.offerRemarks = offerRemarks;
     }
 
+    public String getDeliveryAddress() {
+        return deliveryAddress;
+    }
+
+    public void setDeliveryAddress(String deliveryAddress) {
+        this.deliveryAddress = deliveryAddress;
+    }
+
+    public Order deliveryAddress(final String deliveryAddress) {
+        this.deliveryAddress = deliveryAddress;
+        return this;
+    }
+
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -390,6 +408,7 @@ public class Order implements Serializable {
             ", createdAt=" + createdAt +
             ", estimationFinsihDate=" + estimationFinsihDate +
             ", offerRemarks='" + offerRemarks + '\'' +
+            ", deliveryAddress='" + deliveryAddress + '\'' +
             '}';
     }
 }

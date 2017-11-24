@@ -7,6 +7,9 @@ import { Order } from '../../order.model';
 import { OrderService } from '../../order.service';
 import { ITEMS_PER_PAGE, Principal, ResponseWrapper } from '../../../../shared';
 import { PaginationConfig } from '../../../../blocks/config/uib-pagination.config';
+import {OrderFilter} from '../../order-filter.model';
+import {URLSearchParams} from '@angular/http';
+
 
 @Component({
     selector: 'archived-orders',
@@ -29,6 +32,8 @@ currentAccount: any;
     predicate: any;
     previousPage: any;
     reverse: any;
+    orderFilter: OrderFilter;
+
 
     constructor(
         private orderService: OrderService,
@@ -49,6 +54,8 @@ currentAccount: any;
             this.predicate = data['pagingParams'].predicate;
         });
         this.currentSearch = activatedRoute.snapshot.params['search'] ? activatedRoute.snapshot.params['search'] : '';
+        this.orderFilter = new OrderFilter();
+
     }
 
     loadAll() {
@@ -62,10 +69,18 @@ currentAccount: any;
                 );
             return;
         }
+
+        let urlSearchParams = new URLSearchParams();
+        urlSearchParams.append('internalNumber.contains', this.orderFilter.internalNumber);
+        urlSearchParams.append('referenceNumber.contains', this.orderFilter.referenceNumber);
+        urlSearchParams.append('clientName.contains', this.orderFilter.clientName);
+        urlSearchParams.append('orderStatus.equals', this.orderFilter.orderStatus);
+        urlSearchParams.append('createdAt.greaterOrEqualThan', this.orderFilter.getValidFromString());
+        urlSearchParams.append('createdAt.lessOrEqualThan', this.orderFilter.getValidToString());
         this.orderService.archivedOrders({
             page: this.page - 1,
             size: this.itemsPerPage,
-            sort: this.sort()}).subscribe(
+            sort: this.sort()},urlSearchParams).subscribe(
             (res: ResponseWrapper) => this.onSuccess(res.json, res.headers),
             (res: ResponseWrapper) => this.onError(res.json)
         );
@@ -156,4 +171,21 @@ currentAccount: any;
 
         );
     }
+
+    clearFilterAndLoadAll() {
+        this.orderFilter.internalNumber = null;
+        this.orderFilter.referenceNumber = null;
+        this.orderFilter.orderStatus = null;
+        this.orderFilter.clientName = null;
+        this.orderFilter.validFrom = null
+        this.orderFilter.validTo = null;
+        this.loadAll();
+    }
+    onEnterClickFilter(event: any) {
+        if (event.keyCode == 13) {
+            this.loadAll();
+        }
+
+    }
+
 }

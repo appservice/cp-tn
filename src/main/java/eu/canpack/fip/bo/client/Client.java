@@ -40,6 +40,10 @@ public class Client implements Serializable {
     @Column(name = "shortcut")
     private String shortcut;
 
+    @Column(name="annual_order_number", length = 20)
+    @Size(max =20 )
+    private String annualOrderNumber;
+
 
     @OneToMany(mappedBy = "client")
     @JsonIgnore
@@ -107,6 +111,14 @@ public class Client implements Serializable {
         return this;
     }
 
+    public String getAnnualOrderNumber() {
+        return annualOrderNumber;
+    }
+
+    public void setAnnualOrderNumber(String annualOrderNumber) {
+        this.annualOrderNumber = annualOrderNumber;
+    }
+
     public void setOrders(Set<Order> orders) {
         this.orders = orders;
     }
@@ -161,6 +173,7 @@ public class Client implements Serializable {
             "id=" + getId() +
             ", name='" + getName() + "'" +
             ", shortcut='" + getShortcut() + "'" +
+            ", annualOrderNumber='" + getAnnualOrderNumber() + "'" +
             "}";
     }
 }

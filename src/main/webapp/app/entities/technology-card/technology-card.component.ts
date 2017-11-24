@@ -56,6 +56,7 @@ currentAccount: any;
             this.technologyCardService.search({
                 query: this.currentSearch,
                 size: this.itemsPerPage,
+                page: this.page - 1,
                 sort: this.sort()}).subscribe(
                     (res: ResponseWrapper) => this.onSuccess(res.json, res.headers),
                     (res: ResponseWrapper) => this.onError(res.json)

@@ -77,6 +77,11 @@ public class OrderSummary2PdfCreator {
                 paragraph.setAlignment(Element.ALIGN_CENTER);
                 doc.add(paragraph);
             }
+            if(order.getDeliveryAddress()!=null){
+                paragraph = createParagraphWith2Fonts("Adres dostawy: ", order.getDeliveryAddress());
+                paragraph.setAlignment(Element.ALIGN_CENTER);
+                doc.add(paragraph);
+            }
             doc.add(new Paragraph(" "));
 
 
@@ -104,12 +109,13 @@ public class OrderSummary2PdfCreator {
 
 
     private PdfPTable prepareTableOfOperation(List<Estimation> estimations) {
-        PdfPTable pdfPTable = new PdfPTable(new float[]{0.5f, 5, 1,1.8f, 1.5f, 1, 1, 1.5f, 1.5f});
+        PdfPTable pdfPTable = new PdfPTable(new float[]{0.5f, 4.5f,0.9f,1.5f, 1.8f, 1.6f, 1, 1, 1.4f, 1.4f});
         pdfPTable.setWidthPercentage(100);
         pdfPTable.addCell(createLabelCell(""));
         pdfPTable.addCell(createLabelCell("Przedmiot"));
         pdfPTable.addCell(createLabelCell("Ilość"));
         pdfPTable.addCell(createLabelCell("MPK/Index"));
+        pdfPTable.addCell(createLabelCell("Zlecenie"));
         pdfPTable.addCell(createLabelCell("Termin wyk."));
         pdfPTable.addCell(createLabelCell("Rbh/szt"));
         pdfPTable.addCell(createLabelCell("\u2211 Rbh"));
@@ -142,12 +148,20 @@ public class OrderSummary2PdfCreator {
             cell = createValueCell(String.valueOf(estimation.getAmount()));
             pdfPTable.addCell(cell);
 
-            //ilość
+            //mpk
             StringBuilder mpk = new StringBuilder("");
             if(estimation.getMpk()!=null){
                 mpk.append(estimation.getMpk());
             }
             cell = createValueCell(mpk.toString());
+            pdfPTable.addCell(cell);
+
+            //mpk
+            StringBuilder budget = new StringBuilder("");
+            if(estimation.getSapNumber()!=null){
+                budget.append(estimation.getSapNumber());
+            }
+            cell = createValueCell(budget.toString());
             pdfPTable.addCell(cell);
 
             //data realizacji

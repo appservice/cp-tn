@@ -120,8 +120,8 @@ public class OrderQueryService extends QueryService<Order> {
 //                log.debug("drawingNumber {}",criteria.getDrawingNumber().getContains());
                 Specification<Order> spec = (root, query, builder) -> {
                     Join<Order, Client> joinToClient = root.join(eu.canpack.fip.bo.order.Order_.client, JoinType.INNER);
-                    return builder.or(builder.like(joinToClient.get(Client_.name), "%" + criteria.getClientName().getContains().trim() + "%"),
-                                      builder.like(joinToClient.get(Client_.shortcut), "%" + criteria.getClientName().getContains().trim() + "%"));
+                    return builder.or(builder.like(builder.upper(joinToClient.get(Client_.name)), "%" + criteria.getClientName().getContains().trim().toUpperCase() + "%"),
+                                      builder.like(builder.upper(joinToClient.get(Client_.shortcut)), "%" + criteria.getClientName().getContains().trim().toUpperCase() + "%"));
 
 
                 };

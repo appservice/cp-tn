@@ -169,4 +169,11 @@ export class InquiryItemFinderComponent implements OnInit, OnDestroy {
         console.log('event from parent object: ', event);
     }
 
+    loadPage(page: number) {
+        if (page !== this.previousPage) {
+            this.previousPage = page;
+            this.transition();
+        }
+    }
+
 }

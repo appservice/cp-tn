@@ -7,24 +7,24 @@
             {{title}}
 
         </h2>
-        <fieldset >
+        <fieldset>
             <div class="row">
                 <div class="col-lg-2">
                     <label for="internal_number_field">Nr Wewn.</label>
-                    <input type="text" id="internal_number_field" name="internal_number" class="form-control"  [(ngModel)]="order.internalNumber"
-                            disabled/>
+                    <input type="text" id="internal_number_field" name="internal_number" class="form-control" [(ngModel)]="order.internalNumber"
+                           disabled/>
                 </div>
                 <div class="col-lg-2">
                     <label for="title_external_number_field">Nr. ref</label>
                     <input type="text" id="title_external_number_field" class="form-control" name="referenceNumber"
-                           [(ngModel)]="order.referenceNumber"  />
+                           [(ngModel)]="order.referenceNumber"/>
                 </div>
                 <div class="col-lg-2">
                     <label for="title_field">Tytuł</label>
-                    <input type="text" id="title_field" class="form-control" name="title" [(ngModel)]="order.name"  />
+                    <input type="text" id="title_field" class="form-control" name="title" [(ngModel)]="order.name"/>
                 </div>
 
-               <div class="form-group col-lg-2">
+                <div class="form-group col-lg-2">
                     <label for="field_client">Klient</label>
                     <input type="text" id="field_client" class="form-control" name="client"
                            [(ngModel)]="order.clientShortcut" disabled/>
@@ -33,9 +33,14 @@
                 <div class="col-lg-2">
                     <label for="description_field">Opis dod.</label>
                     <input type="text" id="description_field" name="description" [(ngModel)]="order.description"
-                           class="form-control" />
+                           class="form-control"/>
                 </div>
+                <div class="col-lg-2">
+                    <label for="field_deliveryAddress">Adres dostawy</label>
 
+                    <textarea class="form-control" id="field_deliveryAddress" autosize="" rows="1" [(ngModel)]="order.deliveryAddress"
+                              name="deliveryAddress"  #deliveryAddress_input="ngModel" maxlength="1024"></textarea>
+                </div>
             </div>
             <br/>
 
@@ -96,7 +101,8 @@
                                     </div>
                                 </td>
                                 <td> SZT</td>
-                                <td>{{estimation.mpk}}</td>
+                                <td style="width: 170px"><input type="text" class="form-control" [(ngModel)]="estimation.mpk" name="estimation_mpk_{{rowIndex}}"></td>
+
                                 <td style="max-width: 150px">
                                     {{estimation.estimatedRealizationDate}}
 
@@ -120,17 +126,17 @@
                                 </td>
                             </tr>
                             <tr>
-                               <td></td>
-                               <td></td>
-                               <td></td>
-                               <td></td>
-                               <td></td>
-                               <td></td>
-                               <td class="text-right">Suma:</td>
-                               <td class="text-right">{{calculateTotalValue()|currency:'PLN'}}</td>
-                               <td></td>
-                               <td></td>
-                               <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td class="text-right">Suma:</td>
+                                <td class="text-right">{{calculateTotalValue()|currency:'PLN'}}</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
                             </tr>
 
                             </tbody>

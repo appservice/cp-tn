@@ -55,6 +55,12 @@
                     <input type="text" id="description_field" name="description" [(ngModel)]="order.description"
                            class="form-control" [disabled]="isReadOnly"/>
                 </div>
+                <div class="col-lg-2">
+                    <label for="field_deliveryAddress">Adres dostawy</label>
+
+                    <textarea class="form-control" id="field_deliveryAddress" autosize="" rows="1" [(ngModel)]="order.deliveryAddress"
+                              name="deliveryAddress"  #deliveryAddress_input="ngModel" maxlength="1024"></textarea>
+                </div>
 
             </div>
             <br/>
@@ -69,7 +75,7 @@
                             <tr>
                                 <th style="width: 50px">LP</th>
                                 <th>Nazwa:</th>
-                                <th >Nr rys:</th>
+                                <th>Nr rys:</th>
                                 <th>Ilość:</th>
                                 <th>Jedn:</th>
                                 <th>MPK/Index</th>
@@ -123,7 +129,7 @@
                                     </div>
                                 </td>
                                 <td style="width: 80px"><input type="text" class="form-control" disabled value="SZT"></td>
-                                <td style="width: 170px" ><input type="text" class="form-control" [(ngModel)]="estimation.mpk" name="estimation_mpk_{{rowIndex}}"></td>
+                                <td style="width: 170px"><input type="text" class="form-control" [(ngModel)]="estimation.mpk" name="estimation_mpk_{{rowIndex}}"></td>
                                 <td style="max-width: 150px">
                                     <div class="form-group">
                                         <!--<label class="form-control-label" jhiTranslate="tnApp.order.closeDate" for="field_closeDate">Close Date</label>-->

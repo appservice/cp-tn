@@ -21,6 +21,8 @@ public class ClientDTO implements Serializable {
 
     private String nip;
 
+    private String annualOrderNumber;
+
     public Long getId() {
         return id;
     }
@@ -63,6 +65,14 @@ public class ClientDTO implements Serializable {
         this.address = address;
     }
 
+    public String getAnnualOrderNumber() {
+        return annualOrderNumber;
+    }
+
+    public void setAnnualOrderNumber(String annualOrderNumber) {
+        this.annualOrderNumber = annualOrderNumber;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -92,6 +102,7 @@ public class ClientDTO implements Serializable {
             ", shortcut='" + shortcut + '\'' +
             ", address='" + address + '\'' +
             ", nip='" + nip + '\'' +
+            ", annualOrderNumber='" + annualOrderNumber + '\'' +
             '}';
     }
 }

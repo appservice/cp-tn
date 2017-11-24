@@ -133,7 +133,7 @@ public class Estimation implements Serializable {
     @Column(name="not_realizable")
     private Boolean notRealizable=false;
 
-    @Column(name = "price_published ",columnDefinition = "BOOLEAN DEFAULT FALSE")
+    @Column(name = "price_published",columnDefinition = "BOOLEAN DEFAULT FALSE")
     private Boolean pricePublished=false;
 
     @Column(name="material_type")

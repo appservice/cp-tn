@@ -9,32 +9,38 @@
         <fieldset>
             <div class="row">
 
-                <div class="col-lg-3">
+                <div class="col-lg-2">
                     <label for="title_external_number_field">Nr ref. klienta</label>
                     <input type="text" id="title_external_number_field" class="form-control" name="title"
                            value="{{order.referenceNumber}}" disabled/>
                 </div>
-                <div class="col-lg-3">
+                <div class="col-lg-2">
                     <label for="title_field">Tytuł</label>
                     <input type="text" id="title_field" class="form-control" name="title" value="{{order.name}}"
                            disabled/>
                 </div>
                 <!--<div class="col-lg-2">-->
-                    <!--<label for="sap_number_field">Nr SAP</label>-->
-                    <!--<input type="text" id="sap_number_field" class="form-control" name="sap_number"-->
-                           <!--value="{{order.sapNumber}}" disabled/>-->
+                <!--<label for="sap_number_field">Nr SAP</label>-->
+                <!--<input type="text" id="sap_number_field" class="form-control" name="sap_number"-->
+                <!--value="{{order.sapNumber}}" disabled/>-->
 
                 <!--</div>-->
-                <div class="form-group col-lg-3">
+                <div class="form-group col-lg-2">
                     <label for="field_client">Klient</label>
                     <input type="text" id="field_client" class="form-control" name="client"
                            value="{{order.clientShortcut}}" disabled/>
 
                 </div>
-                <div class="col-lg-3">
+                <div class="col-lg-2">
                     <label for="description_field">Opis dod.</label>
                     <input type="text" id="description_field" name="description" value="{{order.description}}"
                            class="form-control" disabled/>
+                </div>
+                <div class="col-lg-2">
+                    <label for="field_deliveryAddress">Adres dostawy</label>
+
+                    <textarea class="form-control" id="field_deliveryAddress" autosize="" rows="1" [(ngModel)]="order.deliveryAddress"
+                              name="deliveryAddress"  #deliveryAddress_input="ngModel" maxlength="1024" disabled></textarea>
                 </div>
 
             </div>
@@ -77,7 +83,9 @@
                                         </td>
                                         <td style="max-width: 80px">{{estimation.amount}}</td>
                                         <td> SZT</td>
-                                        <td> {{estimation.mpk}}</td>
+                                        <td style="width: 170px">
+                                            <input type="text" class="form-control" [(ngModel)]="estimation.mpk" name="estimation_mpk_{{rowIndex}}"
+                                                   [disabled]="!(currentAccount.authorities.indexOf('ROLE_SAP_INTRODUCER')>-1) || order.orderStatus!=='CREATING_SAP_ORDER'"></td>
 
                                         <td style="width: 100px">
 
@@ -98,8 +106,9 @@
                                             <tn-estimation-remark [estimationRemarks]="estimation.estimationRemarks"
                                                                   *ngIf="estimation.estimationRemarks!=null && estimation.estimationRemarks.length>0"></tn-estimation-remark>
                                         </td>
-                                        <td><input type="text" class="form-control" [(ngModel)]="estimation.sapNumber" required *ngIf="order.orderStatus==='CREATING_SAP_ORDER'" name="sapNumber_{{rowIndex}}">
-                                          <span *ngIf="order.orderStatus!=='CREATING_SAP_ORDER'">  {{estimation.sapNumber}}</span>
+                                        <td><input type="text" class="form-control" [(ngModel)]="estimation.sapNumber" required *ngIf="order.orderStatus==='CREATING_SAP_ORDER'"
+                                                   name="sapNumber_{{rowIndex}}">
+                                            <span *ngIf="order.orderStatus!=='CREATING_SAP_ORDER'">  {{estimation.sapNumber}}</span>
                                         </td>
                                         <td>
                                             <label class="custom-control custom-checkbox mb-3 mr-sm-3 mb-sm-0 tn-checkbox">
@@ -110,23 +119,27 @@
                                         </td>
                                         <td>
 
-                                        <!--<button type="button" class="btn btn-outline-dark" *ngIf="order.orderStatus==='CREATING_SAP_ORDER'"-->
-                                                <!--&gt;Dodaj nr zlec SAP</button>-->
+                                            <!--<button type="button" class="btn btn-outline-dark" *ngIf="order.orderStatus==='CREATING_SAP_ORDER'"-->
+                                            <!--&gt;Dodaj nr zlec SAP</button>-->
 
-                                        <button type="button" class="btn btn-outline-dark" [routerLink]="['/orders-in-production/technology', estimation.id,'edit']"
-                                                *ngIf="order.orderStatus==='TECHNOLOGY_VERIFICATION'"
-                                                >Edytuj technologię</button>
-                                        <button type="button" class="btn btn-outline-dark" [routerLink]="['/orders-in-production/emergency-order-technology', estimation.id,'edit']"
-                                                *ngIf="order.orderStatus==='TECHNOLOGY_CREATION'"
-                                                >Utwórz technologię</button>
-                                        <button type="button" class="btn btn-outline-dark"  [routerLink]="['/orders-in-production/technology', estimation.id,'edit']"
-                                                *ngIf="order.orderStatus==='IN_PRODUCTION'"
-                                                >Pokarz technologię</button>
+                                            <button type="button" class="btn btn-outline-dark" [routerLink]="['/orders-in-production/technology', estimation.id,'edit']"
+                                                    *ngIf="order.orderStatus==='TECHNOLOGY_VERIFICATION'"
+                                            >Edytuj technologię
+                                            </button>
+                                            <button type="button" class="btn btn-outline-dark"
+                                                    [routerLink]="['/orders-in-production/emergency-order-technology', estimation.id,'edit']"
+                                                    *ngIf="order.orderStatus==='TECHNOLOGY_CREATION'"
+                                            >Utwórz technologię
+                                            </button>
+                                            <button type="button" class="btn btn-outline-dark" [routerLink]="['/orders-in-production/technology', estimation.id,'edit']"
+                                                    *ngIf="order.orderStatus==='IN_PRODUCTION'"
+                                            >Pokarz technologię
+                                            </button>
 
 
-                                        <!--<button class="btn btn-primary float-right jh-create-entity create-estimation" routerLink='/estimation-new'>-->
+                                            <!--<button class="btn btn-primary float-right jh-create-entity create-estimation" routerLink='/estimation-new'>-->
 
-                                    </td>
+                                        </td>
                                     </tr>
 
 
@@ -146,15 +159,21 @@
         <div class="text-center">
 
             <button type="button" class="btn btn-outline-danger" (click)="previousState()"><span class="fa fa-arrow-left"></span> Powrót</button>
-            <button type="button" class="btn btn-outline-primary" (click)="printTechnologyCard()" *ngIf="order.orderStatus==='TECHNOLOGY_VERIFICATION' || order.orderStatus==='IN_PRODUCTION' || order.orderStatus==='TECHNOLOGY_CREATION'">
+            <button type="button" class="btn btn-outline-primary" (click)="printTechnologyCard()"
+                    *ngIf="order.orderStatus==='TECHNOLOGY_VERIFICATION' || order.orderStatus==='IN_PRODUCTION' || order.orderStatus==='TECHNOLOGY_CREATION'">
                 <span class="fa fa-print"></span>
-                Drukuj karty obiegowe</button>
-            <button type="button" class="btn btn-outline-primary" (click)="sendToProduction()"  *ngIf="order.orderStatus==='TECHNOLOGY_VERIFICATION'  || order.orderStatus==='TECHNOLOGY_CREATION'">
+                Drukuj karty obiegowe
+            </button>
+            <button type="button" class="btn btn-outline-primary" (click)="sendToProduction()"
+                    *ngIf="order.orderStatus==='TECHNOLOGY_VERIFICATION'  || order.orderStatus==='TECHNOLOGY_CREATION'">
                 <span class="fa fa-arrow-circle-right"></span>
-                Wyślij do produkcji</button>
-            <button type="button" class="btn btn-outline-primary" (click)="saveSapNumbers()" *ngIf="order.orderStatus==='CREATING_SAP_ORDER'"   [disabled]="editForm.form.invalid || isSaving">
+                Wyślij do produkcji
+            </button>
+            <button type="button" class="btn btn-outline-primary" (click)="saveSapNumbers()" *ngIf="order.orderStatus==='CREATING_SAP_ORDER'"
+                    [disabled]="editForm.form.invalid || isSaving">
                 <span class="fa fa-save"></span>
-                Zapisz </button>
+                Zapisz
+            </button>
         </div>
     </div>
 

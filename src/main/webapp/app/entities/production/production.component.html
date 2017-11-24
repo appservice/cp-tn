@@ -57,7 +57,7 @@
             <thead>
             <tr jhiSort [(predicate)]="predicate" [(ascending)]="reverse" [callback]="transition.bind(this)">
                 <th jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span> <span class="fa fa-sort"></span></th>
-                <th jhiSortBy="order.client.shortcut"><span >Client</span> <span class="fa fa-sort"></span></th>
+                <th jhiSortBy="order.client.shortcut"><span>Client</span> <span class="fa fa-sort"></span></th>
                 <!--<th jhiSortBy="mass"><span jhiTranslate="tnApp.estimation.mass">Mass</span> <span class="fa fa-sort"></span></th>-->
                 <th jhiSortBy="drawing.number" style="width: 200px"><span>Nr rys.</span> <span class="fa fa-sort"></span></th>
                 <th jhiSortBy="description"><span>Nazwa</span> <span class="fa fa-sort"></span></th>
@@ -67,6 +67,7 @@
 
                 <th jhiSortBy="order.internalNumber"><span jhiTranslate="tnApp.estimation.order">Order</span> <span
                     class="fa fa-sort"></span></th>
+                <th jhiSortBy="estimatedRealizationDate">Planowana data realiz. <span class="fa fa-sort"></span></th>
                 <th>Ukończono [%]</th>
                 <th style="width: 250px">Stanowsko aktualnej operacji</th>
                 <th style="width: 80px"></th>
@@ -81,12 +82,15 @@
                 <!--<td></td>-->
                 <!--<td></td>-->
                 <td>{{productionItem.amount}}</td>
+
                 <td>
-                    <a *ngIf="productionItem.showProductionOrderLink"   [routerLink]="['/orders-in-production/'+productionItem.orderId+'/detail']">{{productionItem.orderNumber}}</a>
+                    <a *ngIf="productionItem.showProductionOrderLink" [routerLink]="['/orders-in-production/'+productionItem.orderId+'/detail']">{{productionItem.orderNumber}}</a>
                     <span *ngIf="!productionItem.showProductionOrderLink">{{productionItem.orderNumber}}</span>
                 </td>
+                <td>{{productionItem.estimatedRealizationDate|date:'dd-MM-yyyy'}}</td>
                 <td style="width: 300px;">
-                    <a [routerLink]="['/', { outlets: { popup: 'production/'+ productionItem.estimationId+ '/showOperations'} }]" replaceUrl="true" *ngIf="productionItem.showProductionOrderLink">
+                    <a [routerLink]="['/', { outlets: { popup: 'production/'+ productionItem.estimationId+ '/showOperations'} }]" replaceUrl="true"
+                       *ngIf="productionItem.showProductionOrderLink">
                         <div class="progress  progress-custom">
                             <div class="progress-bar  progress-bar-custom text-center" role="progressbar" [attr.aria-valuenow]="productionItem.productionProgress"
                                  [ngClass]="{'progress-bar-custom-100-prc':productionItem.productionProgress>99}"
@@ -106,7 +110,9 @@
                     </div>
                 </td>
                 <td>{{productionItem.nextOperationPlace}}</td>
-                <td><!--<tn-operation-list-modal-component></tn-operation-list-modal-component>--></td>
+                <td>
+                    <button class="btn btn-outline-dark" *ngIf="productionItem.readyForDispatch">Archiwizuj <span class="fa fa-archive"></span></button>
+                </td>
 
             </tr>
             </tbody>

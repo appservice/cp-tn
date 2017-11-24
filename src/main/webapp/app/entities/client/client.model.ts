@@ -8,6 +8,7 @@ export class Client implements BaseEntity {
         public address ?: string,
         public nip ?: string,
         public orders?: BaseEntity[],
+        public annualOrderNumber ?: string,
     ) {
     }
 }

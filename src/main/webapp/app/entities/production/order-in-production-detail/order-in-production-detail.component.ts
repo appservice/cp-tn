@@ -13,6 +13,7 @@ import {Drawing} from '../../drawing/drawing.model';
 import {Order, OrderStatus, OrderType} from '../../order/order.model';
 import {OrderService} from '../../order/order.service';
 import {Estimation} from '../estimation.model';
+import {Principal} from '../../../shared/auth/principal.service';
 
 @Component({
     selector: 'tn-order-in-production-detail',
@@ -36,6 +37,7 @@ export class OrderInProductionDetailComponent implements OnInit, OnDestroy {
     closeResult: string;
     clickedRow: number;
     isReadOnly: boolean = false;
+    currentAccount: any;
 
     dropdownList = [];
 
@@ -45,7 +47,8 @@ export class OrderInProductionDetailComponent implements OnInit, OnDestroy {
                 private eventManager: JhiEventManager,
                 private router: Router,
                 private route: ActivatedRoute,
-                private modalService: NgbModal) {
+                private modalService: NgbModal,
+                private principal: Principal,) {
         this.order = new Order();
         this.order.estimations = [];
     }
@@ -61,10 +64,13 @@ export class OrderInProductionDetailComponent implements OnInit, OnDestroy {
         this.order.orderType = OrderType.ESTIMATION;
 
         this.subscription = this.route.params.subscribe((params) => {
-            console.log(params);
             if (params['id']) {
                 this.load(params['id']);
             }
+        });
+
+        this.principal.identity().then((account) => {
+            this.currentAccount = account;
         });
     }
 

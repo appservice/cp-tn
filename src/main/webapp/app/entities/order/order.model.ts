@@ -19,6 +19,7 @@ export class Order implements BaseEntity {
     constructor(public id?: number,
                 public internalNumber?: string,
                 public referenceNumber?: string,
+                public deliveryAddress?: string,
                 public sapNumber?: string,
                 public orderType?: OrderType,
                 public name?: string,

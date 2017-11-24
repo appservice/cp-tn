@@ -7,6 +7,7 @@ import eu.canpack.fip.bo.order.enumeration.OrderType;
 import eu.canpack.fip.security.AuthoritiesConstants;
 import eu.canpack.fip.security.SecurityUtils;
 
+import java.time.LocalDate;
 import java.util.Comparator;
 
 /**
@@ -42,12 +43,15 @@ public class ProductionItemDTO {
 
     private boolean showOperationsDetail;
 
+    private LocalDate estimatedRealizationDate;
+
 
     public ProductionItemDTO() {
     }
 
     public ProductionItemDTO(Estimation estimation) {
         this.estimationId = estimation.getId();
+        this.estimatedRealizationDate=estimation.getEstimatedRealizationDate();
         this.itemName = estimation.getItemName();
         this.itemNumber = estimation.getItemNumber();
         this.amount = estimation.getAmount();
@@ -57,7 +61,7 @@ public class ProductionItemDTO {
         this.productionProgress = calculateProductionProgress(estimation);
         this.actualProductionPlace = getActualProductionPlace(estimation);
         this.nextOperationPlace = this.getNextOperationPlace(estimation);
-        if(this.productionProgress==100){
+        if(this.productionProgress==100 && SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.TEAM_LEADER)){
             setReadyForDispatch(true);
         }
         this.clientName=estimation.getOrder().getClient().getShortcut();
@@ -94,6 +98,14 @@ public class ProductionItemDTO {
             .sorted(Comparator.comparing(Operation::getSequenceNumber))
             .filter(o -> o.getOperationStatus() != OperationStatus.FINISHED)
             .findFirst().map(o -> o.getMachine().getName()).orElse(null);
+    }
+
+    public LocalDate getEstimatedRealizationDate() {
+        return estimatedRealizationDate;
+    }
+
+    public void setEstimatedRealizationDate(LocalDate estimatedRealizationDate) {
+        this.estimatedRealizationDate = estimatedRealizationDate;
     }
 
     public Long getOrderId() {
@@ -226,6 +238,7 @@ public class ProductionItemDTO {
             ", readyForDispatch=" + readyForDispatch +
             ", showProductionOrderLink=" + showProductionOrderLink +
             ", showOperationsDetail=" + showOperationsDetail +
+            ", estimatedRealizationDate=" + estimatedRealizationDate +
             '}';
     }
 }

@@ -23,6 +23,8 @@
                     <label for="title_field">Tytuł</label>
                     <input type="text" id="title_field" class="form-control" name="title" [(ngModel)]="order.name" [disabled]="isReadOnly"/>
                 </div>
+
+
                 <!--<div class="col-lg-2">
                     <label for="sap_number_field">Nr SAP</label>
                     <input type="text" id="sap_number_field" class="form-control" name="sap_number"
@@ -56,6 +58,13 @@
                     <label for="description_field">Opis dod.</label>
                     <input type="text" id="description_field" name="description" [(ngModel)]="order.description"
                            class="form-control" [disabled]="isReadOnly"/>
+                </div>
+
+                <div class="col-lg-2">
+                    <label for="field_deliveryAddress">Adres dostawy</label>
+
+                    <textarea class="form-control" id="field_deliveryAddress" autosize="" rows="1" [(ngModel)]="order.deliveryAddress"
+                              name="deliveryAddress"  #deliveryAddress_input="ngModel" maxlength="1024" [disabled]="isReadOnly"></textarea>
                 </div>
 
             </div>
