@@ -51,8 +51,7 @@ public class TechnologyCardPdfCreator {
             doc.open();
             doc.add(PdfUtil.getImageLogo(doc.getPageSize()));
 
-     /*       Paragraph dateParagraph = new Paragraph(), dateFont);
-            doc.add(dateParagraph);*/
+
             Font orderNumberFont = new Font(baseFont, 16, Font.BOLD, Color.BLACK);
 
             Paragraph orderNumberPgh = new Paragraph("Technologia wykonania do zlecenia nr: ", orderNumberFont);
