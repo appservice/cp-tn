@@ -74,6 +74,8 @@ export class NewEmergencyOrderComponent implements OnInit, OnDestroy {
 
             } else {
                 this.title = 'Nowe zlecenie awaryjne';
+                this.order.canEdit=true;
+
             }
 
         });
@@ -169,7 +171,7 @@ export class NewEmergencyOrderComponent implements OnInit, OnDestroy {
             this.order = order;
 
        //     console.log('enum 3', ]);
-             this.isReadOnly =order.orderStatus != null && order.orderStatus != 'WORKING_COPY';
+             this.isReadOnly =!order.canEdit;//order.orderStatus != null && order.orderStatus != 'WORKING_COPY';
 
         });
     }

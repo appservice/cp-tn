@@ -44,6 +44,9 @@ public class Client implements Serializable {
     @Size(max =20 )
     private String annualOrderNumber;
 
+    @Column(name="print_single_pdf_summary_per_order_item",columnDefinition = "BOOLEAN DEFAULT FALSE" )
+    private Boolean printSinglePdfSummaryPerOrderItem=false;
+
 
     @OneToMany(mappedBy = "client")
     @JsonIgnore
@@ -111,6 +114,11 @@ public class Client implements Serializable {
         return this;
     }
 
+
+    public void setPrintSinglePdfSummaryPerOrderItem(Boolean printSinglePdfSummaryPerOrderItem) {
+        this.printSinglePdfSummaryPerOrderItem = printSinglePdfSummaryPerOrderItem;
+    }
+
     public String getAnnualOrderNumber() {
         return annualOrderNumber;
     }
@@ -145,6 +153,10 @@ public class Client implements Serializable {
 
     public void setNip(String nip) {
         this.nip = nip;
+    }
+
+    public Boolean getPrintSinglePdfSummaryPerOrderItem() {
+        return printSinglePdfSummaryPerOrderItem;
     }
 
     @Override

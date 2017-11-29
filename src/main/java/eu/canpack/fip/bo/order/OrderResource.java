@@ -30,6 +30,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -400,7 +401,10 @@ public class OrderResource {
         if (orderCriteria.getOrderStatus() == null) {
             orderCriteria.setOrderStatus(new OrderCriteria.OrderStatusFilter());
         }
-        orderCriteria.getOrderStatus().setEquals(OrderStatus.SENT_OFFER_TO_CLIENT);
+        List<OrderStatus> orderStatusList = new ArrayList<>();
+        orderStatusList.add(OrderStatus.SENT_OFFER_TO_CLIENT);
+        orderStatusList.add(OrderStatus.CREATED_PURCHASE_ORDER);
+        orderCriteria.getOrderStatus().setIn(orderStatusList);
         Page<OrderListDTO> page = orderQueryService.findByCriteria(orderCriteria, pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/orders/filtered");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);

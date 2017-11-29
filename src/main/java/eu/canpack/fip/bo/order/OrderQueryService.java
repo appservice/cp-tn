@@ -116,6 +116,9 @@ public class OrderQueryService extends QueryService<Order> {
             if (criteria.getOrderType() != null) {
                 specification = specification.and(buildSpecification(criteria.getOrderType(), eu.canpack.fip.bo.order.Order_.orderType));
             }
+            if (criteria.getName() != null) {
+                specification = specification.and(buildStringSpecification(criteria.getName(), eu.canpack.fip.bo.order.Order_.name));
+            }
             if (criteria.getClientName() != null) {
 //                log.debug("drawingNumber {}",criteria.getDrawingNumber().getContains());
                 Specification<Order> spec = (root, query, builder) -> {

@@ -9,6 +9,7 @@ export class Client implements BaseEntity {
         public nip ?: string,
         public orders?: BaseEntity[],
         public annualOrderNumber ?: string,
+        public printSinglePdfSummaryPerOrderItem ?: boolean,
     ) {
     }
 }

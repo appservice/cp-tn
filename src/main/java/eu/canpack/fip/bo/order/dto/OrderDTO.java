@@ -58,6 +58,8 @@ public class OrderDTO implements Serializable {
 
     private String deliveryAddress;
 
+    private boolean canEdit;
+
     public OrderDTO() {
 
     }
@@ -87,7 +89,16 @@ public class OrderDTO implements Serializable {
         this.offerRemarks=o.getOfferRemarks();
         this.deliveryAddress=o.getDeliveryAddress();
 
+
        // this.estimations = estimations;
+    }
+
+    public boolean isCanEdit() {
+        return canEdit;
+    }
+
+    public void setCanEdit(boolean canEdit) {
+        this.canEdit = canEdit;
     }
 
     public String getReferenceNumber() {

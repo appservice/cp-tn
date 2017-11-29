@@ -124,7 +124,13 @@ public class Estimation implements Serializable {
     private Boolean inProduction=false;
 
     @Column(name="is_realized")
-    private Boolean realized=false;
+    private Boolean finished =false;
+
+    @Column(name="delivered_at")
+    private ZonedDateTime deliveredAt;
+
+    @Column(name="receiver")
+    private String receiver;
 
 
     @Column(name="mpk")
@@ -427,11 +433,11 @@ public class Estimation implements Serializable {
     }
 
     public Boolean isRealized() {
-        return realized;
+        return finished;
     }
 
-    public void setRealized(Boolean realized) {
-        this.realized = realized;
+    public void setFinished(Boolean realized) {
+        this.finished = realized;
     }
 
     public List<Cooperation> getCooperationList() {
@@ -483,6 +489,10 @@ public class Estimation implements Serializable {
 
     public void setMaterialType(String materialType) {
         this.materialType = materialType;
+    }
+
+    public Boolean isFinished() {
+        return finished;
     }
 
     @Override

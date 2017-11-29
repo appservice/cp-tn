@@ -122,13 +122,13 @@
             </td>
             <td class="text-right">
                 <div class="btn-group flex-btn-group-container">
-                    <button type="submit" *ngIf="order.orderStatus=='WORKING_COPY'"
+                    <button type="submit" *ngIf="order.orderStatus=='WORKING_COPY' || currentAccount.authorities.indexOf('ROLE_ADMIN')>-1"
                             [routerLink]="[ '../emergency-order', order.id , 'edit']"
                             class="btn btn-primary btn-sm">
                         <span class="fa fa-list"></span>
                         <span class="hidden-md-down">Edytuj</span>
                     </button>
-                    <button type="submit" *ngIf="order.orderStatus=='WORKING_COPY' || currentAccount.authorities.indexOf('ROLE_MANAGER')>-1""
+                    <button type="submit" *ngIf="order.orderStatus=='WORKING_COPY' || currentAccount.authorities.indexOf('ROLE_MANAGER')>-1"
                             [routerLink]="['/', { outlets: { popup: 'order/'+ order.id + '/delete'} }]"
                             replaceUrl="true"
                             class="btn btn-danger btn-sm">

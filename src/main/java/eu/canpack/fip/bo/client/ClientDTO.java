@@ -23,6 +23,8 @@ public class ClientDTO implements Serializable {
 
     private String annualOrderNumber;
 
+    private Boolean printSinglePdfSummaryPerOrderItem;
+
     public Long getId() {
         return id;
     }
@@ -73,6 +75,14 @@ public class ClientDTO implements Serializable {
         this.annualOrderNumber = annualOrderNumber;
     }
 
+    public Boolean getPrintSinglePdfSummaryPerOrderItem() {
+        return printSinglePdfSummaryPerOrderItem;
+    }
+
+    public void setPrintSinglePdfSummaryPerOrderItem(Boolean printSinglePdfSummaryPerOrderItem) {
+        this.printSinglePdfSummaryPerOrderItem = printSinglePdfSummaryPerOrderItem;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -103,6 +113,7 @@ public class ClientDTO implements Serializable {
             ", address='" + address + '\'' +
             ", nip='" + nip + '\'' +
             ", annualOrderNumber='" + annualOrderNumber + '\'' +
+            ", printSinglePdfSummaryPerOrderItem='" + printSinglePdfSummaryPerOrderItem + '\'' +
             '}';
     }
 }

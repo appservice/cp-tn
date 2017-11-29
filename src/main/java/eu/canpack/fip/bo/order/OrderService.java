@@ -111,8 +111,8 @@ public class OrderService {
 
 
         ZonedDateTime now = ZonedDateTime.now();
-        Client client=clientRepository.findOne(orderDTO.getClientId());
-        String annualOrderNumber=client.getAnnualOrderNumber();
+        Client client = clientRepository.findOne(orderDTO.getClientId());
+        String annualOrderNumber = client.getAnnualOrderNumber();
 
         List<Estimation> estimations = orderDTO.getEstimations().stream().map(estDTO -> {
             log.debug("osdDTO: {}", estDTO);
@@ -128,7 +128,7 @@ public class OrderService {
                 .mpk(estDTO.getMpk());
 
 
-            if(annualOrderNumber!=null && !annualOrderNumber.isEmpty()){
+            if (annualOrderNumber != null && !annualOrderNumber.isEmpty()) {
                 estimation.setSapNumber(annualOrderNumber);
             }
 
@@ -185,8 +185,8 @@ public class OrderService {
 
         log.debug("Request to update Order : {}", orderDTO);
         Order orderFromDb = orderRepository.findOne(orderDTO.getId());
-        Client client=clientRepository.findOne(orderDTO.getClientId());
-        String annualOrderNumber=client.getAnnualOrderNumber();
+        Client client = clientRepository.findOne(orderDTO.getClientId());
+        String annualOrderNumber = client.getAnnualOrderNumber();
 
         Order order = orderMapper.toEntity(orderDTO);
         order.setYear(orderFromDb.getYear());
@@ -205,7 +205,7 @@ public class OrderService {
 
 
                 updateRemark(loggedUser, estDTO, estimation);
-                if(annualOrderNumber!=null && !annualOrderNumber.isEmpty()){
+                if (annualOrderNumber != null && !annualOrderNumber.isEmpty()) {
                     estimation.setSapNumber(annualOrderNumber);
                 }
 
@@ -351,8 +351,19 @@ public class OrderService {
             .map(EstimationCreateDTO::new)
             .collect(Collectors.toList());
         orderDTO.setEstimations(estimationCreateDTOS);
+        orderDTO.setCanEdit(canEditOrder(order));
         return orderDTO;
 
+    }
+
+    private boolean canEditOrder(Order order){
+        return SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.ORDER_INTRODUCER) && (order.getOrderStatus() == OrderStatus.WORKING_COPY || order.getOrderStatus() == null)
+            || SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.ADMIN);
+    }
+
+    private boolean canCreateOrder(Order order){
+        return SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.ORDER_INTRODUCER)
+           || SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.ADMIN);
     }
 
     /**
@@ -375,7 +386,7 @@ public class OrderService {
         order.getEstimations().size();
 
         List<EstimationCreateDTO> estimationCreateDTOS = order.getEstimations().stream()
-            .map(estimation->new EstimationCreateDTO(estimation,estimation.isPricePublished()))
+            .map(estimation -> new EstimationCreateDTO(estimation, estimation.isPricePublished()))
             .collect(Collectors.toList());
         orderDTO.setEstimations(estimationCreateDTOS);
         return orderDTO;
@@ -407,6 +418,7 @@ public class OrderService {
             .map(EstimationCreateDTO::new)
             .collect(Collectors.toList());
         orderDTO.setEstimations(estimationCreateDTOS);
+        orderDTO.setCanEdit(canCreateOrder(order));
         return orderDTO;
 
     }
@@ -419,11 +431,11 @@ public class OrderService {
     public void delete(Long id) {
         log.debug("Request to delete Order : {}", id);
         Order order = orderRepository.findOne(id);
-        if(SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.MANAGER)
-        || order.getOrderStatus()==OrderStatus.WORKING_COPY){
+        if (SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.MANAGER)
+            || order.getOrderStatus() == OrderStatus.WORKING_COPY) {
             orderRepository.delete(id);
             orderSearchRepository.delete(id);
-        }else{
+        } else {
             throw new CustomParameterizedException("error.userNotHaveSuitablePermissions");
         }
 
@@ -544,7 +556,7 @@ public class OrderService {
             newEstimation.setMaterial(est.getMaterial());
             newEstimation.setNeededRealizationDate(est.getNeededRealizationDate());
             newEstimation.setMaterialPrice(est.getMaterialPrice());
-            newEstimation.setMpk(est.getMpk());
+            newEstimation.setMpk(estDTO.getMpk());
             newEstimation.setMaterialType(est.getMaterialType());
 
             if (estDTO.getRemark() != null && !estDTO.getRemark().trim().isEmpty()) {

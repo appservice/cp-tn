@@ -154,8 +154,12 @@
 
             <button type="button" class="btn btn-outline-danger" (click)="previousState()"><span class="fa fa-arrow-left"></span> Powrót</button>
 
-            <button class="btn btn-outline-primary" (click)="sendToProduction();" *ngIf="order.orderStatus =='WORKING_COPY' || order.orderStatus==null">
+            <button class="btn btn-outline-primary" (click)="sendToProduction();" *ngIf="order.canEdit && (order.orderStatus =='WORKING_COPY' || order.orderStatus==null)"><!--order.orderStatus =='WORKING_COPY' || order.orderStatus==null-->
                 <span class="fa fa-play"></span> Wyślij do realizacji
+            </button>
+
+            <button class="btn btn-outline-primary" (click)="sendToProduction();" *ngIf="order.canEdit && !(order.orderStatus =='WORKING_COPY' || order.orderStatus==null)"><!--order.orderStatus =='WORKING_COPY' || order.orderStatus==null-->
+                <span class="fa fa-save"></span> Zapisz
             </button>
         </div>
     </div>

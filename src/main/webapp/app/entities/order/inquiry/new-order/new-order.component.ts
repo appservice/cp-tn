@@ -71,6 +71,8 @@ export class NewOrderComponent implements OnInit, OnDestroy {
 
             } else {
                 this.title = 'Nowe zapytanie ofertowe';
+                this.order.canEdit=true;
+
             }
 
         });
@@ -170,11 +172,7 @@ export class NewOrderComponent implements OnInit, OnDestroy {
         this.orderService.find(id).subscribe((order) => {
             this.order = order;
 
-            console.log('order status: ', order.orderStatus.toString());
-            console.log('enum status: ', OrderStatus['WORKING_COPY']);
-            console.log('enum 3', order.orderStatus.constructor.name);
-            //     console.log('enum 3', ]);
-            this.isReadOnly = order.orderStatus != null && order.orderStatus != 'WORKING_COPY';
+            this.isReadOnly = !order.canEdit;//order.orderStatus != null && order.orderStatus != 'WORKING_COPY';
 
         });
     }

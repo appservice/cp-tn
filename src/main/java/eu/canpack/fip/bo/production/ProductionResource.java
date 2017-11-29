@@ -27,6 +27,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.*;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -63,18 +64,39 @@ public class ProductionResource {
             .filter(EstimationCreateDTO::isChecked)
             .map(e -> estimationRepository.findOne(e.getId())).collect(Collectors.toList());
 
-        ByteArrayOutputStream[] outputStreams = new ByteArrayOutputStream[estimations.size() + 1];
-        ByteArrayOutputStream baosMainPage = new ByteArrayOutputStream();
-        orderSummaryPdfCreator.createPdf(estimations.get(0).getOrder(), estimations, baosMainPage);
+        ByteArrayOutputStream[] outputStreams;
+        int estNumber=0;
+        Boolean printSinglePdfSummaryPerOrderItem=estimations.get(0).getOrder().getClient().getPrintSinglePdfSummaryPerOrderItem();
+        if (printSinglePdfSummaryPerOrderItem!=null && printSinglePdfSummaryPerOrderItem) {
 
-        outputStreams[0] = baosMainPage;
+            outputStreams = new ByteArrayOutputStream[estimations.size() * 2];
 
-        int i = 1;
+            for(Estimation es:estimations){
+                ByteArrayOutputStream baosMainPage = new ByteArrayOutputStream();
+
+                List<Estimation> est = new ArrayList<>();
+                est.add(es);
+                orderSummaryPdfCreator.createPdf(estimations.get(0).getOrder(), est, baosMainPage);
+                outputStreams[estNumber] = baosMainPage;
+                estNumber++;
+            }
+
+        } else {
+            ByteArrayOutputStream baosMainPage = new ByteArrayOutputStream();
+
+            outputStreams = new ByteArrayOutputStream[estimations.size() + 1];
+            orderSummaryPdfCreator.createPdf(estimations.get(0).getOrder(), estimations, baosMainPage);
+            outputStreams[0] = baosMainPage;
+            estNumber++;
+        }
+
+
+        //int i = 1;
         for (Estimation estimation : estimations) {
             try (ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
                 technologyCardPdfCreator.createPdf(estimation, baos);
-                outputStreams[i] = baos;
-                i++;
+                outputStreams[estNumber] = baos;
+                estNumber++;
             }
 
         }
@@ -96,15 +118,14 @@ public class ProductionResource {
     }
 
     @GetMapping("production/items-actual-in-production")
-    public ResponseEntity<List<ProductionItemDTO>> showItemsActualInProduction(EstimationCriteria estimationCriteria,@ApiParam Pageable pageable) {
+    public ResponseEntity<List<ProductionItemDTO>> showItemsActualInProduction(EstimationCriteria estimationCriteria, @ApiParam Pageable pageable) {
 //        Page<ProductionItemDTO> page = productionService.showActualProduction(pageable);
-        Page<ProductionItemDTO> page = productionService.showActualInProductionByCriteriaAndClient(estimationCriteria,pageable);
+        Page<ProductionItemDTO> page = productionService.showActualInProductionByCriteriaAndClient(estimationCriteria, pageable);
 
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/production/items-actual-in-production");
 
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
-
 
 
 }

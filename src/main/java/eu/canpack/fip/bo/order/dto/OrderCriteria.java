@@ -63,6 +63,8 @@ public class OrderCriteria implements Serializable {
 
     private OrderTypeFilter orderType;
 
+    private StringFilter name;
+
 //
 //    private StringFilter test;
 //
@@ -163,8 +165,18 @@ public class OrderCriteria implements Serializable {
         return orderType;
     }
 
+
+
     public void setOrderType(OrderTypeFilter orderType) {
         this.orderType = orderType;
+    }
+
+    public StringFilter getName() {
+        return name;
+    }
+
+    public void setName(StringFilter name) {
+        this.name = name;
     }
 
     @Override
@@ -173,8 +185,13 @@ public class OrderCriteria implements Serializable {
                 (id != null ? "=" + id + ", " : "") +
                 (referenceNumber != null ? "referenceNumber=" + referenceNumber + ", " : "") +
                 (createdAt != null ? "createdAt=" + createdAt + ", " : "") +
+                (createdById != null ? "createdById=" + createdById + ", " : "") +
+                (createdByFirstName != null ? "createdByFirstName=" + createdByFirstName + ", " : "") +
+                (name != null ? "title=" + name + ", " : "") +
+                (orderType != null ? "orderType=" + orderType + ", " : "") +
                 (orderStatus != null ? "orderStatus=" + orderStatus + ", " : "") +
-
+                (createdByLastName != null ? "createdByLastName=" + createdByLastName + ", " : "") +
+                (createdByFirstName != null ? "createdByFirstName=" + createdByFirstName + ", " : "") +
 
             "}";
     }
