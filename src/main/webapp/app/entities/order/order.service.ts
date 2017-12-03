@@ -37,6 +37,15 @@ export class OrderService {
         });
     }
 
+    updateAsAdmin(order: Order): Observable<Order> {
+        const copy = this.convert(order);
+        return this.http.put(this.resourceUrl+'/update-as-admin', copy).map((res: Response) => {
+            const jsonResponse = res.json();
+            this.convertItemFromServer(jsonResponse);
+            return jsonResponse;
+        });
+    }
+
     find(id: number): Observable<Order> {
         return this.http.get(`${this.resourceUrl}/${id}`).map((res: Response) => {
             const jsonResponse = res.json();

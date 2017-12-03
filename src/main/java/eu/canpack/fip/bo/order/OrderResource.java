@@ -1,13 +1,11 @@
 package eu.canpack.fip.bo.order;
 
 import com.codahale.metrics.annotation.Timed;
-import eu.canpack.fip.bo.order.dto.OrderCriteria;
-import eu.canpack.fip.bo.order.dto.OrderDTO;
-import eu.canpack.fip.bo.order.dto.OrderListDTO;
-import eu.canpack.fip.bo.order.dto.OrderSimpleDTO;
+import eu.canpack.fip.bo.order.dto.*;
 import eu.canpack.fip.bo.order.enumeration.OrderStatus;
 import eu.canpack.fip.bo.order.enumeration.OrderType;
 import eu.canpack.fip.bo.pdf.Order3PdfCreator;
+import eu.canpack.fip.security.AuthoritiesConstants;
 import eu.canpack.fip.web.rest.util.HeaderUtil;
 import eu.canpack.fip.web.rest.util.PaginationUtil;
 import io.github.jhipster.web.util.ResponseUtil;
@@ -21,6 +19,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -96,6 +95,29 @@ public class OrderResource {
             return createOrder(orderDTO);
         }
         OrderListDTO result = orderService.updateOrder(orderDTO);
+        return ResponseEntity.ok()
+            .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, orderDTO.getId().toString()))
+            .body(result);
+    }
+
+    /**
+     * PUT  /orders : Updates an existing order.
+     *
+     * @param orderDTO the orderListDTO to update
+     * @return the ResponseEntity with status 200 (OK) and with body the updated orderListDTO,
+     * or with status 400 (Bad Request) if the orderListDTO is not valid,
+     * or with status 500 (Internal Server Error) if the orderListDTO couldn't be updated
+     * @throws URISyntaxException if the Location URI syntax is incorrect
+     */
+    @PutMapping("/orders/update-as-admin")
+    @Timed
+    @Secured(AuthoritiesConstants.ADMIN)
+    public ResponseEntity<OrderListDTO> updateOrderAsAdmin(@Valid @RequestBody OrderDTO orderDTO) throws URISyntaxException {
+        log.debug("REST request to update Order as admin : {}", orderDTO);
+        if (orderDTO.getId() == null) {
+            return createOrder(orderDTO);
+        }
+        OrderListDTO result = orderService.updateOrderAsAdmin(orderDTO);
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, orderDTO.getId().toString()))
             .body(result);

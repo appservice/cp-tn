@@ -22,6 +22,10 @@ import {EmergencyOrderDetailComponent} from '../order/emergency-order/emergency-
 import {EmergencyOrderTechnologyEditComponent} from './emergency-order-technology-edit/emergency-order-technology-edit.component';
 import {OperationListModalComponent} from "./operation-list-modal-component/operation-list-modal-component.component";
 import {OperationListPopupService} from "./operation-list-modal-component/operation-list-popup.service";
+import {ArchiveProdDialogComponent, ArchiveProdDialogPopupComponent} from './archive-prod-dialog/archive-prod-dialog.component';
+import {ArchiveProdPopupService} from './archive-prod-dialog/archive-prod-popup.service';
+import {FinishedDetailsComponent} from './finished-details-component/finished-details.component';
+import {FinishedItemsPagingParams} from './production.route';
 
 const ENTITY_STATES = [
     ...productionRoute,
@@ -46,13 +50,20 @@ const ENTITY_STATES = [
         OperationListModalComponent,
         OperationListPopupComponent,
 
+        ArchiveProdDialogComponent,
+        ArchiveProdDialogPopupComponent,
+        FinishedDetailsComponent,
+
 
     ],
     entryComponents: [
         ProductionStanComponent,
         OrdersInProductionComponent,
         OperationListModalComponent,
-        OperationListPopupComponent
+        OperationListPopupComponent,
+
+        ArchiveProdDialogComponent,
+        ArchiveProdDialogPopupComponent,
 
 
     ],
@@ -61,6 +72,8 @@ const ENTITY_STATES = [
         ProductionService,
         OperationListPopupService,
         ItemsInProductionPagingParams,
+        ArchiveProdPopupService,
+        FinishedItemsPagingParams,
     ],
     schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })

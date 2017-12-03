@@ -2,10 +2,7 @@ package eu.canpack.fip.bo.estimation.dto;
 
 import eu.canpack.fip.bo.order.enumeration.OrderStatus;
 import eu.canpack.fip.bo.order.enumeration.OrderType;
-import io.github.jhipster.service.filter.Filter;
-import io.github.jhipster.service.filter.LongFilter;
-import io.github.jhipster.service.filter.StringFilter;
-import io.github.jhipster.service.filter.ZonedDateTimeFilter;
+import io.github.jhipster.service.filter.*;
 
 import java.io.Serializable;
 
@@ -62,6 +59,8 @@ public class EstimationCriteria implements Serializable {
     private OrderTypeFilter orderTypeFilter;
 
     private OrderStatusFilter orderStatusFilter;
+
+    private BooleanFilter finished;
 
 
     public static long getSerialVersionUID() {
@@ -124,6 +123,13 @@ public class EstimationCriteria implements Serializable {
         this.orderStatusFilter = orderStatusFilter;
     }
 
+    public BooleanFilter isFinished() {
+        return finished;
+    }
+
+    public void setFinished(BooleanFilter finished) {
+        this.finished = finished;
+    }
 
     @Override
     public String toString() {

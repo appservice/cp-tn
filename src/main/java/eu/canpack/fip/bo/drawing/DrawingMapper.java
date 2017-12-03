@@ -18,6 +18,8 @@ public interface DrawingMapper extends EntityMapper<DrawingDTO, Drawing> {
 
 //    @Mapping(source = "estimationId", target = "estimation")
     @Mapping(target = "createdAt",ignore = true)
+    @Mapping(target = "estimations", ignore = true)
+    @Mapping(target = "technologyCards", ignore = true)
     Drawing toEntity(DrawingDTO drawingDTO);
     default Drawing fromId(Long id) {
         if (id == null) {

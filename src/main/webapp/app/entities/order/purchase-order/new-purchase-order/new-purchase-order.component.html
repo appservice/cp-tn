@@ -53,16 +53,16 @@
                             <thead>
                             <tr>
                                 <th>LP</th>
-                                <th>Nazwa</th>
-                                <th>Nr rys.</th>
-                                <th>Ilość</th>
+                                <th style="min-width: 350px">Nazwa</th>
+                                <th style="min-width: 150px;">Nr rys.</th>
+                                <th style="min-width: 100px">Ilość</th>
                                 <th>Jedn.</th>
                                 <th>MPK/Index</th>
-                                <th style="width: 180px">Termin realizacji:</th>
+                                <th style="width: 120px">Termin realizacji:</th>
                                 <th class="text-right">Cena/szt</th>
                                 <th class="text-right">Wartość</th>
                                 <th>Pliki</th>
-                                <th>Uwagi</th>
+                                <th style="min-width: 200px;">Uwagi</th>
                                 <th></th>
 
                             </tr>
@@ -103,7 +103,7 @@
                                 <td> SZT</td>
                                 <td style="width: 170px"><input type="text" class="form-control" [(ngModel)]="estimation.mpk" name="estimation_mpk_{{rowIndex}}"></td>
 
-                                <td style="max-width: 150px">
+                                <td >
                                     {{estimation.estimatedRealizationDate}}
 
                                 </td>
@@ -119,7 +119,7 @@
                                     </button>
 
                                 </td>
-                                <td><textarea class="form-control text-area" rows="1" [(ngModel)]="estimation.remark" name="estimation_remarks_{{rowIndex}}"></textarea></td>
+                                <td><textarea class="form-control text-area" rows="1" [(ngModel)]="estimation.remark" name="estimation_remarks_{{rowIndex}}" autosize=""></textarea></td>
 
                                 <td>
                                     <button type="button" class="btn btn-outline-dark" (click)="onDeleteRow(rowIndex);">x</button>
@@ -154,12 +154,13 @@
 
             <button type="button" class="btn btn-outline-danger" (click)="previousState()"><span class="fa fa-arrow-left"></span> Powrót</button>
 
-            <button class="btn btn-outline-primary" (click)="sendToProduction();" *ngIf="order.canEdit && (order.orderStatus =='WORKING_COPY' || order.orderStatus==null)"><!--order.orderStatus =='WORKING_COPY' || order.orderStatus==null-->
+            <button class="btn btn-outline-primary" (click)="sendToProduction();" *ngIf="order.canEdit"><!--order.orderStatus =='WORKING_COPY' || order.orderStatus==null-->
                 <span class="fa fa-play"></span> Wyślij do realizacji
             </button>
 
-            <button class="btn btn-outline-primary" (click)="sendToProduction();" *ngIf="order.canEdit && !(order.orderStatus =='WORKING_COPY' || order.orderStatus==null)"><!--order.orderStatus =='WORKING_COPY' || order.orderStatus==null-->
-                <span class="fa fa-save"></span> Zapisz
+            <button class="btn btn-outline-primary" (click)="saveAsAdmin();" *ngIf="order.canEditAsAdmin"
+                    [disabled]="editForm.form.invalid || isSaving  || order.estimations.length===0"> <!--|| !isDrawingUpload-->
+                <span class="fa fa-save"></span> Zapisz zmiany jako admin
             </button>
         </div>
     </div>

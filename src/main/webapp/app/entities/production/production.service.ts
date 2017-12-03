@@ -28,6 +28,16 @@ export class ProductionService {
     }
 
 
+    getItemsFinished(req?: any, urlSearchParams?: URLSearchParams): Observable<ResponseWrapper> {
+        const options = createRequestOption(req);
+        if (urlSearchParams) {
+            options.params.appendAll(urlSearchParams);
+        }
+        return this.http.get(this.resourceUrl+'/items-finished', options)
+            .map((res: Response) => this.convertResponse(res));
+    }
+
+
 
     private convertResponse(res: Response): ResponseWrapper {
         const jsonResponse = res.json();
@@ -41,6 +51,10 @@ export class ProductionService {
 
 
 
-
+     moveProductionItemToArchive(producitonId: number, receiver ?: string): Observable<Response>{
+         const params: URLSearchParams = new URLSearchParams();
+         params.set('receiver', receiver);
+      return  this.http.put(this.resourceUrl+'/'+producitonId+'/moveToArchive',null,{params: params});
+    }
 
 }

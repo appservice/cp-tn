@@ -14,6 +14,7 @@ import eu.canpack.fip.bo.operation.Operation;
 import eu.canpack.fip.bo.operation.enumeration.OperationType;
 import eu.canpack.fip.bo.order.dto.OrderDTO;
 import eu.canpack.fip.bo.order.dto.OrderListDTO;
+import eu.canpack.fip.bo.order.dto.OrderMapper;
 import eu.canpack.fip.bo.order.dto.OrderSimpleDTO;
 import eu.canpack.fip.bo.order.enumeration.OrderStatus;
 import eu.canpack.fip.bo.order.enumeration.OrderType;
@@ -191,7 +192,105 @@ public class OrderService {
         Order order = orderMapper.toEntity(orderDTO);
         order.setYear(orderFromDb.getYear());
         order.setInquiryNumber(orderFromDb.getInquiryNumber());
-        List<Estimation> newEstimations = orderDTO.getEstimations().stream()
+        List<Estimation> newEstimations = getNewEstimations(orderDTO, loggedUser, now, annualOrderNumber, order);
+
+        List<Estimation> oldEstimation = getOldEstimations(orderDTO, loggedUser);
+        order.setEstimations(oldEstimation);
+        order.getEstimations().addAll(newEstimations);
+
+
+        order.setCreatedBy(loggedUser);
+
+        order.createdAt(now);
+//        prepareDocumentNumber(order);
+
+//        order.setOrderStatus(OrderStatus.WORKING_COPY);
+        log.debug("Order to save: {}", order);
+
+        return orderMapper.toDto(orderRepository.save(order));
+
+    }
+
+    public OrderListDTO updateOrderAsAdmin(OrderDTO orderDTO) {
+        User loggedUser = userService.getLoggedUser();
+
+        ZonedDateTime now = ZonedDateTime.now();
+
+        log.debug("Request to update Order : {}", orderDTO);
+        Order orderFromDb = orderRepository.findOne(orderDTO.getId());
+        Client client = clientRepository.findOne(orderDTO.getClientId());
+        String annualOrderNumber = client.getAnnualOrderNumber();
+
+        Order order = orderMapper.toEntity(orderDTO);
+        order.setYear(orderFromDb.getYear());
+        order.setInquiryNumber(orderFromDb.getInquiryNumber());
+        List<Estimation> newEstimations = getNewEstimations(orderDTO, loggedUser, now, annualOrderNumber, order);
+
+        List<Estimation> oldEstimation = getOldEstimations(orderDTO, loggedUser);
+        order.setEstimations(oldEstimation);
+        order.getEstimations().addAll(newEstimations);
+
+
+        order.setCreatedBy(orderFromDb.getCreatedBy());
+        order.createdAt(orderFromDb.getCreatedAt());
+        order.setOrderStatus(orderFromDb.getOrderStatus());
+
+        log.debug("Order to save: {}", order);
+
+        return orderMapper.toDto(orderRepository.save(order));
+
+    }
+
+    private List<Estimation> getOldEstimations(OrderDTO orderDTO, User loggedUser) {
+        ZonedDateTime now=ZonedDateTime.now();
+        return orderDTO.getEstimations().stream()
+            .filter(est -> est.getId() != null)
+            .map(estDTO -> {
+                Estimation estimation = estimationRepository.findOne(estDTO.getId());
+                estimation.setDescription(estDTO.getDescription());
+                estimation.setAmount(estDTO.getAmount());
+                estimation.setNeededRealizationDate(estDTO.getNeededRealizationDate());
+
+                estimation.setDescription(estDTO.getDescription());
+                estimation.setItemName(estDTO.getItemName());
+                estimation.setItemNumber(estDTO.getItemNumber());
+                estimation.setMpk(estDTO.getMpk());
+
+                updateRemark(loggedUser, estDTO, estimation);
+
+                estimation.setId(estDTO.getId());
+
+                if (estDTO.getDrawing() != null) {
+                    List<Attachment> attachments = estDTO.getDrawing().getAttachments().stream()
+                        .map(a -> attachmentRepository.findOne(a.getId())).collect(Collectors.toList());
+
+                    if (estimation.getDrawing() != null) {
+                        estimation.getDrawing().setNumber(estDTO.getItemNumber());
+                        estimation.getDrawing().setName(estDTO.getItemName());
+                        estimation.getDrawing().setAttachments(attachments);
+
+
+
+                    } else {
+                        Drawing drawing = new Drawing();
+                        drawing.setName(estDTO.getItemName());
+                        drawing.setNumber(estDTO.getItemNumber());
+                        drawing.setAttachments(attachments);
+                        drawing.getEstimations().add(estimation);
+                        drawing.setCreatedAt(now);
+                        estimation.setDrawing(drawing);
+                        drawingRepository.save(drawing);
+                    }
+
+                }
+
+
+                return estimation;
+            }).collect(Collectors.toList());
+    }
+
+    private List<Estimation> getNewEstimations(OrderDTO orderDTO, User loggedUser, ZonedDateTime now, String annualOrderNumber, Order order) {
+        return orderDTO.getEstimations().stream()
             .filter(es -> es.getId() == null)
             .map(estDTO -> {
                 Estimation estimation = new Estimation()
@@ -229,63 +328,6 @@ public class OrderService {
                 return estimation;
 
             }).collect(Collectors.toList());
-
-        List<Estimation> oldEstimation = orderDTO.getEstimations().stream()
-            .filter(est -> est.getId() != null)
-            .map(estDTO -> {
-                Estimation estimation = estimationRepository.findOne(estDTO.getId());
-                estimation.setDescription(estDTO.getDescription());
-                estimation.setAmount(estDTO.getAmount());
-                estimation.setNeededRealizationDate(estDTO.getNeededRealizationDate());
-
-                estimation.setDescription(estDTO.getDescription());
-                estimation.setItemName(estDTO.getItemName());
-                estimation.setItemNumber(estDTO.getItemNumber());
-                estimation.setMpk(estDTO.getMpk());
-
-                updateRemark(loggedUser, estDTO, estimation);
-
-                estimation.setId(estDTO.getId());
-
-                if (estDTO.getDrawing() != null) {
-                    List<Attachment> attachments = estDTO.getDrawing().getAttachments().stream()
-                        .map(a -> attachmentRepository.findOne(a.getId())).collect(Collectors.toList());
-
-                    if (estimation.getDrawing() != null) {
-                        estimation.getDrawing().setNumber(estDTO.getItemNumber());
-                        estimation.getDrawing().setName(estDTO.getItemName());
-                        estimation.getDrawing().setAttachments(attachments);
-
-
-                    } else {
-                        Drawing drawing = new Drawing();
-                        drawing.setName(estDTO.getItemName());
-                        drawing.setNumber(estDTO.getItemNumber());
-                        drawing.setAttachments(attachments);
-                        drawing.getEstimations().add(estimation);
-                        estimation.setDrawing(drawing);
-                        drawingRepository.save(drawing);
-                    }
-
-                }
-
-
-                return estimation;
-            }).collect(Collectors.toList());
-        order.setEstimations(oldEstimation);
-        order.getEstimations().addAll(newEstimations);
-
-
-        order.setCreatedBy(loggedUser);
-
-        order.createdAt(now);
-//        prepareDocumentNumber(order);
-
-//        order.setOrderStatus(OrderStatus.WORKING_COPY);
-        log.debug("Order to save: {}", order);
-
-        return orderMapper.toDto(orderRepository.save(order));
-
     }
 
     private void updateRemark(User loggedUser, EstimationCreateDTO estDTO, Estimation estimation) {
@@ -352,18 +394,24 @@ public class OrderService {
             .collect(Collectors.toList());
         orderDTO.setEstimations(estimationCreateDTOS);
         orderDTO.setCanEdit(canEditOrder(order));
+        orderDTO.setCanEditAsAdmin(canEditOrderAsAdmin(order));
         return orderDTO;
 
     }
 
-    private boolean canEditOrder(Order order){
-        return SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.ORDER_INTRODUCER) && (order.getOrderStatus() == OrderStatus.WORKING_COPY || order.getOrderStatus() == null)
-            || SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.ADMIN);
+    private boolean canEditOrder(Order order) {
+        return SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.ORDER_INTRODUCER) && (order.getOrderStatus() == OrderStatus.WORKING_COPY || order.getOrderStatus() == null);
+
     }
 
-    private boolean canCreateOrder(Order order){
+    private boolean canEditOrderAsAdmin(Order order) {
+        return SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.ADMIN);
+
+    }
+
+    private boolean canCreateOrder(Order order) {
         return SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.ORDER_INTRODUCER)
-           || SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.ADMIN);
+            || SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.ADMIN);
     }
 
     /**
@@ -530,6 +578,7 @@ public class OrderService {
         log.debug("createPurchaseOrder orderDTO: {}", orderDTO);
         Order inquiry = orderRepository.findOne(orderDTO.getInquiryId());
         Order order = orderMapper.toEntity(orderDTO);
+        order.setEstimationMaker(inquiry.getEstimationMaker());
         order.setId(null);
 
         User loggedUser = userService.getLoggedUser();

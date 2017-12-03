@@ -3,6 +3,7 @@ package eu.canpack.fip.bo.operation.dto;
 import eu.canpack.fip.bo.operation.OperationEvent;
 import eu.canpack.fip.service.mapper.OperatorMapper;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 
 /**
  * CP S.A.
@@ -12,11 +13,12 @@ import org.mapstruct.Mapper;
 public interface OperationEventMapper {
 
 
-
+    @Mapping(source = "operation.id", target = "operationId")
     OperationEventDTO toDto(OperationEvent operationEvent);
 
 //    @Mapping(source = "estimationId", target = "estimation")
 //    @Mapping(source = "machine.id", target = "machine")
+    @Mapping(source = "operationId", target = "operation")
     OperationEvent toEntity(OperationEventDTO operationDTO);
 
     default OperationEvent fromId(Long id) {

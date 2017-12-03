@@ -15,6 +15,8 @@ public interface MachineMapper extends EntityMapper<MachineDTO, Machine> {
     MachineDTO toDto(Machine machine);
 
 //    @Mapping(source = "operationsId", target = "operations")
+    @Mapping(target = "operations", ignore = true)
+    @Mapping(target = "machineDtls", ignore = true)
     Machine toEntity(MachineDTO machineDTO);
 
     default Machine fromId(Long id) {

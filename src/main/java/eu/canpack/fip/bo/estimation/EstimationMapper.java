@@ -3,7 +3,7 @@ package eu.canpack.fip.bo.estimation;
 import eu.canpack.fip.bo.drawing.Drawing;
 import eu.canpack.fip.bo.estimation.dto.EstimationDTO;
 import eu.canpack.fip.bo.operation.dto.OperationMapper;
-import eu.canpack.fip.bo.order.OrderMapper;
+import eu.canpack.fip.bo.order.dto.OrderMapper;
 
 import eu.canpack.fip.bo.drawing.DrawingMapper;
 import eu.canpack.fip.bo.commercialPart.CommercialPartMapper;
@@ -21,12 +21,14 @@ public interface EstimationMapper extends EntityMapper<EstimationDTO, Estimation
     @Mapping(source = "order.id", target = "orderId")
     @Mapping(source = "order.internalNumber", target = "orderInternalNumber")
     @Mapping(target = "createdBy",expression = "java( estimation.getCreatorName())")
+    @Mapping(target = "remark", ignore = true)
     EstimationDTO toDto(Estimation estimation);
 
 //    @Mapping(target = "operations", ignore = true)
     @Mapping(source = "orderId", target = "order")
     @Mapping(target = "createdBy",ignore = true)
 //    @Mapping(target = "drawing", ignore = true)
+    @Mapping(target = "deliveredAt", ignore = true)
     Estimation toEntity(EstimationDTO estimationDTO);
     default Estimation fromId(Long id) {
         if (id == null) {

@@ -1,5 +1,6 @@
 import {BaseEntity} from './../../shared';
 import {Estimation} from '../estimation/estimation.model';
+import {UserShortDTO} from '../user/user-short-dto.model';
 
 export const enum OrderType {
     ESTIMATION = 'ESTIMATION',
@@ -30,6 +31,7 @@ export class Order implements BaseEntity {
                 public clientId?: number,
                 public clientShortcut?: string,
                 public createdAt?: string,
+                public createdBy ?: UserShortDTO,
                 public createdByName?: string,
                 public estimationMakerName?: string,
                 public remark ?: string,
@@ -37,6 +39,8 @@ export class Order implements BaseEntity {
                 public estimationFinishDate?: any,
                 public mpk?: string,
                 public offerRemarks?: string,
-                public canEdit ?: boolean) {
+                public canEdit ?: boolean,
+                public canEditAsAdmin ?: boolean,
+                public estimationMaker ?: UserShortDTO,) {
     }
 }

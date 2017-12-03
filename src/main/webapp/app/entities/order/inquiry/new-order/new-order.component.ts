@@ -32,7 +32,6 @@ export class NewOrderComponent implements OnInit, OnDestroy {
     closeResult: string;
     clickedRow: number;
     isReadOnly: boolean = false;
-    editForm
     isDrawingUpload: boolean = true;
 
     dropdownList = [];
@@ -71,7 +70,7 @@ export class NewOrderComponent implements OnInit, OnDestroy {
 
             } else {
                 this.title = 'Nowe zapytanie ofertowe';
-                this.order.canEdit=true;
+                this.order.canEdit = true;
 
             }
 
@@ -94,18 +93,18 @@ export class NewOrderComponent implements OnInit, OnDestroy {
             //     drawing: drawing,
             estimationRemarks: []
         });
-        this.isDrawingUpload=false;
+        this.isDrawingUpload = false;
     }
 
     onDeleteRow(index: number) {
         // console.log(event);
         console.log(index);
         this.order.estimations.splice(index, 1);
-        let isUploadedAttachment=true;
-        for(let estimaiton of this.order.estimations){
-            isUploadedAttachment=isUploadedAttachment&& this.checkIfAttachmentExist(estimaiton);
+        let isUploadedAttachment = true;
+        for (let estimaiton of this.order.estimations) {
+            isUploadedAttachment = isUploadedAttachment && this.checkIfAttachmentExist(estimaiton);
         }
-        this.isDrawingUpload=isUploadedAttachment;
+        this.isDrawingUpload = isUploadedAttachment;
     }
 
     onWorkingCopyBtnClick() {
@@ -146,6 +145,18 @@ export class NewOrderComponent implements OnInit, OnDestroy {
         }
     }
 
+
+    saveAsAdmin() {
+        this.isSaving = true;
+        // for(let estimation of this.order.estimations){
+        //     estimation.drawing.name=estimation.description;
+        // }
+        if (this.order.id !== undefined) {
+            this.subscribeToSaveResponse(
+                this.orderService.updateAsAdmin(this.order));
+        }
+    }
+
     private subscribeToSaveResponse(result: Observable<Order>) {
         result.subscribe((res: Order) =>
             this.onSaveSuccess(res), (res: Response) => this.onSaveError(res));
@@ -172,7 +183,7 @@ export class NewOrderComponent implements OnInit, OnDestroy {
         this.orderService.find(id).subscribe((order) => {
             this.order = order;
 
-            this.isReadOnly = !order.canEdit;//order.orderStatus != null && order.orderStatus != 'WORKING_COPY';
+            this.isReadOnly = !order.canEdit && !order.canEditAsAdmin;//order.orderStatus != null && order.orderStatus != 'WORKING_COPY';
 
         });
     }
@@ -215,6 +226,12 @@ export class NewOrderComponent implements OnInit, OnDestroy {
 
         this.order.orderStatus = 'SENT_TO_ESTIMATION';//OrderStatus.SENT_TO_ESTIMATION;
         this.save();
+    }
+
+    saveChangedDataASAdmin() {
+        console.log('Sent to estimation');
+
+        this.saveAsAdmin();
     }
 
     checkIfAttachmentExist(estimation: Estimation): boolean {

@@ -1,3 +1,5 @@
+import {UserShortDTO} from '../user';
+
 export class ProductionItem {
 
 
@@ -16,9 +18,8 @@ export class ProductionItem {
                 public showProductionOrderLink ?: boolean,
                 public showOperationsDetail ?: boolean,
                 public estimatedRealizationDate ?: any,
-
-
-                ) {
+                public receiver ?: UserShortDTO,
+                public deliveredAt ?: any,) {
     }
 
 }

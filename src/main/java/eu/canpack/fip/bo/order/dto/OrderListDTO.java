@@ -3,6 +3,7 @@ package eu.canpack.fip.bo.order.dto;
 
 import eu.canpack.fip.bo.order.enumeration.OrderType;
 import eu.canpack.fip.bo.order.enumeration.OrderStatus;
+import eu.canpack.fip.service.dto.UserShortDTO;
 
 import java.time.LocalDate;
 import javax.validation.constraints.*;
@@ -21,6 +22,8 @@ public class OrderListDTO implements Serializable {
 
 //    @NotNull
     private String internalNumber;
+
+    private UserShortDTO createdBy;
 
     private String sapNumber;
 
@@ -46,6 +49,8 @@ public class OrderListDTO implements Serializable {
     private ZonedDateTime createdAt;
 
     private List<String> buttons = new ArrayList<>();
+
+    private UserShortDTO estimationMaker;
 
     public Long getId() {
         return id;
@@ -151,6 +156,24 @@ public class OrderListDTO implements Serializable {
         this.buttons = buttons;
     }
 
+
+    public UserShortDTO getEstimationMaker() {
+        return estimationMaker;
+    }
+
+    public void setEstimationMaker(UserShortDTO estimationMaker) {
+        this.estimationMaker = estimationMaker;
+    }
+
+    public UserShortDTO getCreatedBy() {
+
+
+        return createdBy;
+    }
+
+    public void setCreatedBy(UserShortDTO createdBy) {
+        this.createdBy = createdBy;
+    }
 
     @Override
     public boolean equals(Object o) {

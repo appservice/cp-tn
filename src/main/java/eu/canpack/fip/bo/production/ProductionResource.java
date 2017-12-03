@@ -11,10 +11,12 @@ import eu.canpack.fip.bo.estimation.dto.EstimationCreateDTO;
 import eu.canpack.fip.bo.estimation.EstimationRepository;
 import eu.canpack.fip.bo.estimation.dto.EstimationCriteria;
 import eu.canpack.fip.bo.order.dto.OrderDTO;
+import eu.canpack.fip.bo.order.enumeration.OrderStatus;
 import eu.canpack.fip.bo.pdf.OrderSummary2PdfCreator;
 import eu.canpack.fip.bo.pdf.PdfUtilService;
 import eu.canpack.fip.bo.pdf.TechnologyCardPdfCreator;
 import eu.canpack.fip.web.rest.util.PaginationUtil;
+import io.github.jhipster.service.filter.BooleanFilter;
 import io.swagger.annotations.ApiParam;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.data.domain.Page;
@@ -117,14 +119,46 @@ public class ProductionResource {
 
     }
 
+    @GetMapping("production/items-finished")
+    public ResponseEntity<List<ProductionItemDeliveredDTO>> showItemsFinished(EstimationCriteria criteria, @ApiParam Pageable pageable) {
+
+
+        if(criteria.isFinished()==null){
+            criteria.setFinished(new BooleanFilter());
+        }
+        criteria.isFinished().setEquals(true);
+
+        Page<ProductionItemDeliveredDTO> page = productionService.showArchivalProductionByCriteriaAndClient(criteria, pageable);
+
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/production/items-finished");
+
+        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+    }
+
     @GetMapping("production/items-actual-in-production")
-    public ResponseEntity<List<ProductionItemDTO>> showItemsActualInProduction(EstimationCriteria estimationCriteria, @ApiParam Pageable pageable) {
+    public ResponseEntity<List<ProductionItemDTO>> showItemsActualInProduction(EstimationCriteria criteria, @ApiParam Pageable pageable) {
 //        Page<ProductionItemDTO> page = productionService.showActualProduction(pageable);
-        Page<ProductionItemDTO> page = productionService.showActualInProductionByCriteriaAndClient(estimationCriteria, pageable);
+        if(criteria.getOrderStatusFilter()==null){
+            criteria.setOrderStatusFilter(new EstimationCriteria.OrderStatusFilter());
+        }
+        criteria.getOrderStatusFilter().setEquals(OrderStatus.IN_PRODUCTION);
+
+        if(criteria.isFinished()==null){
+            criteria.setFinished(new BooleanFilter());
+        }
+        criteria.isFinished().setEquals(false);
+
+        Page<ProductionItemDTO> page = productionService.showActualInProductionByCriteriaAndClient(criteria, pageable);
 
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/production/items-actual-in-production");
 
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+    }
+
+    @PutMapping("production/{productionId}/moveToArchive")
+    public ResponseEntity<Void> moveProductionItemToArchive(@PathVariable Long productionId,@RequestParam(required = false) String receiver){
+        productionService.moveProductionItemToArchive(productionId,receiver);
+        return ResponseEntity.ok().build();
     }
 
 

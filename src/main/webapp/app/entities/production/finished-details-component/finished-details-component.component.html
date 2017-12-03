@@ -1,6 +1,6 @@
 <div>
     <h2>
-        <span>Detale aktualnie produkowane</span>
+        <span>Detale ukończone</span>
         <!--<button class="btn btn-primary float-right jh-create-entity create-estimation" routerLink='/estimation-new'>
             <span class="fa fa-plus"></span>
             <span class="hidden-sm-down" jhiTranslate="tnApp.estimation.home.createLabel">
@@ -61,13 +61,17 @@
                 <!--<th jhiSortBy="mass"><span jhiTranslate="tnApp.estimation.mass">Mass</span> <span class="fa fa-sort"></span></th>-->
                 <th jhiSortBy="itemNumber" style="width: 200px"><span>Nr rys.</span> <span class="fa fa-sort"></span></th>
                 <th jhiSortBy="itemName"><span>Nazwa</span> <span class="fa fa-sort"></span></th>
-                <th jhiSortBy="amount"><span>Ilość [SZT]</span> <span class="fa fa-sort"></span></th>
+                <th jhiSortBy="amount"><span>Ilość [SZT]</span> <span
+                    class="fa fa-sort"></span></th>
+
+
                 <th jhiSortBy="order.internalNumber"><span jhiTranslate="tnApp.estimation.order">Order</span> <span
                     class="fa fa-sort"></span></th>
-                <th jhiSortBy="estimatedRealizationDate"><span>Planowana data realiz.</span> <span class="fa fa-sort"></span></th>
                 <th>Ukończono [%]</th>
-                <th style="width: 250px">Stanowsko aktualnej operacji</th>
-                <th style="width: 80px"></th>
+                <th jhiSortBy="receiver">Odebrał<span class="fa fa-sort"></span></th>
+                <th jhiSortBy="deliveredAt">Data przekazania<span class="fa fa-sort"></span></th>
+
+
             </tr>
             </thead>
             <tbody>
@@ -84,7 +88,6 @@
                     <a *ngIf="productionItem.showProductionOrderLink" [routerLink]="['/orders-in-production/'+productionItem.orderId+'/detail']">{{productionItem.orderNumber}}</a>
                     <span *ngIf="!productionItem.showProductionOrderLink">{{productionItem.orderNumber}}</span>
                 </td>
-                <td>{{productionItem.estimatedRealizationDate|date:'dd-MM-yyyy'}}</td>
                 <td style="width: 300px;">
                     <a [routerLink]="['/', { outlets: { popup: 'production/'+ productionItem.estimationId+ '/showOperations'} }]" replaceUrl="true"
                        *ngIf="productionItem.showProductionOrderLink">
@@ -106,12 +109,8 @@
                         </div>
                     </div>
                 </td>
-                <td>{{productionItem.nextOperationPlace}}</td>
-                <td>
-                    <button class="btn btn-outline-dark" *ngIf="productionItem.readyForDispatch"
-                            [routerLink]="['/', { outlets: { popup: 'production/'+ productionItem.estimationId+ '/moveToArchive'} }]" replaceUrl="true">Archiwizuj
-                        <span class="fa fa-archive"></span></button>
-                </td>
+                <td>{{productionItem.receiver}}</td>
+                <td><span *ngIf="productionItem.deliveredAt">{{productionItem.deliveredAt|date:'dd-MM-yyyy'}} <span class="fa fa-clock-o">&nbsp;</span>{{productionItem.deliveredAt|date:'HH:mm'}}</span></td>
 
             </tr>
             </tbody>

@@ -20,6 +20,7 @@ public interface TechnologyCardMapper extends EntityMapper<TechnologyCardDTO, Te
 
     @Mapping(source = "drawing.id", target = "drawing")
   //  @Mapping(target = "operations", ignore = true)
+    @Mapping(target = "createdBy", ignore = true)
     TechnologyCard toEntity(TechnologyCardDTO technologyCardDTO);
     default TechnologyCard fromId(Long id) {
         if (id == null) {

@@ -17,7 +17,7 @@ public interface OperationWideMapper {
     @Mapping(source = "estimation.id", target = "estimationId")
     OperationWideDTO toDto(Operation operation);
 
-
+    @Mapping(source = "estimationId", target = "estimation")
     Operation toEntity(OperationWideDTO operationDTO);
 
     default Operation fromId(Long id) {

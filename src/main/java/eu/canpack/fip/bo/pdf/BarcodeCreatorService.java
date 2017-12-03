@@ -28,7 +28,7 @@ public class BarcodeCreatorService {
         BitMatrix bitMatrix;
         Writer writer = new Code128Writer();
         try {
-            HashMap hintMap = new HashMap();
+            HashMap<EncodeHintType, Integer> hintMap = new HashMap<>();
             hintMap.put(EncodeHintType.MARGIN, 1);
             bitMatrix = writer.encode(text, BarcodeFormat.CODE_128, 200, 50, hintMap);
 

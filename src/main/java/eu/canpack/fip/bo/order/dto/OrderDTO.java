@@ -60,6 +60,8 @@ public class OrderDTO implements Serializable {
 
     private boolean canEdit;
 
+    private boolean canEditAsAdmin;
+
     public OrderDTO() {
 
     }
@@ -245,6 +247,14 @@ public class OrderDTO implements Serializable {
         this.deliveryAddress = deliveryAddress;
     }
 
+    public boolean isCanEditAsAdmin() {
+        return canEditAsAdmin;
+    }
+
+    public void setCanEditAsAdmin(boolean canEditAsAdmin) {
+        this.canEditAsAdmin = canEditAsAdmin;
+    }
+
     @Override
     public String toString() {
         return "OrderDTO{" +
@@ -263,6 +273,7 @@ public class OrderDTO implements Serializable {
             ", estimations=" + estimations +
             ", offerRemarks=" + offerRemarks +
             ", deliveryAddress=" + deliveryAddress +
+            ", canEditAsAdmin=" + canEditAsAdmin +
             '}';
     }
 }

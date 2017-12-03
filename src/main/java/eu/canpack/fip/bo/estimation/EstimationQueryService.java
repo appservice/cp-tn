@@ -3,13 +3,9 @@ package eu.canpack.fip.bo.estimation;
 import eu.canpack.fip.bo.client.Client;
 import eu.canpack.fip.bo.client.Client_;
 import eu.canpack.fip.bo.estimation.dto.EstimationCriteria;
-import eu.canpack.fip.bo.estimation.dto.EstimationShowDTO;
 import eu.canpack.fip.bo.order.Order;
-import eu.canpack.fip.bo.order.OrderMapper;
-import eu.canpack.fip.bo.order.OrderRepository;
 import eu.canpack.fip.bo.order.Order_;
 import eu.canpack.fip.bo.order.dto.OrderCriteria;
-import eu.canpack.fip.service.UserService;
 import io.github.jhipster.service.QueryService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -121,10 +117,13 @@ public class EstimationQueryService extends QueryService<Estimation> {
             if (criteria.getOrderInternalNumber() != null) {
                 Specification<Estimation> spec = (root, query, builder) -> {
                     Join<Estimation, Order> joinToOrder = root.join((eu.canpack.fip.bo.estimation.Estimation_.order), JoinType.INNER);
-                    return builder.like(builder.upper(joinToOrder.get(Order_.internalNumber)),"%" + criteria.getOrderInternalNumber().getContains().trim().toUpperCase() + "%");
+                    return builder.like(builder.upper(joinToOrder.get(Order_.internalNumber)), "%" + criteria.getOrderInternalNumber().getContains().trim().toUpperCase() + "%");
                 };
                 specification = specification.and(spec);
 
+            }
+            if (criteria.isFinished() != null) {
+                specification = specification.and(buildSpecification(criteria.isFinished(), eu.canpack.fip.bo.estimation.Estimation_.finished));
             }
         }
         return specification;

@@ -21,6 +21,9 @@ public interface OperationMapper extends EntityMapper<OperationDTO, Operation> {
     @Mapping(source = "estimationId", target = "estimation")
     @Mapping(source = "machine.id", target = "machine")
     @Mapping(target = "operationEvents", ignore = true)
+    @Mapping(target = "operationStatus", ignore = true)
+    @Mapping(target = "operationType", ignore = true)
+    @Mapping(target = "productionStatus", ignore = true)
     Operation toEntity(OperationDTO operationDTO);
 
     default Operation fromId(Long id) {

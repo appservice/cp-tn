@@ -88,8 +88,8 @@ export const orderRoute: Routes = [
         path: 'order/:id/edit',
         component: NewOrderComponent,
         data: {
-            authorities: ['ROLE_ORDER_INTRODUCER','ROLE_MANAGER'],
-            pageTitle: 'tn.order.purchaseOrders'
+            authorities: ['ROLE_ORDER_INTRODUCER','ROLE_MANAGER','ROLE_ADMIN'],
+            pageTitle: 'tnApp.order.purchaseOrders'
         },
         canActivate: [UserRouteAccessService]
     },

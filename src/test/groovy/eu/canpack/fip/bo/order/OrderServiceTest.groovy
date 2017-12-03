@@ -4,6 +4,7 @@ import eu.canpack.fip.TnApp
 import eu.canpack.fip.bo.attachment.AttachmentRepository
 import eu.canpack.fip.bo.drawing.DrawingRepository
 import eu.canpack.fip.bo.estimation.EstimationRepository
+import eu.canpack.fip.bo.order.dto.OrderMapper
 import eu.canpack.fip.repository.UserRepository
 import eu.canpack.fip.repository.search.OrderSearchRepository
 import eu.canpack.fip.service.UserService

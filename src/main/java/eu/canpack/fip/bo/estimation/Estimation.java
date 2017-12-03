@@ -145,7 +145,13 @@ public class Estimation implements Serializable {
     @Column(name="material_type")
     private String materialType;
 
+    public ZonedDateTime getDeliveredAt() {
+        return deliveredAt;
+    }
 
+    public void setDeliveredAt(ZonedDateTime deliveredAt) {
+        this.deliveredAt = deliveredAt;
+    }
 
     public String getItemName() {
         return itemName;
@@ -491,8 +497,17 @@ public class Estimation implements Serializable {
         this.materialType = materialType;
     }
 
-    public Boolean isFinished() {
+
+    public Boolean getFinished() {
         return finished;
+    }
+
+    public String getReceiver() {
+        return receiver;
+    }
+
+    public void setReceiver(String receiver) {
+        this.receiver = receiver;
     }
 
     @Override

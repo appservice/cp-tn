@@ -10,11 +10,14 @@ import {OrderInProductionDetailComponent} from './order-in-production-detail/ord
 import {TechnologyEditComponent} from './technology-edit/technology-edit.component';
 import {EmergencyOrderTechnologyEditComponent} from './emergency-order-technology-edit/emergency-order-technology-edit.component';
 import {OperationListModalComponent, OperationListPopupComponent} from './operation-list-modal-component/operation-list-modal-component.component';
+import {ArchiveProdDialogPopupComponent} from './archive-prod-dialog/archive-prod-dialog.component';
+import {FinishedDetailsComponent} from './finished-details-component/finished-details.component';
 
 @Injectable()
 export class ItemsInProductionPagingParams implements Resolve<any> {
 
-    constructor(private paginationUtil: JhiPaginationUtil) {}
+    constructor(private paginationUtil: JhiPaginationUtil) {
+    }
 
     resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
         const page = route.queryParams['page'] ? route.queryParams['page'] : '1';
@@ -23,7 +26,24 @@ export class ItemsInProductionPagingParams implements Resolve<any> {
             page: this.paginationUtil.parsePage(page),
             predicate: this.paginationUtil.parsePredicate(sort),
             ascending: this.paginationUtil.parseAscending(sort)
-      };
+        };
+    }
+}
+
+@Injectable()
+export class FinishedItemsPagingParams implements Resolve<any> {
+
+    constructor(private paginationUtil: JhiPaginationUtil) {
+    }
+
+    resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
+        const page = route.queryParams['page'] ? route.queryParams['page'] : '1';
+        const sort = route.queryParams['sort'] ? route.queryParams['sort'] : 'deliveredAt,desc';
+        return {
+            page: this.paginationUtil.parsePage(page),
+            predicate: this.paginationUtil.parsePredicate(sort),
+            ascending: this.paginationUtil.parseAscending(sort)
+        };
     }
 }
 
@@ -45,6 +65,18 @@ export const productionRoute: Routes = [
         component: OrdersInProductionComponent,
         resolve: {
             'pagingParams': ItemsInProductionPagingParams
+        },
+        data: {
+            authorities: ['ROLE_USER'],
+            pageTitle: 'tnApp.production.home.title'
+        },
+        canActivate: [UserRouteAccessService]
+    },
+    {
+        path: 'items-finished',
+        component: FinishedDetailsComponent,
+        resolve: {
+            'pagingParams': FinishedItemsPagingParams
         },
         data: {
             authorities: ['ROLE_USER'],
@@ -106,14 +138,15 @@ export const productionPopupRoute: Routes = [
         canActivate: [UserRouteAccessService],
         outlet: 'popup'
     },
-    // {
-    //     path: 'estimation/:id/delete',
-    //     component: EstimationDeletePopupComponent,
-    //     data: {
-    //         authorities: ['ROLE_USER'],
-    //         pageTitle: 'tnApp.estimation.home.title'
-    //     },
-    //     canActivate: [UserRouteAccessService],
-    //     outlet: 'popup'
-    // }
+    {
+        path: 'production/:id/moveToArchive',
+        component: ArchiveProdDialogPopupComponent,
+        data: {
+            authorities: ['ROLE_USER'],
+            pageTitle: 'tnApp.estimation.home.title'
+        },
+        canActivate: [UserRouteAccessService],
+        outlet: 'popup'
+    },
+
 ];

@@ -4,6 +4,7 @@ import eu.canpack.fip.bo.client.Client;
 import eu.canpack.fip.bo.client.Client_;
 import eu.canpack.fip.bo.order.dto.OrderCriteria;
 import eu.canpack.fip.bo.order.dto.OrderListDTO;
+import eu.canpack.fip.bo.order.dto.OrderMapper;
 import eu.canpack.fip.domain.User;
 import eu.canpack.fip.domain.User_;
 import eu.canpack.fip.service.UserService;
@@ -37,7 +38,7 @@ public class OrderQueryService extends QueryService<Order> {
 
     private final OrderRepository OrderRepository;
 
-    private final OrderMapper OrderMapper;
+    private final eu.canpack.fip.bo.order.dto.OrderMapper OrderMapper;
 
     private final UserService userService;
 

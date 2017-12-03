@@ -116,7 +116,7 @@ public class EstimationShowDTO implements Serializable {
 
     public EstimationShowDTO(Estimation estimation,Boolean isPricePublised) {
         this(estimation);
-        if(!isPricePublised){
+        if(isPricePublised==null || !isPricePublised){
             this.setEstimatedCost(null);
         }
     }

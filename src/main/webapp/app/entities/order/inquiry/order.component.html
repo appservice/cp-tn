@@ -129,12 +129,13 @@
             <th jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span> <span
                 class="fa fa-sort"></span></th>
             <th jhiSortBy="internalNumber"><span>Nr wewnętrzny</span> <span class="fa fa-sort"></span></th>
-            <th jhiSortBy="description"><span>Nr Klienta</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="referenceNumber"><span>Nr Klienta</span> <span class="fa fa-sort"></span></th>
 
             <!--<th jhiSortBy="orderType"><span jhiTranslate="tnApp.order.orderType">Order Type</span> <span class="fa fa-sort"></span></th>-->
             <th jhiSortBy="name"><span jhiTranslate="tnApp.order.name">Name</span> <span
                 class="fa fa-sort"></span></th>
-            <th jhiSortBy="createdAt"><span j>Data utworzenia</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="createdBy"><span>Utworzył</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="createdAt"><span>Data utworzenia</span> <span class="fa fa-sort"></span></th>
             <!--<th jhiSortBy="closeDate"><span jhiTranslate="tnApp.order.closeDate">Close Date</span> <span class="fa fa-sort"></span></th>-->
             <th jhiSortBy="orderStatus"><span jhiTranslate="tnApp.order.orderStatus">Order Status</span>
                 <span class="fa fa-sort"></span></th>
@@ -150,9 +151,12 @@
             <td>{{order.referenceNumber}}</td>
             <!--<td jhiTranslate="{{'tnApp.OrderType.' + order.orderType}}">{{order.orderType}}</td>-->
             <td>{{order.name}}</td>
+            <td style="min-width: 150px"><span *ngIf="order.createdBy.lastName!==order.createdBy.firstName">{{order.createdBy.firstName}}</span> {{order.createdBy.lastName}}</td>
+
             <td>{{order.createdAt|date:'dd-MM-yyyy'}}</td>
             <!--<td>{{order.closeDate | date:'mediumDate'}}</td>-->
-            <td [ngClass]="{'h5':order.orderStatus==='CREATED_PURCHASE_ORDER'}" ><span [ngClass]="{'badge badge-primary':order.orderStatus==='CREATED_PURCHASE_ORDER'}" jhiTranslate="{{'tnApp.OrderStatus.' + order.orderStatus}}">{{order.orderStatus}}</span></td>
+            <td [ngClass]="{'h5':order.orderStatus==='CREATED_PURCHASE_ORDER'}"><span [ngClass]="{'badge badge-primary':order.orderStatus==='CREATED_PURCHASE_ORDER'}"
+                                                                                      jhiTranslate="{{'tnApp.OrderStatus.' + order.orderStatus}}">{{order.orderStatus}}</span></td>
             <td>
                 <div *ngIf="order.clientId">
                     <a [routerLink]="['../client', order.clientId  ]">{{order.clientShortcut}}</a>

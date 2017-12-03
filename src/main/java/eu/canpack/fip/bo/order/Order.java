@@ -36,16 +36,16 @@ public class Order implements Serializable {
     @Column(name = "internal_number", nullable = false)
     private String internalNumber;
 
-    @Column(name="inuqiry_number")
+    @Column(name = "inuqiry_number")
     private Integer inquiryNumber;
 
-    @Column(name="purchase_order_number")
+    @Column(name = "purchase_order_number")
     private Integer purchaseOrderNumber;
 
-    @Column(name="emergency_order_number")
+    @Column(name = "emergency_order_number")
     private Integer emergencyOrderNumber;
 
-    @Column(name="year")
+    @Column(name = "year")
     private Integer year;
 
     @Column(name = "sap_number")
@@ -73,7 +73,7 @@ public class Order implements Serializable {
     @Column(name = "order_status")
     private OrderStatus orderStatus;
 
-    @OneToMany(mappedBy = "order", orphanRemoval = true,cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "order", orphanRemoval = true, cascade = CascadeType.ALL)
     @JsonIgnore
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private List<Estimation> estimations = new ArrayList<>();
@@ -89,20 +89,23 @@ public class Order implements Serializable {
 //    @NotNull
     private User estimationMaker;
 
-    @Column(name="created_at",nullable = false)
+    @Column(name = "created_at", nullable = false)
     @NotNull
     private ZonedDateTime createdAt;
 
-    @Column(name="estimation_finish_date")
+    @Column(name = "estimation_finish_date")
     private ZonedDateTime estimationFinsihDate;
 
-    @Column(name="offer_remarks",length = 1024)
+    @Column(name = "offer_remarks", length = 1024)
     private String offerRemarks;
 
-    @Column(name="delivery_address",length = 1024)
+    @Column(name = "delivery_address", length = 1024)
     @Size(max = 1024)
     private String deliveryAddress;
 
+//    @ElementCollection(fetch = FetchType.EAGER, targetClass = OrderReference.class)
+//    @CollectionTable(name = "order_reference", joinColumns = @JoinColumn(name = "order_id"))
+//    private List<OrderReference> orderReferences = new ArrayList<>();
 
 
     public Long getId() {
@@ -117,17 +120,21 @@ public class Order implements Serializable {
         return internalNumber;
     }
 
+    public void setInternalNumber(String internalNumber) {
+        this.internalNumber = internalNumber;
+    }
+
     public Order internalNumber(String internalNumber) {
         this.internalNumber = internalNumber;
         return this;
     }
 
-    public void setInternalNumber(String internalNumber) {
-        this.internalNumber = internalNumber;
-    }
-
     public String getSapNumber() {
         return sapNumber;
+    }
+
+    public void setSapNumber(String sapNumber) {
+        this.sapNumber = sapNumber;
     }
 
     public Order sapNumber(String sapNumber) {
@@ -135,12 +142,12 @@ public class Order implements Serializable {
         return this;
     }
 
-    public void setSapNumber(String sapNumber) {
-        this.sapNumber = sapNumber;
-    }
-
     public OrderType getOrderType() {
         return orderType;
+    }
+
+    public void setOrderType(OrderType orderType) {
+        this.orderType = orderType;
     }
 
     public Order orderType(OrderType orderType) {
@@ -148,12 +155,12 @@ public class Order implements Serializable {
         return this;
     }
 
-    public void setOrderType(OrderType orderType) {
-        this.orderType = orderType;
-    }
-
     public String getName() {
         return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public Order name(String name) {
@@ -161,12 +168,12 @@ public class Order implements Serializable {
         return this;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public String getDescription() {
         return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public Order description(String description) {
@@ -174,12 +181,12 @@ public class Order implements Serializable {
         return this;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
     public LocalDate getCloseDate() {
         return closeDate;
+    }
+
+    public void setCloseDate(LocalDate closeDate) {
+        this.closeDate = closeDate;
     }
 
     public Order closeDate(LocalDate closeDate) {
@@ -187,12 +194,12 @@ public class Order implements Serializable {
         return this;
     }
 
-    public void setCloseDate(LocalDate closeDate) {
-        this.closeDate = closeDate;
-    }
-
     public OrderStatus getOrderStatus() {
         return orderStatus;
+    }
+
+    public void setOrderStatus(OrderStatus orderStatus) {
+        this.orderStatus = orderStatus;
     }
 
     public Order orderStatus(OrderStatus orderStatus) {
@@ -200,12 +207,12 @@ public class Order implements Serializable {
         return this;
     }
 
-    public void setOrderStatus(OrderStatus orderStatus) {
-        this.orderStatus = orderStatus;
-    }
-
     public List<Estimation> getEstimations() {
         return estimations;
+    }
+
+    public void setEstimations(List<Estimation> estimations) {
+        this.estimations = estimations;
     }
 
     public Order estimations(List<Estimation> estimations) {
@@ -225,7 +232,6 @@ public class Order implements Serializable {
         return this;
     }
 
-
     public String getReferenceNumber() {
         return referenceNumber;
     }
@@ -239,21 +245,17 @@ public class Order implements Serializable {
         return this;
     }
 
-    public void setEstimations(List<Estimation> estimations) {
-        this.estimations = estimations;
-    }
-
     public Client getClient() {
         return client;
+    }
+
+    public void setClient(Client client) {
+        this.client = client;
     }
 
     public Order client(Client client) {
         this.client = client;
         return this;
-    }
-
-    public void setClient(Client client) {
-        this.client = client;
     }
 
     public User getCreatedBy() {
@@ -347,6 +349,13 @@ public class Order implements Serializable {
         return this;
     }
 
+//    public List<OrderReference> getOrderReferences() {
+//        return orderReferences;
+//    }
+//
+//    public void setOrderReferences(List<OrderReference> orderReferences) {
+//        this.orderReferences = orderReferences;
+//    }
 
     @Override
     public boolean equals(Object o) {
@@ -367,7 +376,6 @@ public class Order implements Serializable {
     public int hashCode() {
         return Objects.hashCode(getId());
     }
-
 
 
     public Order createdBy(User createdBy) {

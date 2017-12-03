@@ -5,15 +5,15 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {Subscription} from 'rxjs/Subscription';
 import {isDefined} from '@angular/compiler/src/util';
 import {ModalDismissReasons, NgbModal} from '@ng-bootstrap/ng-bootstrap';
-import {Client} from '../../../client/client.model';
+import {Client} from '../../../client';
 import {Order, OrderStatus, OrderType} from '../../order.model';
 import {Attachment} from '../../../../tn-components/tn-file-uploader/attachment.model';
 import {JhiAlertService, JhiEventManager} from 'ng-jhipster';
-import {ClientService} from '../../../client/client.service';
+import {ClientService} from '../../../client';
 import {OrderService} from '../../order.service';
-import {ResponseWrapper} from '../../../../shared/model/response-wrapper.model';
-import {Drawing} from '../../../drawing/drawing.model';
-import {Estimation} from '../../../estimation/estimation.model';
+import {ResponseWrapper} from '../../../../shared';
+import {Drawing} from '../../../drawing';
+import {Estimation} from '../../../estimation';
 
 
 @Component({
@@ -37,7 +37,6 @@ export class NewEmergencyOrderComponent implements OnInit, OnDestroy {
     closeResult: string;
     clickedRow: number;
     isReadOnly: boolean = false;
-    editForm
     isDrawingUpload: boolean=true;
 
     constructor(private alertService: JhiAlertService,
@@ -171,7 +170,7 @@ export class NewEmergencyOrderComponent implements OnInit, OnDestroy {
             this.order = order;
 
        //     console.log('enum 3', ]);
-             this.isReadOnly =!order.canEdit;//order.orderStatus != null && order.orderStatus != 'WORKING_COPY';
+             this.isReadOnly =!order.canEdit && !order.canEditAsAdmin;//order.orderStatus != null && order.orderStatus != 'WORKING_COPY';
 
         });
     }
@@ -227,4 +226,14 @@ export class NewEmergencyOrderComponent implements OnInit, OnDestroy {
         this.isDrawingUpload = false;
         return false;
     }
+
+    saveAsAdmin() {
+        this.isSaving = true;
+
+        if (this.order.id !== undefined) {
+            this.subscribeToSaveResponse(
+                this.orderService.updateAsAdmin(this.order));
+        }
+    }
+
 }

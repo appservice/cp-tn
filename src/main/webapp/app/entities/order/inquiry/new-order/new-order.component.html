@@ -197,13 +197,13 @@
             </button>
             <button type="button" class="btn btn-outline-danger" (click)="previousState()"><span class="fa fa-arrow-left"></span> Powrót</button>
 
-            <button class="btn btn-outline-primary" (click)="sendToEstimation();" *ngIf="order.canEdit && (order.orderStatus =='WORKING_COPY' || order.orderStatus==null)"
+            <button class="btn btn-outline-primary" (click)="sendToEstimation();" *ngIf="order.canEdit"
                     [disabled]="editForm.form.invalid || isSaving || !isDrawingUpload || order.estimations.length===0">
                 <span class="fa fa-play"></span> Wyślij do wyceny
             </button>
-            <button class="btn btn-outline-primary" (click)="sendToEstimation();" *ngIf="order.canEdit && !(order.orderStatus =='WORKING_COPY' || order.orderStatus==null)"
+            <button class="btn btn-outline-primary" (click)="saveAsAdmin();" *ngIf="order.canEditAsAdmin"
                     [disabled]="editForm.form.invalid || isSaving || !isDrawingUpload || order.estimations.length===0">
-                <span class="fa fa-save"></span> Zapisz
+                <span class="fa fa-save"></span> Zapisz zmiany jako admin
             </button>
         </div>
     </div>

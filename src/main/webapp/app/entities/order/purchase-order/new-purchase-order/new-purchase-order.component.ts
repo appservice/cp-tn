@@ -224,6 +224,16 @@ export class NewPurchaseOrderComponent implements OnInit, OnDestroy {
         return total;
     }
 
+    saveAsAdmin() {
+        this.isSaving = true;
+        // for(let estimation of this.order.estimations){
+        //     estimation.drawing.name=estimation.description;
+        // }
+        if (this.order.id !== undefined) {
+            this.subscribeToSaveResponse(
+                this.orderService.updateAsAdmin(this.order));
+        }
+    }
     createNewPurchaseOrder(order: Order) {
 
     }
