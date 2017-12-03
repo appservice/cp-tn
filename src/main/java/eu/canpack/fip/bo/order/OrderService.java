@@ -18,6 +18,8 @@ import eu.canpack.fip.bo.order.dto.OrderMapper;
 import eu.canpack.fip.bo.order.dto.OrderSimpleDTO;
 import eu.canpack.fip.bo.order.enumeration.OrderStatus;
 import eu.canpack.fip.bo.order.enumeration.OrderType;
+import eu.canpack.fip.bo.referenceOrder.ReferenceOrder;
+import eu.canpack.fip.bo.referenceOrder.ReferenceOrderRepository;
 import eu.canpack.fip.bo.remark.EstimationRemark;
 import eu.canpack.fip.config.ApplicationProperties;
 import eu.canpack.fip.domain.User;
@@ -75,8 +77,10 @@ public class OrderService {
 
     private final UserService userService;
 
+    private final ReferenceOrderRepository referenceOrderRepository;
+
     public OrderService(OrderRepository orderRepository, OrderMapper orderMapper, OrderSearchRepository orderSearchRepository, UserRepository userRepository, DrawingRepository drawingRepository, AttachmentRepository attachmentRepository,
-                        EstimationRepository estimationRepository, UserService userService, ApplicationProperties applicationProperties, ClientRepository clientRepository) {
+                        EstimationRepository estimationRepository, UserService userService, ApplicationProperties applicationProperties, ClientRepository clientRepository, ReferenceOrderRepository referenceOrderRepository) {
         this.orderRepository = orderRepository;
         this.orderMapper = orderMapper;
         this.orderSearchRepository = orderSearchRepository;
@@ -87,6 +91,7 @@ public class OrderService {
         this.userService = userService;
         this.applicationProperties = applicationProperties;
         this.clientRepository = clientRepository;
+        this.referenceOrderRepository = referenceOrderRepository;
     }
 
     /**
@@ -190,8 +195,15 @@ public class OrderService {
         String annualOrderNumber = client.getAnnualOrderNumber();
 
         Order order = orderMapper.toEntity(orderDTO);
+        order.setReferenceOrders(orderFromDb.getReferenceOrders());
+        order.estimationMaker(orderFromDb.getEstimationMaker());
+
         order.setYear(orderFromDb.getYear());
         order.setInquiryNumber(orderFromDb.getInquiryNumber());
+        order.setPurchaseOrderNumber(orderFromDb.getPurchaseOrderNumber());
+        order.setEmergencyOrderNumber(orderFromDb.getEmergencyOrderNumber());
+
+
         List<Estimation> newEstimations = getNewEstimations(orderDTO, loggedUser, now, annualOrderNumber, order);
 
         List<Estimation> oldEstimation = getOldEstimations(orderDTO, loggedUser);
@@ -202,9 +214,6 @@ public class OrderService {
         order.setCreatedBy(loggedUser);
 
         order.createdAt(now);
-//        prepareDocumentNumber(order);
-
-//        order.setOrderStatus(OrderStatus.WORKING_COPY);
         log.debug("Order to save: {}", order);
 
         return orderMapper.toDto(orderRepository.save(order));
@@ -222,8 +231,15 @@ public class OrderService {
         String annualOrderNumber = client.getAnnualOrderNumber();
 
         Order order = orderMapper.toEntity(orderDTO);
+        order.estimationMaker(orderFromDb.getEstimationMaker());
+        order.setReferenceOrders(orderFromDb.getReferenceOrders());
+
         order.setYear(orderFromDb.getYear());
         order.setInquiryNumber(orderFromDb.getInquiryNumber());
+        order.setPurchaseOrderNumber(orderFromDb.getPurchaseOrderNumber());
+        order.setEmergencyOrderNumber(orderFromDb.getEmergencyOrderNumber());
+
+
         List<Estimation> newEstimations = getNewEstimations(orderDTO, loggedUser, now, annualOrderNumber, order);
 
         List<Estimation> oldEstimation = getOldEstimations(orderDTO, loggedUser);
@@ -242,7 +258,7 @@ public class OrderService {
     }
 
     private List<Estimation> getOldEstimations(OrderDTO orderDTO, User loggedUser) {
-        ZonedDateTime now=ZonedDateTime.now();
+        ZonedDateTime now = ZonedDateTime.now();
         return orderDTO.getEstimations().stream()
             .filter(est -> est.getId() != null)
             .map(estDTO -> {
@@ -268,7 +284,6 @@ public class OrderService {
                         estimation.getDrawing().setNumber(estDTO.getItemNumber());
                         estimation.getDrawing().setName(estDTO.getItemName());
                         estimation.getDrawing().setAttachments(attachments);
-
 
 
                     } else {
@@ -481,8 +496,15 @@ public class OrderService {
         Order order = orderRepository.findOne(id);
         if (SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.MANAGER)
             || order.getOrderStatus() == OrderStatus.WORKING_COPY) {
+
+            Set<ReferenceOrder> referenceOrderToDelete = referenceOrderRepository.findAllByRefOrderId(id);
+            log.debug("refOrders to delete {}", referenceOrderToDelete);
+
+
             orderRepository.delete(id);
             orderSearchRepository.delete(id);
+            referenceOrderRepository.deleteInBatch(referenceOrderToDelete);
+
         } else {
             throw new CustomParameterizedException("error.userNotHaveSuitablePermissions");
         }
@@ -581,6 +603,7 @@ public class OrderService {
         order.setEstimationMaker(inquiry.getEstimationMaker());
         order.setId(null);
 
+
         User loggedUser = userService.getLoggedUser();
         ZonedDateTime now = ZonedDateTime.now();
 
@@ -655,10 +678,22 @@ public class OrderService {
         }
 
         inquiry.setOrderStatus(OrderStatus.CREATED_PURCHASE_ORDER);
-        return orderRepository.save(order);
+        order = orderRepository.save(order);
+        ReferenceOrder purchaseReferenceOrder = createReferenceOrder(inquiry, order);
+        ReferenceOrder inquiryReferenceOrder = createReferenceOrder(order, inquiry);
+        order.getReferenceOrders().add(inquiryReferenceOrder);
+        inquiry.getReferenceOrders().add(purchaseReferenceOrder);
+        return order;
 
     }
 
+    private ReferenceOrder createReferenceOrder(Order inquiry, Order purchaseOrder) {
+        ReferenceOrder referenceOrder = new ReferenceOrder();
+        referenceOrder.setOrder(inquiry);
+        referenceOrder.setRefOrderId(purchaseOrder.getId());
+        referenceOrder.setRefInternalNumber(purchaseOrder.getInternalNumber());
+        return referenceOrder;
+    }
 
     @Transactional(readOnly = true)
     public Page<OrderListDTO> findOrderInProducitionForEdit(Pageable pageable) {

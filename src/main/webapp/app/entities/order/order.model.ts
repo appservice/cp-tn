@@ -41,6 +41,16 @@ export class Order implements BaseEntity {
                 public offerRemarks?: string,
                 public canEdit ?: boolean,
                 public canEditAsAdmin ?: boolean,
-                public estimationMaker ?: UserShortDTO,) {
+                public estimationMaker ?: UserShortDTO,
+                public referenceOrders ?: ReferenceOrder[],) {
+    }
+
+
+}
+
+export class ReferenceOrder {
+    constructor(public id?: number,
+                public refInternalNumber ?: string,
+                public refOrderId ?: number,) {
     }
 }

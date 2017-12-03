@@ -81,13 +81,13 @@
                 <td>{{productionItem.amount}}</td>
 
                 <td>
-                    <a *ngIf="productionItem.showProductionOrderLink" [routerLink]="['/orders-in-production/'+productionItem.orderId+'/detail']">{{productionItem.orderNumber}}</a>
-                    <span *ngIf="!productionItem.showProductionOrderLink">{{productionItem.orderNumber}}</span>
+                    <a *ngIf="productionItem.showProductionOrderLink && productionItem.showProductionOrderLink==true" [routerLink]="['/orders-in-production/'+productionItem.orderId+'/detail']">{{productionItem.orderNumber}}</a>
+                    <span *ngIf="!productionItem.showProductionOrderLink || productionItem.showProductionOrderLink==false">{{productionItem.orderNumber}}</span>
                 </td>
                 <td>{{productionItem.estimatedRealizationDate|date:'dd-MM-yyyy'}}</td>
                 <td style="width: 300px;">
                     <a [routerLink]="['/', { outlets: { popup: 'production/'+ productionItem.estimationId+ '/showOperations'} }]" replaceUrl="true"
-                       *ngIf="productionItem.showProductionOrderLink">
+                       *ngIf="productionItem.showOperationsDetail && productionItem.showOperationsDetail==true">
                         <div class="progress  progress-custom">
                             <div class="progress-bar  progress-bar-custom text-center" role="progressbar" [attr.aria-valuenow]="productionItem.productionProgress"
                                  [ngClass]="{'progress-bar-custom-100-prc':productionItem.productionProgress>99}"
@@ -97,7 +97,7 @@
                             </div>
                         </div>
                     </a>
-                    <div class="progress  progress-custom" *ngIf="!productionItem.showProductionOrderLink">
+                    <div class="progress  progress-custom" *ngIf="!productionItem.showOperationsDetail || productionItem.showOperationsDetail==false">
                         <div class="progress-bar  progress-bar-custom text-center" role="progressbar" [attr.aria-valuenow]="productionItem.productionProgress"
                              [ngClass]="{'progress-bar-custom-100-prc':productionItem.productionProgress>99}"
                              aria-valuemin="0" aria-valuemax="100"

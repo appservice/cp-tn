@@ -3,6 +3,7 @@ package eu.canpack.fip.bo.order.dto;
 
 import eu.canpack.fip.bo.order.enumeration.OrderType;
 import eu.canpack.fip.bo.order.enumeration.OrderStatus;
+import eu.canpack.fip.bo.referenceOrder.ReferenceOrder;
 import eu.canpack.fip.service.dto.UserShortDTO;
 
 import java.time.LocalDate;
@@ -51,6 +52,8 @@ public class OrderListDTO implements Serializable {
     private List<String> buttons = new ArrayList<>();
 
     private UserShortDTO estimationMaker;
+
+    private List<ReferenceOrder> referenceOrders;
 
     public Long getId() {
         return id;
@@ -169,6 +172,14 @@ public class OrderListDTO implements Serializable {
 
 
         return createdBy;
+    }
+
+    public List<ReferenceOrder> getReferenceOrders() {
+        return referenceOrders;
+    }
+
+    public void setReferenceOrders(List<ReferenceOrder> referenceOrders) {
+        this.referenceOrders = referenceOrders;
     }
 
     public void setCreatedBy(UserShortDTO createdBy) {

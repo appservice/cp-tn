@@ -25,6 +25,7 @@
                 <th jhiSortBy="createdAt"><span j>Data utworzenia</span> <span class="fa fa-sort"></span></th>
                 <!--<th jhiSortBy="closeDate"><span jhiTranslate="tnApp.order.closeDate">Close Date</span> <span class="fa fa-sort"></span></th>-->
                 <th jhiSortBy="orderStatus"><span jhiTranslate="tnApp.order.orderStatus">Order Status</span> <span class="fa fa-sort"></span></th>
+                <th><span>Do oferty</span></th>
                 <th jhiSortBy="clientId"><span jhiTranslate="tnApp.order.client">Client</span> <span class="fa fa-sort"></span></th>
                 <th><span>Wyceniał</span> <span></span></th>
                 <th></th>
@@ -41,6 +42,11 @@
                 <td>{{order.createdAt|date:'dd-MM-yyyy'}}</td>
                 <!--<td>{{order.closeDate | date:'mediumDate'}}</td>-->
                 <td jhiTranslate="{{'tnApp.OrderStatus.' + order.orderStatus}}">{{order.orderStatus}}</td>
+                <td>
+                    <div *ngFor="let referenceOrder of order.referenceOrders">
+                        <a [routerLink]="['../order/'+referenceOrder.refOrderId]">{{referenceOrder.refInternalNumber}}</a>
+                    </div>
+                </td>
                 <td>
                     <div *ngIf="order.clientId">
                         <a [routerLink]="['../client', order.clientId  ]">{{order.clientShortcut}}</a>

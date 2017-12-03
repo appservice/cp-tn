@@ -7,7 +7,18 @@
         </button>
     </div>
     <div class="modal-body">
-        <strong>{{estimation.id}} {{estimation.itemNumber}} {{estimation.itemName}}</strong>
+        <table class="table table-striped">
+            <tr>
+                <th>id</th>
+                <th>nr rys</th>
+                <th>nazwa</th>
+            </tr>
+            <tr>
+                <td>{{estimation.id}}</td>
+                <td>{{estimation.itemNumber}}</td>
+                <td>{{estimation.itemName}}</td>
+            </tr>
+        </table>
         <br/>
         <br/>
         <jhi-alert-error></jhi-alert-error>

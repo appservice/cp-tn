@@ -90,12 +90,12 @@ export class NewPurchaseOrderComponent implements OnInit, OnDestroy {
         this.order.estimations.splice(index, 1);
     }
 
-    onWorkingCopyBtnClick() {
-        console.log('save is cliccked');
-        console.log(this.order);
-        this.order.orderStatus = 'WORKING_COPY';//OrderStatus.WORKING_COPY;
-        this.save();
-    }
+    // onWorkingCopyBtnClick() {
+    //     console.log('save is cliccked');
+    //     console.log(this.order);
+    //     this.order.orderStatus = 'WORKING_COPY';//OrderStatus.WORKING_COPY;
+    //     this.save();
+    // }
 
     previousState() {
         window.history.back();

@@ -5,6 +5,7 @@ import eu.canpack.fip.bo.order.enumeration.OrderStatus;
 import eu.canpack.fip.bo.order.enumeration.OrderType;
 import eu.canpack.fip.bo.client.Client;
 import eu.canpack.fip.bo.estimation.Estimation;
+import eu.canpack.fip.bo.referenceOrder.ReferenceOrder;
 import eu.canpack.fip.domain.User;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
@@ -103,9 +104,11 @@ public class Order implements Serializable {
     @Size(max = 1024)
     private String deliveryAddress;
 
-//    @ElementCollection(fetch = FetchType.EAGER, targetClass = OrderReference.class)
-//    @CollectionTable(name = "order_reference", joinColumns = @JoinColumn(name = "order_id"))
-//    private List<OrderReference> orderReferences = new ArrayList<>();
+
+
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true,fetch = FetchType.EAGER)
+    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+    private List<ReferenceOrder> referenceOrders = new ArrayList<>();
 
 
     public Long getId() {
@@ -349,13 +352,13 @@ public class Order implements Serializable {
         return this;
     }
 
-//    public List<OrderReference> getOrderReferences() {
-//        return orderReferences;
-//    }
-//
-//    public void setOrderReferences(List<OrderReference> orderReferences) {
-//        this.orderReferences = orderReferences;
-//    }
+    public List<ReferenceOrder> getReferenceOrders() {
+        return referenceOrders;
+    }
+
+    public void setReferenceOrders(List<ReferenceOrder> referenceOrders) {
+        this.referenceOrders = referenceOrders;
+    }
 
     @Override
     public boolean equals(Object o) {
