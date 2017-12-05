@@ -20,6 +20,7 @@ import {NewEstimationComponent} from './new-estimation/new-estimation.component'
 import {TnComponentsModule} from '../../tn-components/tn-components.module';
 import {CurrencyMaskModule} from 'ng2-currency-mask';
 import {TnAlert} from '../../tn-components/tn-alert';
+import {ConfirmDeactivateGuard} from './estimation.route';
 
 const ENTITY_STATES = [
     ...estimationRoute,
@@ -58,6 +59,7 @@ const ENTITY_STATES = [
         EstimationService,
         EstimationPopupService,
         EstimationResolvePagingParams,
+        ConfirmDeactivateGuard,
     ],
     schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })

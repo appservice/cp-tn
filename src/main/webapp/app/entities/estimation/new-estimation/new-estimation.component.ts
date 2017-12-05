@@ -1,28 +1,26 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {JhiAlertService, JhiEventManager} from 'ng-jhipster';
 import {Estimation} from '../estimation.model';
 import {Attachment} from '../../../tn-components/tn-file-uploader/attachment.model';
 import {ActivatedRoute, Router} from '@angular/router';
 import {Subscription} from 'rxjs/Subscription';
 import {ModalDismissReasons, NgbModal} from '@ng-bootstrap/ng-bootstrap';
-import {Machine} from '../../machine/machine.model';
-import {ResponseWrapper} from '../../../shared/model/response-wrapper.model';
-import {MachineService} from '../../machine/machine.service';
+import {ResponseWrapper} from '../../../shared';
+import {MachineService, Machine} from '../../machine';
 import {CurrencyMaskConfig} from 'ng2-currency-mask/src/currency-mask.config';
 import {Observable} from 'rxjs/Observable';
-import {UnitService} from '../../unit/unit.service';
-import {Unit} from '../../unit/unit.model';
+import {UnitService, Unit} from '../../unit';
 import {EstimationService} from '../estimation.service';
 import {isNullOrUndefined} from 'util';
-import {OrderService} from '../../order/order.service';
+import {OrderService} from '../../order';
 import {Order} from '../../order/order.model';
 import {OrderSimpleDTO} from '../../order/order-simpleDTO.model';
 import {TnAlert} from '../../../tn-components/tn-alert';
-import {TechnologyCardFinderComponent} from '../../technology-card/technology-card-finder/technology-card-finder.component';
-import {TechnologyCard} from '../../technology-card/technology-card.model';
-import {DrawingFinderComponent} from '../../drawing/drawing-finder/drawing-finder.component';
-import {Operation} from '../../operation/operation.model';
+import {TechnologyCardFinderComponent, TechnologyCard} from '../../technology-card';
+import {DrawingFinderComponent} from '../../drawing';
+import {Operation} from '../../operation';
 import {Cooperation} from '../../cooperation/cooperation.model';
+import {NgForm} from '@angular/forms';
 
 @Component({
     selector: 'new-estimation',
@@ -50,6 +48,8 @@ export class NewEstimationComponent implements OnInit, OnDestroy {
     private searchingUnit = false;
     hideSearchingWhenUnsubscribed = new Observable(() => () => this.searchingUnit = false);
     searchFeild: boolean;
+    backButtonClicked: boolean = false;
+    @ViewChild('editForm') editForm;
 
 
     currencyMaskOpt: CurrencyMaskConfig;
@@ -166,6 +166,7 @@ export class NewEstimationComponent implements OnInit, OnDestroy {
     }
 
     previousState() {
+        this.backButtonClicked=true;
         window.history.back();
     }
 
@@ -202,8 +203,9 @@ export class NewEstimationComponent implements OnInit, OnDestroy {
 
     private onSaveSuccess(result: Estimation) {
         this.eventManager.broadcast({name: 'estimationListModification', content: 'OK'});
-        this.isSaving = false;
         this.previousState();
+        // this.isSaving = false;
+
         //      this.router.navigate()
         // this.router.navigate(['estimation']);
         // this.activeModal.dismiss(result);
@@ -401,6 +403,12 @@ export class NewEstimationComponent implements OnInit, OnDestroy {
             this.estimation.materialType = technologyCard.materialType;
 
         }
+        if (!this.estimation.mass || this.estimation.mass == null) {
+            this.estimation.mass = technologyCard.mass;
+
+        }
+
+
         for (let operation of technologyCard.operations) {
             let newOperation = new Operation();
             newOperation.description = operation.description;
@@ -435,5 +443,15 @@ export class NewEstimationComponent implements OnInit, OnDestroy {
 
     clonePriceFromSummary() {
         this.estimation.estimatedCost = this.calculateTotal() + this.calculateDiscount();
+    }
+
+    hasChanges(): boolean {
+
+        if (this.isSaving) {
+            return false;
+        }
+        return this.editForm.dirty
+
+
     }
 }

@@ -3,7 +3,10 @@ package eu.canpack.fip.bo.pdf;
 import com.lowagie.text.*;
 import com.lowagie.text.Font;
 import com.lowagie.text.Image;
-import com.lowagie.text.pdf.*;
+import com.lowagie.text.pdf.BaseFont;
+import com.lowagie.text.pdf.PdfPCell;
+import com.lowagie.text.pdf.PdfPTable;
+import com.lowagie.text.pdf.PdfWriter;
 import eu.canpack.fip.bo.estimation.Estimation;
 import eu.canpack.fip.bo.operation.Operation;
 import org.slf4j.Logger;
@@ -16,7 +19,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.time.LocalDate;
-import java.util.Collections;
 import java.util.Comparator;
 
 import static eu.canpack.fip.bo.pdf.PdfUtil.formatDate;
@@ -127,7 +129,7 @@ public class TechnologyCardPdfCreator {
         table.addCell(createValue2Cell(estimation.getItemName()));
 
         table.addCell(createLabelCell("Ilość:"));
-        table.addCell(createValue2Cell(String.valueOf(estimation.getAmount())));
+        table.addCell(createValue2Cell(String.valueOf(estimation.getAmount())+" SZT"));
 
         table.addCell(createLabelCell("Materiał:"));
 
@@ -136,7 +138,7 @@ public class TechnologyCardPdfCreator {
             materialSb.append(estimation.getMaterial());
         }
         if(estimation.getMaterialType()!=null){
-            materialSb.append(" "+estimation.getMaterialType());
+            materialSb.append(", gatunek: "+estimation.getMaterialType());
         }
         table.addCell(createValue2Cell(materialSb.toString()));
 
@@ -149,7 +151,6 @@ public class TechnologyCardPdfCreator {
         } else {
             table.addCell(createValue2Cell(""));
         }
-
 
         table.addCell(createLabelCell("Wydano do prod.:"));
         table.addCell(createValue2Cell(formatDate(LocalDate.now())));

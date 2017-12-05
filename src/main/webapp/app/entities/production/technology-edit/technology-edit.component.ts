@@ -391,6 +391,12 @@ export class TechnologyEditComponent implements OnInit, OnDestroy {
             this.estimation.materialType = technologyCard.materialType;
 
         }
+
+        if (!this.estimation.mass || this.estimation.mass == null) {
+            this.estimation.mass = technologyCard.mass;
+
+        }
+
         for (let operation of technologyCard.operations) {
             let newOperation = new Operation();
             newOperation.description = operation.description;

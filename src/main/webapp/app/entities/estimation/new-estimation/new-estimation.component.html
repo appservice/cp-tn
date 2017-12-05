@@ -10,7 +10,7 @@
            [attr.aria-expanded]="!isCollapsed" aria-controls="collapseExample">
             <span *ngIf="isCollapsed" class="fa fa-expand"></span><span *ngIf="!isCollapsed"
                                                                         class="fa fa-compress"></span>
-        </a>
+        </a> <span style="margin-left: 20px" class="text-danger" *ngIf="editForm.dirty">* istnieją niezapisane zmiany</span>
         <div [ngbCollapse]="isCollapsed" id="collapseExample">
             <div class="row" style="margin-top: 10px">
                 <div class="col-md-4">

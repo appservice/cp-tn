@@ -154,11 +154,11 @@
 
             <button type="button" class="btn btn-outline-danger" (click)="previousState()"><span class="fa fa-arrow-left"></span> Powrót</button>
 
-            <button class="btn btn-outline-primary" (click)="sendToProduction();" *ngIf="order.canEdit"><!--order.orderStatus =='WORKING_COPY' || order.orderStatus==null-->
+            <button type="button" class="btn btn-outline-primary" (click)="sendToProduction();" *ngIf="order.canEdit"><!--order.orderStatus =='WORKING_COPY' || order.orderStatus==null-->
                 <span class="fa fa-play"></span> Wyślij do realizacji
             </button>
 
-            <button class="btn btn-outline-primary" (click)="saveAsAdmin();" *ngIf="order.canEditAsAdmin"
+            <button type="button" class="btn btn-outline-primary" (click)="saveAsAdmin();" *ngIf="order.canEditAsAdmin"
                     [disabled]="editForm.form.invalid || isSaving  || order.estimations.length===0"> <!--|| !isDrawingUpload-->
                 <span class="fa fa-save"></span> Zapisz zmiany jako admin
             </button>

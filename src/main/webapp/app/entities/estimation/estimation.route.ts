@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {ActivatedRouteSnapshot, Resolve, RouterStateSnapshot, Routes} from '@angular/router';
+import {ActivatedRouteSnapshot, Resolve, Router, RouterStateSnapshot, Routes} from '@angular/router';
 
 import {UserRouteAccessService} from '../../shared';
 import {JhiPaginationUtil} from 'ng-jhipster';
@@ -12,7 +12,8 @@ import {NewEstimationComponent} from './new-estimation/new-estimation.component'
 @Injectable()
 export class EstimationResolvePagingParams implements Resolve<any> {
 
-    constructor(private paginationUtil: JhiPaginationUtil) {}
+    constructor(private paginationUtil: JhiPaginationUtil) {
+    }
 
     resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
         const page = route.queryParams['page'] ? route.queryParams['page'] : '1';
@@ -21,7 +22,34 @@ export class EstimationResolvePagingParams implements Resolve<any> {
             page: this.paginationUtil.parsePage(page),
             predicate: this.paginationUtil.parsePredicate(sort),
             ascending: this.paginationUtil.parseAscending(sort)
-      };
+        };
+    }
+}
+
+import {CanDeactivate} from '@angular/router';
+
+@Injectable()
+export class ConfirmDeactivateGuard implements CanDeactivate<NewEstimationComponent> {
+    constructor(private router: Router) {
+
+    }
+
+    canDeactivate(target: NewEstimationComponent) {
+        if (target.hasChanges()) {
+            let canChangeState = window.confirm('Czy chcesz wyjść z tej strony nie zachowując wprowadzonych zmian?');
+            if (canChangeState == false && target.backButtonClicked) {
+                const destinationLink = window.location.href;
+                setTimeout(() => {
+                    window.history.replaceState({}, '', destinationLink);
+                    window.history.pushState({}, '', this.router.url);
+                });
+                target.backButtonClicked=false;
+                return false;
+                // this.router.navigate([this.router.url]);
+            }
+            return canChangeState;
+        }
+        return true;
     }
 }
 
@@ -53,7 +81,8 @@ export const estimationRoute: Routes = [
             authorities: ['ROLE_USER'],
             pageTitle: 'tnApp.estimation.home.title'
         },
-        canActivate: [UserRouteAccessService]
+        canActivate: [UserRouteAccessService],
+        canDeactivate: [ConfirmDeactivateGuard]
     },
     {
         path: 'estimation/:id/edit',
@@ -62,7 +91,9 @@ export const estimationRoute: Routes = [
             authorities: ['ROLE_USER'],
             pageTitle: 'tnApp.estimation.home.title'
         },
-        canActivate: [UserRouteAccessService]
+        canActivate: [UserRouteAccessService],
+        canDeactivate: [ConfirmDeactivateGuard]
+
     },
 
 ];
@@ -99,3 +130,6 @@ export const estimationPopupRoute: Routes = [/*
         outlet: 'popup'
     }
 ];
+
+
+

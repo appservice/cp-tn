@@ -384,6 +384,12 @@ export class EmergencyOrderTechnologyEditComponent implements OnInit, OnDestroy 
             this.estimation.materialType = technologyCard.materialType;
 
         }
+
+        if (!this.estimation.mass || this.estimation.mass == null) {
+            this.estimation.mass = technologyCard.mass;
+
+        }
+
         for (let operation of technologyCard.operations) {
             let newOperation = new Operation();
             newOperation.description = operation.description;
@@ -397,9 +403,9 @@ export class EmergencyOrderTechnologyEditComponent implements OnInit, OnDestroy 
 
         }
         this.calculateOperationsTotalCost();
+        this.calculateSumOfWorkingHours();
 
     }
-
 
 
     openDrawingCardModal() {
@@ -424,7 +430,7 @@ export class EmergencyOrderTechnologyEditComponent implements OnInit, OnDestroy 
     }
 
     calculateSumOfWorkingHours() {
-        this.sumOfWorkingHours=0;
+        this.sumOfWorkingHours = 0;
         for (let operation of this.estimation.operations) {
             this.sumOfWorkingHours = this.sumOfWorkingHours + operation.estimatedTime;
 
