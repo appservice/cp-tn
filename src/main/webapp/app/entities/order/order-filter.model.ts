@@ -8,9 +8,10 @@ export class OrderFilter {
                 public internalNumber?: string,
                 public orderStatus?: string,
                 public clientName?: string,
-                public  validFrom?:NgbDateStruct,// IMyDateModel,
-                public  validTo?: NgbDateStruct,// IMyDateModel//NgbDateStruct,
-                ) {
+                public  validFrom?: NgbDateStruct,// IMyDateModel,
+                public  validTo?: NgbDateStruct,
+                public title ?: string,// IMyDateModel//NgbDateStruct,
+    ) {
 
 
     }

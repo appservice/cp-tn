@@ -77,6 +77,8 @@ currentAccount: any;
         urlSearchParams.append('orderStatus.equals', this.orderFilter.orderStatus);
         urlSearchParams.append('createdAt.greaterOrEqualThan', this.orderFilter.getValidFromString());
         urlSearchParams.append('createdAt.lessOrEqualThan', this.orderFilter.getValidToString());
+        urlSearchParams.append('title.contains', this.orderFilter.title);
+
         this.orderService.archivedOrders({
             page: this.page - 1,
             size: this.itemsPerPage,
@@ -179,6 +181,7 @@ currentAccount: any;
         this.orderFilter.clientName = null;
         this.orderFilter.validFrom = null
         this.orderFilter.validTo = null;
+        this.orderFilter.title=null;
         this.loadAll();
     }
     onEnterClickFilter(event: any) {

@@ -87,7 +87,5 @@ export class TechnologyCardFinderComponent implements OnInit {
         }
     }
 
-    // private onError(error) {
-    //     this.alertService.error(error.message, null, null);
-    // }
+
 }

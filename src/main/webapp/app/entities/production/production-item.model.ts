@@ -19,7 +19,10 @@ export class ProductionItem {
                 public showOperationsDetail ?: boolean,
                 public estimatedRealizationDate ?: any,
                 public receiver ?: UserShortDTO,
-                public deliveredAt ?: any,) {
+                public deliveredAt ?: any,
+                public productionStartDateTime ?: any,
+                public createdAt ?: any,
+                ) {
     }
 
 }

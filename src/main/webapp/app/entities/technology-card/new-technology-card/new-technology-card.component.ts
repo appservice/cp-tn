@@ -27,6 +27,8 @@ import {DrawingFinderComponent} from '../../drawing/drawing-finder/drawing-finde
 export class NewTechnologyCardComponent implements OnInit, OnDestroy {
 
     private sumOfWorkingHours: number = 0;
+    private commercialPartsTotalCost: number = 0;
+    private cooperationTotalCost: number = 0;
 
 
     technologyCard: TechnologyCard;
@@ -59,8 +61,12 @@ export class NewTechnologyCardComponent implements OnInit, OnDestroy {
                 private activatedRoute: ActivatedRoute,) {
         this.technologyCard = new TechnologyCard();
         this.technologyCard.operations = [];
+        this.technologyCard.commercialParts = [];
+        this.technologyCard.cooperationList = [];
 
     }
+
+
 
     ngOnInit() {
         this.isSaving = false;
@@ -104,6 +110,9 @@ export class NewTechnologyCardComponent implements OnInit, OnDestroy {
             allowZero: false,
             precision: 2
         };
+
+        this.calculateCommercialPartsTotalCost();
+        this.calculateCooperationTotalCost();
     }
 
     private onError(error) {
@@ -123,11 +132,39 @@ export class NewTechnologyCardComponent implements OnInit, OnDestroy {
     }
 
 
+
+    addCommercialPart() {
+        this.technologyCard.commercialParts.push({
+            id: null
+
+        });
+    }
+
+    addCooperation() {
+        this.technologyCard.cooperationList.push({
+            id: null,
+            amount: 1,
+
+        });
+    }
+
     onDeleteRow(index: number) {
         console.log(index);
         this.technologyCard.operations.splice(index, 1);
+        this.calculateTotalWorkingHours();
     }
 
+    onDeleteCommercialPart(index: number) {
+        console.log(index);
+        this.technologyCard.commercialParts.splice(index, 1);
+        this.calculateCommercialPartsTotalCost();
+    }
+
+    onDeleteCooperation(index: number) {
+        console.log(index);
+        this.technologyCard.cooperationList.splice(index, 1);
+        this.calculateCooperationTotalCost();
+    }
 
     onSaveBtnClick() {
 
@@ -185,6 +222,8 @@ export class NewTechnologyCardComponent implements OnInit, OnDestroy {
         this.technologyCardService.find(id).subscribe((technologyCard) => {
             this.technologyCard = technologyCard;
             this.calculateTotalWorkingHours();
+            this.calculateCommercialPartsTotalCost();
+            this.calculateCooperationTotalCost();
 
 
         });
@@ -281,5 +320,24 @@ export class NewTechnologyCardComponent implements OnInit, OnDestroy {
             }
         }
     }
+
+    calculateCommercialPartsTotalCost() {
+        this.commercialPartsTotalCost = 0;
+        for (const commercialPart of this.technologyCard.commercialParts) {
+            if (commercialPart.amount != null && commercialPart.price != null) {
+                this.commercialPartsTotalCost = this.commercialPartsTotalCost + commercialPart.amount * commercialPart.price;
+            }
+        }
+    }
+
+    calculateCooperationTotalCost() {
+        this.cooperationTotalCost = 0;
+        for (const cooperation of this.technologyCard.cooperationList) {
+            if (cooperation.amount != null && cooperation.price != null) {
+                this.cooperationTotalCost = this.cooperationTotalCost + cooperation.amount * cooperation.price;
+            }
+        }
+    }
+
 
 }

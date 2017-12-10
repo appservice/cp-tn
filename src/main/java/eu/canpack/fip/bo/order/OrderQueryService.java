@@ -2,6 +2,8 @@ package eu.canpack.fip.bo.order;
 
 import eu.canpack.fip.bo.client.Client;
 import eu.canpack.fip.bo.client.Client_;
+import eu.canpack.fip.bo.estimation.Estimation;
+import eu.canpack.fip.bo.estimation.Estimation_;
 import eu.canpack.fip.bo.order.dto.OrderCriteria;
 import eu.canpack.fip.bo.order.dto.OrderListDTO;
 import eu.canpack.fip.bo.order.dto.OrderMapper;
@@ -19,8 +21,10 @@ import org.springframework.data.jpa.domain.Specifications;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.criteria.Expression;
 import javax.persistence.criteria.Join;
 import javax.persistence.criteria.JoinType;
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -117,8 +121,8 @@ public class OrderQueryService extends QueryService<Order> {
             if (criteria.getOrderType() != null) {
                 specification = specification.and(buildSpecification(criteria.getOrderType(), eu.canpack.fip.bo.order.Order_.orderType));
             }
-            if (criteria.getName() != null) {
-                specification = specification.and(buildStringSpecification(criteria.getName(), eu.canpack.fip.bo.order.Order_.name));
+            if (criteria.getTitle() != null) {
+                specification = specification.and(buildStringSpecification(criteria.getTitle(), eu.canpack.fip.bo.order.Order_.name));
             }
             if (criteria.getClientName() != null) {
 //                log.debug("drawingNumber {}",criteria.getDrawingNumber().getContains());
@@ -129,6 +133,25 @@ public class OrderQueryService extends QueryService<Order> {
 
 
                 };
+                specification = specification.and(spec);
+
+            }
+            //todo
+            if (criteria.getDrawingNumber() != null) {
+//                log.debug("drawingNumber {}",criteria.getDrawingNumber().getContains());
+                Specification<Order> spec = (root, query, builder) -> {
+                    Join<Order, Estimation> joinToEstimation = root.join(eu.canpack.fip.bo.order.Order_.estimations, JoinType.INNER);
+
+//                    return builder.and(builder.isMember( builder.upper(joinToEstimation.get(Estimation_.itemNumber)), "%" + criteria.getDrawingNumber().getContains().trim().toUpperCase() + "%");
+//                        ;
+//                    Expression<List<Estimation>> estimations = root.get(eu.canpack.fip.bo.order.Order_.estimations);
+//                    return builder.in(criteria.getDrawingNumber().getContains(),estimations.)
+                    query.distinct(true);
+                    return builder.like(builder.upper(joinToEstimation.get(Estimation_.itemNumber))
+                        , "%" + criteria.getDrawingNumber().getContains().toUpperCase() + "%");
+
+                };
+
                 specification = specification.and(spec);
 
             }
@@ -151,8 +174,8 @@ public class OrderQueryService extends QueryService<Order> {
         User user = userService.getLoggedUser();
         Client client = user.getClient();
         if (client != null) {
-            log.debug("user client: {}",client);
-            if(criteria.getClientId()==null){
+            log.debug("user client: {}", client);
+            if (criteria.getClientId() == null) {
                 criteria.setClientId(new LongFilter());
             }
             criteria.getClientId().setEquals(client.getId());
@@ -164,8 +187,6 @@ public class OrderQueryService extends QueryService<Order> {
 
         return result.map(OrderMapper::toDto);
     }
-
-
 
 
 }

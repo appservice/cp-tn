@@ -63,7 +63,9 @@ public class OrderCriteria implements Serializable {
 
     private OrderTypeFilter orderType;
 
-    private StringFilter name;
+    private StringFilter title;
+
+    private StringFilter drawingNumber;
 
 //
 //    private StringFilter test;
@@ -80,6 +82,15 @@ public class OrderCriteria implements Serializable {
 //
 //    public EntTestCriteria() {
 //    }
+
+
+    public StringFilter getDrawingNumber() {
+        return drawingNumber;
+    }
+
+    public void setDrawingNumber(StringFilter drawingNumber) {
+        this.drawingNumber = drawingNumber;
+    }
 
     public LongFilter getId() {
         return id;
@@ -171,12 +182,12 @@ public class OrderCriteria implements Serializable {
         this.orderType = orderType;
     }
 
-    public StringFilter getName() {
-        return name;
+    public StringFilter getTitle() {
+        return title;
     }
 
-    public void setName(StringFilter name) {
-        this.name = name;
+    public void setTitle(StringFilter title) {
+        this.title = title;
     }
 
     @Override
@@ -187,7 +198,7 @@ public class OrderCriteria implements Serializable {
                 (createdAt != null ? "createdAt=" + createdAt + ", " : "") +
                 (createdById != null ? "createdById=" + createdById + ", " : "") +
                 (createdByFirstName != null ? "createdByFirstName=" + createdByFirstName + ", " : "") +
-                (name != null ? "title=" + name + ", " : "") +
+                (title != null ? "title=" + title + ", " : "") +
                 (orderType != null ? "orderType=" + orderType + ", " : "") +
                 (orderStatus != null ? "orderStatus=" + orderStatus + ", " : "") +
                 (createdByLastName != null ? "createdByLastName=" + createdByLastName + ", " : "") +

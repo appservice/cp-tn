@@ -101,11 +101,16 @@
                                     </div>
                                 </div>
                                 <!-- currencyMask  -->
-                                <div class="col-md-3"><label for="mass_field">Masa [kg]</label>
+                                <div class="col-md-2"><label>Cena materiału [PLN]/SZT</label>
+                                    <input class="form-control" name="material_price" [(ngModel)]="technologyCard.materialPrice"
+                                           currencyMask
+                                           [options]="currencyMaskOpt"/>
+                                </div>
+                                <div class="col-md-2"><label for="mass_field">Masa [kg]</label>
                                     <input name="weight" id="mass_field" class="form-control" type="number"
                                            [(ngModel)]="technologyCard.mass"/>
                                 </div>
-                                <div class="col-md-3"><label for="amount_field">Ilość [SZT]</label>
+                                <div class="col-md-2"><label for="amount_field">Ilość [SZT]</label>
                                     <input type="text" id="amount_field" class="form-control" name="amount"
                                            [(ngModel)]="technologyCard.amount">
                                 </div>
@@ -205,6 +210,167 @@
                         Dodaj operację
                     </button>
 
+                </ng-template>
+            </ngb-tab>
+            <ngb-tab title="Części handlowe ({{technologyCard.commercialParts.length}})" id="2">
+                <ng-template ngbTabContent>
+
+                    <table class="table table-striped">
+                        <thead>
+
+
+                        <tr>
+                            <th>Poz.</th>
+                            <!--<th>Id:</th>-->
+                            <th>Nazwa:</th>
+                            <th>Ilość:</th>
+                            <th>Jedn.:</th>
+                            <th>Cena [PLN]</th>
+                            <th>Wartość [PLN]</th>
+                            <!--                <th>Rzeczywisty czas wyk.&nbsp;[h]:</th>
+                                            <th>Koszt [PLN]</th>-->
+
+
+                            <th></th>
+
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr *ngFor="let commercialPart of technologyCard.commercialParts;let rowIndex=index">
+                            <td><input class="form-control" value="{{(rowIndex+1)}}" disabled style="width: 50px;"/></td>
+
+                            <td><input type="text" class="form-control" [(ngModel)]="commercialPart.name"
+                                       name="commecialPart_name_{{rowIndex}}" required></td>
+                            <td><input type="number" class="form-control" [(ngModel)]="commercialPart.amount"
+                                       name="commecialpart_amount_{{rowIndex}}"
+                                       (ngModelChange)="calculateCommercialPartsTotalCost()" required/></td>
+                            <td>
+                                <input type="text" class="form-control" [(ngModel)]="commercialPart.unit"
+                                       [ngbTypeahead]="searchUnit" name="commercialpart_unit_{{rowIndex}}"
+                                       [inputFormatter]="formatter"
+                                       [resultFormatter]="resultFormatter"
+                                       [editable]="false" (selectItem)="onSelectItem($event)" required #comercialpart_unit="ngModel"/>
+                                <div [hidden]="!(comercialpart_unit?.dirty && comercialpart_unit?.invalid)">
+                                    <small class="form-text text-danger"
+                                           [hidden]="!comercialpart_unit?.errors?.required"
+                                           jhiTranslate="entity.validation.required">
+                                        This field is required.
+                                    </small>
+                                </div>
+                            </td>
+                            <td><input currencyMask [options]="currencyMaskOpt" class="form-control"
+                                       [(ngModel)]="commercialPart.price" name="commercialPart_price_{{rowIndex}}"
+                                       (ngModelChange)="calculateCommercialPartsTotalCost()" required/></td>
+                            <td>
+
+                                <input class="form-control"
+                                       value="{{(commercialPart.amount*commercialPart.price)|currency:'PLN':false}} "
+                                       disabled
+                                       *ngIf="commercialPart.amount!=null && commercialPart.price!=null;else other_content"/>
+
+                                <ng-template #other_content><input class="form-control"
+
+                                                                   disabled value=""/></ng-template>
+                            </td>
+
+                            <td>
+                                <button type="button" class="btn" (click)="onDeleteCommercialPart(rowIndex);">x</button>
+                            </td>
+                        </tr>
+
+
+                        </tbody>
+                        <tfoot>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td class="text-right strong">Suma:</td>
+                            <td class="strong font-weight-bold">{{commercialPartsTotalCost|currency:'PLN':false}}</td>
+                        </tr>
+                        </tfoot>
+
+                    </table>
+                    <button type="button" class="btn" (click)="addCommercialPart();" style="width: 200px"><i
+                        class="fa fa-plus"></i>
+                        Dodaj
+                    </button>
+                </ng-template>
+            </ngb-tab>
+            <ngb-tab title="Kooperacja ({{technologyCard.cooperationList.length}})" id="3">
+                <ng-template ngbTabContent>
+
+                    <table class="table table-striped">
+                        <thead>
+
+                        <tr>
+                            <th style="width: 60px;">Poz.</th>
+                            <th style="width: 300px">Kontrahent:</th>
+                            <th>Opis operacji:</th>
+                            <th style="width: 100px">Ilość:</th>
+                            <th style="width: 100px">Jedn.:</th>
+                            <th style="width: 150px">Cena [PLN]</th>
+                            <th style="width: 150px">Wartość [PLN]</th>
+                            <th style="width: 60px;"></th>
+
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr *ngFor="let cooperation of technologyCard.cooperationList;let rowIndex=index">
+                            <td><input class="form-control" value="{{(rowIndex+1)}}" disabled style="width: 50px;"/></td>
+
+                            <td><input type="text" class="form-control" [(ngModel)]="cooperation.counterparty"
+                                       name="cooperation_counterparty_{{rowIndex}}" required></td>
+
+                            <td><input type="text" class="form-control" [(ngModel)]="cooperation.name"
+                                       name="cooperation_name_{{rowIndex}}" required></td>
+                            <td><input type="number" class="form-control" [(ngModel)]="cooperation.amount"
+                                       name="cooperation_amount_{{rowIndex}}"
+                                       (ngModelChange)="calculateCooperationTotalCost()" required/></td>
+                            <td>
+                                <input type="text" class="form-control" value="SZT" disabled/>
+
+                            </td>
+                            <td>
+
+                                <input currencyMask [options]="currencyMaskOpt" class="form-control"
+                                       [(ngModel)]="cooperation.price" name="cooperation_price_{{rowIndex}}"
+                                       (ngModelChange)="calculateCooperationTotalCost()" required/></td>
+                            <td>
+
+                                <input class="form-control"
+                                       value="{{(cooperation.amount*cooperation.price)|currency:'PLN':false}} "
+                                       disabled
+                                       *ngIf="cooperation.amount!=null && cooperation.price!=null;else other_content"/>
+
+                                <ng-template #other_content><input class="form-control" disabled value=""/></ng-template>
+                            </td>
+
+                            <td style="width: 60px">
+                                <button type="button" class="btn btn-outline-dark" (click)="onDeleteCooperation(rowIndex);">x</button>
+                            </td>
+                        </tr>
+
+
+                        </tbody>
+                        <tfoot>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td class="text-right strong">Suma:</td>
+                            <td class="strong font-weight-bold">{{cooperationTotalCost|currency:'PLN':false}}</td>
+                        </tr>
+                        </tfoot>
+
+                    </table>
+                    <button type="button" class="btn" (click)="addCooperation();" style="width: 200px"><i
+                        class="fa fa-plus"></i>
+                        Dodaj
+                    </button>
                 </ng-template>
             </ngb-tab>
         </ngb-tabset>

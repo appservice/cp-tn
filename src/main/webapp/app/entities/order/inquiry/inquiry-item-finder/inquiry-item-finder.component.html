@@ -40,7 +40,7 @@
         <!--<div class="row" style="margin-top: 10px">-->
         <div class="col-md-5">
             <label>&nbsp;</label>
-            <button class="btn btn-outline-dark" type="button" (click)="loadAll()"><span
+            <button class="btn btn-outline-dark" type="button" (click)="findByFilter()"><span
                 class="fa fa-search"></span> Filtruj
             </button>
             <button class="btn btn-outline-dark" type="button" (click)="clearFilterAndLoadAll()"><span
@@ -56,8 +56,8 @@
         <tr jhiSort [(predicate)]="predicate" [(ascending)]="reverse" [callback]="transition.bind(this)">
             <th jhiSortBy="id">Id <span class="fa fa-sort"></span></th>
             <th>Zlecenie</th>
-            <th jhiSortBy="itemName">Nazwa <span class="fa fa-sort"></span></th>
-            <th jhiSortBy="itemNumber">Nr rys. <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="itemName"><span>Nazwa</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="itemNumber"><span>Nr rys.</span> <span class="fa fa-sort"></span></th>
             <th>Ilość</th>
             <th>Jedn.</th>
             <th style="width: 180px">Prop. data realiz.</th>

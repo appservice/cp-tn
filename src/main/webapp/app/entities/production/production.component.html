@@ -64,6 +64,7 @@
                 <th jhiSortBy="amount"><span>Ilość [SZT]</span> <span class="fa fa-sort"></span></th>
                 <th jhiSortBy="order.internalNumber"><span jhiTranslate="tnApp.estimation.order">Order</span> <span
                     class="fa fa-sort"></span></th>
+                <th jhiSortBy="productionStartDateTime"><span>Data przekazania do prod.</span> <span class="fa fa-sort"></span></th>
                 <th jhiSortBy="estimatedRealizationDate"><span>Planowana data realiz.</span> <span class="fa fa-sort"></span></th>
                 <th>Ukończono [%]</th>
                 <th style="width: 250px">Stanowsko aktualnej operacji</th>
@@ -84,6 +85,7 @@
                     <a *ngIf="productionItem.showProductionOrderLink && productionItem.showProductionOrderLink==true" [routerLink]="['/orders-in-production/'+productionItem.orderId+'/detail']">{{productionItem.orderNumber}}</a>
                     <span *ngIf="!productionItem.showProductionOrderLink || productionItem.showProductionOrderLink==false">{{productionItem.orderNumber}}</span>
                 </td>
+                <td>{{productionItem.productionStartDateTime|date:'dd-MM-yyyy HH:mm'}}</td>
                 <td>{{productionItem.estimatedRealizationDate|date:'dd-MM-yyyy'}}</td>
                 <td style="width: 300px;">
                     <a [routerLink]="['/', { outlets: { popup: 'production/'+ productionItem.estimationId+ '/showOperations'} }]" replaceUrl="true"

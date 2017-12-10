@@ -1,6 +1,8 @@
 package eu.canpack.fip.bo.technologyCard;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import eu.canpack.fip.bo.commercialPart.CommercialPart;
+import eu.canpack.fip.bo.cooperation.Cooperation;
 import eu.canpack.fip.bo.drawing.Drawing;
 import eu.canpack.fip.bo.operation.Operation;
 import eu.canpack.fip.domain.User;
@@ -11,6 +13,7 @@ import org.springframework.data.elasticsearch.annotations.Document;
 import javax.persistence.*;
 import javax.validation.constraints.*;
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.time.ZonedDateTime;
 import java.util.*;
 
@@ -39,6 +42,11 @@ public class TechnologyCard implements Serializable {
     @Column(name = "material_type", length = 256, nullable = false)
     private String materialType;
 
+
+    @DecimalMin(value = "0")
+    @Column(name = "material_price", precision = 10, scale = 2)
+    private BigDecimal materialPrice;
+
     @Column(name = "mass")
     private Double mass;
 
@@ -60,6 +68,16 @@ public class TechnologyCard implements Serializable {
     @JoinColumn(name = "technology_card_id")
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private List<Operation> operations = new ArrayList<>();
+
+    @OneToMany(cascade = CascadeType.ALL)//(mappedBy = "technologyCard")
+    @JoinColumn(name = "technology_card_id")
+    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+    private List<CommercialPart> commercialParts = new ArrayList<>();
+
+    @OneToMany(cascade = CascadeType.ALL)//(mappedBy = "technologyCard")
+    @JoinColumn(name = "technology_card_id")
+    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+    private List<Cooperation> cooperationList = new ArrayList<>();
 
     @ManyToOne
 //    @JoinColumn(name = "user_id")
@@ -173,6 +191,13 @@ public class TechnologyCard implements Serializable {
         return this;
     }
 
+    public BigDecimal getMaterialPrice() {
+        return materialPrice;
+    }
+
+    public void setMaterialPrice(BigDecimal materialPrice) {
+        this.materialPrice = materialPrice;
+    }
 
     //    public TechnologyCard addOperations(Operation operation) {
 //        this.operations.add(operation);
@@ -213,6 +238,22 @@ public class TechnologyCard implements Serializable {
         return this;
     }
 
+
+    public List<CommercialPart> getCommercialParts() {
+        return commercialParts;
+    }
+
+    public void setCommercialParts(List<CommercialPart> commercialParts) {
+        this.commercialParts = commercialParts;
+    }
+
+    public List<Cooperation> getCooperationList() {
+        return cooperationList;
+    }
+
+    public void setCooperationList(List<Cooperation> cooperationList) {
+        this.cooperationList = cooperationList;
+    }
 
     @Override
     public boolean equals(Object o) {

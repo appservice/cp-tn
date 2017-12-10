@@ -390,6 +390,11 @@ export class EmergencyOrderTechnologyEditComponent implements OnInit, OnDestroy 
 
         }
 
+        if (!this.estimation.materialPrice || this.estimation.materialPrice == null) {
+            this.estimation.materialPrice = technologyCard.materialPrice;
+
+        }
+
         for (let operation of technologyCard.operations) {
             let newOperation = new Operation();
             newOperation.description = operation.description;
@@ -402,8 +407,27 @@ export class EmergencyOrderTechnologyEditComponent implements OnInit, OnDestroy 
             this.estimation.operations.push(newOperation);
 
         }
+
+        for (let commercialPart of technologyCard.commercialParts){
+            commercialPart.id=null;
+            this.estimation.commercialParts.push(commercialPart);
+
+        }
+
+
+        for (let cooperation of technologyCard.cooperationList){
+            cooperation.id=null;
+            this.estimation.cooperationList.push(cooperation);
+
+        }
+       // this.editForm.control.markAsDirty();
+
         this.calculateOperationsTotalCost();
+        this.calculateCooperationTotalCost();
+        this.calculateCommercialPartsTotalCost();
         this.calculateSumOfWorkingHours();
+        this.calculateTotal();
+
 
     }
 

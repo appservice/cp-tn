@@ -1,6 +1,10 @@
 package eu.canpack.fip.bo.technologyCard.mapper;
 
 
+import eu.canpack.fip.bo.commercialPart.CommercialPart;
+import eu.canpack.fip.bo.commercialPart.CommercialPartDTO;
+import eu.canpack.fip.bo.cooperation.Cooperation;
+import eu.canpack.fip.bo.cooperation.dto.CooperationDTO;
 import eu.canpack.fip.bo.drawing.dto.DrawingDTO;
 import eu.canpack.fip.bo.operation.Operation;
 import eu.canpack.fip.bo.operation.dto.OperationDTO;
@@ -8,6 +12,7 @@ import eu.canpack.fip.bo.operation.dto.OperationDTO;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Objects;
@@ -37,13 +42,21 @@ public class TechnologyCardDTO implements Serializable {
 
     private DrawingDTO drawing;
 
+    private BigDecimal materialPrice;
+
     private String drawingNumber;
 
     private List<OperationDTO> operations;
 
+    private List<CooperationDTO> cooperationList;
+
+    private List<CommercialPartDTO> commercialParts;
+
     private String createdByName;
 
     private Long createdById;
+
+
 
     public TechnologyCardDTO() {
     }
@@ -147,6 +160,30 @@ public class TechnologyCardDTO implements Serializable {
         this.materialType = materialType;
     }
 
+    public List<CooperationDTO> getCooperationList() {
+        return cooperationList;
+    }
+
+    public void setCooperationList(List<CooperationDTO> cooperationList) {
+        this.cooperationList = cooperationList;
+    }
+
+    public List<CommercialPartDTO> getCommercialParts() {
+        return commercialParts;
+    }
+
+    public void setCommercialParts(List<CommercialPartDTO> commercialParts) {
+        this.commercialParts = commercialParts;
+    }
+
+    public BigDecimal getMaterialPrice() {
+        return materialPrice;
+    }
+
+    public void setMaterialPrice(BigDecimal materialPrice) {
+        this.materialPrice = materialPrice;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -157,7 +194,7 @@ public class TechnologyCardDTO implements Serializable {
         }
 
         TechnologyCardDTO technologyCardListDTO = (TechnologyCardDTO) o;
-        if(technologyCardListDTO.getId() == null || getId() == null) {
+        if (technologyCardListDTO.getId() == null || getId() == null) {
             return false;
         }
         return Objects.equals(getId(), technologyCardListDTO.getId());
@@ -173,6 +210,7 @@ public class TechnologyCardDTO implements Serializable {
         return "TechnologyCardDTO{" +
             "id=" + id +
             ", material='" + material + '\'' +
+            ", materialType='" + materialType + '\'' +
             ", mass=" + mass +
             ", description='" + description + '\'' +
             ", createdAt=" + createdAt +
@@ -180,9 +218,10 @@ public class TechnologyCardDTO implements Serializable {
             ", drawing=" + drawing +
             ", drawingNumber='" + drawingNumber + '\'' +
             ", operations=" + operations +
+            ", cooperationList=" + cooperationList +
+            ", commercialParts=" + commercialParts +
             ", createdByName='" + createdByName + '\'' +
             ", createdById=" + createdById +
-            ", materialType=" + materialType +
             '}';
     }
 }

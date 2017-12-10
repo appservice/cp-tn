@@ -2,11 +2,11 @@
     <h2>
         <span>Zlecenia do wyceny</span>
         <!--<button class="btn btn-primary float-right create-order" [routerLink]="['/new-order']">-->
-            <!--&lt;!&ndash;"['/', { outlets: { popup: ['order-new'] } }]">&ndash;&gt;-->
-            <!--<span class="fa fa-plus"></span>-->
-            <!--<span class="hidden-sm-down">-->
- <!--Zlecenia czekające na rozpoczęcie wyceny-->
-            <!--</span>-->
+        <!--&lt;!&ndash;"['/', { outlets: { popup: ['order-new'] } }]">&ndash;&gt;-->
+        <!--<span class="fa fa-plus"></span>-->
+        <!--<span class="hidden-sm-down">-->
+        <!--Zlecenia czekające na rozpoczęcie wyceny-->
+        <!--</span>-->
         <!--</button>-->
     </h2>
     <jhi-alert></jhi-alert>
@@ -35,10 +35,10 @@
                 <th jhiSortBy="internalNumber"><span jhiTranslate="tnApp.order.internalNumber">Internal Number</span>
                     <span class="fa fa-sort"></span></th>
 
-                <th jhiSortBy="orderType"><span jhiTranslate="tnApp.order.orderType">Order Type</span> <span
-                    class="fa fa-sort"></span></th>
                 <th jhiSortBy="name"><span jhiTranslate="tnApp.order.name">Name</span> <span class="fa fa-sort"></span>
                 </th>
+                <th jhiSortBy="createdBy.lastName"><span>Utworzył</span> <span class="fa fa-sort"></span></th>
+
                 <th jhiSortBy="createdAt"><span j>Data utworzenia</span> <span class="fa fa-sort"></span></th>
                 <!--<th jhiSortBy="closeDate"><span jhiTranslate="tnApp.order.closeDate">Close Date</span> <span class="fa fa-sort"></span></th>-->
                 <th jhiSortBy="orderStatus"><span jhiTranslate="tnApp.order.orderStatus">Order Status</span> <span
@@ -52,9 +52,10 @@
             <tr *ngFor="let order of orders ;trackBy: trackId">
                 <td><a [routerLink]="['../order', order.id ]">{{order.id}}</a></td>
                 <td><a [routerLink]="['../order', order.id ]">{{order.internalNumber}}</a></td>
-                <td jhiTranslate="{{'tnApp.OrderType.' + order.orderType}}">{{order.orderType}}</td>
                 <td>{{order.name}}</td>
-                <td>{{order.createdAt|date:'dd-MM-yyyy'}}</td>
+                <td style="min-width: 150px"><span *ngIf="order.createdBy.lastName!==order.createdBy.firstName">{{order.createdBy.firstName}} </span>{{order.createdBy.lastName}}
+                </td>
+                <td>{{order.createdAt|date:'dd-MM-yyyy HH:mm'}}</td>
                 <!--<td>{{order.closeDate | date:'mediumDate'}}</td>-->
                 <td jhiTranslate="{{'tnApp.OrderStatus.' + order.orderStatus}}">{{order.orderStatus}}</td>
                 <td>
@@ -64,13 +65,6 @@
                 </td>
                 <td class="text-right">
                     <div class="btn-group flex-btn-group-container">
-                        <!--<button type="submit"
-                                [routerLink]="['../order', order.id ]"
-                                class="btn btn-info btn-sm">
-                            <span class="fa fa-eye"></span>
-                            <span class="hidden-md-down" jhiTranslate="entity.action.view">View</span>
-                        </button>-->
-                        <!-- [routerLink]="['/', { outlets: { popup: 'order/'+ order.id + '/edit'} }]"-->
 
                         <button type="submit"
                                 [routerLink]="[ '../order', order.id ]"

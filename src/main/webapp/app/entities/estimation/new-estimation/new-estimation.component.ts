@@ -21,6 +21,7 @@ import {DrawingFinderComponent} from '../../drawing';
 import {Operation} from '../../operation';
 import {Cooperation} from '../../cooperation/cooperation.model';
 import {NgForm} from '@angular/forms';
+import {CommercialPart} from '../../commercial-part';
 
 @Component({
     selector: 'new-estimation',
@@ -49,7 +50,7 @@ export class NewEstimationComponent implements OnInit, OnDestroy {
     hideSearchingWhenUnsubscribed = new Observable(() => () => this.searchingUnit = false);
     searchFeild: boolean;
     backButtonClicked: boolean = false;
-    @ViewChild('editForm') editForm;
+    @ViewChild('editForm') editForm: NgForm;
 
 
     currencyMaskOpt: CurrencyMaskConfig;
@@ -388,7 +389,6 @@ export class NewEstimationComponent implements OnInit, OnDestroy {
         }, (reason: any) => {
             console.log(reason)
         });
-        // modalRef.componentInstance.name = 'World';
     }
 
     // promisetechnologyCard: Promise<TechnologyCard>;
@@ -407,6 +407,10 @@ export class NewEstimationComponent implements OnInit, OnDestroy {
             this.estimation.mass = technologyCard.mass;
 
         }
+        if (!this.estimation.materialPrice || this.estimation.materialPrice == null) {
+            this.estimation.materialPrice = technologyCard.materialPrice;
+
+        }
 
 
         for (let operation of technologyCard.operations) {
@@ -421,7 +425,26 @@ export class NewEstimationComponent implements OnInit, OnDestroy {
             this.estimation.operations.push(newOperation);
 
         }
+
+        for (let commercialPart of technologyCard.commercialParts){
+            commercialPart.id=null;
+            this.estimation.commercialParts.push(commercialPart);
+
+        }
+
+
+        for (let cooperation of technologyCard.cooperationList){
+            cooperation.id=null;
+            this.estimation.cooperationList.push(cooperation);
+
+        }
+        this.editForm.control.markAsDirty();
+
         this.calculateOperationsTotalCost();
+        this.calculateCooperationTotalCost();
+        this.calculateCommercialPartsTotalCost();
+        this.calculateTotal();
+
 
     }
 

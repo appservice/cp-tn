@@ -38,9 +38,6 @@ export class InquiryItemFinderComponent implements OnInit, OnDestroy {
     clickedRow: number;
 
 
-
-
-
     constructor(private estimationService: EstimationService,
                 private parseLinks: JhiParseLinks,
                 private alertService: JhiAlertService,
@@ -51,15 +48,19 @@ export class InquiryItemFinderComponent implements OnInit, OnDestroy {
                 private eventManager: JhiEventManager) {
         this.itemsPerPage = ITEMS_PER_PAGE;
         this.estimations = [];
+        this.estimationFilter = new EstimationFilter();
+
         this.routeData = this.activatedRoute.data.subscribe((data) => {
             console.log(data);
             this.page = data['pagingParams'].page;
             this.previousPage = data['pagingParams'].page;
             this.reverse = data['pagingParams'].ascending;
             this.predicate = data['pagingParams'].predicate;
-            this.estimationFilter = new EstimationFilter;
 
         });
+        this.estimationFilter.itemNumber = activatedRoute.snapshot.params['itemNumber'] ? activatedRoute.snapshot.params['itemNumber'] : '';
+        this.estimationFilter.itemName = activatedRoute.snapshot.params['itemName'] ? activatedRoute.snapshot.params['itemName'] : '';
+
 
     }
 
@@ -71,13 +72,16 @@ export class InquiryItemFinderComponent implements OnInit, OnDestroy {
 
     loadAll() {
 
-
         let urlSearchParams = new URLSearchParams();
 
         // urlSearchParams.append('clientName.contains', this.orderFilter.clientName);
+        if (this.estimationFilter.itemNumber && this.estimationFilter.itemNumber != null && this.estimationFilter.itemNumber !== '') {
+            urlSearchParams.append('itemNumber.contains', this.estimationFilter.itemNumber);
+        }
+        if (this.estimationFilter.itemName && this.estimationFilter.itemName != null && this.estimationFilter.itemName !== '') {
+            urlSearchParams.append('itemName.contains', this.estimationFilter.itemName);
 
-        urlSearchParams.append('itemNumber.contains', this.estimationFilter.itemNumber);
-        urlSearchParams.append('itemName.contains', this.estimationFilter.itemName);
+        }
         this.estimationService.findInquiryByCriteria({
             page: this.page - 1,
             size: this.itemsPerPage,
@@ -127,15 +131,27 @@ export class InquiryItemFinderComponent implements OnInit, OnDestroy {
     }
 
     clearFilterAndLoadAll(): void {
-        this.estimationFilter.itemName = null;
-        this.estimationFilter.clientName = null;
-        this.estimationFilter.itemNumber = null;
+        this.estimationFilter.itemName = '';
+        this.estimationFilter.clientName = '';
+        this.estimationFilter.itemNumber = '';
+        this.page = 1;
+        this.sort();
+        this.router.navigate(['/inquiry-item-finder'/*, {
+            page: this.page,
+            sort: this.predicate + ',' + (this.reverse ? 'asc' : 'desc')
+        }*/]);
         this.loadAll();
     }
 
+    findByFilter() {
+        this.search(this.estimationFilter);
+        this.loadAll();
+
+    }
 
     onEnterClickFilter(event: any) {
         if (event.keyCode == 13) {
+            this.search(this.estimationFilter);
             this.loadAll();
         }
 
@@ -154,6 +170,7 @@ export class InquiryItemFinderComponent implements OnInit, OnDestroy {
             this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
         });
     }
+
     private getDismissReason(reason: any): string {
         if (reason === ModalDismissReasons.ESC) {
             return 'by pressing ESC';
@@ -174,6 +191,22 @@ export class InquiryItemFinderComponent implements OnInit, OnDestroy {
             this.previousPage = page;
             this.transition();
         }
+    }
+
+    search(filter: EstimationFilter) {
+        if (filter) {
+
+
+            this.page = 0;
+            // this.currentSearch = query;
+            this.router.navigate(['/inquiry-item-finder', {
+                itemNumber: this.estimationFilter.itemNumber,
+                itemName: this.estimationFilter.itemName,
+                page: this.page,
+                sort: this.predicate + ',' + (this.reverse ? 'asc' : 'desc')
+            }]);
+        }
+        // this.loadAll();
     }
 
 }

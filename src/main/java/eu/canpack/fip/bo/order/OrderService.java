@@ -740,10 +740,14 @@ public class OrderService {
     public void moveOrderToProduction(Long id) {
         Order order = orderRepository.findOne(id);
         order.setOrderStatus(OrderStatus.IN_PRODUCTION);
+        ZonedDateTime now=ZonedDateTime.now();
+
 
         order.getEstimations()
-            .forEach(e -> e.setInProduction(true));
-        //  order.setEstimationFinsihDate(ZonedDateTime.now());
+            .forEach(e -> {
+                e.setInProduction(true);
+                e.setProductionStartDateTime(now);
+            });
 
         orderRepository.save(order);
     }

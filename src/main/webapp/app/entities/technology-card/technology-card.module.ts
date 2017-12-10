@@ -19,6 +19,7 @@ import {
 import {NewTechnologyCardComponent} from './new-technology-card/new-technology-card.component';
 import {TnComponentsModule} from '../../tn-components/tn-components.module';
 import {TechnologyCardFinderComponent} from './technology-card-finder/technology-card-finder.component';
+import {CurrencyMaskModule} from 'ng2-currency-mask';
 
 
 const ENTITY_STATES = [
@@ -31,6 +32,8 @@ const ENTITY_STATES = [
         TnSharedModule,
         RouterModule.forRoot(ENTITY_STATES, { useHash: true }),
         TnComponentsModule,
+        CurrencyMaskModule,
+
 
     ],
     declarations: [

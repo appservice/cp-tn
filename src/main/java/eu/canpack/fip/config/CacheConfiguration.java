@@ -97,6 +97,8 @@ public class CacheConfiguration {
 //            cm.createCache(eu.canpack.fip.domain.Drawing.class.getName(), jcacheConfiguration);
             cm.createCache(TechnologyCard.class.getName(), jcacheConfiguration);
             cm.createCache(TechnologyCard.class.getName() + ".operations", jcacheConfiguration);
+            cm.createCache(TechnologyCard.class.getName() + ".commercialParts", jcacheConfiguration);
+            cm.createCache(TechnologyCard.class.getName() + ".cooperationList", jcacheConfiguration);
             cm.createCache(Operator.class.getName(), jcacheConfiguration);
             cm.createCache(Operator.class.getName() + ".operationEvents", jcacheConfiguration);
             cm.createCache(Cooperation.class.getName(), jcacheConfiguration);

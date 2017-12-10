@@ -1,5 +1,7 @@
 package eu.canpack.fip.bo.technologyCard.mapper;
 
+import eu.canpack.fip.bo.commercialPart.CommercialPartMapper;
+import eu.canpack.fip.bo.cooperation.dto.CooperationMapper;
 import eu.canpack.fip.bo.drawing.DrawingMapper;
 import eu.canpack.fip.bo.operation.dto.OperationMapper;
 import eu.canpack.fip.bo.technologyCard.TechnologyCard;
@@ -10,7 +12,7 @@ import org.mapstruct.Mapping;
 /**
  * Mapper for the entity TechnologyCard and its DTO TechnologyCardListDTO.
  */
-@Mapper(componentModel = "spring", uses = {DrawingMapper.class, OperationMapper.class,DrawingMapper.class})
+@Mapper(componentModel = "spring", uses = {DrawingMapper.class, OperationMapper.class, DrawingMapper.class, CommercialPartMapper.class, CooperationMapper.class})
 public interface TechnologyCardMapper extends EntityMapper<TechnologyCardDTO, TechnologyCard> {
 
 

@@ -92,6 +92,13 @@
         </div>
     </div>
     <div class="row" style="margin-top: 10px">
+        <div class="col-md-2">
+            <!--<label>Numer rys.</label>-->
+            <input type="text" class="form-control" name="filterTitle"
+                   [(ngModel)]="orderFilter.title" placeholder="Tytuł zam."
+                   (keydown)="onEnterClickFilter($event)">
+
+        </div>
         <div class="col-md-4">
             <label>&nbsp;</label>
             <button class="btn btn-outline-dark" type="button" (click)="loadAll()"><span
@@ -134,7 +141,7 @@
             <!--<th jhiSortBy="orderType"><span jhiTranslate="tnApp.order.orderType">Order Type</span> <span class="fa fa-sort"></span></th>-->
             <th jhiSortBy="name"><span jhiTranslate="tnApp.order.name">Name</span> <span
                 class="fa fa-sort"></span></th>
-            <th jhiSortBy="createdBy"><span>Utworzył</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="createdBy.lastName"><span>Utworzył</span> <span class="fa fa-sort"></span></th>
             <th jhiSortBy="createdAt"><span>Data utworzenia</span> <span class="fa fa-sort"></span></th>
             <!--<th jhiSortBy="closeDate"><span jhiTranslate="tnApp.order.closeDate">Close Date</span> <span class="fa fa-sort"></span></th>-->
             <th jhiSortBy="orderStatus"><span jhiTranslate="tnApp.order.orderStatus">Order Status</span>
@@ -154,7 +161,7 @@
             <td>{{order.name}}</td>
             <td style="min-width: 150px"><span *ngIf="order.createdBy.lastName!==order.createdBy.firstName">{{order.createdBy.firstName}}</span> {{order.createdBy.lastName}}</td>
 
-            <td>{{order.createdAt|date:'dd-MM-yyyy'}}</td>
+            <td>{{order.createdAt|date:'dd-MM-yyyy HH:mm'}}</td>
             <!--<td>{{order.closeDate | date:'mediumDate'}}</td>-->
             <td [ngClass]="{'h5':order.orderStatus==='CREATED_PURCHASE_ORDER'}">
                 <span [ngClass]="{'badge badge-primary':order.orderStatus==='CREATED_PURCHASE_ORDER'}"

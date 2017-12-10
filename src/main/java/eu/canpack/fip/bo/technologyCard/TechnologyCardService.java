@@ -1,5 +1,9 @@
 package eu.canpack.fip.bo.technologyCard;
 
+import eu.canpack.fip.bo.commercialPart.CommercialPart;
+import eu.canpack.fip.bo.commercialPart.CommercialPartMapper;
+import eu.canpack.fip.bo.cooperation.Cooperation;
+import eu.canpack.fip.bo.cooperation.dto.CooperationMapper;
 import eu.canpack.fip.bo.drawing.Drawing;
 import eu.canpack.fip.bo.drawing.DrawingRepository;
 import eu.canpack.fip.bo.estimation.dto.EstimationDTO;
@@ -44,17 +48,23 @@ public class TechnologyCardService {
 
     private final OperationMapper operationMapper;
 
+    private final CommercialPartMapper commercialPartMapper;
+
+    private final CooperationMapper cooperationMapper;
+
     private final TechnologyCardMapper technologyCardMapper;
 
     private final DrawingRepository drawingRepository;
 
     private final UserService userService;
 
-    public TechnologyCardService(TechnologyCardRepository technologyCardRepository, TechnologyCardListMapper technologyCardListMapper, TechnologyCardSearchRepository technologyCardSearchRepository, OperationMapper operationMapper, TechnologyCardMapper technologyCardMapper, DrawingRepository drawingRepository, UserService userService) {
+    public TechnologyCardService(TechnologyCardRepository technologyCardRepository, TechnologyCardListMapper technologyCardListMapper, TechnologyCardSearchRepository technologyCardSearchRepository, OperationMapper operationMapper, CommercialPartMapper commercialPartMapper, CooperationMapper cooperationMapper, TechnologyCardMapper technologyCardMapper, DrawingRepository drawingRepository, UserService userService) {
         this.technologyCardRepository = technologyCardRepository;
         this.technologyCardListMapper = technologyCardListMapper;
         this.technologyCardSearchRepository = technologyCardSearchRepository;
         this.operationMapper = operationMapper;
+        this.commercialPartMapper = commercialPartMapper;
+        this.cooperationMapper = cooperationMapper;
         this.technologyCardMapper = technologyCardMapper;
         this.drawingRepository = drawingRepository;
         this.userService = userService;
@@ -145,18 +155,13 @@ public class TechnologyCardService {
             .mass(estimationDTO.getMass())
             .amount(estimationDTO.getAmount())
             .materialType(estimationDTO.getMaterialType());
+        technologyCard.setMaterialPrice(estimationDTO.getMaterialPrice());
 
         if (estimationDTO.getDrawing() !=  null && estimationDTO.getDrawing().getId()!=null) {
             Drawing drawing = drawingRepository.findOne(estimationDTO.getDrawing().getId());
             drawing.getTechnologyCards().add(technologyCard);
             technologyCard.setDrawing(drawing);
-//            Drawing drawing = new Drawing();
-//            drawing.setId(estimationDTO.getDrawing().getId());
-//            drawing.getTechnologyCards().add(technologyCard);
-//            drawing.setName(estimationDTO.getDrawing().getName());
-//            drawing.setNumber(estimationDTO.getDrawing().getNumber());
-//            drawingRepository.save(drawing);
-//            technologyCard.setDrawing(drawing);
+
         } else {
             Drawing drawing = new Drawing();
             drawing.setNumber(estimationDTO.getItemNumber());
@@ -171,20 +176,48 @@ public class TechnologyCardService {
 
 
         //clear operations
-        estimationDTO.getOperations().forEach(o -> {
-            o.setId(null);
-            o.setEstimationId(null);
-        });
-
-        List<Operation> operations = operationMapper.toEntity(estimationDTO.getOperations());
-        operations.sort(Comparator.comparing(Operation::getSequenceNumber));
-
-        operations.forEach(o->o.setOperationType(OperationType.TECHNOLOGY_CARD));
+        List<Operation> operations = getOperations(estimationDTO);
         technologyCard.setOperations(operations);
+
+        technologyCard.setCooperationList(getCooperationList(estimationDTO));
+        technologyCard.setCommercialParts(getCommertailParts(estimationDTO));
+
+
         technologyCard.setCreatedBy(userService.getLoggedUser());
         technologyCard = technologyCardRepository.save(technologyCard);
         technologyCardSearchRepository.save(technologyCard);
         return technologyCard;
 
+    }
+
+    private List<Operation> getOperations(EstimationDTO estimationDTO) {
+        estimationDTO.getOperations().forEach(o -> {
+            o.setId(null);
+            o.setEstimationId(null);
+        });
+        List<Operation> operations = operationMapper.toEntity(estimationDTO.getOperations());
+        operations.sort(Comparator.comparing(Operation::getSequenceNumber));
+        operations.forEach(o->o.setOperationType(OperationType.TECHNOLOGY_CARD));
+        return operations;
+    }
+
+    private List<CommercialPart> getCommertailParts(EstimationDTO estimationDTO) {
+        estimationDTO.getCommercialParts().forEach(o -> {
+            o.setId(null);
+            o.setEstimationId(null);
+        });
+
+        List<CommercialPart> commercialParts = commercialPartMapper.toEntity(estimationDTO.getCommercialParts());
+        return commercialParts;
+    }
+
+    private List<Cooperation> getCooperationList(EstimationDTO estimationDTO) {
+        estimationDTO.getCooperationList().forEach(o -> {
+            o.setId(null);
+            o.setEstimationId(null);
+        });
+
+        List<Cooperation> cooperationList = cooperationMapper.toEntity(estimationDTO.getCooperationList());
+        return cooperationList;
     }
 }

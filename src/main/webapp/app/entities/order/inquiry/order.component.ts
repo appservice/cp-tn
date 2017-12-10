@@ -33,7 +33,7 @@ export class OrderComponent implements OnInit, OnDestroy {
     itemsPerPage: any;
     page: any;
     predicate: any;
-    validDate:boolean;
+    validDate: boolean;
 
     previousPage: any;
     reverse: any;
@@ -86,6 +86,7 @@ export class OrderComponent implements OnInit, OnDestroy {
             urlSearchParams.append('orderStatus.equals', this.orderFilter.orderStatus);
             urlSearchParams.append('createdAt.greaterOrEqualThan', this.orderFilter.getValidFromString());
             urlSearchParams.append('createdAt.lessOrEqualThan', this.orderFilter.getValidToString());
+            urlSearchParams.append('title.contains', this.orderFilter.title);
             this.orderService.getAllInquiries({
                 page: this.page - 1,
                 size: this.itemsPerPage,
@@ -170,7 +171,7 @@ export class OrderComponent implements OnInit, OnDestroy {
             this.currentAccount = account;
         });
         this.registerChangeInOrders();
-        this.validDate=true;
+        this.validDate = true;
     }
 
     ngOnDestroy() {
@@ -219,6 +220,7 @@ export class OrderComponent implements OnInit, OnDestroy {
         this.orderFilter.clientName = null;
         this.orderFilter.validFrom = null
         this.orderFilter.validTo = null;
+        this.orderFilter.title = null;
         this.loadAll();
     }
 
@@ -229,29 +231,29 @@ export class OrderComponent implements OnInit, OnDestroy {
     model: any;
 
 
-/*    onInputFieldChanged(event: IMyInputFieldChanged) {
-        console.log('onInputFieldChanged(): Value: ', event.value, ' - dateFormat: ', event.dateFormat, ' - valid: ', event.valid);
-        console.log(event);
-        console.log(this.model);
-        if(event.value!=null && event.value){
-            this.validDate=event.valid;
+    /*    onInputFieldChanged(event: IMyInputFieldChanged) {
+            console.log('onInputFieldChanged(): Value: ', event.value, ' - dateFormat: ', event.dateFormat, ' - valid: ', event.valid);
+            console.log(event);
+            console.log(this.model);
+            if(event.value!=null && event.value){
+                this.validDate=event.valid;
+            }
+
         }
+        myOptions: INgxMyDpOptions = {
+            // other options...
+            showWeekNumbers:true,
+            dateFormat: 'dd-mm-yyyy',
+            todayBtnTxt: 'Dzisiaj',
+            dayLabels: {su: "Nie", mo: "Pon", tu: "Wto", we: "Sro", th: "Czw", fr: "Pią", sa: "Sob"},
+            monthLabels: {1: "Sty", 2: "Lut", 3: "Mar", 4: "Kwi", 5: "Maj", 6: "Cze", 7: "Lip", 8: "Sier", 9: "Wrz", 10: "Paź", 11: "Lis", 12: "Gru"},
+        };
 
-    }
-    myOptions: INgxMyDpOptions = {
-        // other options...
-        showWeekNumbers:true,
-        dateFormat: 'dd-mm-yyyy',
-        todayBtnTxt: 'Dzisiaj',
-        dayLabels: {su: "Nie", mo: "Pon", tu: "Wto", we: "Sro", th: "Czw", fr: "Pią", sa: "Sob"},
-        monthLabels: {1: "Sty", 2: "Lut", 3: "Mar", 4: "Kwi", 5: "Maj", 6: "Cze", 7: "Lip", 8: "Sier", 9: "Wrz", 10: "Paź", 11: "Lis", 12: "Gru"},
-    };
-
-    // optional date changed callback
-    onDateChanged(event: IMyDateModel): void {
-        console.log(event);
-        this.validDate = true;
-    }*/
+        // optional date changed callback
+        onDateChanged(event: IMyDateModel): void {
+            console.log(event);
+            this.validDate = true;
+        }*/
     isWeekend(date: NgbDateStruct) {
         const d = new Date(date.year, date.month - 1, date.day);
         return d.getDay() === 0 || d.getDay() === 6;

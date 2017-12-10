@@ -8,6 +8,7 @@ import eu.canpack.fip.security.AuthoritiesConstants;
 import eu.canpack.fip.security.SecurityUtils;
 
 import java.time.LocalDate;
+import java.time.ZonedDateTime;
 import java.util.Comparator;
 
 /**
@@ -45,6 +46,10 @@ public class ProductionItemDTO {
 
     private LocalDate estimatedRealizationDate;
 
+    private ZonedDateTime createdAt;
+
+    private ZonedDateTime productionStartDateTime;
+
 
     public ProductionItemDTO() {
     }
@@ -71,6 +76,8 @@ public class ProductionItemDTO {
         if(SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.TECHNOLOGIST) || SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.SAP_INTRODUCER)){
             this.showProductionOrderLink =true;
         }
+        this.createdAt= estimation.getOrder().getCreatedAt();
+        this.productionStartDateTime=estimation.getProductionStartDateTime();
 
 
 
@@ -221,6 +228,22 @@ public class ProductionItemDTO {
     }
 
 
+    public ZonedDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(ZonedDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public ZonedDateTime getProductionStartDateTime() {
+        return productionStartDateTime;
+    }
+
+    public void setProductionStartDateTime(ZonedDateTime productionStartDateTime) {
+        this.productionStartDateTime = productionStartDateTime;
+    }
+
     @Override
     public String toString() {
         return "ProductionItemDTO{" +
@@ -239,6 +262,8 @@ public class ProductionItemDTO {
             ", showProductionOrderLink=" + showProductionOrderLink +
             ", showOperationsDetail=" + showOperationsDetail +
             ", estimatedRealizationDate=" + estimatedRealizationDate +
+            ", createdAt=" + createdAt +
+            ", productionStartDateTime=" + productionStartDateTime +
             '}';
     }
 }

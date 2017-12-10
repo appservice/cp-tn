@@ -145,6 +145,9 @@ public class Estimation implements Serializable {
     @Column(name="material_type")
     private String materialType;
 
+    @Column(name="production_start_date_time")
+    private ZonedDateTime productionStartDateTime;
+
     public ZonedDateTime getDeliveredAt() {
         return deliveredAt;
     }
@@ -508,6 +511,14 @@ public class Estimation implements Serializable {
 
     public void setReceiver(String receiver) {
         this.receiver = receiver;
+    }
+
+    public ZonedDateTime getProductionStartDateTime() {
+        return productionStartDateTime;
+    }
+
+    public void setProductionStartDateTime(ZonedDateTime productionStartDateTime) {
+        this.productionStartDateTime = productionStartDateTime;
     }
 
     @Override

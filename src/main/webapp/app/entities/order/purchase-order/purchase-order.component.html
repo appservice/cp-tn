@@ -1,30 +1,10 @@
 <div>
     <h2>
         <span>Zamówienia</span>
-        <!-- <button class="btn btn-primary float-right create-order" [routerLink]="['/new-order']">
-             &lt;!&ndash;"['/', { outlets: { popup: ['order-new'] } }]">&ndash;&gt;
-             <span class="fa fa-plus"></span>
-             <span class="hidden-sm-down"  >
-             Nowe zapytanie ofertowe
-             </span>
-         </button>-->
+
     </h2>
     <jhi-alert></jhi-alert>
-    <!--<div class="row">
-        <div class="col-sm-12">
-            <form name="searchForm" class="form-inline">
-                <div class="input-group w-100 mt-3">
-                    <input type="text" class="form-control" [(ngModel)]="currentSearch" id="currentSearch" name="currentSearch" placeholder="{{ 'tnApp.order.home.search' | translate }}">
-                    <button class="input-group-addon btn btn-info" (click)="search(currentSearch)">
-                        <span class="fa fa-search"></span>
-                    </button>
-                    <button class="input-group-addon btn btn-danger" (click)="clear()" *ngIf="currentSearch">
-                        <span class="fa fa-trash-o"></span>
-                    </button>
-                </div>
-            </form>
-        </div>
-    </div>-->
+
 
     <div class="row" style="margin-top: 40px">
         <div class="col-md-2">
@@ -84,6 +64,13 @@
         </div>
     </div>
     <div class="row" style="margin-top: 10px">
+        <div class="col-md-2">
+            <!--<label>Numer rys.</label>-->
+            <input type="text" class="form-control" name="filterTitle"
+                   [(ngModel)]="orderFilter.title" placeholder="Tytuł zam."
+                   (keydown)="onEnterClickFilter($event)">
+
+        </div>
         <div class="col-md-4">
             <label>&nbsp;</label>
             <button class="btn btn-outline-dark" type="button" (click)="loadAll()"><span
@@ -103,7 +90,7 @@
                 <th jhiSortBy="internalNumber"><span>Nr wewnętrzny</span> <span class="fa fa-sort"></span></th>
                 <th jhiSortBy="description"><span>Nr Klienta</span> <span class="fa fa-sort"></span></th>
                 <th jhiSortBy="name"><span jhiTranslate="tnApp.order.name">Name</span> <span class="fa fa-sort"></span></th>
-                <th jhiSortBy="createdBy"><span>Utworzył</span> <span class="fa fa-sort"></span></th>
+                <th jhiSortBy="createdBy.lastName"><span>Utworzył</span> <span class="fa fa-sort"></span></th>
                 <th jhiSortBy="createdAt"><span j>Data utworzenia</span> <span class="fa fa-sort"></span></th>
                 <!--<th jhiSortBy="closeDate"><span jhiTranslate="tnApp.order.closeDate">Close Date</span> <span class="fa fa-sort"></span></th>-->
                 <th jhiSortBy="orderStatus"><span jhiTranslate="tnApp.order.orderStatus">Order Status</span> <span class="fa fa-sort"></span></th>
@@ -120,7 +107,7 @@
 
                 <td>{{order.name}}</td>
                 <td style="min-width: 150px"><span *ngIf="order.createdBy.lastName!==order.createdBy.firstName">{{order.createdBy.firstName}}</span> {{order.createdBy.lastName}}</td>
-                <td>{{order.createdAt|date:'dd-MM-yyyy'}}</td>
+                <td>{{order.createdAt|date:'dd-MM-yyyy HH:mm'}}</td>
                 <!--<td>{{order.closeDate | date:'mediumDate'}}</td>-->
                 <td jhiTranslate="{{'tnApp.OrderStatus.' + order.orderStatus}}">{{order.orderStatus}}</td>
                 <td>
