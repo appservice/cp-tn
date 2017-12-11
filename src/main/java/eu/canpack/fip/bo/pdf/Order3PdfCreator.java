@@ -63,20 +63,18 @@ public class Order3PdfCreator {
 
 
         Document doc = new Document(PageSize.A4);
+        doc.setMargins(25, 25, 25, 80);
 
         try {
             PdfWriter writer = PdfWriter.getInstance(doc, os);
 
-
-            doc.open();
-            doc.setMargins(500f, 100f, 100f, 100f);
-//            doc.add(new Paragraph(text) );
-//                Image image=Image.getInstance("code128.png");
-//                doc.add(image);
-            doc.add(PdfUtil.getImageLogo(doc.getPageSize()));
-
             OrderPageFooter orderPageFooter = new OrderPageFooter(FOOTER_TEXT);
             writer.setPageEvent(orderPageFooter);
+            doc.open();
+
+            doc.add(PdfUtil.getImageLogo(doc.getPageSize()));
+
+
 
 
             Color companyNameColor = new Color(35, 60, 183);
@@ -114,9 +112,13 @@ public class Order3PdfCreator {
             doc.add(new Paragraph(" "));
             Font remarksFont = new Font(baseFont, 10);
 
-            if (order.getOfferRemarks() != null) {
-                doc.add(new Paragraph(order.getOfferRemarks(), remarksFont));
+            StringBuilder offerRemarksSb = new StringBuilder("");
+            if(order.getOfferRemarks()!=null){
+                offerRemarksSb.append(order.getOfferRemarks());
             }
+
+
+                doc.add(new Paragraph(offerRemarksSb.toString(), remarksFont));
 
             doc.close();
 
@@ -201,7 +203,7 @@ public class Order3PdfCreator {
 
             table.addCell(createValueCell(String.valueOf(lp), Element.ALIGN_CENTER));
             table.addCell(createValueCell(estimation.getItemName(), Element.ALIGN_LEFT));
-            table.addCell(createValueCell(estimation.getItemNumber(), Element.ALIGN_CENTER));
+            table.addCell(createValueCell(estimation.getItemNumber(), Element.ALIGN_LEFT));
             table.addCell(createValueCell(String.valueOf(estimation.getAmount()), Element.ALIGN_CENTER));
 
             log.info("object {}", estimation.getEstimatedRealizationDate());

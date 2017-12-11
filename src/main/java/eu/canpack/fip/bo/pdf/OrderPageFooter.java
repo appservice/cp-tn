@@ -21,6 +21,8 @@ class OrderPageFooter extends PdfPageEventHelper {
 
     private Font normal, normalSmall;
     private String text;
+    private PdfTemplate total;
+//    private
 
 
     public OrderPageFooter(String text){
@@ -34,12 +36,12 @@ class OrderPageFooter extends PdfPageEventHelper {
         }
     }
 
-    /**
-     * Creates the PdfTemplate that will hold the total number of pages.
-     */
-    public void onOpenDocument(PdfWriter writer, Document document) {
+//    /**
+//     * Creates the PdfTemplate that will hold the total number of pages.
+//     */
+//    public void onOpenDocument(PdfWriter writer, Document document) {
 //        total = writer.getDirectContent().createTemplate(30, 22);
-    }
+//    }
 
     /**
      * Adds a header to every page
@@ -60,7 +62,7 @@ class OrderPageFooter extends PdfPageEventHelper {
             table.addCell(cell);
         table.setTotalWidth(document.getPageSize().getWidth()
                                     - document.leftMargin() - document.rightMargin());
-        table.writeSelectedRows(0, -1, document.leftMargin(), document.bottom()+45, cb);
+        table.writeSelectedRows(0, -1, document.leftMargin(), document.bottomMargin()-5f, cb);
 
     }
 

@@ -17,6 +17,7 @@ import eu.canpack.fip.bo.technologyCard.mapper.TechnologyCardMapper;
 import eu.canpack.fip.repository.search.TechnologyCardSearchRepository;
 import eu.canpack.fip.service.UserService;
 import eu.canpack.fip.web.rest.errors.CustomParameterizedException;
+import org.elasticsearch.index.query.QueryStringQueryBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -138,7 +139,8 @@ public class TechnologyCardService {
     @Transactional(readOnly = true)
     public Page<TechnologyCardListDTO> search(String query, Pageable pageable) {
         log.debug("Request to search for a page of TechnologyCards for query {}", query);
-        Page<TechnologyCard> result = technologyCardSearchRepository.search(queryStringQuery(query), pageable);
+       QueryStringQueryBuilder queryBuilder= queryStringQuery(query);//.field("");
+        Page<TechnologyCard> result = technologyCardSearchRepository.search(queryBuilder, pageable);
         return result.map(technologyCardListMapper::toDto);
     }
 

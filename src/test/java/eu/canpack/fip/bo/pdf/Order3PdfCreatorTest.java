@@ -114,9 +114,24 @@ public class Order3PdfCreatorTest {
             .estimatedCost(new BigDecimal("520.5"))
             .neededRealizationDate(LocalDate.of(2017, 8, 21));
         est3.setEstimatedRealizationDate(LocalDate.of(2017, 12, 2));
-
         est3.setId(3L);
         order.getEstimations().add(est3);
+        for(long i=4;i<30;i++){
+            Estimation est4 = new Estimation()
+                .amount(10)
+                .description("test fi 84")
+                .itemName("test fi 84")
+                .itemNumber("AB-17-00/A")
+                .drawing(new Drawing().number("AB-17-00/A"))
+                .estimatedCost(new BigDecimal("520.5"))
+                .neededRealizationDate(LocalDate.of(2017, 8, 21));
+            est4.setEstimatedRealizationDate(LocalDate.of(2017, 12, 2));
+            est4.setId(i);
+            order.getEstimations().add(est4);
+        }
+
+
+
 
         return order;
     }
@@ -141,13 +156,20 @@ public class Order3PdfCreatorTest {
         e3.setChecked(false);
         e3.setId(3L);
         estList.add(e3);
+        for(long i=4; i<30;i++){
+            EstimationCreateDTO e4 = new EstimationCreateDTO();
+            e4.setChecked(true);
+            e4.setId(i);
+            estList.add(e4);
+
+        }
 
         orderDTO.setEstimations(estList);
 
         return orderDTO;
     }
 
-    @Test
+   // @Test
     public void testOrderJoiner() throws Exception {
         pdfUtilService = new PdfUtilService();
         OutputStream os = new FileOutputStream("JoinedPDF.pdf");
