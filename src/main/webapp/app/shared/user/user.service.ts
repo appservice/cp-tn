@@ -63,4 +63,9 @@ export class UserService {
         return this.http.get(this.resourceSearchBySentenceUrl, options)
             .map((res: any) => this.convertResponse(res).json);
     }
+
+    getUserWhichCanCreateTechnologyCard():Observable<ResponseWrapper>{
+        return this.http.get(this.resourceUrl+'/can-create-technology-card/').
+            map((res: any)=>this.convertResponse(res).json);
+    }
 }

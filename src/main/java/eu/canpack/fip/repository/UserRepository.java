@@ -1,15 +1,19 @@
 package eu.canpack.fip.repository;
 
+import eu.canpack.fip.domain.Authority;
 import eu.canpack.fip.domain.User;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import java.util.List;
 import java.util.Optional;
 import java.time.Instant;
+import java.util.Set;
 
 /**
  * Spring Data JPA repository for the User entity.
@@ -37,4 +41,9 @@ public interface UserRepository extends JpaRepository<User, Long> {
     Page<User> findAllByLoginNot(Pageable pageable, String login);
 
     Page<User> findUserByLoginIsContaining(String sentence, Pageable pageable);
+
+    @Query(value = "select u from User u " +
+        "join u.authorities a " +
+        "where a.name in :authoritySet")
+    Set<User> findUserByAuthoritiesContains(@Param("authoritySet") Set<String> authoritySet);
 }

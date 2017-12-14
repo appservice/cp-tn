@@ -66,5 +66,11 @@
     <include file="config/liquibase/changelog/20171112211859_extended_technology_card.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20171121214932_extended_client.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20171123231336_added_delivery_address.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20171127214912_extended_client.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20171129225318_extedned_estimation.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20171203183559_added_reference_order.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20171204002701_load_reference_order.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20171205214634_extend_technology_card.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20171206215422_extended_estimation.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-constraints-changelog - JHipster will add liquibase constraints changelogs here -->
 </databaseChangeLog>

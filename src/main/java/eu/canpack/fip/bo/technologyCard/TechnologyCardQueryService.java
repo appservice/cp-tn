@@ -89,12 +89,8 @@ public class TechnologyCardQueryService extends QueryService<TechnologyCard> {
             if (criteria.getCreatedById() != null) {
                 specification = specification.and(buildReferringEntitySpecification(criteria.getCreatedById(), eu.canpack.fip.bo.technologyCard.TechnologyCard_.createdBy, User_.id));
             }
-//            if (criteria.getDrawingNumber() != null) {
-//                specification = specification.and(buildReferringEntitySpecification(criteria.getDrawingNumber(), eu.canpack.fip.bo.technologyCard.TechnologyCard_.drawing, Drawing_.number));
-//            }
-            if (criteria.getDrawingName() != null) {
-                specification = specification.and(buildReferringEntitySpecification(criteria.getDrawingName(), eu.canpack.fip.bo.technologyCard.TechnologyCard_.drawing, Drawing_.name));
-            }
+
+
             if (criteria.getCreatedByLastName() != null) {
                 specification = specification.and(buildReferringEntitySpecification(criteria.getCreatedByLastName(), eu.canpack.fip.bo.technologyCard.TechnologyCard_.createdBy, User_.lastName));
             }
@@ -106,6 +102,15 @@ public class TechnologyCardQueryService extends QueryService<TechnologyCard> {
                 Specification<TechnologyCard> spec = (root, query, builder) -> {
                     Join<TechnologyCard,Drawing> joinToDrawing=root.join(eu.canpack.fip.bo.technologyCard.TechnologyCard_.drawing,JoinType.INNER);
                    return builder.like(builder.upper(joinToDrawing.get(Drawing_.number)), "%"+criteria.getDrawingNumber().getContains().trim().toUpperCase()+"%" );
+                };
+                specification=specification.and(spec);
+
+            }
+            if (criteria.getDrawingName()!=null) {
+                log.debug("drawinName {}",criteria.getDrawingName().getContains());
+                Specification<TechnologyCard> spec = (root, query, builder) -> {
+                    Join<TechnologyCard,Drawing> joinToDrawing=root.join(eu.canpack.fip.bo.technologyCard.TechnologyCard_.drawing,JoinType.INNER);
+                   return builder.like(builder.upper(joinToDrawing.get(Drawing_.name)), "%"+criteria.getDrawingName().getContains().trim().toUpperCase()+"%" );
                 };
                 specification=specification.and(spec);
 

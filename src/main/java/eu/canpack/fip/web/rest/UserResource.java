@@ -2,6 +2,7 @@ package eu.canpack.fip.web.rest;
 
 import eu.canpack.fip.config.Constants;
 import com.codahale.metrics.annotation.Timed;
+import eu.canpack.fip.domain.Authority;
 import eu.canpack.fip.domain.User;
 import eu.canpack.fip.repository.UserRepository;
 import eu.canpack.fip.repository.search.UserSearchRepository;
@@ -9,6 +10,7 @@ import eu.canpack.fip.security.AuthoritiesConstants;
 import eu.canpack.fip.service.MailService;
 import eu.canpack.fip.service.UserService;
 import eu.canpack.fip.service.dto.UserDTO;
+import eu.canpack.fip.service.dto.UserShortDTO;
 import eu.canpack.fip.web.rest.vm.ManagedUserVM;
 import eu.canpack.fip.web.rest.util.HeaderUtil;
 import eu.canpack.fip.web.rest.util.PaginationUtil;
@@ -63,10 +65,8 @@ import static org.elasticsearch.index.query.QueryBuilders.*;
 @RequestMapping("/api")
 public class UserResource {
 
-    private final Logger log = LoggerFactory.getLogger(UserResource.class);
-
     private static final String ENTITY_NAME = "userManagement";
-
+    private final Logger log = LoggerFactory.getLogger(UserResource.class);
     private final UserRepository userRepository;
 
     private final MailService mailService;
@@ -76,7 +76,7 @@ public class UserResource {
     private final UserSearchRepository userSearchRepository;
 
     public UserResource(UserRepository userRepository, MailService mailService,
-            UserService userService, UserSearchRepository userSearchRepository) {
+                        UserService userService, UserSearchRepository userSearchRepository) {
 
         this.userRepository = userRepository;
         this.mailService = mailService;
@@ -105,7 +105,7 @@ public class UserResource {
             return ResponseEntity.badRequest()
                 .headers(HeaderUtil.createFailureAlert(ENTITY_NAME, "idexists", "A new user cannot already have an ID"))
                 .body(null);
-        // Lowercase the user login before comparing with database
+            // Lowercase the user login before comparing with database
         } else if (userRepository.findOneByLogin(managedUserVM.getLogin().toLowerCase()).isPresent()) {
             return ResponseEntity.badRequest()
                 .headers(HeaderUtil.createFailureAlert(ENTITY_NAME, "userexists", "Login already in use"))
@@ -116,9 +116,9 @@ public class UserResource {
                 .body(null);
         } else {
             User newUser = userService.createUser(managedUserVM);
-           // mailService.sendCreationEmail(newUser);
+            // mailService.sendCreationEmail(newUser);
             return ResponseEntity.created(new URI("/api/users/" + newUser.getLogin()))
-                .headers(HeaderUtil.createAlert( "userManagement.created", newUser.getLogin()))
+                .headers(HeaderUtil.createAlert("userManagement.created", newUser.getLogin()))
                 .body(newUser);
         }
     }
@@ -147,7 +147,7 @@ public class UserResource {
         Optional<UserDTO> updatedUser = userService.updateUser(managedUserVM);
 
         return ResponseUtil.wrapOrNotFound(updatedUser,
-            HeaderUtil.createAlert("userManagement.updated", managedUserVM.getLogin()));
+                                           HeaderUtil.createAlert("userManagement.updated", managedUserVM.getLogin()));
     }
 
     /**
@@ -201,7 +201,7 @@ public class UserResource {
     public ResponseEntity<Void> deleteUser(@PathVariable String login) {
         log.debug("REST request to delete User: {}", login);
         userService.deleteUser(login);
-        return ResponseEntity.ok().headers(HeaderUtil.createAlert( "userManagement.deleted", login)).build();
+        return ResponseEntity.ok().headers(HeaderUtil.createAlert("userManagement.deleted", login)).build();
     }
 
     /**
@@ -221,11 +221,24 @@ public class UserResource {
 
 
     @GetMapping("/users/by-sentence")
-    @Secured({AuthoritiesConstants.ADMIN,AuthoritiesConstants.ROLE_DEV})
-    public List<User> getUserBySentece(@RequestParam(name = "sentence")String sentence){
+    @Secured({AuthoritiesConstants.ADMIN, AuthoritiesConstants.ROLE_DEV})
+    public List<User> getUserBySentece(@RequestParam(name = "sentence") String sentence) {
         log.debug("Search user by sentence: {}", sentence);
         Pageable pageable = new PageRequest(0, 20);
-      return  userRepository.findUserByLoginIsContaining( sentence, pageable).getContent();
+        return userRepository.findUserByLoginIsContaining(sentence, pageable).getContent();
+
+    }
+
+    @GetMapping("/users/can-create-technology-card/")
+    public List<UserShortDTO> getUserWhichCanaCreateTechnologyCard() {
+
+        Set<String> authorities = new HashSet<>();
+        authorities.add(AuthoritiesConstants.TECHNOLOGIST);
+        authorities.add(AuthoritiesConstants.TEAM_LEADER);
+
+        return userRepository.findUserByAuthoritiesContains(authorities).stream()
+            .map(UserShortDTO::new).filter(u -> !u.getFirstName().equals("Administrator"))
+            .sorted(Comparator.comparing(UserShortDTO::getLastName)).collect(Collectors.toList());
 
     }
 }

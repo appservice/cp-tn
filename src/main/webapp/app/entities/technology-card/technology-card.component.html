@@ -9,7 +9,7 @@
         </button>
     </h2>
     <jhi-alert></jhi-alert>
-    <div class="row">
+    <!--<div class="row">
         <div class="col-sm-12">
             <form name="searchForm" class="form-inline">
                 <div class="input-group w-100 mt-3">
@@ -23,6 +23,58 @@
                 </div>
             </form>
         </div>
+    </div>-->
+    <br />
+    <div class="row">
+        <div class="col-md-3">
+            <!--<label>Numer rys.</label>-->
+            <input type="text" class="form-control" name="filterDrawingNumber" [(ngModel)]="technologyCardFilter.number" placeholder="Numer rys." (keydown)="onEnterClickFilter($event)">
+
+        </div>
+        <div class="col-md-3">
+            <!--<label>Nazwa</label>-->
+            <input type="text" class="form-control" name="filterDrawingName" [(ngModel)]="technologyCardFilter.name" placeholder="Nazwa" (keydown)="onEnterClickFilter($event)">
+        </div>
+        <div class="col-md-2">
+            <select [compareWith]="byId" [(ngModel)]="technologyCardFilter.createdBy" class="form-control" (keydown)="onEnterClickFilter($event)">
+                <option value="undefined" disabled selected hidden style="color:#444444">--Utworzył--</option>
+                <option value="null"  selected style="color:#444444">--Utworzył--</option>
+                <option *ngFor="let user of technologyCreators" [ngValue]="user.id">{{user.lastName}} {{user.firstName}}
+                </option>
+            </select>
+
+        </div>
+
+        <div class="form-group col-md-2">
+            <!--<label class="form-control-label" jhiTranslate="tnApp.order.closeDate" for="field_closeDate">Close Date</label>-->
+            <div class="input-group">
+                <input type="text" class="form-control"
+                       name="validFromFilter"
+                       ngbDatepicker="" #realizationDateDp="ngbDatepicker"
+                       [(ngModel)]="technologyCardFilter.createdAtFrom" placeholder="Data utworz. od:"/>
+                <span class="input-group-btn">
+                    <button type="button" class="btn btn-default" (click)="realizationDateDp.toggle()"
+                            (keyup)="realizationDateDp.toggle()"><i class="fa fa-calendar"></i></button>
+                </span>
+            </div>
+        </div>
+        <div class="form-group col-md-2">
+            <!--<label class="form-control-label" jhiTranslate="tnApp.order.closeDate" for="field_closeDate">Close Date</label>-->
+            <div class="input-group">
+                <input type="text" class="form-control" name="validToFilter" ngbDatepicker #createdToEnd="ngbDatepicker"
+                       [(ngModel)]="technologyCardFilter.createdAtTo" placeholder="Data utworz. do:" dispalyMonths="2"/>
+                <span class="input-group-btn">
+                    <button type="button" class="btn btn-default" (click)="createdToEnd.toggle()"
+                            (keyup)="createdToEnd.toggle()"><i class="fa fa-calendar"></i></button>
+                </span>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <label>&nbsp;</label>
+            <button class="btn btn-outline-dark" type="button" (click)="findByFilter()"><span class="fa fa-search"></span> Filtruj</button>
+            <button class="btn btn-outline-dark" type="button" (click)="clearFilterAndLoadAll()"><span class="fa fa-trash-o"></span> Wyczyść filtr</button>
+        </div>
     </div>
     <br/>
     <div class="table-responsive" *ngIf="technologyCards">
@@ -32,7 +84,7 @@
             <th jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span> <span class="fa fa-sort"></span></th>
                 <th jhiSortBy="drawingNumber"><span >Nr rys.</span> <span class="fa fa-sort"></span></th>
                 <th jhiSortBy="description"><span >Nazwa</span> <span class="fa fa-sort"></span></th>
-                <th jhiSortBy="mass"><span >Masa[kg]</span> <span class="fa fa-sort"></span></th>
+                <!--<th jhiSortBy="mass"><span >Masa[kg]</span> <span class="fa fa-sort"></span></th>-->
                 <th jhiSortBy="createdAt"><span >Data utworzenia</span> <span class="fa fa-sort"></span></th>
                 <th jhiSortBy="createdAt"><span >Utworzył</span> <span class="fa fa-sort"></span></th>
             <th></th>
@@ -47,7 +99,7 @@
                     </div>
                 </td>
                 <td>{{technologyCard.drawingName}}</td>
-                <td>{{technologyCard.mass}}</td>
+                <!--<td>{{technologyCard.mass}}</td>-->
                 <td>{{technologyCard.createdAt | date:'medium'}}</td>
                 <td>{{technologyCard.createdByName}}</td>
                 <td class="text-right">
