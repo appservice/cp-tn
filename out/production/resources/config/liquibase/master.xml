@@ -16,6 +16,7 @@
     <include file="config/liquibase/changelog/20170905205334_added_entity_TechnologyCard.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20171010203848_added_entity_Operator.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20171029180050_added_entity_Cooperation.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20171218211406_added_entity_MpkBudgetMapper.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-changelog - JHipster will add liquibase changelogs here -->
     <include file="classpath:config/liquibase/changelog/20170710162514_added_entity_constraints_Order.xml" relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/20170710162515_added_entity_constraints_Estimation.xml" relativeToChangelogFile="false"/>
@@ -72,5 +73,8 @@
     <include file="config/liquibase/changelog/20171204002701_load_reference_order.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20171205214634_extend_technology_card.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20171206215422_extended_estimation.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20171217200918_remove_status_created_purchase_order.xml" relativeToChangelogFile="false"/>
+
+    <include file="config/liquibase/changelog/20171218211406_added_entity_constraints_MpkBudgetMapper.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-constraints-changelog - JHipster will add liquibase constraints changelogs here -->
 </databaseChangeLog>

@@ -59,12 +59,24 @@
                 <!--jhiTranslate="tnApp.OrderStatus.FOR_ESTIMATION"-->
                 <option value="IN_ESTIMATION">W TRAKCIE WYCENY</option>
                 <option value="SENT_OFFER_TO_CLIENT">OFERTA UKOŃCZONA</option>
-                <option value="CREATED_PURCHASE_ORDER">ZAMÓWIENIE UTWORZONE</option>
+                <!--<option value="CREATED_PURCHASE_ORDER">ZAMÓWIENIE UTWORZONE</option>-->
             </select>
         </div>
 
         <div class="form-group col-md-2">
-            <!--<my-date-picker locale="pl"  [(ngModel)]="orderFilter.validFrom" placeholder="Utworzono po:"></my-date-picker>-->
+            <!--<div class="input-group">
+                <input class="form-control" style="float:none" placeholder="Select a date" ngx-mydatepicker name="mydate"
+                       [(ngModel)]="model" [options]="myOptions" #dp="ngx-mydatepicker" (dateChanged)="onDateChanged($event)"/>
+
+                <span class="input-group-btn">
+            &lt;!&ndash;<button type="button" class="btn btn-default" (click)="dp.clearDate()">&ndash;&gt;
+                &lt;!&ndash;<i class="fa fa-remove"></i>&ndash;&gt;
+            &lt;!&ndash;</button>&ndash;&gt;
+            <button type="button" class="btn btn-default" (click)="dp.toggleCalendar()">
+                <i class="fa fa-calendar"></i>
+            </button>
+        </span>
+            </div>-->
             <!--<label class="form-control-label" jhiTranslate="tnApp.order.closeDate" for="field_closeDate">Close Date</label>-->
             <div class="input-group">
                 <input type="text" class="form-control"
@@ -163,13 +175,14 @@
 
             <td>{{order.createdAt|date:'dd-MM-yyyy HH:mm'}}</td>
             <!--<td>{{order.closeDate | date:'mediumDate'}}</td>-->
-            <td [ngClass]="{'h5':order.orderStatus==='CREATED_PURCHASE_ORDER'}">
-                <span [ngClass]="{'badge badge-primary':order.orderStatus==='CREATED_PURCHASE_ORDER'}"
+            <td [ngClass]="{'h5':order.orderStatus==='SENT_OFFER_TO_CLIENT'}">
+                <span [ngClass]="{'badge badge-primary':order.orderStatus==='SENT_OFFER_TO_CLIENT'}"
                       jhiTranslate="{{'tnApp.OrderStatus.' + order.orderStatus}}">{{order.orderStatus}}</span></td>
             <td>
                 <div *ngFor="let referenceOrder of order.referenceOrders">
                     <a [routerLink]="['../purchase-order/'+referenceOrder.refOrderId]">{{referenceOrder.refInternalNumber}}</a>
-                </div></td>
+                </div>
+            </td>
             <td>
                 <div *ngIf="order.clientId">
                     <a [routerLink]="['../client', order.clientId  ]">{{order.clientShortcut}}</a>
@@ -197,6 +210,7 @@
         </tr>
         </tbody>
     </table>
+    <button type="button" class="btn btn-outline-dark" (click)="exportToExcel();">Eksport do Excel</button>
 </div>
 <div *ngIf="orders && orders.length">
     <div class="row justify-content-center">

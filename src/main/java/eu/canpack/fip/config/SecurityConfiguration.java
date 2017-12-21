@@ -115,7 +115,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
             .antMatchers("/v2/api-docs/**").permitAll()
             .antMatchers("/swagger-resources/configuration/ui").permitAll()
             .antMatchers("/swagger-ui/index.html").hasAuthority(AuthoritiesConstants.ADMIN)
-            .antMatchers("/login/impersonate*").hasAuthority(AuthoritiesConstants.ADMIN)
+            .antMatchers("/login/impersonate*").hasAuthority(AuthoritiesConstants.ROLE_DEV)
             .antMatchers("/logout/impersonate").authenticated()
         .and()
             .apply(securityConfigurerAdapter());
@@ -137,7 +137,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         switchUserFilter.setUserDetailsService(userDetailsService);
         switchUserFilter.setSwitchUserUrl("/login/impersonate");
 //            switchUserFilter.setExitUserUrl();
-        switchUserFilter.setSwitchAuthorityRole(AuthoritiesConstants.ADMIN);
+        switchUserFilter.setSwitchAuthorityRole(AuthoritiesConstants.ROLE_DEV);
 //            switchUserFilter.setSwitchUserUrl("/logout/impersonate");
         switchUserFilter.setFailureHandler(authenticationFailureHandler());
         switchUserFilter.setSuccessHandler(switchUserSuccessHandler);

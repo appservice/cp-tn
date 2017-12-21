@@ -1,0 +1,25 @@
+{
+    "tnApp": {
+        "mpkBudgetMapper" : {
+            "home": {
+                "title": "Mapowanie MPK-Zlecenie",
+                "createLabel": "Dodaj Mapowanie",
+                "createOrEditLabel": "Dodaj lub edytuj: Mapowanie",
+                "search": "Szukaj Mapowania"
+            },
+            "created": "Utworzono Mapowanie z identyfikatorem {{ param }}",
+            "updated": "Uaktualniono Mapowanie z identyfikatorem {{ param }}",
+            "deleted": "Usunięto Mapowanie z identyfikatorem {{ param }}",
+            "delete": {
+                "question": "Czy na pewno chcesz usunąć Mapowanie o id {{ id }}?"
+            },
+            "detail": {
+                "title": "Mapowanie MPK-Zlecenie"
+            },
+            "mpk": "Mpk",
+            "budget": "Zlecenie",
+            "client": "Klient",
+            "description": "Opis"
+        }
+    }
+}

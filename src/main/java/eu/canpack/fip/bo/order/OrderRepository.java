@@ -64,5 +64,7 @@ public interface OrderRepository extends JpaRepository<Order, Long>, JpaSpecific
         "and o.orderStatus=eu.canpack.fip.bo.order.enumeration.OrderStatus.IN_ESTIMATION")
     Page<Order> findOrderToEstimationByUser(@Param("currentUserId") Long currentUserId, Pageable pageable);
 
+    Page<Order> findOrdersByOrderStatus(OrderStatus orderStatus, Pageable pageable);
+
 
 }

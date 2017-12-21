@@ -2,16 +2,9 @@ package eu.canpack.fip.bo.attachment;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
-import sun.misc.Unsafe;
-
-import java.lang.reflect.Constructor;
-import java.lang.reflect.Method;
-
-import static org.junit.Assert.*;
 
 /**
  * CP S.A.
@@ -41,11 +34,11 @@ public class AttachmentServiceTest {
 //        Method method=attachmentService.getClass().getDeclaredMethod("deleteAttachment", Long.class);
 //        method.setAccessible(true);
 //        method.invoke(attachmentService, 12L);
-        Constructor<Unsafe> unsafeConstructor = Unsafe.class.getDeclaredConstructor();
-        unsafeConstructor.setAccessible(true);
-        Unsafe unsafe = unsafeConstructor.newInstance();
-
-        System.out.println(unsafe.addressSize());
+//        Constructor<Unsafe> unsafeConstructor = Unsafe.class.getDeclaredConstructor();
+//        unsafeConstructor.setAccessible(true);
+//        Unsafe unsafe = unsafeConstructor.newInstance();
+//
+//        System.out.println(unsafe.addressSize());
     }
 
 }

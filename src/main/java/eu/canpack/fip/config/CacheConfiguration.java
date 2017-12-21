@@ -2,6 +2,7 @@ package eu.canpack.fip.config;
 
 import eu.canpack.fip.bo.cooperation.Cooperation;
 import eu.canpack.fip.bo.machine.MachineDtl;
+import eu.canpack.fip.bo.mpkBudgetMapper.MpkBudgetMapper;
 import eu.canpack.fip.bo.operation.OperationEvent;
 import eu.canpack.fip.bo.operator.Operator;
 import eu.canpack.fip.bo.referenceOrder.ReferenceOrder;
@@ -102,6 +103,7 @@ public class CacheConfiguration {
             cm.createCache(Operator.class.getName(), jcacheConfiguration);
             cm.createCache(Operator.class.getName() + ".operationEvents", jcacheConfiguration);
             cm.createCache(Cooperation.class.getName(), jcacheConfiguration);
+            cm.createCache(MpkBudgetMapper.class.getName(), jcacheConfiguration);
             // jhipster-needle-ehcache-add-entry
         };
     }

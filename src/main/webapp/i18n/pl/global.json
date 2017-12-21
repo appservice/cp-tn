@@ -18,6 +18,7 @@
                 "technologyCard": "Karta technolog.",
                 "operator": "Operatorzy",
                 "cooperation": "Cooperation",
+                "mpkBudgetMapper": "Mapowanie MPK-Zlecenie ",
                 "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
             },
             "account": {

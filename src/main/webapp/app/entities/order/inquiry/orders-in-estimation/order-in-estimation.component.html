@@ -2,11 +2,11 @@
     <h2>
         <span>Moje zlecenia do wyceny</span>
         <!--<button class="btn btn-primary float-right create-order" [routerLink]="['/new-order']">-->
-            <!--&lt;!&ndash;"['/', { outlets: { popup: ['order-new'] } }]">&ndash;&gt;-->
-            <!--<span class="fa fa-plus"></span>-->
-            <!--<span class="hidden-sm-down">-->
- <!--Zlecenia czekające na rozpoczęcie wyceny-->
-            <!--</span>-->
+        <!--&lt;!&ndash;"['/', { outlets: { popup: ['order-new'] } }]">&ndash;&gt;-->
+        <!--<span class="fa fa-plus"></span>-->
+        <!--<span class="hidden-sm-down">-->
+        <!--Zlecenia czekające na rozpoczęcie wyceny-->
+        <!--</span>-->
         <!--</button>-->
     </h2>
     <jhi-alert></jhi-alert>
@@ -35,19 +35,21 @@
                 <th jhiSortBy="internalNumber"><span jhiTranslate="tnApp.order.internalNumber">Internal Number</span>
                     <span class="fa fa-sort"></span></th>
                 <!--<th jhiSortBy="sapNumber"><span jhiTranslate="tnApp.order.sapNumber">Sap Number</span> <span-->
-                    <!--class="fa fa-sort"></span></th>-->
+                <!--class="fa fa-sort"></span></th>-->
                 <!--<th jhiSortBy="orderType"><span jhiTranslate="tnApp.order.orderType">Order Type</span> <span-->
-                    <!--class="fa fa-sort"></span></th>-->
+                <!--class="fa fa-sort"></span></th>-->
                 <th jhiSortBy="name"><span jhiTranslate="tnApp.order.name">Name</span> <span class="fa fa-sort"></span>
                 </th>
                 <th jhiSortBy="createdBy.lastName"><span>Zam. utworzył</span> <span class="fa fa-sort"></span></th>
 
-                <th jhiSortBy="createdAt"><span >Data utworzenia</span> <span class="fa fa-sort"></span></th>
+                <th jhiSortBy="createdAt"><span>Data utworzenia</span> <span class="fa fa-sort"></span></th>
                 <!--<th jhiSortBy="closeDate"><span jhiTranslate="tnApp.order.closeDate">Close Date</span> <span class="fa fa-sort"></span></th>-->
                 <th jhiSortBy="orderStatus"><span jhiTranslate="tnApp.order.orderStatus">Order Status</span> <span
                     class="fa fa-sort"></span></th>
                 <th jhiSortBy="client"><span jhiTranslate="tnApp.order.client">Client</span> <span
                     class="fa fa-sort"></span></th>
+                <th><span>Wycenia </span> <span></span></th>
+
                 <th></th>
             </tr>
             </thead>
@@ -58,7 +60,8 @@
                 <!--<td>{{order.sapNumber}}</td>-->
                 <!--<td jhiTranslate="{{'tnApp.OrderType.' + order.orderType}}">{{order.orderType}}</td>-->
                 <td>{{order.name}}</td>
-                <td style="min-width: 150px"><span *ngIf="order.createdBy.lastName!==order.createdBy.firstName">{{order.createdBy.firstName}} </span>{{order.createdBy.lastName}}</td>
+                <td style="min-width: 150px"><span *ngIf="order.createdBy.lastName!==order.createdBy.firstName">{{order.createdBy.firstName}} </span>{{order.createdBy.lastName}}
+                </td>
 
                 <td>{{order.createdAt|date:'dd-MM-yyyy HH:mm'}}</td>
                 <!--<td>{{order.closeDate | date:'mediumDate'}}</td>-->
@@ -68,20 +71,28 @@
                         <a [routerLink]="['../client', order.clientId  ]">{{order.clientShortcut}}</a>
                     </div>
                 </td>
+                <td><span *ngIf="order.estimationMaker">{{order.estimationMaker.firstName}} {{order.estimationMaker.lastName}}</span></td>
+
                 <td class="text-right">
                     <div class="btn-group flex-btn-group-container">
 
                         <button type="button"
                                 [routerLink]="[ '../estimated-order', order.id ]"
-                                class="btn btn-outline-primary "> <!--replaceUrl="true"-->
+                                class="btn btn-sm btn-outline-primary "> <!--replaceUrl="true"-->
                             <span class="hidden-md-down">Wycena</span>
                         </button>
-<!--                        <button type="button"
-                                (click)="claimToEstimator(order)"
 
-                                class="btn btn-primary btn-sm"> &lt;!&ndash;replaceUrl="true"&ndash;&gt;
-                            <span class="hidden-md-down">Wyceniam</span>
-                        </button>-->
+                        <button type="button" (click)="removeAssignedEstimator(order)"
+
+                                class="btn btn-sm  btn-outline-danger"> <!--replaceUrl="true"-->
+                            <span class="hidden-md-down">Wycofaj przypisanie</span>
+                        </button>
+                        <!--                        <button type="button"
+                                                        (click)="claimToEstimator(order)"
+
+                                                        class="btn btn-primary btn-sm"> &lt;!&ndash;replaceUrl="true"&ndash;&gt;
+                                                    <span class="hidden-md-down">Wyceniam</span>
+                                                </button>-->
 
                     </div>
                 </td>

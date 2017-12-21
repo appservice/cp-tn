@@ -1,12 +1,12 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { Subscription } from 'rxjs/Rx';
-import { JhiEventManager, JhiParseLinks, JhiPaginationUtil, JhiLanguageService, JhiAlertService } from 'ng-jhipster';
+import {Component, OnInit, OnDestroy} from '@angular/core';
+import {ActivatedRoute, Router} from '@angular/router';
+import {Subscription} from 'rxjs/Rx';
+import {JhiEventManager, JhiParseLinks, JhiPaginationUtil, JhiLanguageService, JhiAlertService} from 'ng-jhipster';
 
-import { Order } from '../../order.model';
-import { OrderService } from '../../order.service';
-import { ITEMS_PER_PAGE, Principal, ResponseWrapper } from '../../../../shared';
-import { PaginationConfig } from '../../../../blocks/config/uib-pagination.config';
+import {Order} from '../../order.model';
+import {OrderService} from '../../order.service';
+import {ITEMS_PER_PAGE, Principal, ResponseWrapper} from '../../../../shared';
+import {PaginationConfig} from '../../../../blocks/config/uib-pagination.config';
 
 @Component({
     selector: 'order-in-estimation',
@@ -14,7 +14,7 @@ import { PaginationConfig } from '../../../../blocks/config/uib-pagination.confi
 })
 export class OrderInEstimationComponent implements OnInit, OnDestroy {
 
-currentAccount: any;
+    currentAccount: any;
     orders: Order[];
     error: any;
     success: any;
@@ -30,17 +30,15 @@ currentAccount: any;
     previousPage: any;
     reverse: any;
 
-    constructor(
-        private orderService: OrderService,
-        private parseLinks: JhiParseLinks,
-        private alertService: JhiAlertService,
-        private principal: Principal,
-        private activatedRoute: ActivatedRoute,
-        private router: Router,
-        private eventManager: JhiEventManager,
-        private paginationUtil: JhiPaginationUtil,
-        private paginationConfig: PaginationConfig
-    ) {
+    constructor(private orderService: OrderService,
+                private parseLinks: JhiParseLinks,
+                private alertService: JhiAlertService,
+                private principal: Principal,
+                private activatedRoute: ActivatedRoute,
+                private router: Router,
+                private eventManager: JhiEventManager,
+                private paginationUtil: JhiPaginationUtil,
+                private paginationConfig: PaginationConfig) {
         this.itemsPerPage = ITEMS_PER_PAGE;
         this.routeData = this.activatedRoute.data.subscribe((data) => {
             this.page = data['pagingParams'].page;
@@ -56,34 +54,39 @@ currentAccount: any;
             this.orderService.ordersInEstimation({
                 query: this.currentSearch,
                 size: this.itemsPerPage,
-                sort: this.sort()}).subscribe(
-                    (res: ResponseWrapper) => this.onSuccess(res.json, res.headers),
-                    (res: ResponseWrapper) => this.onError(res.json)
-                );
+                sort: this.sort()
+            }).subscribe(
+                (res: ResponseWrapper) => this.onSuccess(res.json, res.headers),
+                (res: ResponseWrapper) => this.onError(res.json)
+            );
             return;
         }
         this.orderService.ordersInEstimation({
             page: this.page - 1,
             size: this.itemsPerPage,
-            sort: this.sort()}).subscribe(
+            sort: this.sort()
+        }).subscribe(
             (res: ResponseWrapper) => this.onSuccess(res.json, res.headers),
             (res: ResponseWrapper) => this.onError(res.json)
         );
     }
+
     loadPage(page: number) {
         if (page !== this.previousPage) {
             this.previousPage = page;
             this.transition();
         }
     }
+
     transition() {
-        this.router.navigate(['/orders/in-estimation'], {queryParams:
-            {
-                page: this.page,
-                size: this.itemsPerPage,
-                search: this.currentSearch,
-                sort: this.predicate + ',' + (this.reverse ? 'asc' : 'desc')
-            }
+        this.router.navigate(['/orders/in-estimation'], {
+            queryParams:
+                {
+                    page: this.page,
+                    size: this.itemsPerPage,
+                    search: this.currentSearch,
+                    sort: this.predicate + ',' + (this.reverse ? 'asc' : 'desc')
+                }
         });
         this.loadAll();
     }
@@ -97,6 +100,7 @@ currentAccount: any;
         }]);
         this.loadAll();
     }
+
     search(query) {
         if (!query) {
             return this.clear();
@@ -110,6 +114,7 @@ currentAccount: any;
         }]);
         this.loadAll();
     }
+
     ngOnInit() {
         this.loadAll();
         this.principal.identity().then((account) => {
@@ -125,6 +130,7 @@ currentAccount: any;
     trackId(index: number, item: Order) {
         return item.id;
     }
+
     registerChangeInOrders() {
         this.eventSubscriber = this.eventManager.subscribe('orderListModification', (response) => this.loadAll());
     }
@@ -144,16 +150,26 @@ currentAccount: any;
         // this.page = pagingParams.page;
         this.orders = data;
     }
+
     private onError(error) {
         this.alertService.error(error.message, null, null);
     }
-    claimToEstimator(order: Order){
+
+    claimToEstimator(order: Order) {
         this.orderService.claimToEstimator(order.id).subscribe(
-            ()=>{
+            () => {
                 this.eventManager.broadcast({name: 'orderListModification', content: 'OK'});
 
             }
-
         );
+    }
+
+    removeAssignedEstimator(order: Order): void {
+        this.orderService.removeAssingedEstimator(order.id).subscribe((response)=>{
+            this.eventManager.broadcast({name: 'orderListModification', content: 'OK'});
+
+        },(error:any)=>{
+            console.log(this.error);
+        });
     }
 }

@@ -10,6 +10,8 @@ import eu.canpack.fip.bo.drawing.DrawingRepository;
 import eu.canpack.fip.bo.estimation.Estimation;
 import eu.canpack.fip.bo.estimation.dto.EstimationCreateDTO;
 import eu.canpack.fip.bo.estimation.EstimationRepository;
+import eu.canpack.fip.bo.mpkBudgetMapper.MpkBudgetMapperRepository;
+import eu.canpack.fip.bo.mpkBudgetMapper.MpkBudgetMapperService;
 import eu.canpack.fip.bo.operation.Operation;
 import eu.canpack.fip.bo.operation.enumeration.OperationType;
 import eu.canpack.fip.bo.order.dto.OrderDTO;
@@ -79,8 +81,10 @@ public class OrderService {
 
     private final ReferenceOrderRepository referenceOrderRepository;
 
+    private final MpkBudgetMapperService mpkBudgetMapperService;
+
     public OrderService(OrderRepository orderRepository, OrderMapper orderMapper, OrderSearchRepository orderSearchRepository, UserRepository userRepository, DrawingRepository drawingRepository, AttachmentRepository attachmentRepository,
-                        EstimationRepository estimationRepository, UserService userService, ApplicationProperties applicationProperties, ClientRepository clientRepository, ReferenceOrderRepository referenceOrderRepository) {
+                        EstimationRepository estimationRepository, UserService userService, ApplicationProperties applicationProperties, ClientRepository clientRepository, ReferenceOrderRepository referenceOrderRepository, MpkBudgetMapperService mpkBudgetMapperService) {
         this.orderRepository = orderRepository;
         this.orderMapper = orderMapper;
         this.orderSearchRepository = orderSearchRepository;
@@ -92,6 +96,7 @@ public class OrderService {
         this.applicationProperties = applicationProperties;
         this.clientRepository = clientRepository;
         this.referenceOrderRepository = referenceOrderRepository;
+        this.mpkBudgetMapperService = mpkBudgetMapperService;
     }
 
     /**
@@ -132,6 +137,9 @@ public class OrderService {
                 .itemName(estDTO.getItemName())
                 .itemNumber(estDTO.getItemNumber())
                 .mpk(estDTO.getMpk());
+
+                updateSapNumber(orderDTO, estDTO, estimation);
+
 
 
             if (annualOrderNumber != null && !annualOrderNumber.isEmpty()) {
@@ -271,6 +279,7 @@ public class OrderService {
                 estimation.setItemName(estDTO.getItemName());
                 estimation.setItemNumber(estDTO.getItemNumber());
                 estimation.setMpk(estDTO.getMpk());
+                updateSapNumber(orderDTO, estDTO, estimation);
 
                 updateRemark(loggedUser, estDTO, estimation);
 
@@ -317,6 +326,8 @@ public class OrderService {
                     .itemNumber(estDTO.getItemNumber())
                     .mpk(estDTO.getMpk());
 
+                updateSapNumber(orderDTO, estDTO, estimation);
+
 
                 updateRemark(loggedUser, estDTO, estimation);
                 if (annualOrderNumber != null && !annualOrderNumber.isEmpty()) {
@@ -343,6 +354,22 @@ public class OrderService {
                 return estimation;
 
             }).collect(Collectors.toList());
+    }
+
+    private void updateSapNumber(OrderDTO orderDTO, EstimationCreateDTO estDTO, Estimation estimation) {
+
+
+        if (orderDTO.getOrderType() == OrderType.EMERGENCY
+            && estDTO.getMpk() != null
+            && orderDTO.getClientId() != null) {
+
+            mpkBudgetMapperService.findOneByMpkAndClientId(estDTO.getMpk(), orderDTO.getClientId())
+                .ifPresent(mpkBudgetMapper ->
+                               estimation.setSapNumber(mpkBudgetMapper.getBudget())
+                );
+
+
+        }
     }
 
     private void updateRemark(User loggedUser, EstimationCreateDTO estDTO, Estimation estimation) {
@@ -580,6 +607,9 @@ public class OrderService {
     }
 
     Page<Order> findOrderToEstimationByUser(Pageable pageable) {
+        if (SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.ADMIN)) {
+            return orderRepository.findOrdersByOrderStatus(OrderStatus.IN_ESTIMATION, pageable);
+        }
         User logedUser = userService.getLoggedUser();
         return orderRepository.findOrderToEstimationByUser(logedUser.getId(), pageable);
     }
@@ -631,6 +661,14 @@ public class OrderService {
             newEstimation.setMpk(estDTO.getMpk());
             newEstimation.setMaterialType(est.getMaterialType());
 
+            if (est.getMpk() != null && orderDTO.getClientId() != null) {
+                mpkBudgetMapperService.findOneByMpkAndClientId(est.getMpk(), orderDTO.getClientId())
+                    .ifPresent(mpkBudgetMapper ->
+                                   newEstimation.setSapNumber(mpkBudgetMapper.getBudget())
+                    );
+            }
+
+
             if (estDTO.getRemark() != null && !estDTO.getRemark().trim().isEmpty()) {
                 EstimationRemark estimationRemark = new EstimationRemark();
                 estimationRemark.setRemark(estDTO.getRemark());
@@ -677,7 +715,7 @@ public class OrderService {
 
         }
 
-        inquiry.setOrderStatus(OrderStatus.CREATED_PURCHASE_ORDER);
+        //  inquiry.setOrderStatus(OrderStatus.CREATED_PURCHASE_ORDER);
         order = orderRepository.save(order);
         ReferenceOrder purchaseReferenceOrder = createReferenceOrder(inquiry, order);
         ReferenceOrder inquiryReferenceOrder = createReferenceOrder(order, inquiry);
@@ -740,7 +778,7 @@ public class OrderService {
     public void moveOrderToProduction(Long id) {
         Order order = orderRepository.findOne(id);
         order.setOrderStatus(OrderStatus.IN_PRODUCTION);
-        ZonedDateTime now=ZonedDateTime.now();
+        ZonedDateTime now = ZonedDateTime.now();
 
 
         order.getEstimations()
@@ -756,5 +794,12 @@ public class OrderService {
     public void saveOfferRemarks(Long orderId, String text) {
         Order order = orderRepository.findOne(orderId);
         order.setOfferRemarks(text);
+    }
+
+    public void removeAssingedEstimator(Long orderId) {
+        Order order = orderRepository.findOne(orderId);
+        order.setEstimationMaker(null);
+        order.setOrderStatus(OrderStatus.SENT_TO_ESTIMATION);
+
     }
 }

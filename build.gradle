@@ -35,7 +35,7 @@ apply plugin: 'idea'
 defaultTasks 'bootRun'
 
 group = 'eu.canpack.fip'
-version = '0.3.6'
+version = '0.3.8'
 
 description = ''
 
@@ -217,6 +217,11 @@ dependencies {
 
 // https://mvnrepository.com/artifact/org.activiti/activiti-spring-boot-starter-basic
 //    compile group: 'org.activiti', name: 'activiti-spring-boot-starter-basic', version: '6.0.0'
+    // https://mvnrepository.com/artifact/org.apache.poi/poi
+    compile group: 'org.apache.poi', name: 'poi', version: '3.17'
+    // https://mvnrepository.com/artifact/org.apache.poi/poi-ooxml
+    compile group: 'org.apache.poi', name: 'poi-ooxml', version: '3.17'
+
 
 
 

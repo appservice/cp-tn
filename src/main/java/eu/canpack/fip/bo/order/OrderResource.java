@@ -50,12 +50,15 @@ public class OrderResource {
 
     private final OrderQueryService orderQueryService;
 
+    private final OrderExcelService orderExcelService;
 
-    public OrderResource(OrderService orderService, OrderMapper orderMapper, Order3PdfCreator order3PdfCreator, OrderQueryService orderQueryService) {
+
+    public OrderResource(OrderService orderService, OrderMapper orderMapper, Order3PdfCreator order3PdfCreator, OrderQueryService orderQueryService, OrderExcelService orderExcelService) {
         this.orderService = orderService;
         this.orderMapper = orderMapper;
         this.order3PdfCreator = order3PdfCreator;
         this.orderQueryService = orderQueryService;
+        this.orderExcelService = orderExcelService;
     }
 
     /**
@@ -144,6 +147,83 @@ public class OrderResource {
 
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/orders/inquiries");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+    }
+
+    /**
+     * GET  /orders : get all the orders.
+     *
+     * @param pageable the pagination information
+     * @return the ResponseEntity with status 200 (OK) and the list of orders in body
+     */
+    @GetMapping("/orders/purchase-orders/to-excel")
+    @Timed
+    public byte[] getAllPurchaseOrdersInExcel(OrderCriteria orderCriteria, @ApiParam Pageable pageable) throws IOException {
+        log.debug("REST request to get a page of Orders2");
+//        if (orderCriteria == null) {
+//            orderCriteria = new OrderCriteria();
+//        }
+        // orderCriteria.getOrderType().setEquals(OrderType.ESTIMATION);
+        OrderCriteria.OrderTypeFilter orderTypeFilter = new OrderCriteria.OrderTypeFilter();
+        orderTypeFilter.setEquals(OrderType.PRODUCTION);
+        orderCriteria.setOrderType(orderTypeFilter);
+        List<OrderListDTO> list = orderQueryService.findByCriteriaAndClient(orderCriteria);//orderService.findAllByClientAndOrderType(pageable, OrderType.ESTIMATION);
+
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        orderExcelService.createExcelFile(list,OrderType.PRODUCTION, outputStream);
+
+       // HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/orders/inquiries");
+
+        return outputStream.toByteArray();//new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+    }
+
+    /**
+     * GET  /orders : get all the orders.
+     *
+     * @param pageable the pagination information
+     * @return the ResponseEntity with status 200 (OK) and the list of orders in body
+     */
+    @GetMapping("/orders/inquiries/to-excel")
+    @Timed
+    public byte[] getAllInquiriesInExcel(OrderCriteria orderCriteria, @ApiParam Pageable pageable) throws IOException {
+        log.debug("REST request to get a page of Orders2");
+//        if (orderCriteria == null) {
+//            orderCriteria = new OrderCriteria();
+//        }
+        // orderCriteria.getOrderType().setEquals(OrderType.ESTIMATION);
+        OrderCriteria.OrderTypeFilter orderTypeFilter = new OrderCriteria.OrderTypeFilter();
+        orderTypeFilter.setEquals(OrderType.ESTIMATION);
+        orderCriteria.setOrderType(orderTypeFilter);
+        List<OrderListDTO> list = orderQueryService.findByCriteriaAndClient(orderCriteria);//orderService.findAllByClientAndOrderType(pageable, OrderType.ESTIMATION);
+
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        orderExcelService.createExcelFile(list,OrderType.ESTIMATION, outputStream) ;
+
+       // HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/orders/inquiries");
+
+        return outputStream.toByteArray();//new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+    }
+
+    /**
+     * GET  /orders : get all the orders.
+     *
+     * @param pageable the pagination information
+     * @return the ResponseEntity with status 200 (OK) and the list of orders in body
+     */
+    @GetMapping("/orders/emergency/to-excel")
+    @Timed
+    public byte[] getAllEmergencyOrdersInExcel(OrderCriteria orderCriteria, @ApiParam Pageable pageable) throws IOException {
+       // log.debug("REST request to get a page of Orders2");
+
+        OrderCriteria.OrderTypeFilter orderTypeFilter = new OrderCriteria.OrderTypeFilter();
+        orderTypeFilter.setEquals(OrderType.EMERGENCY);
+        orderCriteria.setOrderType(orderTypeFilter);
+        List<OrderListDTO> list = orderQueryService.findByCriteriaAndClient(orderCriteria);//orderService.findAllByClientAndOrderType(pageable, OrderType.ESTIMATION);
+
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        orderExcelService.createExcelFile(list,OrderType.EMERGENCY, outputStream) ;
+
+
+        return outputStream.toByteArray();//new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
 
     /**
@@ -425,7 +505,7 @@ public class OrderResource {
         }
         List<OrderStatus> orderStatusList = new ArrayList<>();
         orderStatusList.add(OrderStatus.SENT_OFFER_TO_CLIENT);
-        orderStatusList.add(OrderStatus.CREATED_PURCHASE_ORDER);
+       // orderStatusList.add(OrderStatus.CREATED_PURCHASE_ORDER);
         orderCriteria.getOrderStatus().setIn(orderStatusList);
         Page<OrderListDTO> page = orderQueryService.findByCriteria(orderCriteria, pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/orders/filtered");
@@ -438,6 +518,14 @@ public class OrderResource {
     public ResponseEntity<Void> addOfferRemarks(@PathVariable Long id, @RequestBody String text) {
         log.debug(" add offer remarks for order with id {}, text: {}",id,text);
         orderService.saveOfferRemarks(id, text);
+
+        return ResponseEntity.ok().build();
+    }
+
+    @PutMapping("/orders/{id}/remove-assigned-estimator")
+    @Timed
+    public ResponseEntity<Void> removeAssignedEstimator(@PathVariable Long id){
+        orderService.removeAssingedEstimator(id);
 
         return ResponseEntity.ok().build();
     }

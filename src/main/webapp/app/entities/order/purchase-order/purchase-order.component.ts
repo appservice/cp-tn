@@ -194,4 +194,16 @@ export class PurchaseOrderComponent implements OnInit, OnDestroy {
         }
 
     }
+
+    exportToExcel(){
+        let urlSearchParams = new URLSearchParams();
+        urlSearchParams.append('internalNumber.contains', this.orderFilter.internalNumber);
+        urlSearchParams.append('referenceNumber.contains', this.orderFilter.referenceNumber);
+        urlSearchParams.append('clientName.contains', this.orderFilter.clientName);
+        urlSearchParams.append('orderStatus.equals', this.orderFilter.orderStatus);
+        urlSearchParams.append('createdAt.greaterOrEqualThan', this.orderFilter.getValidFromString());
+        urlSearchParams.append('createdAt.lessOrEqualThan', this.orderFilter.getValidToString());
+        urlSearchParams.append('title.contains', this.orderFilter.title);
+        this.orderService.getPurchaseOrdersAsExcel(urlSearchParams);
+    }
 }

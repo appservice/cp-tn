@@ -63,7 +63,7 @@ export const clientPopupRoute: Routes = [
         path: 'client/:id/edit',
         component: ClientPopupComponent,
         data: {
-            authorities: ['ROLE_ADMIN','ROLE_MANAGER'],
+            authorities: ['ROLE_ADMIN','ROLE_MANAGER','ROLE_SAP_INTRODUCER','ROLE_TECHNOLOGIST'],
             pageTitle: 'tnApp.client.home.title'
         },
         canActivate: [UserRouteAccessService],

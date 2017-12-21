@@ -172,16 +172,46 @@
                 </ul>
 
             </li>
+            <li *jhiHasAnyAuthority="['ROLE_TECHNOLOGIST','ROLE_MANAGER','ROLE_SAP_INTRODUCER','ROLE_TECHNOLOGIST']" ngbDropdown class="nav-item dropdown pointer"
+                routerLinkActive="active"
+                [routerLinkActiveOptions]="{exact: true}">
+                <a class="nav-link dropdown-toggle" ngbDropdownToggle href="javascript:void(0);" id="client-menu">
+                    <span>
+                        <i class="fa fa-th-list" aria-hidden="true"></i>
+                        <span>
+                            Klient
+                        </span>
+                        <b class="caret"></b>
+                    </span>
+                </a>
+                <ul class="dropdown-menu" ngbDropdownMenu>
+                    <li >
+                        <a class="dropdown-item" routerLink="client"routerLinkActive="active"
+                           [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()" >
+                            <i class="fa fa-fw fa-asterisk" aria-hidden="true"></i>
+                            <span jhiTranslate="global.menu.entities.client">Klient</span>
+                        </a>
+                    </li>
 
+                    <li>
+                        <a class="dropdown-item" routerLink="mpk-budget-mapper" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
+                            <i class="fa fa-fw fa-asterisk" aria-hidden="true"></i>
+                            <span jhiTranslate="global.menu.entities.mpkBudgetMapper">Mpk Budget Mapper</span>
+                        </a>
+                    </li>
 
-            <li *jhiHasAnyAuthority="['ROLE_TECHNOLOGIST','ROLE_MANAGER','ROLE_SAP_INTRODUCER']" class="nav-item" routerLinkActive="active"
+                </ul>
+
+            </li>
+
+            <!--<li *jhiHasAnyAuthority="['ROLE_TECHNOLOGIST','ROLE_MANAGER','ROLE_SAP_INTRODUCER']" class="nav-item" routerLinkActive="active"
                 [routerLinkActiveOptions]="{exact: true}">
                 <a class="nav-link" routerLink="client" routerLinkActive="active"
                    [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
                     <i class="fa fa-th-list" aria-hidden="true"></i>
                     <span jhiTranslate="global.menu.entities.client">Client</span>
                 </a>
-            </li>
+            </li>-->
 
             <li *jhiHasAnyAuthority="['ROLE_TECHNOLOGIST','ROLE_MANAER']" ngbDropdown class="nav-item dropdown pointer"
                 routerLinkActive="active"
@@ -330,6 +360,12 @@
                         <a class="dropdown-item" routerLink="cooperation" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
                             <i class="fa fa-fw fa-asterisk" aria-hidden="true"></i>
                             <span jhiTranslate="global.menu.entities.cooperation">Cooperation</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="dropdown-item" routerLink="mpk-budget-mapper" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
+                            <i class="fa fa-fw fa-asterisk" aria-hidden="true"></i>
+                            <span jhiTranslate="global.menu.entities.mpkBudgetMapper">Mpk Budget Mapper</span>
                         </a>
                     </li>
                     &lt;!&ndash; jhipster-needle-add-entity-to-menu - JHipster will add entities to the menu here &ndash;&gt;

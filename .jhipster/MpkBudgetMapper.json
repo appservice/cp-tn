@@ -1,0 +1,50 @@
+{
+    "fluentMethods": true,
+    "relationships": [
+        {
+            "relationshipName": "client",
+            "otherEntityName": "client",
+            "relationshipType": "many-to-one",
+            "relationshipValidateRules": [
+                "required"
+            ],
+            "otherEntityField": "shortcut"
+        }
+    ],
+    "fields": [
+        {
+            "fieldName": "mpk",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required",
+                "minlength",
+                "maxlength"
+            ],
+            "fieldValidateRulesMinlength": "3",
+            "fieldValidateRulesMaxlength": "6"
+        },
+        {
+            "fieldName": "budget",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required",
+                "minlength",
+                "maxlength",
+                "pattern"
+            ],
+            "fieldValidateRulesMinlength": "7",
+            "fieldValidateRulesMaxlength": "15",
+            "fieldValidateRulesPattern": "^[0-9]*$"
+        },
+        {
+            "fieldName": "description",
+            "fieldType": "String"
+        }
+    ],
+    "changelogDate": "20171218211406",
+    "dto": "mapstruct",
+    "service": "serviceClass",
+    "entityTableName": "mpk_budget_mapper",
+    "jpaMetamodelFiltering": false,
+    "pagination": "pagination"
+}

@@ -39,7 +39,7 @@ export class OrderService {
 
     updateAsAdmin(order: Order): Observable<Order> {
         const copy = this.convert(order);
-        return this.http.put(this.resourceUrl+'/update-as-admin', copy).map((res: Response) => {
+        return this.http.put(this.resourceUrl + '/update-as-admin', copy).map((res: Response) => {
             const jsonResponse = res.json();
             this.convertItemFromServer(jsonResponse);
             return jsonResponse;
@@ -212,6 +212,13 @@ export class OrderService {
         );
     }
 
+    removeAssingedEstimator(id: number): Observable<void> {
+        return this.http.put(`${this.resourceUrl}/${id}/remove-assigned-estimator/`, {id: id}).map((res: Response) => {
+
+            }
+        );
+    }
+
     // createPdfOffer(order:Order):Observable<void>{
     //     // const copy = this.convert(order);
     //
@@ -230,7 +237,7 @@ export class OrderService {
         this.http.post(`${this.resourceUrl}/create-pdf-offer`, copy, options)
             .map((res: Response) => res.blob())
             .subscribe((data: any) => {
-                this.saveDownload(data, 'Oferta_' + order.internalNumber, 'application/pdf');
+                this.saveDownload(data, 'Oferta_' + order.internalNumber + '.pdf', 'application/pdf');
 
             });
     }
@@ -245,7 +252,66 @@ export class OrderService {
         this.http.post(`api/production/create-technology-card-pdf`, copy, options)
             .map((res: Response) => res.blob())
             .subscribe((data: any) => {
-                this.saveDownload(data, 'Karta_techn_zam_' + order.internalNumber, 'application/pdf');
+                this.saveDownload(data, 'Karta_techn_zam_' + order.internalNumber + '.pdf', 'application/pdf');
+
+            });
+    }
+
+
+    getInquiriesAsExcel(urlSearchParams?: URLSearchParams): void {
+        // const copy = this.convert(order);
+
+        let headers = new Headers({'Content-Type': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'});
+        let options = new RequestOptions({responseType: ResponseContentType.Blob, headers});
+        if (urlSearchParams) {
+            console.log(urlSearchParams);
+            options.params=urlSearchParams;
+
+        }
+
+        this.http.get(`api/orders/inquiries/to-excel`, options)
+            .map((res: Response) => res.blob())
+            .subscribe((data: any) => {
+                this.saveDownload(data, 'Zapytania ofertowe.xlsx', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+
+            });
+    }
+
+
+    getPurchaseOrdersAsExcel(urlSearchParams?: URLSearchParams): void {
+        // const copy = this.convert(order);
+
+        let headers = new Headers({'Content-Type': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'});
+        let options = new RequestOptions({responseType: ResponseContentType.Blob, headers});
+        if (urlSearchParams) {
+            console.log(urlSearchParams);
+            options.params=urlSearchParams;
+
+        }
+
+        this.http.get(`api/orders/purchase-orders/to-excel`, options)
+            .map((res: Response) => res.blob())
+            .subscribe((data: any) => {
+                this.saveDownload(data, 'Zamówienia.xlsx', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+
+            });
+    }
+
+    getEmergencyOrdersAsExcel(urlSearchParams?: URLSearchParams): void {
+        // const copy = this.convert(order);
+
+        let headers = new Headers({'Content-Type': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'});
+        let options = new RequestOptions({responseType: ResponseContentType.Blob, headers});
+        if (urlSearchParams) {
+            console.log(urlSearchParams);
+            options.params=urlSearchParams;
+
+        }
+
+        this.http.get(`api/orders/emergency/to-excel`, options)
+            .map((res: Response) => res.blob())
+            .subscribe((data: any) => {
+                this.saveDownload(data, 'Zamówienia_awaryjne.xlsx', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
 
             });
     }
@@ -255,7 +321,7 @@ export class OrderService {
 
         const disableAutoBOM = true;
 
-        FileSaver.saveAs(data, fileName + '.pdf', disableAutoBOM);
+        FileSaver.saveAs(data, fileName, disableAutoBOM);
     }
 
 

@@ -115,6 +115,8 @@
             </tr>
             </tbody>
         </table>
+        <button type="button" class="btn btn-outline-dark" (click)="exportToExcel();" [disabled]="waitForResponse">Eksport do Excel</button>
+
     </div>
     <div *ngIf="productionItems && productionItems.length">
         <div class="row justify-content-center">

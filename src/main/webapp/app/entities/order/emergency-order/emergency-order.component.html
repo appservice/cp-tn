@@ -48,7 +48,7 @@
             <div class="input-group">
                 <input type="text" class="form-control"
                        name="validFromFilter"
-                        [displayMonths]="true" [showWeekdays]="true"
+                       [displayMonths]="true" [showWeekdays]="true"
                        [(ngModel)]="orderFilter.validFrom" placeholder="Utworzono po:" ngbDatepicker="" #realizationDateDp="ngbDatepicker"/>
                 <span class="input-group-btn">
                     <button type="button" class="btn btn-default" (click)="realizationDateDp.toggle()"
@@ -60,7 +60,7 @@
 
             <div class="input-group">
                 <input type="text" class="form-control" name="validToFilter" ngbDatepicker #createdToEnd="ngbDatepicker" [displayMonths]="true" [showWeekdays]="true"
-                       [(ngModel)]="orderFilter.validTo" placeholder="Utworzono przed:" />
+                       [(ngModel)]="orderFilter.validTo" placeholder="Utworzono przed:"/>
                 <span class="input-group-btn">
                     <button type="button" class="btn btn-default" (click)="createdToEnd.toggle()"
                             (keyup)="createdToEnd.toggle()"><i class="fa fa-calendar"></i></button>
@@ -151,6 +151,8 @@
         </tr>
         </tbody>
     </table>
+    <button type="button" class="btn btn-outline-dark" (click)="exportToExcel();">Eksport do Excel</button>
+
 </div>
 <div *ngIf="orders && orders.length">
     <div class="row justify-content-center">

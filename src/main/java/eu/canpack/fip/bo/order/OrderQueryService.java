@@ -5,6 +5,7 @@ import eu.canpack.fip.bo.client.Client_;
 import eu.canpack.fip.bo.estimation.Estimation;
 import eu.canpack.fip.bo.estimation.Estimation_;
 import eu.canpack.fip.bo.order.dto.OrderCriteria;
+import eu.canpack.fip.bo.order.dto.OrderDTO;
 import eu.canpack.fip.bo.order.dto.OrderListDTO;
 import eu.canpack.fip.bo.order.dto.OrderMapper;
 import eu.canpack.fip.domain.User;
@@ -16,6 +17,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.domain.Specifications;
 import org.springframework.stereotype.Service;
@@ -26,6 +28,7 @@ import javax.persistence.criteria.Join;
 import javax.persistence.criteria.JoinType;
 import java.util.Collection;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Service for executing complex queries for Order entities in the database.
@@ -64,6 +67,18 @@ public class OrderQueryService extends QueryService<Order> {
         final Specifications<Order> specification = createSpecification(criteria);
         return OrderMapper.toDto(OrderRepository.findAll(specification));
     }
+//    /**
+//     * Return a {@link List} of {%link OrderDTO} which matches the criteria from the database
+//     *
+//     * @param criteria The object which holds all the filters, which the entities should match.
+//     * @return the matching entities.
+//     */
+//    @Transactional(readOnly = true)
+//    public List<OrderListDTO> findByCriteriaNotPageable(OrderCriteria criteria,Pageable page) {
+//        log.debug("find by criteria : {}", criteria);
+//        final Specifications<Order> specification = createSpecification(criteria);
+//        return OrderMapper.toDto(OrderRepository.findAll(specification));
+//    }
 
     /**
      * Return a {@link Page} of {%link OrderDTO} which matches the criteria from the database
@@ -186,6 +201,62 @@ public class OrderQueryService extends QueryService<Order> {
         final Page<Order> result = OrderRepository.findAll(specification, page);
 
         return result.map(OrderMapper::toDto);
+    }
+
+    /**
+     * Return a {@link Page} of {%link OrderDTO} which matches the criteria from the database
+     *
+     * @param criteria The object which holds all the filters, which the entities should match.
+//     * @param page     The page, which should be returned.
+     * @return the matching entities.
+     */
+    @Transactional(readOnly = true)
+    public List<OrderListDTO> findByCriteriaAndClient(OrderCriteria criteria) {
+        log.debug("find by criteria : {}, page: {}", criteria);
+
+        User user = userService.getLoggedUser();
+        Client client = user.getClient();
+        if (client != null) {
+            log.debug("user client: {}", client);
+            if (criteria.getClientId() == null) {
+                criteria.setClientId(new LongFilter());
+            }
+            criteria.getClientId().setEquals(client.getId());
+
+        }
+        Sort sort = new Sort(Sort.Direction.DESC,"id");
+        final Specifications<Order> specification = createSpecification(criteria);
+
+        final List<Order> result = OrderRepository.findAll(specification,sort);
+
+        return result.stream().map(OrderMapper::toDto).collect(Collectors.toList());
+    }
+    /**
+     * Return a {@link Page} of {%link OrderDTO} which matches the criteria from the database
+     *
+     * @param criteria The object which holds all the filters, which the entities should match.
+//     * @param page     The page, which should be returned.
+     * @return the matching entities.
+     */
+    @Transactional(readOnly = true)
+    public List<OrderListDTO> findByCriteriaAndClient(OrderCriteria criteria, Sort sort) {
+        log.debug("find by criteria : {}, page: {}", criteria);
+
+        User user = userService.getLoggedUser();
+        Client client = user.getClient();
+        if (client != null) {
+            log.debug("user client: {}", client);
+            if (criteria.getClientId() == null) {
+                criteria.setClientId(new LongFilter());
+            }
+            criteria.getClientId().setEquals(client.getId());
+
+        }
+        final Specifications<Order> specification = createSpecification(criteria);
+
+        final List<Order> result = OrderRepository.findAll(specification,sort);
+
+        return result.stream().map(OrderMapper::toDto).collect(Collectors.toList());
     }
 
 

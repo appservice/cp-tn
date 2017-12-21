@@ -11,6 +11,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.domain.Specifications;
 import org.springframework.stereotype.Service;
@@ -54,6 +55,34 @@ public class EstimationQueryService extends QueryService<Estimation> {
         log.debug("find by criteria : {}, page: {}", criteria, page);
         final Specifications<Estimation> specification = createSpecification(criteria);
         final Page<Estimation> result = estimationRepository.findAll(specification, page);
+        return result;
+    }
+
+    /**
+     * Return a {@link Page} of {%link OrderDTO} which matches the criteria from the database
+     *
+     * @param criteria The object which holds all the filters, which the entities should match.
+     * @return the matching entities.
+     */
+    @Transactional(readOnly = true)
+    public List<Estimation> findByCriteria(EstimationCriteria criteria) {
+        log.debug("find by criteria not pageable : {},", criteria);
+        final Specifications<Estimation> specification = createSpecification(criteria);
+        final List<Estimation> result = estimationRepository.findAll(specification);
+        return result;
+    }
+
+    /**
+     * Return a {@link Page} of {%link OrderDTO} which matches the criteria from the database
+     *
+     * @param criteria The object which holds all the filters, which the entities should match.
+     * @return the matching entities.
+     */
+    @Transactional(readOnly = true)
+    public List<Estimation> findByCriteria(EstimationCriteria criteria, Sort sort) {
+        log.debug("find by criteria not pageable, Sort : {},", criteria, sort);
+        final Specifications<Estimation> specification = createSpecification(criteria);
+        final List<Estimation> result = estimationRepository.findAll(specification, sort);
         return result;
     }
 

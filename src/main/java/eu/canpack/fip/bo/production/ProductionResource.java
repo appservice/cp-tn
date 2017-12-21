@@ -18,9 +18,11 @@ import eu.canpack.fip.bo.pdf.TechnologyCardPdfCreator;
 import eu.canpack.fip.web.rest.util.PaginationUtil;
 import io.github.jhipster.service.filter.BooleanFilter;
 import io.swagger.annotations.ApiParam;
+import org.hibernate.criterion.Order;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -116,6 +118,38 @@ public class ProductionResource {
 
         return ResponseEntity.ok().header(HttpHeaders.CONTENT_DISPOSITION, "attachment;filename=" + "oferta.pdf")
             .contentType(MediaType.APPLICATION_PDF).body(inputStreamResource);
+
+    }
+
+    @GetMapping("/production/to-excel")
+    @Transactional(readOnly = true)
+    public byte[] getTechnologyCard(EstimationCriteria criteria)  {
+        Sort sort = new Sort(Sort.Direction.DESC,"productionStartDateTime");
+        if(criteria.getOrderStatusFilter()==null){
+            criteria.setOrderStatusFilter(new EstimationCriteria.OrderStatusFilter());
+        }
+        criteria.getOrderStatusFilter().setEquals(OrderStatus.IN_PRODUCTION);
+
+        if(criteria.isFinished()==null){
+            criteria.setFinished(new BooleanFilter());
+        }
+        criteria.isFinished().setEquals(false);
+
+        return productionService.makeExcelOfActualInProduction(criteria, sort);
+
+    }
+
+    @GetMapping("/production/finished/to-excel")
+    @Transactional(readOnly = true)
+    public byte[] getFinishedProductionItemsToExcel(EstimationCriteria criteria)  {
+        Sort sort = new Sort(Sort.Direction.DESC,"deliveredAt");
+
+        if(criteria.isFinished()==null){
+            criteria.setFinished(new BooleanFilter());
+        }
+        criteria.isFinished().setEquals(true);
+
+        return productionService.makeExcelOfFinishedProduction(criteria, sort);
 
     }
 

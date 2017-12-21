@@ -189,12 +189,20 @@ export class EmergencyOrderComponent implements OnInit, OnDestroy {
         this.loadAll();
     }
 
-    exportAsExcelFile() {
-        this.excelService.exportAsExcelFile(this.orders, 'TestFile.xlsx');
-    }
+
 
     model: any;
 
-
+    exportToExcel(){
+        let urlSearchParams = new URLSearchParams();
+        urlSearchParams.append('internalNumber.contains', this.orderFilter.internalNumber);
+        urlSearchParams.append('referenceNumber.contains', this.orderFilter.referenceNumber);
+        urlSearchParams.append('clientName.contains', this.orderFilter.clientName);
+        urlSearchParams.append('orderStatus.equals', this.orderFilter.orderStatus);
+        urlSearchParams.append('createdAt.greaterOrEqualThan', this.orderFilter.getValidFromString());
+        urlSearchParams.append('createdAt.lessOrEqualThan', this.orderFilter.getValidToString());
+        urlSearchParams.append('title.contains', this.orderFilter.title);
+        this.orderService.getEmergencyOrdersAsExcel(urlSearchParams);
+    }
 
 }

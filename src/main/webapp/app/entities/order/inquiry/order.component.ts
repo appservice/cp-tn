@@ -224,9 +224,7 @@ export class OrderComponent implements OnInit, OnDestroy {
         this.loadAll();
     }
 
-    exportAsExcelFile() {
-        this.excelService.exportAsExcelFile(this.orders, 'TestFile.xlsx');
-    }
+
 
     model: any;
 
@@ -257,5 +255,45 @@ export class OrderComponent implements OnInit, OnDestroy {
     isWeekend(date: NgbDateStruct) {
         const d = new Date(date.year, date.month - 1, date.day);
         return d.getDay() === 0 || d.getDay() === 6;
+    }
+
+    exportToExcel(){
+        let urlSearchParams = new URLSearchParams();
+        urlSearchParams.append('internalNumber.contains', this.orderFilter.internalNumber);
+        urlSearchParams.append('referenceNumber.contains', this.orderFilter.referenceNumber);
+        urlSearchParams.append('clientName.contains', this.orderFilter.clientName);
+        urlSearchParams.append('orderStatus.equals', this.orderFilter.orderStatus);
+        urlSearchParams.append('createdAt.greaterOrEqualThan', this.orderFilter.getValidFromString());
+        urlSearchParams.append('createdAt.lessOrEqualThan', this.orderFilter.getValidToString());
+        urlSearchParams.append('title.contains', this.orderFilter.title);
+        this.orderService.getInquiriesAsExcel(urlSearchParams);
+    }
+
+
+
+    onInputFieldChanged(event: IMyInputFieldChanged) {
+        console.log('onInputFieldChanged(): Value: ', event.value, ' - dateFormat: ', event.dateFormat, ' - valid: ', event.valid);
+        //   console.log(event);
+        if(event.value!=null && event.value){
+            this.validDate=event.valid;
+        }
+
+    }
+    myOptions: INgxMyDpOptions = {
+        // other options...
+        showWeekNumbers:true,
+        dateFormat: 'dd-mm-yyyy',
+        todayBtnTxt: 'Dzisiaj',
+        dayLabels: {su: "Nie", mo: "Pon", tu: "Wto", we: "Sro", th: "Czw", fr: "Pią", sa: "Sob"},
+        monthLabels: {1: "Sty", 2: "Lut", 3: "Mar", 4: "Kwi", 5: "Maj", 6: "Cze", 7: "Lip", 8: "Sier", 9: "Wrz", 10: "Paź", 11: "Lis", 12: "Gru"},
+    };
+
+    // optional date changed callback
+    onDateChanged(event: IMyDateModel): void {
+        //       console.log(event);
+        this.validDate = true;
+        // this.dateValue=event;
+        // this.registerOnChange(event);
+
     }
 }

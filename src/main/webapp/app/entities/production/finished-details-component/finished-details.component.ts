@@ -34,6 +34,7 @@ export class FinishedDetailsComponent implements OnInit, OnDestroy {
     previousPage: any;
     reverse: any;
     estimationFilter: EstimationFilter;
+    waitForResponse: boolean = false;
 
 
     constructor(private parseLinks: JhiParseLinks,
@@ -60,18 +61,7 @@ export class FinishedDetailsComponent implements OnInit, OnDestroy {
     loadAll() {
 
 
-        let urlSearchParams = new URLSearchParams();
-        if (this.estimationFilter.itemNumber !== null && this.estimationFilter.itemNumber !== '')
-            urlSearchParams.append('itemNumber.contains', this.estimationFilter.itemNumber);
-
-        if (this.estimationFilter.itemName !== null && this.estimationFilter.itemName !== '')
-            urlSearchParams.append('itemName.contains', this.estimationFilter.itemName);
-
-        if (this.estimationFilter.orderNumber !== null && this.estimationFilter.orderNumber !== '')
-        urlSearchParams.append('orderInternalNumber.contains', this.estimationFilter.orderNumber);
-
-        if (this.estimationFilter.clientName !== null && this.estimationFilter.clientName !== '')
-        urlSearchParams.append('clientName.contains', this.estimationFilter.clientName);
+        let urlSearchParams = this.createSearchParams();
 
         this.productionService.getItemsFinished({
             page: this.page - 1,
@@ -162,10 +152,37 @@ export class FinishedDetailsComponent implements OnInit, OnDestroy {
 
     clearFilterAndLoadAll(): void {
         this.estimationFilter.itemName = null;
-         this.estimationFilter.clientName = null;
+        this.estimationFilter.clientName = null;
         this.estimationFilter.itemNumber = null;
         this.estimationFilter.orderNumber = null;
         this.loadAll();
     }
+
+    createSearchParams(): URLSearchParams {
+        let urlSearchParams = new URLSearchParams();
+        if (this.estimationFilter.itemNumber !== null && this.estimationFilter.itemNumber !== '')
+            urlSearchParams.append('itemNumber.contains', this.estimationFilter.itemNumber);
+
+        if (this.estimationFilter.itemName !== null && this.estimationFilter.itemName !== '')
+            urlSearchParams.append('itemName.contains', this.estimationFilter.itemName);
+
+        if (this.estimationFilter.orderNumber !== null && this.estimationFilter.orderNumber !== '')
+            urlSearchParams.append('orderInternalNumber.contains', this.estimationFilter.orderNumber);
+
+        if (this.estimationFilter.clientName !== null && this.estimationFilter.clientName !== '')
+            urlSearchParams.append('clientName.contains', this.estimationFilter.clientName);
+        return urlSearchParams;
+    }
+
+    exportToExcel() {
+        this.waitForResponse = true;
+        let urlSearchParams = this.createSearchParams();
+
+        this.productionService.getFinishedProductionAsExcel(urlSearchParams).subscribe((res: any) => {
+                this.waitForResponse = false;
+            }
+        );
+    }
+
 
 }

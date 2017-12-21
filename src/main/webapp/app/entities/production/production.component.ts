@@ -11,6 +11,8 @@ import {PaginationConfig} from '../../blocks/config/uib-pagination.config';
 import {ProductionService} from './production.service';
 import {ProductionItem} from './production-item.model';
 import {EstimationFilter} from "../order/estimation-filter.model";
+import * as FileSaver from 'file-saver';
+
 
 @Component({
     selector: 'jhi-production',
@@ -34,6 +36,7 @@ export class ProductionStanComponent implements OnInit, OnDestroy {
     previousPage: any;
     reverse: any;
     estimationFilter: EstimationFilter;
+    waitForResponse: boolean = false;
 
 
     constructor(private parseLinks: JhiParseLinks,
@@ -59,19 +62,7 @@ export class ProductionStanComponent implements OnInit, OnDestroy {
 
     loadAll() {
 
-
-        let urlSearchParams = new URLSearchParams();
-        if (this.estimationFilter.itemNumber !== null && this.estimationFilter.itemNumber !== '')
-            urlSearchParams.append('itemNumber.contains', this.estimationFilter.itemNumber);
-
-        if (this.estimationFilter.itemName !== null && this.estimationFilter.itemName !== '')
-            urlSearchParams.append('itemName.contains', this.estimationFilter.itemName);
-
-        if (this.estimationFilter.orderNumber !== null && this.estimationFilter.orderNumber !== '')
-        urlSearchParams.append('orderInternalNumber.contains', this.estimationFilter.orderNumber);
-
-        if (this.estimationFilter.clientName !== null && this.estimationFilter.clientName !== '')
-        urlSearchParams.append('clientName.contains', this.estimationFilter.clientName);
+        let urlSearchParams= this.createSearchParams();
 
         this.productionService.getItemsActualInProduction({
             page: this.page - 1,
@@ -162,10 +153,37 @@ export class ProductionStanComponent implements OnInit, OnDestroy {
 
     clearFilterAndLoadAll(): void {
         this.estimationFilter.itemName = null;
-         this.estimationFilter.clientName = null;
+        this.estimationFilter.clientName = null;
         this.estimationFilter.itemNumber = null;
         this.estimationFilter.orderNumber = null;
         this.loadAll();
+    }
+
+    exportToExcel() {
+        this.waitForResponse = true;
+       let urlSearchParams= this.createSearchParams();
+
+        this.productionService.getProductionAsExcel(urlSearchParams).subscribe((res: any) => {
+                this.waitForResponse = false;
+            }
+        );
+    }
+
+
+    createSearchParams(): URLSearchParams {
+        let urlSearchParams = new URLSearchParams();
+        if (this.estimationFilter.itemNumber !== null && this.estimationFilter.itemNumber !== '')
+            urlSearchParams.append('itemNumber.contains', this.estimationFilter.itemNumber);
+
+        if (this.estimationFilter.itemName !== null && this.estimationFilter.itemName !== '')
+            urlSearchParams.append('itemName.contains', this.estimationFilter.itemName);
+
+        if (this.estimationFilter.orderNumber !== null && this.estimationFilter.orderNumber !== '')
+            urlSearchParams.append('orderInternalNumber.contains', this.estimationFilter.orderNumber);
+
+        if (this.estimationFilter.clientName !== null && this.estimationFilter.clientName !== '')
+            urlSearchParams.append('clientName.contains', this.estimationFilter.clientName);
+        return urlSearchParams;
     }
 
 }
