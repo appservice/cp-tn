@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Http, Response } from '@angular/http';
-import { Observable } from 'rxjs/Rx';
+import { Observable } from 'rxjs/Observable';
 import { SERVER_API_URL } from '../../app.constants';
 
 import { MpkBudgetMapper } from './mpk-budget-mapper.model';
@@ -9,7 +9,7 @@ import { ResponseWrapper, createRequestOption } from '../../shared';
 @Injectable()
 export class MpkBudgetMapperService {
 
-    private resourceUrl = SERVER_API_URL + 'api/mpk-budget-mappers';
+    private resourceUrl =  SERVER_API_URL + 'api/mpk-budget-mappers';
     private resourceSearchUrl = SERVER_API_URL + 'api/_search/mpk-budget-mappers';
 
     constructor(private http: Http) { }
@@ -17,20 +17,23 @@ export class MpkBudgetMapperService {
     create(mpkBudgetMapper: MpkBudgetMapper): Observable<MpkBudgetMapper> {
         const copy = this.convert(mpkBudgetMapper);
         return this.http.post(this.resourceUrl, copy).map((res: Response) => {
-            return res.json();
+            const jsonResponse = res.json();
+            return this.convertItemFromServer(jsonResponse);
         });
     }
 
     update(mpkBudgetMapper: MpkBudgetMapper): Observable<MpkBudgetMapper> {
         const copy = this.convert(mpkBudgetMapper);
         return this.http.put(this.resourceUrl, copy).map((res: Response) => {
-            return res.json();
+            const jsonResponse = res.json();
+            return this.convertItemFromServer(jsonResponse);
         });
     }
 
     find(id: number): Observable<MpkBudgetMapper> {
         return this.http.get(`${this.resourceUrl}/${id}`).map((res: Response) => {
-            return res.json();
+            const jsonResponse = res.json();
+            return this.convertItemFromServer(jsonResponse);
         });
     }
 
@@ -52,9 +55,24 @@ export class MpkBudgetMapperService {
 
     private convertResponse(res: Response): ResponseWrapper {
         const jsonResponse = res.json();
-        return new ResponseWrapper(res.headers, jsonResponse, res.status);
+        const result = [];
+        for (let i = 0; i < jsonResponse.length; i++) {
+            result.push(this.convertItemFromServer(jsonResponse[i]));
+        }
+        return new ResponseWrapper(res.headers, result, res.status);
     }
 
+    /**
+     * Convert a returned JSON object to MpkBudgetMapper.
+     */
+    private convertItemFromServer(json: any): MpkBudgetMapper {
+        const entity: MpkBudgetMapper = Object.assign(new MpkBudgetMapper(), json);
+        return entity;
+    }
+
+    /**
+     * Convert a MpkBudgetMapper to a JSON which can be sent to the server.
+     */
     private convert(mpkBudgetMapper: MpkBudgetMapper): MpkBudgetMapper {
         const copy: MpkBudgetMapper = Object.assign({}, mpkBudgetMapper);
         return copy;

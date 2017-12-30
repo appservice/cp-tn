@@ -52,10 +52,10 @@ public class OperatorService {
     }
 
     /**
-     *  Get all the operators.
+     * Get all the operators.
      *
-     *  @param pageable the pagination information
-     *  @return the list of entities
+     * @param pageable the pagination information
+     * @return the list of entities
      */
     @Transactional(readOnly = true)
     public Page<OperatorDTO> findAll(Pageable pageable) {
@@ -65,10 +65,10 @@ public class OperatorService {
     }
 
     /**
-     *  Get one operator by id.
+     * Get one operator by id.
      *
-     *  @param id the id of the entity
-     *  @return the entity
+     * @param id the id of the entity
+     * @return the entity
      */
     @Transactional(readOnly = true)
     public OperatorDTO findOne(Long id) {
@@ -78,9 +78,9 @@ public class OperatorService {
     }
 
     /**
-     *  Delete the  operator by id.
+     * Delete the operator by id.
      *
-     *  @param id the id of the entity
+     * @param id the id of the entity
      */
     public void delete(Long id) {
         log.debug("Request to delete Operator : {}", id);
@@ -91,9 +91,9 @@ public class OperatorService {
     /**
      * Search for the operator corresponding to the query.
      *
-     *  @param query the query of the search
-     *  @param pageable the pagination information
-     *  @return the list of entities
+     * @param query the query of the search
+     * @param pageable the pagination information
+     * @return the list of entities
      */
     @Transactional(readOnly = true)
     public Page<OperatorDTO> search(String query, Pageable pageable) {

@@ -3,6 +3,7 @@ package eu.canpack.fip.web.rest;
 import eu.canpack.fip.TnApp;
 
 import eu.canpack.fip.domain.Cooperation;
+import eu.canpack.fip.domain.Estimation;
 import eu.canpack.fip.repository.CooperationRepository;
 import eu.canpack.fip.service.CooperationService;
 import eu.canpack.fip.repository.search.CooperationSearchRepository;
@@ -30,6 +31,7 @@ import javax.persistence.EntityManager;
 import java.math.BigDecimal;
 import java.util.List;
 
+import static eu.canpack.fip.web.rest.TestUtil.createFormattingConversionService;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -94,6 +96,7 @@ public class CooperationResourceIntTest {
         this.restCooperationMockMvc = MockMvcBuilders.standaloneSetup(cooperationResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)
+            .setConversionService(createFormattingConversionService())
             .setMessageConverters(jacksonMessageConverter).build();
     }
 
@@ -141,7 +144,7 @@ public class CooperationResourceIntTest {
 
         // Validate the Cooperation in Elasticsearch
         Cooperation cooperationEs = cooperationSearchRepository.findOne(testCooperation.getId());
-        assertThat(cooperationEs).isEqualToComparingFieldByField(testCooperation);
+        assertThat(cooperationEs).isEqualToIgnoringGivenFields(testCooperation);
     }
 
     @Test
@@ -430,6 +433,24 @@ public class CooperationResourceIntTest {
         defaultCooperationShouldNotBeFound("price.specified=false");
     }
 
+    @Test
+    @Transactional
+    public void getAllCooperationByEstimationIsEqualToSomething() throws Exception {
+        // Initialize the database
+        Estimation estimation = EstimationResourceIntTest.createEntity(em);
+        em.persist(estimation);
+        em.flush();
+        cooperation.setEstimation(estimation);
+        cooperationRepository.saveAndFlush(cooperation);
+        Long estimationId = estimation.getId();
+
+        // Get all the cooperationList where estimation equals to estimationId
+        defaultCooperationShouldBeFound("estimationId.equals=" + estimationId);
+
+        // Get all the cooperationList where estimation equals to estimationId + 1
+        defaultCooperationShouldNotBeFound("estimationId.equals=" + (estimationId + 1));
+    }
+
     /**
      * Executes the search, and checks that the default entity is returned
      */
@@ -474,6 +495,8 @@ public class CooperationResourceIntTest {
 
         // Update the cooperation
         Cooperation updatedCooperation = cooperationRepository.findOne(cooperation.getId());
+        // Disconnect from session so that the updates on updatedCooperation are not directly saved in db
+        em.detach(updatedCooperation);
         updatedCooperation
             .name(UPDATED_NAME)
             .counterparty(UPDATED_COUNTERPARTY)
@@ -497,7 +520,7 @@ public class CooperationResourceIntTest {
 
         // Validate the Cooperation in Elasticsearch
         Cooperation cooperationEs = cooperationSearchRepository.findOne(testCooperation.getId());
-        assertThat(cooperationEs).isEqualToComparingFieldByField(testCooperation);
+        assertThat(cooperationEs).isEqualToIgnoringGivenFields(testCooperation);
     }
 
     @Test

@@ -1,12 +1,8 @@
 /* tslint:disable max-line-length */
-import { ComponentFixture, TestBed, async, inject } from '@angular/core/testing';
-import { OnInit } from '@angular/core';
-import { DatePipe } from '@angular/common';
-import { ActivatedRoute } from '@angular/router';
-import { Observable } from 'rxjs/Rx';
-import { JhiDateUtils, JhiDataUtils, JhiEventManager } from 'ng-jhipster';
+import { ComponentFixture, TestBed, async } from '@angular/core/testing';
+import { Observable } from 'rxjs/Observable';
+
 import { TnTestModule } from '../../../test.module';
-import { MockActivatedRoute } from '../../../helpers/mock-route.service';
 import { OperatorDetailComponent } from '../../../../../../main/webapp/app/entities/operator/operator-detail.component';
 import { OperatorService } from '../../../../../../main/webapp/app/entities/operator/operator.service';
 import { Operator } from '../../../../../../main/webapp/app/entities/operator/operator.model';
@@ -23,17 +19,10 @@ describe('Component Tests', () => {
                 imports: [TnTestModule],
                 declarations: [OperatorDetailComponent],
                 providers: [
-                    JhiDateUtils,
-                    JhiDataUtils,
-                    DatePipe,
-                    {
-                        provide: ActivatedRoute,
-                        useValue: new MockActivatedRoute({id: 123})
-                    },
-                    OperatorService,
-                    JhiEventManager
+                    OperatorService
                 ]
-            }).overrideTemplate(OperatorDetailComponent, '')
+            })
+            .overrideTemplate(OperatorDetailComponent, '')
             .compileComponents();
         }));
 
@@ -45,16 +34,16 @@ describe('Component Tests', () => {
 
         describe('OnInit', () => {
             it('Should call load all on init', () => {
-            // GIVEN
+                // GIVEN
 
-            spyOn(service, 'find').and.returnValue(Observable.of(new Operator(10)));
+                spyOn(service, 'find').and.returnValue(Observable.of(new Operator(123)));
 
-            // WHEN
-            comp.ngOnInit();
+                // WHEN
+                comp.ngOnInit();
 
-            // THEN
-            expect(service.find).toHaveBeenCalledWith(123);
-            expect(comp.operator).toEqual(jasmine.objectContaining({id: 10}));
+                // THEN
+                expect(service.find).toHaveBeenCalledWith(123);
+                expect(comp.operator).toEqual(jasmine.objectContaining({id: 123}));
             });
         });
     });

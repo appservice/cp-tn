@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Http, Response } from '@angular/http';
-import { Observable } from 'rxjs/Rx';
+import { Observable } from 'rxjs/Observable';
 import { SERVER_API_URL } from '../../app.constants';
 
 import { Operator } from './operator.model';
@@ -9,7 +9,7 @@ import { ResponseWrapper, createRequestOption } from '../../shared';
 @Injectable()
 export class OperatorService {
 
-    private resourceUrl = SERVER_API_URL + 'api/operators';
+    private resourceUrl =  SERVER_API_URL + 'api/operators';
     private resourceSearchUrl = SERVER_API_URL + 'api/_search/operators';
 
     constructor(private http: Http) { }
@@ -17,20 +17,23 @@ export class OperatorService {
     create(operator: Operator): Observable<Operator> {
         const copy = this.convert(operator);
         return this.http.post(this.resourceUrl, copy).map((res: Response) => {
-            return res.json();
+            const jsonResponse = res.json();
+            return this.convertItemFromServer(jsonResponse);
         });
     }
 
     update(operator: Operator): Observable<Operator> {
         const copy = this.convert(operator);
         return this.http.put(this.resourceUrl, copy).map((res: Response) => {
-            return res.json();
+            const jsonResponse = res.json();
+            return this.convertItemFromServer(jsonResponse);
         });
     }
 
     find(id: number): Observable<Operator> {
         return this.http.get(`${this.resourceUrl}/${id}`).map((res: Response) => {
-            return res.json();
+            const jsonResponse = res.json();
+            return this.convertItemFromServer(jsonResponse);
         });
     }
 
@@ -52,9 +55,24 @@ export class OperatorService {
 
     private convertResponse(res: Response): ResponseWrapper {
         const jsonResponse = res.json();
-        return new ResponseWrapper(res.headers, jsonResponse, res.status);
+        const result = [];
+        for (let i = 0; i < jsonResponse.length; i++) {
+            result.push(this.convertItemFromServer(jsonResponse[i]));
+        }
+        return new ResponseWrapper(res.headers, result, res.status);
     }
 
+    /**
+     * Convert a returned JSON object to Operator.
+     */
+    private convertItemFromServer(json: any): Operator {
+        const entity: Operator = Object.assign(new Operator(), json);
+        return entity;
+    }
+
+    /**
+     * Convert a Operator to a JSON which can be sent to the server.
+     */
     private convert(operator: Operator): Operator {
         const copy: Operator = Object.assign({}, operator);
         return copy;

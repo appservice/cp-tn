@@ -1,12 +1,8 @@
 /* tslint:disable max-line-length */
-import { ComponentFixture, TestBed, async, inject } from '@angular/core/testing';
-import { OnInit } from '@angular/core';
-import { DatePipe } from '@angular/common';
-import { ActivatedRoute } from '@angular/router';
-import { Observable } from 'rxjs/Rx';
-import { JhiDateUtils, JhiDataUtils, JhiEventManager } from 'ng-jhipster';
+import { ComponentFixture, TestBed, async } from '@angular/core/testing';
+import { Observable } from 'rxjs/Observable';
+
 import { TnTestModule } from '../../../test.module';
-import { MockActivatedRoute } from '../../../helpers/mock-route.service';
 import { CooperationDetailComponent } from '../../../../../../main/webapp/app/entities/cooperation/cooperation-detail.component';
 import { CooperationService } from '../../../../../../main/webapp/app/entities/cooperation/cooperation.service';
 import { Cooperation } from '../../../../../../main/webapp/app/entities/cooperation/cooperation.model';
@@ -23,17 +19,10 @@ describe('Component Tests', () => {
                 imports: [TnTestModule],
                 declarations: [CooperationDetailComponent],
                 providers: [
-                    JhiDateUtils,
-                    JhiDataUtils,
-                    DatePipe,
-                    {
-                        provide: ActivatedRoute,
-                        useValue: new MockActivatedRoute({id: 123})
-                    },
-                    CooperationService,
-                    JhiEventManager
+                    CooperationService
                 ]
-            }).overrideTemplate(CooperationDetailComponent, '')
+            })
+            .overrideTemplate(CooperationDetailComponent, '')
             .compileComponents();
         }));
 
@@ -45,16 +34,16 @@ describe('Component Tests', () => {
 
         describe('OnInit', () => {
             it('Should call load all on init', () => {
-            // GIVEN
+                // GIVEN
 
-            spyOn(service, 'find').and.returnValue(Observable.of(new Cooperation(10)));
+                spyOn(service, 'find').and.returnValue(Observable.of(new Cooperation(123)));
 
-            // WHEN
-            comp.ngOnInit();
+                // WHEN
+                comp.ngOnInit();
 
-            // THEN
-            expect(service.find).toHaveBeenCalledWith(123);
-            expect(comp.cooperation).toEqual(jasmine.objectContaining({id: 10}));
+                // THEN
+                expect(service.find).toHaveBeenCalledWith(123);
+                expect(comp.cooperation).toEqual(jasmine.objectContaining({id: 123}));
             });
         });
     });

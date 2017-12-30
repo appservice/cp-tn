@@ -2,10 +2,10 @@ package eu.canpack.fip.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
 import eu.canpack.fip.service.MpkBudgetMapperService;
+import eu.canpack.fip.web.rest.errors.BadRequestAlertException;
 import eu.canpack.fip.web.rest.util.HeaderUtil;
 import eu.canpack.fip.web.rest.util.PaginationUtil;
 import eu.canpack.fip.service.dto.MpkBudgetMapperDTO;
-import io.swagger.annotations.ApiParam;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -55,7 +55,7 @@ public class MpkBudgetMapperResource {
     public ResponseEntity<MpkBudgetMapperDTO> createMpkBudgetMapper(@Valid @RequestBody MpkBudgetMapperDTO mpkBudgetMapperDTO) throws URISyntaxException {
         log.debug("REST request to save MpkBudgetMapper : {}", mpkBudgetMapperDTO);
         if (mpkBudgetMapperDTO.getId() != null) {
-            return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert(ENTITY_NAME, "idexists", "A new mpkBudgetMapper cannot already have an ID")).body(null);
+            throw new BadRequestAlertException("A new mpkBudgetMapper cannot already have an ID", ENTITY_NAME, "idexists");
         }
         MpkBudgetMapperDTO result = mpkBudgetMapperService.save(mpkBudgetMapperDTO);
         return ResponseEntity.created(new URI("/api/mpk-budget-mappers/" + result.getId()))
@@ -93,7 +93,7 @@ public class MpkBudgetMapperResource {
      */
     @GetMapping("/mpk-budget-mappers")
     @Timed
-    public ResponseEntity<List<MpkBudgetMapperDTO>> getAllMpkBudgetMappers(@ApiParam Pageable pageable) {
+    public ResponseEntity<List<MpkBudgetMapperDTO>> getAllMpkBudgetMappers(Pageable pageable) {
         log.debug("REST request to get a page of MpkBudgetMappers");
         Page<MpkBudgetMapperDTO> page = mpkBudgetMapperService.findAll(pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/mpk-budget-mappers");
@@ -138,7 +138,7 @@ public class MpkBudgetMapperResource {
      */
     @GetMapping("/_search/mpk-budget-mappers")
     @Timed
-    public ResponseEntity<List<MpkBudgetMapperDTO>> searchMpkBudgetMappers(@RequestParam String query, @ApiParam Pageable pageable) {
+    public ResponseEntity<List<MpkBudgetMapperDTO>> searchMpkBudgetMappers(@RequestParam String query, Pageable pageable) {
         log.debug("REST request to search for a page of MpkBudgetMappers for query {}", query);
         Page<MpkBudgetMapperDTO> page = mpkBudgetMapperService.search(query, pageable);
         HttpHeaders headers = PaginationUtil.generateSearchPaginationHttpHeaders(query, page, "/api/_search/mpk-budget-mappers");

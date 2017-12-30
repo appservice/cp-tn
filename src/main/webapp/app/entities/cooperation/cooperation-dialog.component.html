@@ -15,7 +15,7 @@
         <div class="form-group">
             <label class="form-control-label" jhiTranslate="tnApp.cooperation.name" for="field_name">Name</label>
             <input type="text" class="form-control" name="name" id="field_name"
-                [(ngModel)]="cooperation.name" required maxlength="512" />
+                [(ngModel)]="cooperation.name" required maxlength="512"/>
             <div [hidden]="!(editForm.controls.name?.dirty && editForm.controls.name?.invalid)">
                 <small class="form-text text-danger"
                    [hidden]="!editForm.controls.name?.errors?.required" jhiTranslate="entity.validation.required">
@@ -30,7 +30,7 @@
         <div class="form-group">
             <label class="form-control-label" jhiTranslate="tnApp.cooperation.counterparty" for="field_counterparty">Counterparty</label>
             <input type="text" class="form-control" name="counterparty" id="field_counterparty"
-                [(ngModel)]="cooperation.counterparty" required maxlength="256" />
+                [(ngModel)]="cooperation.counterparty" required maxlength="256"/>
             <div [hidden]="!(editForm.controls.counterparty?.dirty && editForm.controls.counterparty?.invalid)">
                 <small class="form-text text-danger"
                    [hidden]="!editForm.controls.counterparty?.errors?.required" jhiTranslate="entity.validation.required">
@@ -45,7 +45,7 @@
         <div class="form-group">
             <label class="form-control-label" jhiTranslate="tnApp.cooperation.amount" for="field_amount">Amount</label>
             <input type="number" class="form-control" name="amount" id="field_amount"
-                [(ngModel)]="cooperation.amount" required min="0" />
+                [(ngModel)]="cooperation.amount" required min="0"/>
             <div [hidden]="!(editForm.controls.amount?.dirty && editForm.controls.amount?.invalid)">
                 <small class="form-text text-danger"
                    [hidden]="!editForm.controls.amount?.errors?.required" jhiTranslate="entity.validation.required">
@@ -64,7 +64,7 @@
         <div class="form-group">
             <label class="form-control-label" jhiTranslate="tnApp.cooperation.price" for="field_price">Price</label>
             <input type="number" class="form-control" name="price" id="field_price"
-                [(ngModel)]="cooperation.price" required min="0" />
+                [(ngModel)]="cooperation.price" required min="0"/>
             <div [hidden]="!(editForm.controls.price?.dirty && editForm.controls.price?.invalid)">
                 <small class="form-text text-danger"
                    [hidden]="!editForm.controls.price?.errors?.required" jhiTranslate="entity.validation.required">

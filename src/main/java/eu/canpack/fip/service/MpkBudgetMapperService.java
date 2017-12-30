@@ -52,10 +52,10 @@ public class MpkBudgetMapperService {
     }
 
     /**
-     *  Get all the mpkBudgetMappers.
+     * Get all the mpkBudgetMappers.
      *
-     *  @param pageable the pagination information
-     *  @return the list of entities
+     * @param pageable the pagination information
+     * @return the list of entities
      */
     @Transactional(readOnly = true)
     public Page<MpkBudgetMapperDTO> findAll(Pageable pageable) {
@@ -65,10 +65,10 @@ public class MpkBudgetMapperService {
     }
 
     /**
-     *  Get one mpkBudgetMapper by id.
+     * Get one mpkBudgetMapper by id.
      *
-     *  @param id the id of the entity
-     *  @return the entity
+     * @param id the id of the entity
+     * @return the entity
      */
     @Transactional(readOnly = true)
     public MpkBudgetMapperDTO findOne(Long id) {
@@ -78,9 +78,9 @@ public class MpkBudgetMapperService {
     }
 
     /**
-     *  Delete the  mpkBudgetMapper by id.
+     * Delete the mpkBudgetMapper by id.
      *
-     *  @param id the id of the entity
+     * @param id the id of the entity
      */
     public void delete(Long id) {
         log.debug("Request to delete MpkBudgetMapper : {}", id);
@@ -91,9 +91,9 @@ public class MpkBudgetMapperService {
     /**
      * Search for the mpkBudgetMapper corresponding to the query.
      *
-     *  @param query the query of the search
-     *  @param pageable the pagination information
-     *  @return the list of entities
+     * @param query the query of the search
+     * @param pageable the pagination information
+     * @return the list of entities
      */
     @Transactional(readOnly = true)
     public Page<MpkBudgetMapperDTO> search(String query, Pageable pageable) {

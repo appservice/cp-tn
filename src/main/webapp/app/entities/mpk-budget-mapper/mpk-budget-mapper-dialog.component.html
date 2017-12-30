@@ -15,7 +15,7 @@
         <div class="form-group">
             <label class="form-control-label" jhiTranslate="tnApp.mpkBudgetMapper.mpk" for="field_mpk">Mpk</label>
             <input type="text" class="form-control" name="mpk" id="field_mpk"
-                [(ngModel)]="mpkBudgetMapper.mpk" required minlength="3" maxlength="6" />
+                [(ngModel)]="mpkBudgetMapper.mpk" required minlength="3" maxlength="6"/>
             <div [hidden]="!(editForm.controls.mpk?.dirty && editForm.controls.mpk?.invalid)">
                 <small class="form-text text-danger"
                    [hidden]="!editForm.controls.mpk?.errors?.required" jhiTranslate="entity.validation.required">
@@ -34,7 +34,7 @@
         <div class="form-group">
             <label class="form-control-label" jhiTranslate="tnApp.mpkBudgetMapper.budget" for="field_budget">Budget</label>
             <input type="text" class="form-control" name="budget" id="field_budget"
-                [(ngModel)]="mpkBudgetMapper.budget" required minlength="7" maxlength="15" pattern="^[0-9]*$" />
+                [(ngModel)]="mpkBudgetMapper.budget" required minlength="7" maxlength="15" pattern="^[0-9]*$"/>
             <div [hidden]="!(editForm.controls.budget?.dirty && editForm.controls.budget?.invalid)">
                 <small class="form-text text-danger"
                    [hidden]="!editForm.controls.budget?.errors?.required" jhiTranslate="entity.validation.required">
@@ -57,7 +57,7 @@
         <div class="form-group">
             <label class="form-control-label" jhiTranslate="tnApp.mpkBudgetMapper.description" for="field_description">Description</label>
             <input type="text" class="form-control" name="description" id="field_description"
-                [(ngModel)]="mpkBudgetMapper.description"  />
+                [(ngModel)]="mpkBudgetMapper.description" />
         </div>
 
         <div class="form-group">

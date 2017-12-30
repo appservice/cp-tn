@@ -27,7 +27,7 @@ import eu.canpack.fip.service.mapper.CooperationMapper;
  * Service for executing complex queries for Cooperation entities in the database.
  * The main input is a {@link CooperationCriteria} which get's converted to {@link Specifications},
  * in a way that all the filters must apply.
- * It returns a {@link List} of {%link CooperationDTO} or a {@link Page} of {%link CooperationDTO} which fulfills the criterias
+ * It returns a {@link List} of {@link CooperationDTO} or a {@link Page} of {@link CooperationDTO} which fulfills the criteria.
  */
 @Service
 @Transactional(readOnly = true)
@@ -49,7 +49,7 @@ public class CooperationQueryService extends QueryService<Cooperation> {
     }
 
     /**
-     * Return a {@link List} of {%link CooperationDTO} which matches the criteria from the database
+     * Return a {@link List} of {@link CooperationDTO} which matches the criteria from the database
      * @param criteria The object which holds all the filters, which the entities should match.
      * @return the matching entities.
      */
@@ -61,7 +61,7 @@ public class CooperationQueryService extends QueryService<Cooperation> {
     }
 
     /**
-     * Return a {@link Page} of {%link CooperationDTO} which matches the criteria from the database
+     * Return a {@link Page} of {@link CooperationDTO} which matches the criteria from the database
      * @param criteria The object which holds all the filters, which the entities should match.
      * @param page The page, which should be returned.
      * @return the matching entities.

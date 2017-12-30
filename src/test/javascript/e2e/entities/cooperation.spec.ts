@@ -1,15 +1,11 @@
-import { browser, element, by, $ } from 'protractor';
+import { browser, element, by } from 'protractor';
 import { NavBarPage } from './../page-objects/jhi-page-objects';
-const path = require('path');
 
 describe('Cooperation e2e test', () => {
 
     let navBarPage: NavBarPage;
     let cooperationDialogPage: CooperationDialogPage;
     let cooperationComponentsPage: CooperationComponentsPage;
-    const fileToUpload = '../../../../main/webapp/content/images/logo-jhipster.png';
-    const absolutePath = path.resolve(__dirname, fileToUpload);
-    
 
     beforeAll(() => {
         browser.get('/');
@@ -22,14 +18,16 @@ describe('Cooperation e2e test', () => {
     it('should load Cooperation', () => {
         navBarPage.goToEntity('cooperation');
         cooperationComponentsPage = new CooperationComponentsPage();
-        expect(cooperationComponentsPage.getTitle()).toMatch(/tnApp.cooperation.home.title/);
+        expect(cooperationComponentsPage.getTitle())
+            .toMatch(/tnApp.cooperation.home.title/);
 
     });
 
     it('should load create Cooperation dialog', () => {
         cooperationComponentsPage.clickOnCreateButton();
         cooperationDialogPage = new CooperationDialogPage();
-        expect(cooperationDialogPage.getModalTitle()).toMatch(/tnApp.cooperation.home.createOrEditLabel/);
+        expect(cooperationDialogPage.getModalTitle())
+            .toMatch(/tnApp.cooperation.home.createOrEditLabel/);
         cooperationDialogPage.close();
     });
 
@@ -46,7 +44,7 @@ describe('Cooperation e2e test', () => {
         cooperationDialogPage.estimationSelectLastOption();
         cooperationDialogPage.save();
         expect(cooperationDialogPage.getSaveButton().isPresent()).toBeFalsy();
-    }); 
+    });
 
     afterAll(() => {
         navBarPage.autoSignOut();
@@ -80,51 +78,51 @@ export class CooperationDialogPage {
         return this.modalTitle.getAttribute('jhiTranslate');
     }
 
-    setNameInput = function (name) {
+    setNameInput = function(name) {
         this.nameInput.sendKeys(name);
     }
 
-    getNameInput = function () {
+    getNameInput = function() {
         return this.nameInput.getAttribute('value');
     }
 
-    setCounterpartyInput = function (counterparty) {
+    setCounterpartyInput = function(counterparty) {
         this.counterpartyInput.sendKeys(counterparty);
     }
 
-    getCounterpartyInput = function () {
+    getCounterpartyInput = function() {
         return this.counterpartyInput.getAttribute('value');
     }
 
-    setAmountInput = function (amount) {
+    setAmountInput = function(amount) {
         this.amountInput.sendKeys(amount);
     }
 
-    getAmountInput = function () {
+    getAmountInput = function() {
         return this.amountInput.getAttribute('value');
     }
 
-    setPriceInput = function (price) {
+    setPriceInput = function(price) {
         this.priceInput.sendKeys(price);
     }
 
-    getPriceInput = function () {
+    getPriceInput = function() {
         return this.priceInput.getAttribute('value');
     }
 
-    estimationSelectLastOption = function () {
+    estimationSelectLastOption = function() {
         this.estimationSelect.all(by.tagName('option')).last().click();
     }
 
-    estimationSelectOption = function (option) {
+    estimationSelectOption = function(option) {
         this.estimationSelect.sendKeys(option);
     }
 
-    getEstimationSelect = function () {
+    getEstimationSelect = function() {
         return this.estimationSelect;
     }
 
-    getEstimationSelectedOption = function () {
+    getEstimationSelectedOption = function() {
         return this.estimationSelect.element(by.css('option:checked')).getText();
     }
 

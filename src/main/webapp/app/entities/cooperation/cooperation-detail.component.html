@@ -37,6 +37,7 @@
     <button type="button"
             [routerLink]="['/', { outlets: { popup: 'cooperation/'+ cooperation.id + '/edit'} }]"
             replaceUrl="true"
+            queryParamsHandling="merge"
             class="btn btn-primary">
         <span class="fa fa-pencil"></span>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
     </button>

@@ -52,10 +52,10 @@ public class CooperationService {
     }
 
     /**
-     *  Get all the cooperation.
+     * Get all the cooperation.
      *
-     *  @param pageable the pagination information
-     *  @return the list of entities
+     * @param pageable the pagination information
+     * @return the list of entities
      */
     @Transactional(readOnly = true)
     public Page<CooperationDTO> findAll(Pageable pageable) {
@@ -65,10 +65,10 @@ public class CooperationService {
     }
 
     /**
-     *  Get one cooperation by id.
+     * Get one cooperation by id.
      *
-     *  @param id the id of the entity
-     *  @return the entity
+     * @param id the id of the entity
+     * @return the entity
      */
     @Transactional(readOnly = true)
     public CooperationDTO findOne(Long id) {
@@ -78,9 +78,9 @@ public class CooperationService {
     }
 
     /**
-     *  Delete the  cooperation by id.
+     * Delete the cooperation by id.
      *
-     *  @param id the id of the entity
+     * @param id the id of the entity
      */
     public void delete(Long id) {
         log.debug("Request to delete Cooperation : {}", id);
@@ -91,9 +91,9 @@ public class CooperationService {
     /**
      * Search for the cooperation corresponding to the query.
      *
-     *  @param query the query of the search
-     *  @param pageable the pagination information
-     *  @return the list of entities
+     * @param query the query of the search
+     * @param pageable the pagination information
+     * @return the list of entities
      */
     @Transactional(readOnly = true)
     public Page<CooperationDTO> search(String query, Pageable pageable) {

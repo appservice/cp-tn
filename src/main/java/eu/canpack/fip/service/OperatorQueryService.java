@@ -26,7 +26,7 @@ import eu.canpack.fip.service.mapper.OperatorMapper;
  * Service for executing complex queries for Operator entities in the database.
  * The main input is a {@link OperatorCriteria} which get's converted to {@link Specifications},
  * in a way that all the filters must apply.
- * It returns a {@link List} of {%link OperatorDTO} or a {@link Page} of {%link OperatorDTO} which fulfills the criterias
+ * It returns a {@link List} of {@link OperatorDTO} or a {@link Page} of {@link OperatorDTO} which fulfills the criteria.
  */
 @Service
 @Transactional(readOnly = true)
@@ -48,7 +48,7 @@ public class OperatorQueryService extends QueryService<Operator> {
     }
 
     /**
-     * Return a {@link List} of {%link OperatorDTO} which matches the criteria from the database
+     * Return a {@link List} of {@link OperatorDTO} which matches the criteria from the database
      * @param criteria The object which holds all the filters, which the entities should match.
      * @return the matching entities.
      */
@@ -60,7 +60,7 @@ public class OperatorQueryService extends QueryService<Operator> {
     }
 
     /**
-     * Return a {@link Page} of {%link OperatorDTO} which matches the criteria from the database
+     * Return a {@link Page} of {@link OperatorDTO} which matches the criteria from the database
      * @param criteria The object which holds all the filters, which the entities should match.
      * @param page The page, which should be returned.
      * @return the matching entities.
