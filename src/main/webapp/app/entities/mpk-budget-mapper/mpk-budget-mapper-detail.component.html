@@ -1,0 +1,39 @@
+
+<div *ngIf="mpkBudgetMapper">
+    <h2><span jhiTranslate="tnApp.mpkBudgetMapper.detail.title">Mpk Budget Mapper</span> {{mpkBudgetMapper.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="row-md jh-entity-details">
+        <dt><span jhiTranslate="tnApp.mpkBudgetMapper.mpk">Mpk</span></dt>
+        <dd>
+            <span>{{mpkBudgetMapper.mpk}}</span>
+        </dd>
+        <dt><span jhiTranslate="tnApp.mpkBudgetMapper.budget">Budget</span></dt>
+        <dd>
+            <span>{{mpkBudgetMapper.budget}}</span>
+        </dd>
+        <dt><span jhiTranslate="tnApp.mpkBudgetMapper.description">Description</span></dt>
+        <dd>
+            <span>{{mpkBudgetMapper.description}}</span>
+        </dd>
+        <dt><span jhiTranslate="tnApp.mpkBudgetMapper.client">Client</span></dt>
+        <dd>
+            <div *ngIf="mpkBudgetMapper.clientId">
+                <a [routerLink]="['/client', mpkBudgetMapper.clientId]">{{mpkBudgetMapper.clientShortcut}}</a>
+            </div>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            (click)="previousState()"
+            class="btn btn-info">
+        <span class="fa fa-arrow-left"></span>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+    </button>
+
+    <button type="button"
+            [routerLink]="['/', { outlets: { popup: 'mpk-budget-mapper/'+ mpkBudgetMapper.id + '/edit'} }]"
+            replaceUrl="true"
+            class="btn btn-primary">
+        <span class="fa fa-pencil"></span>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+    </button>
+</div>

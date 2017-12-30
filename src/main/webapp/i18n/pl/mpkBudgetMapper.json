@@ -1,0 +1,25 @@
+{
+    "tnApp": {
+        "mpkBudgetMapper" : {
+            "home": {
+                "title": "Mpk Budget Mappers",
+                "createLabel": "Dodaj Mpk Budget Mapper",
+                "createOrEditLabel": "Dodaj lub edytuj: Mpk Budget Mapper",
+                "search": "Szukaj Mpk Budget Mapper"
+            },
+            "created": "Utworzono nowy Mpk Budget Mapper z identyfikatorem {{ param }}",
+            "updated": "Uaktualniono Mpk Budget Mapper z identyfikatorem {{ param }}",
+            "deleted": "Usunięto Mpk Budget Mapper z identyfikatorem {{ param }}",
+            "delete": {
+                "question": "Czy na pewno chcesz usunąć Mpk Budget Mapper {{ id }}?"
+            },
+            "detail": {
+                "title": "Mpk Budget Mapper"
+            },
+            "mpk": "Mpk",
+            "budget": "Budget",
+            "description": "Description",
+            "client": "Client"
+        }
+    }
+}

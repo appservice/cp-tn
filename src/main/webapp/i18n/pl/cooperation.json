@@ -1,0 +1,26 @@
+{
+    "tnApp": {
+        "cooperation" : {
+            "home": {
+                "title": "Cooperation",
+                "createLabel": "Dodaj Cooperation",
+                "createOrEditLabel": "Dodaj lub edytuj: Cooperation",
+                "search": "Szukaj Cooperation"
+            },
+            "created": "Utworzono nowy Cooperation z identyfikatorem {{ param }}",
+            "updated": "Uaktualniono Cooperation z identyfikatorem {{ param }}",
+            "deleted": "Usunięto Cooperation z identyfikatorem {{ param }}",
+            "delete": {
+                "question": "Czy na pewno chcesz usunąć Cooperation {{ id }}?"
+            },
+            "detail": {
+                "title": "Cooperation"
+            },
+            "name": "Name",
+            "counterparty": "Counterparty",
+            "amount": "Amount",
+            "price": "Price",
+            "estimation": "Estimation"
+        }
+    }
+}
