@@ -1,0 +1,19 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+    <changeSet author="lukasz.mochel (generated)" id="1512322661264-1">
+        <createTable tableName="reference_order">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true" primaryKeyName="reference_orderPK"/>
+            </column>
+            <column name="ref_internal_number" type="VARCHAR(255)"/>
+            <column name="ref_order_id" type="BIGINT"/>
+            <column name="order_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="lukasz.mochel (generated)" id="1512322661264-2">
+        <addForeignKeyConstraint baseColumnNames="order_id" baseTableName="reference_order" constraintName="FK306lb0h1sjt91x9ha8xeye5hy" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="jhi_order"/>
+    </changeSet>
+
+</databaseChangeLog>

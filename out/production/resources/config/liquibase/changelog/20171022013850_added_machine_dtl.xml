@@ -1,0 +1,35 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+    <changeSet author="lukasz.mochel (generated)" id="1508629200015-1">
+        <createTable tableName="machine_dtl">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true" primaryKeyName="machine_dtlPK"/>
+            </column>
+            <column name="valid_from" type="date">
+                <constraints nullable="false"/>
+            </column>
+            <column name="valid_to" type="date">
+                <constraints nullable="false"/>
+            </column>
+            <column name="working_hour_price" type="numeric(10, 2)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="machine_id" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="lukasz.mochel (generated)" id="1508629200015-2">
+        <addForeignKeyConstraint baseColumnNames="machine_id" baseTableName="machine_dtl" constraintName="FK68ulx2v6088txlvtqj4sruwdt" deferrable="false" initiallyDeferred="false"
+                                 referencedColumnNames="id" referencedTableName="machine"/>
+    </changeSet>
+    <changeSet author="lukasz.mochel (generated)" id="1508629200015-3">
+        <dropColumn columnName="working_hour_price" tableName="machine"/>
+    </changeSet>
+    <changeSet author="lukasz.mochel (generated)" id="1508629200015-4">
+        <sql dbms="postgresql" endDelimiter=";">
+            insert into machine_dtl (valid_from,valid_to,machine_id,working_hour_price)
+            select '1970-01-01','5000-01-01', id,100.38 from machine;
+        </sql>
+    </changeSet>
+</databaseChangeLog>
