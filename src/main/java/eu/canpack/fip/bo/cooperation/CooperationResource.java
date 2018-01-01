@@ -1,11 +1,13 @@
 package eu.canpack.fip.bo.cooperation;
 
 import com.codahale.metrics.annotation.Timed;
-import eu.canpack.fip.bo.cooperation.dto.CooperationCriteria;
-import eu.canpack.fip.bo.cooperation.dto.CooperationDTO;
+import eu.canpack.fip.service.CooperationService;
+import eu.canpack.fip.web.rest.errors.BadRequestAlertException;
 import eu.canpack.fip.web.rest.util.HeaderUtil;
 import eu.canpack.fip.web.rest.util.PaginationUtil;
-import io.swagger.annotations.ApiParam;
+import eu.canpack.fip.service.dto.CooperationDTO;
+import eu.canpack.fip.service.dto.CooperationCriteria;
+import eu.canpack.fip.service.CooperationQueryService;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -55,7 +57,7 @@ public class CooperationResource {
     public ResponseEntity<CooperationDTO> createCooperation(@Valid @RequestBody CooperationDTO cooperationDTO) throws URISyntaxException {
         log.debug("REST request to save Cooperation : {}", cooperationDTO);
         if (cooperationDTO.getId() != null) {
-            return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert(ENTITY_NAME, "idexists", "A new cooperation cannot already have an ID")).body(null);
+            throw new BadRequestAlertException("A new cooperation cannot already have an ID", ENTITY_NAME, "idexists");
         }
         CooperationDTO result = cooperationService.save(cooperationDTO);
         return ResponseEntity.created(new URI("/api/cooperation/" + result.getId()))
@@ -94,7 +96,7 @@ public class CooperationResource {
      */
     @GetMapping("/cooperation")
     @Timed
-    public ResponseEntity<List<CooperationDTO>> getAllCooperation(CooperationCriteria criteria, @ApiParam Pageable pageable) {
+    public ResponseEntity<List<CooperationDTO>> getAllCooperation(CooperationCriteria criteria, Pageable pageable) {
         log.debug("REST request to get Cooperation by criteria: {}", criteria);
         Page<CooperationDTO> page = cooperationQueryService.findByCriteria(criteria, pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/cooperation");
@@ -139,7 +141,7 @@ public class CooperationResource {
      */
     @GetMapping("/_search/cooperation")
     @Timed
-    public ResponseEntity<List<CooperationDTO>> searchCooperation(@RequestParam String query, @ApiParam Pageable pageable) {
+    public ResponseEntity<List<CooperationDTO>> searchCooperation(@RequestParam String query, Pageable pageable) {
         log.debug("REST request to search for a page of Cooperation for query {}", query);
         Page<CooperationDTO> page = cooperationService.search(query, pageable);
         HttpHeaders headers = PaginationUtil.generateSearchPaginationHttpHeaders(query, page, "/api/_search/cooperation");

@@ -23,7 +23,7 @@ import {SwitchUserComponent} from './switch-user/switch-user.component';
 @NgModule({
     imports: [
         TnSharedModule,
-        RouterModule.forRoot(accountState, { useHash: true })
+        RouterModule.forChild(accountState)
     ],
     declarations: [
         ActivateComponent,

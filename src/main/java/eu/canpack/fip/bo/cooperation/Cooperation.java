@@ -3,10 +3,11 @@ package eu.canpack.fip.bo.cooperation;
 import eu.canpack.fip.bo.estimation.Estimation;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
-import org.springframework.data.elasticsearch.annotations.Document;
 
 import javax.persistence.*;
 import javax.validation.constraints.*;
+
+import org.springframework.data.elasticsearch.annotations.Document;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Objects;
@@ -49,7 +50,7 @@ public class Cooperation implements Serializable {
     @ManyToOne
     private Estimation estimation;
 
-    // jhipster-needle-entity-add-field - Jhipster will add fields here, do not remove
+    // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
         return id;
     }
@@ -122,7 +123,7 @@ public class Cooperation implements Serializable {
     public void setEstimation(Estimation estimation) {
         this.estimation = estimation;
     }
-    // jhipster-needle-entity-add-getters-setters - Jhipster will add getters and setters here, do not remove
+    // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 
     @Override
     public boolean equals(Object o) {
@@ -150,8 +151,8 @@ public class Cooperation implements Serializable {
             "id=" + getId() +
             ", name='" + getName() + "'" +
             ", counterparty='" + getCounterparty() + "'" +
-            ", amount='" + getAmount() + "'" +
-            ", price='" + getPrice() + "'" +
+            ", amount=" + getAmount() +
+            ", price=" + getPrice() +
             "}";
     }
 }

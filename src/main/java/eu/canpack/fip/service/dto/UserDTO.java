@@ -1,6 +1,5 @@
 package eu.canpack.fip.service.dto;
 
-import eu.canpack.fip.bo.client.Client;
 import eu.canpack.fip.config.Constants;
 
 import eu.canpack.fip.domain.Authority;
@@ -41,7 +40,7 @@ public class UserDTO {
 
     private boolean activated = false;
 
-    @Size(min = 2, max = 5)
+    @Size(min = 2, max = 6)
     private String langKey;
 
     private String createdBy;
@@ -118,36 +117,72 @@ public class UserDTO {
         return firstName;
     }
 
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
     public String getLastName() {
         return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 
     public String getEmail() {
         return email;
     }
 
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
     public String getImageUrl() {
         return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 
     public boolean isActivated() {
         return activated;
     }
 
+    public void setActivated(boolean activated) {
+        this.activated = activated;
+    }
+
     public String getLangKey() {
         return langKey;
+    }
+
+    public void setLangKey(String langKey) {
+        this.langKey = langKey;
     }
 
     public String getCreatedBy() {
         return createdBy;
     }
 
+    public void setCreatedBy(String createdBy) {
+        this.createdBy = createdBy;
+    }
+
     public Instant getCreatedDate() {
         return createdDate;
     }
 
+    public void setCreatedDate(Instant createdDate) {
+        this.createdDate = createdDate;
+    }
+
     public String getLastModifiedBy() {
         return lastModifiedBy;
+    }
+
+    public void setLastModifiedBy(String lastModifiedBy) {
+        this.lastModifiedBy = lastModifiedBy;
     }
 
     public Instant getLastModifiedDate() {

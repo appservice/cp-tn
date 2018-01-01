@@ -106,8 +106,8 @@ public class CooperationDTO implements Serializable {
             "id=" + getId() +
             ", name='" + getName() + "'" +
             ", counterparty='" + getCounterparty() + "'" +
-            ", amount='" + getAmount() + "'" +
-            ", price='" + getPrice() + "'" +
+            ", amount=" + getAmount() +
+            ", price=" + getPrice() +
             "}";
     }
 }

@@ -1,16 +1,14 @@
-package eu.canpack.fip.bo.cooperation.dto;
+package eu.canpack.fip.service.mapper;
 
-import eu.canpack.fip.bo.cooperation.Cooperation;
-import eu.canpack.fip.bo.cooperation.dto.CooperationDTO;
+import eu.canpack.fip.domain.*;
+import eu.canpack.fip.service.dto.CooperationDTO;
 
-import eu.canpack.fip.bo.estimation.EstimationMapper;
-import eu.canpack.fip.service.mapper.EntityMapper;
 import org.mapstruct.*;
 
 /**
  * Mapper for the entity Cooperation and its DTO CooperationDTO.
  */
-@Mapper(componentModel = "spring", uses = {EstimationMapper.class, })
+@Mapper(componentModel = "spring", uses = {EstimationMapper.class})
 public interface CooperationMapper extends EntityMapper<CooperationDTO, Cooperation> {
 
     @Mapping(source = "estimation.id", target = "estimationId")
@@ -18,6 +16,7 @@ public interface CooperationMapper extends EntityMapper<CooperationDTO, Cooperat
 
     @Mapping(source = "estimationId", target = "estimation")
     Cooperation toEntity(CooperationDTO cooperationDTO);
+
     default Cooperation fromId(Long id) {
         if (id == null) {
             return null;

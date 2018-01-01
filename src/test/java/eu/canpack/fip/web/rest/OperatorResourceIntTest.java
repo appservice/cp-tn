@@ -30,6 +30,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.EntityManager;
 import java.util.List;
 
+import static eu.canpack.fip.web.rest.TestUtil.createFormattingConversionService;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -100,6 +101,7 @@ public class OperatorResourceIntTest {
         this.restOperatorMockMvc = MockMvcBuilders.standaloneSetup(operatorResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)
+            .setConversionService(createFormattingConversionService())
             .setMessageConverters(jacksonMessageConverter).build();
     }
 
@@ -149,7 +151,7 @@ public class OperatorResourceIntTest {
 
         // Validate the Operator in Elasticsearch
         Operator operatorEs = operatorSearchRepository.findOne(testOperator.getId());
-        assertThat(operatorEs).isEqualToComparingFieldByField(testOperator);
+        assertThat(operatorEs).isEqualToIgnoringGivenFields(testOperator);
     }
 
     @Test
@@ -478,7 +480,6 @@ public class OperatorResourceIntTest {
         // Get all the operatorList where active is null
         defaultOperatorShouldNotBeFound("active.specified=false");
     }
-
     /**
      * Executes the search, and checks that the default entity is returned
      */
@@ -524,6 +525,8 @@ public class OperatorResourceIntTest {
 
         // Update the operator
         Operator updatedOperator = operatorRepository.findOne(operator.getId());
+        // Disconnect from session so that the updates on updatedOperator are not directly saved in db
+        em.detach(updatedOperator);
         updatedOperator
             .firstName(UPDATED_FIRST_NAME)
             .lastName(UPDATED_LAST_NAME)
@@ -549,7 +552,7 @@ public class OperatorResourceIntTest {
 
         // Validate the Operator in Elasticsearch
         Operator operatorEs = operatorSearchRepository.findOne(testOperator.getId());
-        assertThat(operatorEs).isEqualToComparingFieldByField(testOperator);
+        assertThat(operatorEs).isEqualToIgnoringGivenFields(testOperator);
     }
 
     @Test

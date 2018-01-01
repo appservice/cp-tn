@@ -1,9 +1,14 @@
 package eu.canpack.fip.bo.operator;
 
 import com.codahale.metrics.annotation.Timed;
+import eu.canpack.fip.service.OperatorService;
+import eu.canpack.fip.web.rest.errors.BadRequestAlertException;
 import eu.canpack.fip.bo.pdf.OperatorCardCreatorService;
 import eu.canpack.fip.web.rest.util.HeaderUtil;
 import eu.canpack.fip.web.rest.util.PaginationUtil;
+import eu.canpack.fip.service.dto.OperatorDTO;
+import eu.canpack.fip.service.dto.OperatorCriteria;
+import eu.canpack.fip.service.OperatorQueryService;
 import io.swagger.annotations.ApiParam;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
@@ -61,7 +66,7 @@ public class OperatorResource {
     public ResponseEntity<OperatorDTO> createOperator(@Valid @RequestBody OperatorDTO operatorDTO) throws URISyntaxException {
         log.debug("REST request to save Operator : {}", operatorDTO);
         if (operatorDTO.getId() != null) {
-            return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert(ENTITY_NAME, "idexists", "A new operator cannot already have an ID")).body(null);
+            throw new BadRequestAlertException("A new operator cannot already have an ID", ENTITY_NAME, "idexists");
         }
         OperatorDTO result = operatorService.save(operatorDTO);
         return ResponseEntity.created(new URI("/api/operators/" + result.getId()))
@@ -100,7 +105,7 @@ public class OperatorResource {
      */
     @GetMapping("/operators")
     @Timed
-    public ResponseEntity<List<OperatorDTO>> getAllOperators(OperatorCriteria criteria, @ApiParam Pageable pageable) {
+    public ResponseEntity<List<OperatorDTO>> getAllOperators(OperatorCriteria criteria, Pageable pageable) {
         log.debug("REST request to get Operators by criteria: {}", criteria);
         Page<OperatorDTO> page = operatorQueryService.findByCriteria(criteria, pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/operators");
@@ -145,7 +150,7 @@ public class OperatorResource {
      */
     @GetMapping("/_search/operators")
     @Timed
-    public ResponseEntity<List<OperatorDTO>> searchOperators(@RequestParam String query, @ApiParam Pageable pageable) {
+    public ResponseEntity<List<OperatorDTO>> searchOperators(@RequestParam String query, Pageable pageable) {
         log.debug("REST request to search for a page of Operators for query {}", query);
         Page<OperatorDTO> page = operatorService.search(query, pageable);
         HttpHeaders headers = PaginationUtil.generateSearchPaginationHttpHeaders(query, page, "/api/_search/operators");

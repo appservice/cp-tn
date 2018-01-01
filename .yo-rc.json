@@ -4,7 +4,7 @@
       "packageName": "eu.canpack.fip",
       "nativeLanguage": "pl"
     },
-    "jhipsterVersion": "4.8.2",
+    "jhipsterVersion": "4.13.1",
     "baseName": "tn",
     "packageName": "eu.canpack.fip",
     "packageFolder": "eu/canpack/fip",
@@ -43,6 +43,8 @@
     "nativeLanguage": "pl",
     "languages": [
       "pl"
-    ]
+    ],
+    "cacheProvider": "ehcache",
+    "enableHibernateCache": true
   }
 }

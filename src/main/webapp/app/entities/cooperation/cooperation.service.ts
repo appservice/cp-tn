@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Http, Response } from '@angular/http';
-import { Observable } from 'rxjs/Rx';
+import { Observable } from 'rxjs/Observable';
 import { SERVER_API_URL } from '../../app.constants';
 
 import { Cooperation } from './cooperation.model';
@@ -9,7 +9,7 @@ import { ResponseWrapper, createRequestOption } from '../../shared';
 @Injectable()
 export class CooperationService {
 
-    private resourceUrl = SERVER_API_URL + 'api/cooperation';
+    private resourceUrl =  SERVER_API_URL + 'api/cooperation';
     private resourceSearchUrl = SERVER_API_URL + 'api/_search/cooperation';
 
     constructor(private http: Http) { }
@@ -17,20 +17,23 @@ export class CooperationService {
     create(cooperation: Cooperation): Observable<Cooperation> {
         const copy = this.convert(cooperation);
         return this.http.post(this.resourceUrl, copy).map((res: Response) => {
-            return res.json();
+            const jsonResponse = res.json();
+            return this.convertItemFromServer(jsonResponse);
         });
     }
 
     update(cooperation: Cooperation): Observable<Cooperation> {
         const copy = this.convert(cooperation);
         return this.http.put(this.resourceUrl, copy).map((res: Response) => {
-            return res.json();
+            const jsonResponse = res.json();
+            return this.convertItemFromServer(jsonResponse);
         });
     }
 
     find(id: number): Observable<Cooperation> {
         return this.http.get(`${this.resourceUrl}/${id}`).map((res: Response) => {
-            return res.json();
+            const jsonResponse = res.json();
+            return this.convertItemFromServer(jsonResponse);
         });
     }
 
@@ -52,9 +55,24 @@ export class CooperationService {
 
     private convertResponse(res: Response): ResponseWrapper {
         const jsonResponse = res.json();
-        return new ResponseWrapper(res.headers, jsonResponse, res.status);
+        const result = [];
+        for (let i = 0; i < jsonResponse.length; i++) {
+            result.push(this.convertItemFromServer(jsonResponse[i]));
+        }
+        return new ResponseWrapper(res.headers, result, res.status);
     }
 
+    /**
+     * Convert a returned JSON object to Cooperation.
+     */
+    private convertItemFromServer(json: any): Cooperation {
+        const entity: Cooperation = Object.assign(new Cooperation(), json);
+        return entity;
+    }
+
+    /**
+     * Convert a Cooperation to a JSON which can be sent to the server.
+     */
     private convert(cooperation: Cooperation): Cooperation {
         const copy: Cooperation = Object.assign({}, cooperation);
         return copy;

@@ -1,15 +1,11 @@
-import { browser, element, by, $ } from 'protractor';
+import { browser, element, by } from 'protractor';
 import { NavBarPage } from './../page-objects/jhi-page-objects';
-const path = require('path');
 
 describe('MpkBudgetMapper e2e test', () => {
 
     let navBarPage: NavBarPage;
     let mpkBudgetMapperDialogPage: MpkBudgetMapperDialogPage;
     let mpkBudgetMapperComponentsPage: MpkBudgetMapperComponentsPage;
-    const fileToUpload = '../../../../main/webapp/content/images/logo-jhipster.png';
-    const absolutePath = path.resolve(__dirname, fileToUpload);
-    
 
     beforeAll(() => {
         browser.get('/');
@@ -22,14 +18,16 @@ describe('MpkBudgetMapper e2e test', () => {
     it('should load MpkBudgetMappers', () => {
         navBarPage.goToEntity('mpk-budget-mapper');
         mpkBudgetMapperComponentsPage = new MpkBudgetMapperComponentsPage();
-        expect(mpkBudgetMapperComponentsPage.getTitle()).toMatch(/tnApp.mpkBudgetMapper.home.title/);
+        expect(mpkBudgetMapperComponentsPage.getTitle())
+            .toMatch(/tnApp.mpkBudgetMapper.home.title/);
 
     });
 
     it('should load create MpkBudgetMapper dialog', () => {
         mpkBudgetMapperComponentsPage.clickOnCreateButton();
         mpkBudgetMapperDialogPage = new MpkBudgetMapperDialogPage();
-        expect(mpkBudgetMapperDialogPage.getModalTitle()).toMatch(/tnApp.mpkBudgetMapper.home.createOrEditLabel/);
+        expect(mpkBudgetMapperDialogPage.getModalTitle())
+            .toMatch(/tnApp.mpkBudgetMapper.home.createOrEditLabel/);
         mpkBudgetMapperDialogPage.close();
     });
 
@@ -44,7 +42,7 @@ describe('MpkBudgetMapper e2e test', () => {
         mpkBudgetMapperDialogPage.clientSelectLastOption();
         mpkBudgetMapperDialogPage.save();
         expect(mpkBudgetMapperDialogPage.getSaveButton().isPresent()).toBeFalsy();
-    }); */
+    });*/
 
     afterAll(() => {
         navBarPage.autoSignOut();
@@ -77,43 +75,43 @@ export class MpkBudgetMapperDialogPage {
         return this.modalTitle.getAttribute('jhiTranslate');
     }
 
-    setMpkInput = function (mpk) {
+    setMpkInput = function(mpk) {
         this.mpkInput.sendKeys(mpk);
     }
 
-    getMpkInput = function () {
+    getMpkInput = function() {
         return this.mpkInput.getAttribute('value');
     }
 
-    setBudgetInput = function (budget) {
+    setBudgetInput = function(budget) {
         this.budgetInput.sendKeys(budget);
     }
 
-    getBudgetInput = function () {
+    getBudgetInput = function() {
         return this.budgetInput.getAttribute('value');
     }
 
-    setDescriptionInput = function (description) {
+    setDescriptionInput = function(description) {
         this.descriptionInput.sendKeys(description);
     }
 
-    getDescriptionInput = function () {
+    getDescriptionInput = function() {
         return this.descriptionInput.getAttribute('value');
     }
 
-    clientSelectLastOption = function () {
+    clientSelectLastOption = function() {
         this.clientSelect.all(by.tagName('option')).last().click();
     }
 
-    clientSelectOption = function (option) {
+    clientSelectOption = function(option) {
         this.clientSelect.sendKeys(option);
     }
 
-    getClientSelect = function () {
+    getClientSelect = function() {
         return this.clientSelect;
     }
 
-    getClientSelectedOption = function () {
+    getClientSelectedOption = function() {
         return this.clientSelect.element(by.css('option:checked')).getText();
     }
 

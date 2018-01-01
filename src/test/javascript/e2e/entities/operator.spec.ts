@@ -1,15 +1,11 @@
-import { browser, element, by, $ } from 'protractor';
+import { browser, element, by } from 'protractor';
 import { NavBarPage } from './../page-objects/jhi-page-objects';
-const path = require('path');
 
 describe('Operator e2e test', () => {
 
     let navBarPage: NavBarPage;
     let operatorDialogPage: OperatorDialogPage;
     let operatorComponentsPage: OperatorComponentsPage;
-    const fileToUpload = '../../../../main/webapp/content/images/logo-jhipster.png';
-    const absolutePath = path.resolve(__dirname, fileToUpload);
-    
 
     beforeAll(() => {
         browser.get('/');
@@ -22,14 +18,16 @@ describe('Operator e2e test', () => {
     it('should load Operators', () => {
         navBarPage.goToEntity('operator');
         operatorComponentsPage = new OperatorComponentsPage();
-        expect(operatorComponentsPage.getTitle()).toMatch(/tnApp.operator.home.title/);
+        expect(operatorComponentsPage.getTitle())
+            .toMatch(/tnApp.operator.home.title/);
 
     });
 
     it('should load create Operator dialog', () => {
         operatorComponentsPage.clickOnCreateButton();
         operatorDialogPage = new OperatorDialogPage();
-        expect(operatorDialogPage.getModalTitle()).toMatch(/tnApp.operator.home.createOrEditLabel/);
+        expect(operatorDialogPage.getModalTitle())
+            .toMatch(/tnApp.operator.home.createOrEditLabel/);
         operatorDialogPage.close();
     });
 
@@ -43,7 +41,7 @@ describe('Operator e2e test', () => {
         expect(operatorDialogPage.getCardNumberInput()).toMatch('cardNumber');
         operatorDialogPage.setJobTitleInput('jobTitle');
         expect(operatorDialogPage.getJobTitleInput()).toMatch('jobTitle');
-        operatorDialogPage.getActiveInput().isSelected().then(function (selected) {
+        operatorDialogPage.getActiveInput().isSelected().then((selected) => {
             if (selected) {
                 operatorDialogPage.getActiveInput().click();
                 expect(operatorDialogPage.getActiveInput().isSelected()).toBeFalsy();
@@ -54,7 +52,7 @@ describe('Operator e2e test', () => {
         });
         operatorDialogPage.save();
         expect(operatorDialogPage.getSaveButton().isPresent()).toBeFalsy();
-    }); 
+    });
 
     afterAll(() => {
         navBarPage.autoSignOut();
@@ -88,39 +86,39 @@ export class OperatorDialogPage {
         return this.modalTitle.getAttribute('jhiTranslate');
     }
 
-    setFirstNameInput = function (firstName) {
+    setFirstNameInput = function(firstName) {
         this.firstNameInput.sendKeys(firstName);
     }
 
-    getFirstNameInput = function () {
+    getFirstNameInput = function() {
         return this.firstNameInput.getAttribute('value');
     }
 
-    setLastNameInput = function (lastName) {
+    setLastNameInput = function(lastName) {
         this.lastNameInput.sendKeys(lastName);
     }
 
-    getLastNameInput = function () {
+    getLastNameInput = function() {
         return this.lastNameInput.getAttribute('value');
     }
 
-    setCardNumberInput = function (cardNumber) {
+    setCardNumberInput = function(cardNumber) {
         this.cardNumberInput.sendKeys(cardNumber);
     }
 
-    getCardNumberInput = function () {
+    getCardNumberInput = function() {
         return this.cardNumberInput.getAttribute('value');
     }
 
-    setJobTitleInput = function (jobTitle) {
+    setJobTitleInput = function(jobTitle) {
         this.jobTitleInput.sendKeys(jobTitle);
     }
 
-    getJobTitleInput = function () {
+    getJobTitleInput = function() {
         return this.jobTitleInput.getAttribute('value');
     }
 
-    getActiveInput = function () {
+    getActiveInput = function() {
         return this.activeInput;
     }
     save() {

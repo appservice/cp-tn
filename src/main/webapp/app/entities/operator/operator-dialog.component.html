@@ -15,7 +15,7 @@
         <div class="form-group">
             <label class="form-control-label" jhiTranslate="tnApp.operator.firstName" for="field_firstName">First Name</label>
             <input type="text" class="form-control" name="firstName" id="field_firstName"
-                [(ngModel)]="operator.firstName" required />
+                [(ngModel)]="operator.firstName" required/>
             <div [hidden]="!(editForm.controls.firstName?.dirty && editForm.controls.firstName?.invalid)">
                 <small class="form-text text-danger"
                    [hidden]="!editForm.controls.firstName?.errors?.required" jhiTranslate="entity.validation.required">
@@ -26,7 +26,7 @@
         <div class="form-group">
             <label class="form-control-label" jhiTranslate="tnApp.operator.lastName" for="field_lastName">Last Name</label>
             <input type="text" class="form-control" name="lastName" id="field_lastName"
-                [(ngModel)]="operator.lastName" required />
+                [(ngModel)]="operator.lastName" required/>
             <div [hidden]="!(editForm.controls.lastName?.dirty && editForm.controls.lastName?.invalid)">
                 <small class="form-text text-danger"
                    [hidden]="!editForm.controls.lastName?.errors?.required" jhiTranslate="entity.validation.required">
@@ -37,7 +37,7 @@
         <div class="form-group">
             <label class="form-control-label" jhiTranslate="tnApp.operator.cardNumber" for="field_cardNumber">Card Number</label>
             <input type="text" class="form-control" name="cardNumber" id="field_cardNumber"
-                [(ngModel)]="operator.cardNumber" required />
+                [(ngModel)]="operator.cardNumber" required/>
             <div [hidden]="!(editForm.controls.cardNumber?.dirty && editForm.controls.cardNumber?.invalid)">
                 <small class="form-text text-danger"
                    [hidden]="!editForm.controls.cardNumber?.errors?.required" jhiTranslate="entity.validation.required">
@@ -48,7 +48,7 @@
         <div class="form-group">
             <label class="form-control-label" jhiTranslate="tnApp.operator.jobTitle" for="field_jobTitle">Job Title</label>
             <input type="text" class="form-control" name="jobTitle" id="field_jobTitle"
-                [(ngModel)]="operator.jobTitle" required />
+                [(ngModel)]="operator.jobTitle" required/>
             <div [hidden]="!(editForm.controls.jobTitle?.dirty && editForm.controls.jobTitle?.invalid)">
                 <small class="form-text text-danger"
                    [hidden]="!editForm.controls.jobTitle?.errors?.required" jhiTranslate="entity.validation.required">
@@ -59,7 +59,7 @@
         <div class="form-group">
             <label class="form-control-label" jhiTranslate="tnApp.operator.active" for="field_active">Active</label>
             <input type="checkbox" class="form-control" name="active" id="field_active"
-                [(ngModel)]="operator.active"  />
+                [(ngModel)]="operator.active" />
         </div>
 
     </div>

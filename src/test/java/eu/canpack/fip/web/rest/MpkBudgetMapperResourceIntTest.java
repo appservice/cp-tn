@@ -1,9 +1,16 @@
 package eu.canpack.fip.web.rest;
 
 import eu.canpack.fip.TnApp;
-import eu.canpack.fip.bo.mpkBudgetMapper.*;
+
+import eu.canpack.fip.domain.MpkBudgetMapper;
+import eu.canpack.fip.domain.Client;
+import eu.canpack.fip.repository.MpkBudgetMapperRepository;
+import eu.canpack.fip.service.MpkBudgetMapperService;
 import eu.canpack.fip.repository.search.MpkBudgetMapperSearchRepository;
+import eu.canpack.fip.service.dto.MpkBudgetMapperDTO;
+import eu.canpack.fip.service.mapper.MpkBudgetMapperMapper;
 import eu.canpack.fip.web.rest.errors.ExceptionTranslator;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -21,6 +28,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.EntityManager;
 import java.util.List;
 
+import static eu.canpack.fip.web.rest.TestUtil.createFormattingConversionService;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -38,8 +46,8 @@ public class MpkBudgetMapperResourceIntTest {
     private static final String DEFAULT_MPK = "AAAAAA";
     private static final String UPDATED_MPK = "BBBBBB";
 
-    private static final String DEFAULT_BUDGET = "5";
-    private static final String UPDATED_BUDGET = "9";
+    private static final String DEFAULT_BUDGET = "0";
+    private static final String UPDATED_BUDGET = "8";
 
     private static final String DEFAULT_DESCRIPTION = "AAAAAAAAAA";
     private static final String UPDATED_DESCRIPTION = "BBBBBBBBBB";
@@ -79,6 +87,7 @@ public class MpkBudgetMapperResourceIntTest {
         this.restMpkBudgetMapperMockMvc = MockMvcBuilders.standaloneSetup(mpkBudgetMapperResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)
+            .setConversionService(createFormattingConversionService())
             .setMessageConverters(jacksonMessageConverter).build();
     }
 
@@ -94,10 +103,10 @@ public class MpkBudgetMapperResourceIntTest {
             .budget(DEFAULT_BUDGET)
             .description(DEFAULT_DESCRIPTION);
         // Add required entity
-//        Client client = ClientResourceIntTest.createEntity(em);
-////        em.persist(client);
-//        em.flush();
-//        mpkBudgetMapper.setClient(client);
+        Client client = ClientResourceIntTest.createEntity(em);
+        em.persist(client);
+        em.flush();
+        mpkBudgetMapper.setClient(client);
         return mpkBudgetMapper;
     }
 
@@ -129,7 +138,7 @@ public class MpkBudgetMapperResourceIntTest {
 
         // Validate the MpkBudgetMapper in Elasticsearch
         MpkBudgetMapper mpkBudgetMapperEs = mpkBudgetMapperSearchRepository.findOne(testMpkBudgetMapper.getId());
-        assertThat(mpkBudgetMapperEs).isEqualToComparingFieldByField(testMpkBudgetMapper);
+        assertThat(mpkBudgetMapperEs).isEqualToIgnoringGivenFields(testMpkBudgetMapper);
     }
 
     @Test
@@ -240,6 +249,8 @@ public class MpkBudgetMapperResourceIntTest {
 
         // Update the mpkBudgetMapper
         MpkBudgetMapper updatedMpkBudgetMapper = mpkBudgetMapperRepository.findOne(mpkBudgetMapper.getId());
+        // Disconnect from session so that the updates on updatedMpkBudgetMapper are not directly saved in db
+        em.detach(updatedMpkBudgetMapper);
         updatedMpkBudgetMapper
             .mpk(UPDATED_MPK)
             .budget(UPDATED_BUDGET)
@@ -261,7 +272,7 @@ public class MpkBudgetMapperResourceIntTest {
 
         // Validate the MpkBudgetMapper in Elasticsearch
         MpkBudgetMapper mpkBudgetMapperEs = mpkBudgetMapperSearchRepository.findOne(testMpkBudgetMapper.getId());
-        assertThat(mpkBudgetMapperEs).isEqualToComparingFieldByField(testMpkBudgetMapper);
+        assertThat(mpkBudgetMapperEs).isEqualToIgnoringGivenFields(testMpkBudgetMapper);
     }
 
     @Test
