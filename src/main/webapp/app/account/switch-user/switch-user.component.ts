@@ -1,14 +1,30 @@
 import {Component, OnInit} from '@angular/core';
-import {AuthServerProvider} from '../../shared/auth/auth-jwt.service';
-import {Principal} from '../../shared/auth/principal.service';
+import {AuthServerProvider} from '../../shared';
+import {Principal} from '../../shared';
 import {JhiAlertService, JhiEventManager} from 'ng-jhipster';
 import {Http, URLSearchParams} from '@angular/http';
 import {Route, Router} from '@angular/router';
-import {until} from 'selenium-webdriver';
-import elementIsNotSelected = until.elementIsNotSelected;
+import {UserService} from '../../shared';
+import {User} from '../../shared';
 import {Observable} from 'rxjs/Observable';
-import {UserService} from '../../shared/user/user.service';
-import {User} from '../../shared/user/user.model';
+import {of} from 'rxjs/observable/of';
+import 'rxjs/add/operator/catch';
+import 'rxjs/add/operator/debounceTime';
+import 'rxjs/add/operator/distinctUntilChanged';
+import 'rxjs/add/operator/do';
+import 'rxjs/add/operator/map';
+import 'rxjs/add/operator/switchMap';
+import 'rxjs/add/operator/merge';
+
+
+const states = ['Alabama', 'Alaska', 'American Samoa', 'Arizona', 'Arkansas', 'California', 'Colorado',
+    'Connecticut', 'Delaware', 'District Of Columbia', 'Federated States Of Micronesia', 'Florida', 'Georgia',
+    'Guam', 'Hawaii', 'Idaho', 'Illinois', 'Indiana', 'Iowa', 'Kansas', 'Kentucky', 'Louisiana', 'Maine',
+    'Marshall Islands', 'Maryland', 'Massachusetts', 'Michigan', 'Minnesota', 'Mississippi', 'Missouri', 'Montana',
+    'Nebraska', 'Nevada', 'New Hampshire', 'New Jersey', 'New Mexico', 'New York', 'North Carolina', 'North Dakota',
+    'Northern Mariana Islands', 'Ohio', 'Oklahoma', 'Oregon', 'Palau', 'Pennsylvania', 'Puerto Rico', 'Rhode Island',
+    'South Carolina', 'South Dakota', 'Tennessee', 'Texas', 'Utah', 'Vermont', 'Virgin Islands', 'Virginia',
+    'Washington', 'West Virginia', 'Wisconsin', 'Wyoming'];
 
 @Component({
     selector: 'tn-switch-user',
@@ -20,6 +36,8 @@ export class SwitchUserComponent implements OnInit {
     userToSwitch: User;
     searchingUser: boolean;
     searchField: boolean;
+
+
 
     constructor(private authProvider: AuthServerProvider, private principal: Principal,
                 private alertService: JhiAlertService, private http: Http, private router: Router,
@@ -35,27 +53,35 @@ export class SwitchUserComponent implements OnInit {
 
     hideSearchingWhenUnsubscribed = new Observable(() => () => this.searchingUser = false);
 
-    searchUser = (text$: Observable<string>) =>
+    search = (text$: Observable<string>) =>
         text$
             .debounceTime(300)
             .distinctUntilChanged()
-            .do(() => this.searchingUser = true)
-            .switchMap((term) =>
-                this.userService.searchBySentence(term)
-                    .do(() => this.searchField = false)
-                    .catch(() => {
-                        this.searchField = true;
-                        return Observable.of([]);
-                    }))
-            .do(() => {
-                this.searchingUser = false;
-            })
-            .merge(this.hideSearchingWhenUnsubscribed);
+                .do(() => this.searchingUser = true)
+                .switchMap((term) =>
+                    this.userService.searchBySentence(term)
+                        .do(() => this.searchField = false)
+                        .catch(() => {
+                            this.searchField = true;
+                            return of([]);
+                        }))
+                .do(() => {
+                    this.searchingUser = false;
+                })
+                .merge(this.hideSearchingWhenUnsubscribed);
+
+    // search = (text$: Observable<string>) =>
+    //     text$
+    //         .debounceTime(200)
+    //         .distinctUntilChanged()
+    //         .map(term => term.length < 2 ? []
+    //             : states.filter(v => v.toLowerCase().indexOf(term.toLowerCase()) > -1).slice(0, 10));
+
     formatter = (x: User) => x.login;
     resultFormatter = (x: User) => x.login;
 
-    /*
-        onSelectItem(event: any) {
+
+   /*     onSelectItem(event: any) {
 
             console.log('item ', event.item);
         }

@@ -1,13 +1,11 @@
 package eu.canpack.fip.bo.cooperation;
 
 import com.codahale.metrics.annotation.Timed;
-import eu.canpack.fip.service.CooperationService;
+import eu.canpack.fip.bo.cooperation.dto.CooperationCriteria;
+import eu.canpack.fip.bo.cooperation.dto.CooperationDTO;
 import eu.canpack.fip.web.rest.errors.BadRequestAlertException;
 import eu.canpack.fip.web.rest.util.HeaderUtil;
 import eu.canpack.fip.web.rest.util.PaginationUtil;
-import eu.canpack.fip.service.dto.CooperationDTO;
-import eu.canpack.fip.service.dto.CooperationCriteria;
-import eu.canpack.fip.service.CooperationQueryService;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,7 +19,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
-
 import java.util.List;
 import java.util.Optional;
 

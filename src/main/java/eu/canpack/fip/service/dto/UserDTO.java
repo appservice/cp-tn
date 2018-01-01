@@ -1,5 +1,6 @@
 package eu.canpack.fip.service.dto;
 
+import eu.canpack.fip.bo.client.Client;
 import eu.canpack.fip.config.Constants;
 
 import eu.canpack.fip.domain.Authority;
@@ -72,9 +73,9 @@ public class UserDTO {
     }
 
     public UserDTO(Long id, String login, String firstName, String lastName,
-        String email, boolean activated, String imageUrl, String langKey,
-        String createdBy, Instant createdDate, String lastModifiedBy, Instant lastModifiedDate,
-        Set<String> authorities, Client client,String phone) {
+                   String email, boolean activated, String imageUrl, String langKey,
+                   String createdBy, Instant createdDate, String lastModifiedBy, Instant lastModifiedDate,
+                   Set<String> authorities, Client client, String phone) {
 
         this.id = id;
         this.login = login;

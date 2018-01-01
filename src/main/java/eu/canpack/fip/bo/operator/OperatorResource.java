@@ -1,14 +1,11 @@
 package eu.canpack.fip.bo.operator;
 
 import com.codahale.metrics.annotation.Timed;
-import eu.canpack.fip.service.OperatorService;
 import eu.canpack.fip.web.rest.errors.BadRequestAlertException;
 import eu.canpack.fip.bo.pdf.OperatorCardCreatorService;
 import eu.canpack.fip.web.rest.util.HeaderUtil;
 import eu.canpack.fip.web.rest.util.PaginationUtil;
-import eu.canpack.fip.service.dto.OperatorDTO;
-import eu.canpack.fip.service.dto.OperatorCriteria;
-import eu.canpack.fip.service.OperatorQueryService;
+
 import io.swagger.annotations.ApiParam;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;

@@ -1,9 +1,9 @@
-package eu.canpack.fip.service.mapper;
+package eu.canpack.fip.bo.mpkBudgetMapper;
 
-import eu.canpack.fip.domain.*;
-import eu.canpack.fip.service.dto.MpkBudgetMapperDTO;
-
-import org.mapstruct.*;
+import eu.canpack.fip.bo.client.ClientMapper;
+import eu.canpack.fip.service.mapper.EntityMapper;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 
 /**
  * Mapper for the entity MpkBudgetMapper and its DTO MpkBudgetMapperDTO.

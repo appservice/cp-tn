@@ -1,6 +1,5 @@
 package eu.canpack.fip.service;
 
-import eu.canpack.fip.config.CacheConfiguration;
 import eu.canpack.fip.bo.client.Client;
 import eu.canpack.fip.config.ApplicationProperties;
 import eu.canpack.fip.domain.Authority;
@@ -20,7 +19,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.cache.CacheManager;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -51,12 +49,13 @@ public class UserService {
 
     private final ApplicationProperties applicationProperties;
 
-    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, UserSearchRepository userSearchRepository, AuthorityRepository authorityRepository, CacheManager cacheManager, ApplicationProperties applicationProperties) {
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, UserSearchRepository userSearchRepository, AuthorityRepository authorityRepository, CacheManager cacheManager, ApplicationProperties applicationProperties, ApplicationProperties applicationProperties1) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.userSearchRepository = userSearchRepository;
         this.authorityRepository = authorityRepository;
         this.cacheManager = cacheManager;
+        this.applicationProperties = applicationProperties1;
     }
 
     public Optional<User> activateRegistration(String key) {
@@ -75,18 +74,18 @@ public class UserService {
     }
 
     public Optional<User> completePasswordReset(String newPassword, String key) {
-       log.debug("Reset user password for reset key {}", key);
+        log.debug("Reset user password for reset key {}", key);
 
-       return userRepository.findOneByResetKey(key)
-           .filter(user -> user.getResetDate().isAfter(Instant.now().minusSeconds(86400)))
-           .map(user -> {
+        return userRepository.findOneByResetKey(key)
+            .filter(user -> user.getResetDate().isAfter(Instant.now().minusSeconds(86400)))
+            .map(user -> {
                 user.setPassword(passwordEncoder.encode(newPassword));
                 user.setResetKey(null);
                 user.setResetDate(null);
                 cacheManager.getCache(UserRepository.USERS_BY_LOGIN_CACHE).evict(user.getLogin());
                 cacheManager.getCache(UserRepository.USERS_BY_EMAIL_CACHE).evict(user.getEmail());
                 return user;
-           });
+            });
     }
 
     public Optional<User> requestPasswordReset(String mail) {
@@ -147,11 +146,11 @@ public class UserService {
                 .collect(Collectors.toSet());
             user.setAuthorities(authorities);
         }
-        if(userDTO.getClientId()!=null){
-            Client client=new Client();
+        if (userDTO.getClientId() != null) {
+            Client client = new Client();
             client.setId(userDTO.getClientId());
             user.setClient(client);
-        }else{
+        } else {
             user.setClient(null);
         }
         user.setPhone(userDTO.getPhone());
@@ -173,10 +172,10 @@ public class UserService {
      * Update basic information (first name, last name, email, language) for the current user.
      *
      * @param firstName first name of user
-     * @param lastName last name of user
-     * @param email email id of user
-     * @param langKey language key
-     * @param imageUrl image URL of user
+     * @param lastName  last name of user
+     * @param email     email id of user
+     * @param langKey   language key
+     * @param imageUrl  image URL of user
      */
     public void updateUser(String firstName, String lastName, String email, String langKey, String imageUrl) {
         SecurityUtils.getCurrentUserLogin()
@@ -202,7 +201,7 @@ public class UserService {
      */
     public Optional<UserDTO> updateUser(UserDTO userDTO) {
         return Optional.of(userRepository
-            .findOne(userDTO.getId()))
+                               .findOne(userDTO.getId()))
             .map(user -> {
                 user.setLogin(userDTO.getLogin());
                 user.setFirstName(userDTO.getFirstName());
@@ -216,11 +215,11 @@ public class UserService {
                 userDTO.getAuthorities().stream()
                     .map(authorityRepository::findOne)
                     .forEach(managedAuthorities::add);
-                if(userDTO.getClientId()!=null){
-                    Client client=new Client();
+                if (userDTO.getClientId() != null) {
+                    Client client = new Client();
                     client.setId(userDTO.getClientId());
                     user.setClient(client);
-                }else{
+                } else {
                     user.setClient(null);
                 }
                 user.setPhone(userDTO.getPhone());
@@ -297,25 +296,32 @@ public class UserService {
      * @return a list of all the authorities
      */
     public List<String> getAuthorities() {
-        List<Authority>allAuthorities= authorityRepository.findAll();
-        if(SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.ADMIN)){
+        List<Authority> allAuthorities = authorityRepository.findAll();
+        if (SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.ADMIN)) {
             return allAuthorities.stream().map(Authority::getName).collect(Collectors.toList());
-        }else{
-            return allAuthorities.stream().map(Authority::getName).filter(a-> !a.equals(AuthoritiesConstants.ADMIN)).collect(Collectors.toList());
+        } else {
+            return allAuthorities.stream().map(Authority::getName).filter(a -> !a.equals(AuthoritiesConstants.ADMIN)).collect(Collectors.toList());
         }
 
     }
 
     public User getLoggedUser() {
-        Optional<User> currentUserOpt = userRepository.findOneByLogin(SecurityUtils.getCurrentUserLogin());
-        if (currentUserOpt.isPresent()) {
-            return currentUserOpt.get();
+        Optional<String> currentUserLoginOptional = SecurityUtils.getCurrentUserLogin();
+        if (currentUserLoginOptional.isPresent()) {
+            Optional<User> currentUserOpt = userRepository.findOneByLogin(SecurityUtils.getCurrentUserLogin().get());
+            if (currentUserOpt.isPresent()) {
+                return currentUserOpt.get();
+            } else {
+                throw new CustomParameterizedException("Nie odnaleziono użytkownika w bazie danych");
+
+            }
         } else {
             throw new CustomParameterizedException("Nie odnaleziono użytkownika w bazie danych");
 
         }
-    }
 
+
+    }
 
 
 }

@@ -1,8 +1,9 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {FileItem, FileLikeObject, FileUploader} from 'ng2-file-upload';
-import {LocalStorageService, SessionStorageService} from 'ng2-webstorage';
+// import {LocalStorageService, SessionStorageService} from 'ng2-webstorage';
 import {Attachemnt} from '../../entities/attachment/attachment.model';
 import {AttachmentService} from './tn-file-uploader.service';
+import {LocalStorageService, SessionStorageService} from 'ngx-webstorage';
 
 // const URL = '/api/';
 const URL = '/api/upload';

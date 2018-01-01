@@ -156,7 +156,10 @@ repositories {
 
 dependencies {
     compile "org.springframework.boot:spring-boot-starter-cache"
-    compile "io.github.jhipster:jhipster"
+    compile ("io.github.jhipster:jhipster") {
+        exclude group: 'org.hibernate', module: 'hibernate-core'
+
+    }
     compile "io.dropwizard.metrics:metrics-core"
     compile "io.dropwizard.metrics:metrics-jcache"
     compile "io.dropwizard.metrics:metrics-json"
@@ -214,6 +217,8 @@ dependencies {
     compile ("io.springfox:springfox-swagger2") {
         exclude module: 'mapstruct'
     }
+    compile group: 'org.hibernate', name: 'hibernate-core', version: '5.2.10.Final'
+
     compile "io.springfox:springfox-bean-validators"
     compile "mysql:mysql-connector-java"
     compile "org.postgresql:postgresql"
@@ -226,7 +231,7 @@ dependencies {
         exclude group: 'org.assertj', module: 'assertj-core'
     }
     //compile group: 'org.hibernate', name: 'hibernate-jpamodelgen', version: '5.2.10.Final'
-    compile group: 'p6spy', name: 'p6spy', version: '3.0.0'
+    compile group: 'p6spy', name: 'p6spy', version: '3.6.0'
 // https://mvnrepository.com/artifact/com.github.nociar/jpa-cloner
     compile group: 'com.github.nociar', name: 'jpa-cloner', version: '1.0.3'
 

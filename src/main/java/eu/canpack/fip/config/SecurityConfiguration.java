@@ -43,13 +43,13 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     private final CorsFilter corsFilter;
 
     private final SwitchUserSuccessHandler switchUserSuccessHandler;
+    private final SecurityProblemSupport problemSupport;
+
 
     public SecurityConfiguration(AuthenticationManagerBuilder authenticationManagerBuilder, UserDetailsService userDetailsService,
                                  TokenProvider tokenProvider,
-                                 CorsFilter corsFilter, SwitchUserSuccessHandler switchUserSuccessHandler) {
-    private final SecurityProblemSupport problemSupport;
+                                 CorsFilter corsFilter, SwitchUserSuccessHandler switchUserSuccessHandler, SecurityProblemSupport problemSupport) {
 
-    public SecurityConfiguration(AuthenticationManagerBuilder authenticationManagerBuilder, UserDetailsService userDetailsService,TokenProvider tokenProvider,CorsFilter corsFilter, SecurityProblemSupport problemSupport) {
         this.authenticationManagerBuilder = authenticationManagerBuilder;
         this.userDetailsService = userDetailsService;
         this.tokenProvider = tokenProvider;

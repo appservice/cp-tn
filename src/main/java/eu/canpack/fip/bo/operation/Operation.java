@@ -75,93 +75,12 @@ public class Operation implements Serializable {
     private List<OperationEvent> operationEvents = new ArrayList<>();
 
 
-
-
     public Long getId() {
         return id;
     }
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public Operation description(String description) {
-        this.description = description;
-        return this;
-    }
-
-    public String getRemark() {
-        return remark;
-    }
-
-    public void setRemark(String remark) {
-        this.remark = remark;
-    }
-
-    public Operation remark(String remark) {
-        this.remark = remark;
-        return this;
-    }
-
-    public BigDecimal getEstimatedTime() {
-        return estimatedTime;
-    }
-
-    public void setEstimatedTime(BigDecimal estimatedTime) {
-        this.estimatedTime = estimatedTime;
-    }
-
-    public Operation estimatedTime(BigDecimal estimatedTime) {
-        this.estimatedTime = estimatedTime;
-        return this;
-    }
-
-    public BigDecimal getRealTime() {
-        return realTime;
-    }
-
-    public void setRealTime(BigDecimal realTime) {
-        this.realTime = realTime;
-    }
-
-    public Operation realTime(BigDecimal realTime) {
-        this.realTime = realTime;
-        return this;
-    }
-
-    public Machine getMachine() {
-        return machine;
-    }
-
-    public void setMachine(Machine machine) {
-        this.machine = machine;
-    }
-
-
-    public Operation machine(Machine machine) {
-        this.machine = machine;
-        return this;
-    }
-
-    public Estimation getEstimation() {
-        return estimation;
-    }
-
-    public void setEstimation(Estimation estimation) {
-        this.estimation = estimation;
-    }
-
-    public Operation estimation(Estimation estimation) {
-        this.estimation = estimation;
-        return this;
     }
 
     public Integer getSequenceNumber() {
@@ -172,9 +91,52 @@ public class Operation implements Serializable {
         this.sequenceNumber = sequenceNumber;
     }
 
-    public Operation sequenceNumber(final Integer sequenceNumber) {
-        this.sequenceNumber = sequenceNumber;
-        return this;
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getRemark() {
+        return remark;
+    }
+
+    public void setRemark(String remark) {
+        this.remark = remark;
+    }
+
+    public BigDecimal getEstimatedTime() {
+        return estimatedTime;
+    }
+
+    public void setEstimatedTime(BigDecimal estimatedTime) {
+        this.estimatedTime = estimatedTime;
+    }
+
+    public BigDecimal getRealTime() {
+        return realTime;
+    }
+
+    public void setRealTime(BigDecimal realTime) {
+        this.realTime = realTime;
+    }
+
+    public Machine getMachine() {
+        return machine;
+    }
+
+    public void setMachine(Machine machine) {
+        this.machine = machine;
+    }
+
+    public Estimation getEstimation() {
+        return estimation;
+    }
+
+    public void setEstimation(Estimation estimation) {
+        this.estimation = estimation;
     }
 
     public OperationStatus getOperationStatus() {
@@ -209,6 +171,60 @@ public class Operation implements Serializable {
         this.operationEvents = operationEvents;
     }
 
+    public Operation id(final Long id) {
+        this.id = id;
+        return this;
+    }
+
+    public Operation description(final String description) {
+        this.description = description;
+        return this;
+    }
+
+    public Operation remark(final String remark) {
+        this.remark = remark;
+        return this;
+    }
+
+    public Operation estimatedTime(final BigDecimal estimatedTime) {
+        this.estimatedTime = estimatedTime;
+        return this;
+    }
+
+    public Operation realTime(final BigDecimal realTime) {
+        this.realTime = realTime;
+        return this;
+    }
+
+    public Operation machine(final Machine machine) {
+        this.machine = machine;
+        return this;
+    }
+
+    public Operation estimation(final Estimation estimation) {
+        this.estimation = estimation;
+        return this;
+    }
+
+    public Operation operationStatus(final OperationStatus operationStatus) {
+        this.operationStatus = operationStatus;
+        return this;
+    }
+
+    public Operation operationType(final OperationType operationType) {
+        this.operationType = operationType;
+        return this;
+    }
+
+    public Operation productionStatus(final ProductionStatus productionStatus) {
+        this.productionStatus = productionStatus;
+        return this;
+    }
+
+    public Operation operationEvents(final List<OperationEvent> operationEvents) {
+        this.operationEvents = operationEvents;
+        return this;
+    }
 
 
     @Override

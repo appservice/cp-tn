@@ -1,16 +1,9 @@
 package eu.canpack.fip.web.rest;
 
 import eu.canpack.fip.TnApp;
-
-import eu.canpack.fip.domain.MpkBudgetMapper;
-import eu.canpack.fip.domain.Client;
-import eu.canpack.fip.repository.MpkBudgetMapperRepository;
-import eu.canpack.fip.service.MpkBudgetMapperService;
+import eu.canpack.fip.bo.mpkBudgetMapper.*;
 import eu.canpack.fip.repository.search.MpkBudgetMapperSearchRepository;
-import eu.canpack.fip.service.dto.MpkBudgetMapperDTO;
-import eu.canpack.fip.service.mapper.MpkBudgetMapperMapper;
 import eu.canpack.fip.web.rest.errors.ExceptionTranslator;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -103,10 +96,10 @@ public class MpkBudgetMapperResourceIntTest {
             .budget(DEFAULT_BUDGET)
             .description(DEFAULT_DESCRIPTION);
         // Add required entity
-        Client client = ClientResourceIntTest.createEntity(em);
-        em.persist(client);
-        em.flush();
-        mpkBudgetMapper.setClient(client);
+//        Client client = ClientResourceIntTest.createEntity(em);
+//        em.persist(client);
+//        em.flush();
+//        mpkBudgetMapper.setClient(client);
         return mpkBudgetMapper;
     }
 

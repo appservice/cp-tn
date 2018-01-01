@@ -2,6 +2,8 @@ import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
 import { TnSharedModule } from '../shared';
+import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
+
 
 import {
     Register,
@@ -24,6 +26,7 @@ import {SwitchUserComponent} from './switch-user/switch-user.component';
     imports: [
         TnSharedModule,
         RouterModule.forChild(accountState)
+
     ],
     declarations: [
         ActivateComponent,

@@ -224,6 +224,8 @@ public class User extends AbstractAuditingEntity implements Serializable {
         this.phone = phone;
     }
 
+
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {

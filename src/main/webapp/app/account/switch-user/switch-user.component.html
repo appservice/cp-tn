@@ -6,13 +6,15 @@
 
     <div class="row">
         <div class="col-md-4">
-            <input class="form-control" type="text" [(ngModel)]="userToSwitch" name="userName"
-                   [ngbTypeahead]="searchUser"
+            <input class="form-control" type="text" [(ngModel)]="userToSwitch" name="userName" [ngbTypeahead]="search"
                    [inputFormatter]="formatter"
                    [resultFormatter]="resultFormatter"
+
                    [editable]="false"/><!-- (selectItem)="onSelectItem($event)"-->
         </div>
-
+<!--   [ngbTypeahead]="searchUser"
+                   [inputFormatter]="formatter"
+                   [resultFormatter]="resultFormatter"-->
 
         <div class="col-md-3">
             <button class="btn btn-outline-dark" type="submit">ok</button>
