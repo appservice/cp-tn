@@ -7,7 +7,7 @@ import {ResponseWrapper} from '../../../shared/model/response-wrapper.model';
 import {ProductionItem} from '../production-item.model';
 import {EstimationFilter} from '../../order/estimation-filter.model';
 import {ProductionService} from '../production.service';
-import {ITEMS_PER_PAGE} from '../../../shared/constants/pagination.constants';
+import {ITEMS_PER_PAGE} from '../../../shared';
 import {PaginationConfig} from '../../../blocks/config/uib-pagination.config';
 import {Estimation} from "../estimation.model";
 

@@ -22,6 +22,7 @@ export class ProductionItem {
                 public deliveredAt ?: any,
                 public productionStartDateTime ?: any,
                 public createdAt ?: any,
+                public sapNumber ?:string,
                 ) {
     }
 

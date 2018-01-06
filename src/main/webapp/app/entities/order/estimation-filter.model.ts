@@ -7,6 +7,7 @@ export class EstimationFilter {
                 public itemNumber?: string,
                 public clientName?: string,
                 public orderNumber ?: string,
+                public sapNumber ?: string,
 /*
                 public  validFrom?: NgbDateStruct,
                 public  validTo?: NgbDateStruct,*/) {

@@ -62,6 +62,8 @@ public class EstimationCriteria implements Serializable {
 
     private BooleanFilter finished;
 
+    private StringFilter sapNumber;
+
 
     public static long getSerialVersionUID() {
         return serialVersionUID;
@@ -131,6 +133,14 @@ public class EstimationCriteria implements Serializable {
         this.finished = finished;
     }
 
+    public StringFilter getSapNumber() {
+        return sapNumber;
+    }
+
+    public void setSapNumber(StringFilter sapNumber) {
+        this.sapNumber = sapNumber;
+    }
+
     @Override
     public String toString() {
         return "EstimationCriteria{" +
@@ -138,6 +148,7 @@ public class EstimationCriteria implements Serializable {
             ", itemName=" + itemName +
             ", itemNumber='" + itemNumber + '\'' +
             ", clientName=" + clientName +
+            ", sapNumber=" + sapNumber +
             '}';
     }
 }

@@ -660,6 +660,7 @@ public class OrderService {
             newEstimation.setMaterialPrice(est.getMaterialPrice());
             newEstimation.setMpk(estDTO.getMpk());
             newEstimation.setMaterialType(est.getMaterialType());
+            newEstimation.setPricePublished(true);
 
             if (est.getMpk() != null && orderDTO.getClientId() != null) {
                 mpkBudgetMapperService.findOneByMpkAndClientId(est.getMpk(), orderDTO.getClientId())

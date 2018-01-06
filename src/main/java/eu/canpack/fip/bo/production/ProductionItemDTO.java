@@ -50,6 +50,8 @@ public class ProductionItemDTO {
 
     private ZonedDateTime productionStartDateTime;
 
+    private String sapNumber;
+
 
     public ProductionItemDTO() {
     }
@@ -78,6 +80,7 @@ public class ProductionItemDTO {
         }
         this.createdAt= estimation.getOrder().getCreatedAt();
         this.productionStartDateTime=estimation.getProductionStartDateTime();
+        this.sapNumber=estimation.getSapNumber();
 
 
 
@@ -105,6 +108,14 @@ public class ProductionItemDTO {
             .sorted(Comparator.comparing(Operation::getSequenceNumber))
             .filter(o -> o.getOperationStatus() != OperationStatus.FINISHED)
             .findFirst().map(o -> o.getMachine().getName()).orElse(null);
+    }
+
+    public String getSapNumber() {
+        return sapNumber;
+    }
+
+    public void setSapNumber(String sapNumber) {
+        this.sapNumber = sapNumber;
     }
 
     public LocalDate getEstimatedRealizationDate() {

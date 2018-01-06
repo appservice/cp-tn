@@ -62,7 +62,7 @@ export class ProductionStanComponent implements OnInit, OnDestroy {
 
     loadAll() {
 
-        let urlSearchParams= this.createSearchParams();
+        let urlSearchParams = this.createSearchParams();
 
         this.productionService.getItemsActualInProduction({
             page: this.page - 1,
@@ -156,12 +156,13 @@ export class ProductionStanComponent implements OnInit, OnDestroy {
         this.estimationFilter.clientName = null;
         this.estimationFilter.itemNumber = null;
         this.estimationFilter.orderNumber = null;
+        this.estimationFilter.sapNumber = null;
         this.loadAll();
     }
 
     exportToExcel() {
         this.waitForResponse = true;
-       let urlSearchParams= this.createSearchParams();
+        let urlSearchParams = this.createSearchParams();
 
         this.productionService.getProductionAsExcel(urlSearchParams).subscribe((res: any) => {
                 this.waitForResponse = false;
@@ -183,6 +184,9 @@ export class ProductionStanComponent implements OnInit, OnDestroy {
 
         if (this.estimationFilter.clientName !== null && this.estimationFilter.clientName !== '')
             urlSearchParams.append('clientName.contains', this.estimationFilter.clientName);
+
+        if (this.estimationFilter.sapNumber !== null && this.estimationFilter.sapNumber !== '')
+            urlSearchParams.append('sapNumber.contains', this.estimationFilter.sapNumber);
         return urlSearchParams;
     }
 

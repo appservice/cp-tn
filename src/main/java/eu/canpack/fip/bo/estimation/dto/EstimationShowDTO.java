@@ -211,6 +211,8 @@ public class EstimationShowDTO implements Serializable {
         this.orderCreatedAt = orderCreatedAt;
     }
 
+
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {

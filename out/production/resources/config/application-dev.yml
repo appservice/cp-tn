@@ -15,9 +15,10 @@
 
 logging:
     level:
-        ROOT: DEBUG
+        ROOT: warn
         eu.canpack.fip: DEBUG
         io.github.jhipster: DEBUG
+        p6spy: warn
 
 spring:
     profiles:

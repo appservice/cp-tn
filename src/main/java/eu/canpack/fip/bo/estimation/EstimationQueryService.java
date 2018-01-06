@@ -98,6 +98,9 @@ public class EstimationQueryService extends QueryService<Estimation> {
             if (criteria.getItemNumber() != null) {
                 specification = specification.and(buildStringSpecification(criteria.getItemNumber(), eu.canpack.fip.bo.estimation.Estimation_.itemNumber));
             }
+            if (criteria.getSapNumber() != null) {
+                specification = specification.and(buildStringSpecification(criteria.getSapNumber(), eu.canpack.fip.bo.estimation.Estimation_.sapNumber));
+            }
 
             if (criteria.getClientId() != null) {
                 Specification<Estimation> spec = (root, query, builder) -> {

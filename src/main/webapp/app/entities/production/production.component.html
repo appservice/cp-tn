@@ -38,6 +38,16 @@
                    (keydown)="onEnterClickFilter($event)">
 
         </div>
+        <div class="col-md-2">
+            <!--<label>Numer rys.</label>-->
+            <input type="text" class="form-control" name="sapNumberFilter"
+                   [(ngModel)]="estimationFilter.sapNumber" placeholder="Nr sap"
+                   (keydown)="onEnterClickFilter($event)">
+
+        </div>
+    </div>
+    <div class="row" style="margin-top: 20px">
+
         <div class="col-md-4">
             <label>&nbsp;</label>
             <button class="btn btn-outline-dark" type="button" (click)="loadAll()"><span
@@ -53,41 +63,44 @@
 
     <br/>
     <div class="table-responsive" *ngIf="productionItems">
-        <table class="table table-striped ">
+        <table class="table table-striped">
             <thead>
             <tr jhiSort [(predicate)]="predicate" [(ascending)]="reverse" [callback]="transition.bind(this)">
                 <th jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span> <span class="fa fa-sort"></span></th>
                 <th jhiSortBy="order.client.shortcut"><span>Client</span> <span class="fa fa-sort"></span></th>
                 <!--<th jhiSortBy="mass"><span jhiTranslate="tnApp.estimation.mass">Mass</span> <span class="fa fa-sort"></span></th>-->
-                <th jhiSortBy="itemNumber" style="width: 200px"><span>Nr rys.</span> <span class="fa fa-sort"></span></th>
+                <th jhiSortBy="itemNumber"><span>Nr rys.</span> <span class="fa fa-sort"></span></th>
                 <th jhiSortBy="itemName"><span>Nazwa</span> <span class="fa fa-sort"></span></th>
                 <th jhiSortBy="amount"><span>Ilość [SZT]</span> <span class="fa fa-sort"></span></th>
                 <th jhiSortBy="order.internalNumber"><span jhiTranslate="tnApp.estimation.order">Order</span> <span
                     class="fa fa-sort"></span></th>
+                <th jhiSortBy="sapNumber"><span>Nr sap</span> <span class="fa fa-sort"></span></th>
                 <th jhiSortBy="productionStartDateTime"><span>Data przekazania do prod.</span> <span class="fa fa-sort"></span></th>
                 <th jhiSortBy="estimatedRealizationDate"><span>Planowana data realiz.</span> <span class="fa fa-sort"></span></th>
                 <th>Ukończono [%]</th>
-                <th style="width: 250px">Stanowsko aktualnej operacji</th>
-                <th style="width: 80px"></th>
+                <th>Stanowsko aktualnej operacji</th>
+                <!--<th></th>-->
             </tr>
             </thead>
             <tbody>
             <tr *ngFor="let productionItem of productionItems;let rowIndex = index">
                 <td>{{productionItem.estimationId}}</td>
                 <td>{{productionItem.clientName}}</td>
-                <td>{{productionItem.itemNumber}}</td>
+                <td style="min-width:140px">{{productionItem.itemNumber}}</td>
                 <td style="min-width: 250px">{{productionItem.itemName}}</td>
                 <!--<td></td>-->
                 <!--<td></td>-->
                 <td>{{productionItem.amount}}</td>
 
                 <td>
-                    <a *ngIf="productionItem.showProductionOrderLink && productionItem.showProductionOrderLink==true" [routerLink]="['/orders-in-production/'+productionItem.orderId+'/detail']">{{productionItem.orderNumber}}</a>
+                    <a *ngIf="productionItem.showProductionOrderLink && productionItem.showProductionOrderLink==true"
+                       [routerLink]="['/orders-in-production/'+productionItem.orderId+'/detail']">{{productionItem.orderNumber}}</a>
                     <span *ngIf="!productionItem.showProductionOrderLink || productionItem.showProductionOrderLink==false">{{productionItem.orderNumber}}</span>
                 </td>
+                <td>{{productionItem.sapNumber}}</td>
                 <td>{{productionItem.productionStartDateTime|date:'dd-MM-yyyy HH:mm'}}</td>
                 <td>{{productionItem.estimatedRealizationDate|date:'dd-MM-yyyy'}}</td>
-                <td style="width: 300px;">
+                <td style="width: 250px;">
                     <a [routerLink]="['/', { outlets: { popup: 'production/'+ productionItem.estimationId+ '/showOperations'} }]" replaceUrl="true"
                        *ngIf="productionItem.showOperationsDetail && productionItem.showOperationsDetail==true">
                         <div class="progress  progress-custom">
@@ -108,18 +121,18 @@
                         </div>
                     </div>
                 </td>
-                <td>{{productionItem.nextOperationPlace}}</td>
-                <td>
+                <td>{{productionItem.nextOperationPlace}}
                     <button class="btn btn-outline-dark" *ngIf="productionItem.readyForDispatch"
-                            [routerLink]="['/', { outlets: { popup: 'production/'+ productionItem.estimationId+ '/moveToArchive'} }]" replaceUrl="true">Archiwizuj
+                            [routerLink]="['/', { outlets: { popup: 'production/'+ productionItem.estimationId+ '/moveToArchive'} }]" replaceUrl="true">
                         <span class="fa fa-archive"></span></button>
                 </td>
 
             </tr>
             </tbody>
-            <button type="button" class="btn btn-outline-dark" (click)="exportToExcel();" [disabled]="waitForResponse">Eksport do Excel</button>
 
         </table>
+        <button type="button" class="btn btn-outline-dark" (click)="exportToExcel();" [disabled]="waitForResponse">Eksport do Excel</button>
+
     </div>
     <div *ngIf="productionItems && productionItems.length">
         <div class="row justify-content-center">
