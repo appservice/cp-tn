@@ -167,7 +167,7 @@ export class NewEstimationComponent implements OnInit, OnDestroy {
     }
 
     previousState() {
-        this.backButtonClicked=true;
+        this.backButtonClicked = true;
         window.history.back();
     }
 
@@ -426,15 +426,15 @@ export class NewEstimationComponent implements OnInit, OnDestroy {
 
         }
 
-        for (let commercialPart of technologyCard.commercialParts){
-            commercialPart.id=null;
+        for (let commercialPart of technologyCard.commercialParts) {
+            commercialPart.id = null;
             this.estimation.commercialParts.push(commercialPart);
 
         }
 
 
-        for (let cooperation of technologyCard.cooperationList){
-            cooperation.id=null;
+        for (let cooperation of technologyCard.cooperationList) {
+            cooperation.id = null;
             this.estimation.cooperationList.push(cooperation);
 
         }

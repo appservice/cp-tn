@@ -151,7 +151,7 @@ export const orderRoute: Routes = [
             'pagingParams': OrderResolvePagingParams
         },
         data: {
-            authorities: ['ROLE_USER'],
+            authorities: ['ROLE_TECHNOLOGIST','ROLE_MANAGER'],
             pageTitle: 'tnApp.order.inquiries'
         },
         canActivate: [UserRouteAccessService]

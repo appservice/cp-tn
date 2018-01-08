@@ -58,7 +58,7 @@
                 <!--<td>{{estimation.mass}}</td>-->
 
 
-                <td>{{estimation.estimatedCost|currency:'PLN':false}}</td>
+                <td>{{estimation.estimatedCost|currency:'PLN':'code'}}</td>
                 <!--<td>{{estimation.finalCost}}</td>-->
                 <td>
                     <div *ngIf="estimation.orderId">

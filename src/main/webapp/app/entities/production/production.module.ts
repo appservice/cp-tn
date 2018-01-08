@@ -1,16 +1,9 @@
-import {NgModule, CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
+import {CUSTOM_ELEMENTS_SCHEMA, NgModule} from '@angular/core';
 import {RouterModule} from '@angular/router';
 
 import {TnSharedModule} from '../../shared';
 
-import {
-    EstimationService,
-
-    productionRoute,
-    productionPopupRoute,
-    ItemsInProductionPagingParams,
-    OperationListPopupComponent,
-} from './';
+import {EstimationService, ItemsInProductionPagingParams, OperationListPopupComponent, productionPopupRoute, productionRoute,} from './';
 import {TnComponentsModule} from '../../tn-components/tn-components.module';
 import {CurrencyMaskModule} from 'ng2-currency-mask';
 import {ProductionStanComponent} from './production.component';
@@ -18,7 +11,6 @@ import {OrdersInProductionComponent} from './orders-in-production/orders-in-prod
 import {OrderInProductionDetailComponent} from './order-in-production-detail/order-in-production-detail.component';
 import {TechnologyEditComponent} from './technology-edit/technology-edit.component';
 import {ProductionService} from './production.service';
-import {EmergencyOrderDetailComponent} from '../order/emergency-order/emergency-order-detail/emergency-order-detail.component';
 import {EmergencyOrderTechnologyEditComponent} from './emergency-order-technology-edit/emergency-order-technology-edit.component';
 import {OperationListModalComponent} from "./operation-list-modal-component/operation-list-modal-component.component";
 import {OperationListPopupService} from "./operation-list-modal-component/operation-list-popup.service";

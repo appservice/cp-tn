@@ -14,7 +14,6 @@ import {UnitService} from '../../unit/unit.service';
 import {Unit} from '../../unit/unit.model';
 import {isNullOrUndefined} from 'util';
 import {OrderService} from '../../order/order.service';
-import {Order} from '../../order/order.model';
 import {OrderSimpleDTO} from '../../order/order-simpleDTO.model';
 import {TnAlert} from '../../../tn-components/tn-alert';
 import {TechnologyCardFinderComponent} from '../../technology-card/technology-card-finder/technology-card-finder.component';

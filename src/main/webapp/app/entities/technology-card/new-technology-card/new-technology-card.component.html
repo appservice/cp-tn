@@ -264,7 +264,7 @@
                             <td>
 
                                 <input class="form-control"
-                                       value="{{(commercialPart.amount*commercialPart.price)|currency:'PLN':false}} "
+                                       value="{{(commercialPart.amount*commercialPart.price)|currency:'PLN':'code'}} "
                                        disabled
                                        *ngIf="commercialPart.amount!=null && commercialPart.price!=null;else other_content"/>
 
@@ -287,7 +287,7 @@
                             <td></td>
                             <td></td>
                             <td class="text-right strong">Suma:</td>
-                            <td class="strong font-weight-bold">{{commercialPartsTotalCost|currency:'PLN':false}}</td>
+                            <td class="strong font-weight-bold">{{commercialPartsTotalCost|currency:'PLN':'code'}}</td>
                         </tr>
                         </tfoot>
 
@@ -340,7 +340,7 @@
                             <td>
 
                                 <input class="form-control"
-                                       value="{{(cooperation.amount*cooperation.price)|currency:'PLN':false}} "
+                                       value="{{(cooperation.amount*cooperation.price)|currency:'PLN':'code'}} "
                                        disabled
                                        *ngIf="cooperation.amount!=null && cooperation.price!=null;else other_content"/>
 
@@ -362,7 +362,7 @@
                             <td></td>
                             <td></td>
                             <td class="text-right strong">Suma:</td>
-                            <td class="strong font-weight-bold">{{cooperationTotalCost|currency:'PLN':false}}</td>
+                            <td class="strong font-weight-bold">{{cooperationTotalCost|currency:'PLN':'code'}}</td>
                         </tr>
                         </tfoot>
 

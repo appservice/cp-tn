@@ -94,7 +94,7 @@ currentAccount: any;
         }
     }
     transition() {
-        this.router.navigate(['/orders/archived'], {queryParams:
+        this.router.navigate(['/archived-orders'], {queryParams:
             {
                 page: this.page,
                 size: this.itemsPerPage,

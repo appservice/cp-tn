@@ -15,12 +15,10 @@ import {ResponseWrapper} from '../../../../shared';
 import {Drawing} from '../../../drawing';
 import {Estimation} from '../../../estimation';
 
-
 @Component({
     selector: 'tn-new-emergency-order',
     templateUrl: './new-emergency-order.component.html',
     styles: [],
-
 })
 export class NewEmergencyOrderComponent implements OnInit, OnDestroy {
 
@@ -37,7 +35,7 @@ export class NewEmergencyOrderComponent implements OnInit, OnDestroy {
     closeResult: string;
     clickedRow: number;
     isReadOnly: boolean = false;
-    isDrawingUpload: boolean=true;
+    isDrawingUpload: boolean = true;
 
     constructor(private alertService: JhiAlertService,
                 private clientService: ClientService,
@@ -57,8 +55,8 @@ export class NewEmergencyOrderComponent implements OnInit, OnDestroy {
         this.clientService.findAllToTypeahead()
             .subscribe((res: ResponseWrapper) => {
                 this.clients = res.json;
-                if(this.clients.length==1){
-                    this.order.clientId=this.clients[0].id;
+                if (this.clients.length == 1) {
+                    this.order.clientId = this.clients[0].id;
                 }
             }, (res: ResponseWrapper) => this.onError(res.json));
 
@@ -73,10 +71,9 @@ export class NewEmergencyOrderComponent implements OnInit, OnDestroy {
 
             } else {
                 this.title = 'Nowe zlecenie awaryjne';
-                this.order.canEdit=true;
+                this.order.canEdit = true;
 
             }
-
         });
     }
 
@@ -92,11 +89,11 @@ export class NewEmergencyOrderComponent implements OnInit, OnDestroy {
     }
 
     addEstimation() {
-       // const drawing: Drawing = {id: null, attachments: []}
+        // const drawing: Drawing = {id: null, attachments: []}
         this.order.estimations.push({
             id: null, amount: null,
-       //     drawing: drawing,
-            estimationRemarks:[]
+            //     drawing: drawing,
+            estimationRemarks: []
         });
     }
 
@@ -125,11 +122,9 @@ export class NewEmergencyOrderComponent implements OnInit, OnDestroy {
     onFileArrayChange(event: Attachment[]) {
         this.attachments = event;
         console.log('event from parent object: ', event);
-        this.isDrawingUpload=event.length>0;
+        this.isDrawingUpload = event.length > 0;
 
     }
-
-
 
     save() {
         this.isSaving = true;
@@ -169,8 +164,8 @@ export class NewEmergencyOrderComponent implements OnInit, OnDestroy {
         this.orderService.find(id).subscribe((order) => {
             this.order = order;
 
-       //     console.log('enum 3', ]);
-             this.isReadOnly =!order.canEdit && !order.canEditAsAdmin;//order.orderStatus != null && order.orderStatus != 'WORKING_COPY';
+            //     console.log('enum 3', ]);
+            this.isReadOnly = !order.canEdit && !order.canEditAsAdmin;//order.orderStatus != null && order.orderStatus != 'WORKING_COPY';
 
         });
     }

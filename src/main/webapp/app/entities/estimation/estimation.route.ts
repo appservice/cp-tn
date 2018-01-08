@@ -88,7 +88,7 @@ export const estimationRoute: Routes = [
         path: 'estimation/:id/edit',
         component: NewEstimationComponent,
         data: {
-            authorities: ['ROLE_USER'],
+            authorities: ['ROLE_TECHNOLOGIST'],
             pageTitle: 'tnApp.estimation.home.title'
         },
         canActivate: [UserRouteAccessService],

@@ -1,10 +1,10 @@
 import {Injectable} from '@angular/core';
-import {Http, Response, RequestOptions, ResponseContentType, Headers, URLSearchParams} from '@angular/http';
+import {Headers, Http, RequestOptions, Response, ResponseContentType, URLSearchParams} from '@angular/http';
 import {Observable} from 'rxjs/Rx';
 import {JhiDateUtils} from 'ng-jhipster';
 
 import {Order} from './order.model';
-import {ResponseWrapper, createRequestOption} from '../../shared';
+import {createRequestOption, ResponseWrapper} from '../../shared';
 import {OrderSimpleDTO} from './order-simpleDTO.model';
 import * as FileSaver from 'file-saver';
 import * as _ from 'lodash';
@@ -227,7 +227,6 @@ export class OrderService {
     //     });
     // }
 
-
     createPdfOffer(order: Order): void {
         const copy = this.convert(order);
 
@@ -265,7 +264,7 @@ export class OrderService {
         let options = new RequestOptions({responseType: ResponseContentType.Blob, headers});
         if (urlSearchParams) {
             console.log(urlSearchParams);
-            options.params=urlSearchParams;
+            options.params = urlSearchParams;
 
         }
 

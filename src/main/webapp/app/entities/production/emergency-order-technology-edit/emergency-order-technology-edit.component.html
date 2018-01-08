@@ -207,7 +207,7 @@
                             <input *ngIf="operation.estimatedTime!=null && operation.machine!=null;else other_content"
                                    class="form-control"
                                    disabled
-                                   value="{{(operation.estimatedTime*operation.machine.workingHourPrice)|currency:'PLN':false}}"/>
+                                   value="{{(operation.estimatedTime*operation.machine.workingHourPrice)|currency:'PLN':'code'}}"/>
                             <ng-template #other_content><input class="form-control" disabled/>
 
                         </td>-->
@@ -303,7 +303,7 @@
                         <td>
 
                             <input class="form-control"
-                                   value="{{(commercialPart.amount*commercialPart.price)|currency:'PLN':false}} "
+                                   value="{{(commercialPart.amount*commercialPart.price)|currency:'PLN':'code'}} "
                                    disabled
                                    *ngIf="commercialPart.amount!=null && commercialPart.price!=null;else other_content"/>
 
@@ -327,7 +327,7 @@
                         <td></td>
                         <td></td>
                         <td class="text-right strong">Suma:</td>
-                        <td class="strong font-weight-bold">{{commercialPartsTotalCost|currency:'PLN':false}}</td>
+                        <td class="strong font-weight-bold">{{commercialPartsTotalCost|currency:'PLN':'code'}}</td>
                     </tr>
                     </tfoot>
 
@@ -381,7 +381,7 @@
                         <td>
 
                             <input class="form-control"
-                                   value="{{(cooperation.amount*cooperation.price)|currency:'PLN':false}} "
+                                   value="{{(cooperation.amount*cooperation.price)|currency:'PLN':'code'}} "
                                    disabled
                                    *ngIf="cooperation.amount!=null && cooperation.price!=null;else other_content"/>
 
@@ -403,7 +403,7 @@
                         <td></td>
                         <td></td>
                         <td class="text-right strong">Suma:</td>
-                        <td class="strong font-weight-bold">{{cooperationTotalCost|currency:'PLN':false}}</td>
+                        <td class="strong font-weight-bold">{{cooperationTotalCost|currency:'PLN':'code'}}</td>
                     </tr>
                     </tfoot>
 
@@ -478,22 +478,22 @@
                                             <tr>
                                                 <td>1</td>
                                                 <td>Koszt materiału</td>
-                                                <td>{{estimation.materialPrice|currency:'PLN':false}}</td>
+                                                <td>{{estimation.materialPrice|currency:'PLN':'code'}}</td>
                                             </tr>
                                             <tr>
                                                 <td>2</td>
                                                 <td>Koszt operacji</td>
-                                                <td>{{operationsTotalCost|currency:'PLN':false}}</td>
+                                                <td>{{operationsTotalCost|currency:'PLN':'code'}}</td>
                                             </tr>
                                             <tr>
                                                 <td>3</td>
                                                 <td>Koszt częsci handlowych</td>
-                                                <td>{{commercialPartsTotalCost|currency:'PLN':false}}</td>
+                                                <td>{{commercialPartsTotalCost|currency:'PLN':'code'}}</td>
                                             </tr>
                                             <tr>
                                                 <td>4</td>
                                                 <td>Koszt kooperacji</td>
-                                                <td>{{cooperationTotalCost|currency:'PLN':false}}</td>
+                                                <td>{{cooperationTotalCost|currency:'PLN':'code'}}</td>
                                             </tr>
 
                                             </tbody>
@@ -502,14 +502,14 @@
                                                 <td></td>
                                                 <td class="text-right strong">Marża:</td>
                                                 <td class="strong font-weight-bold">
-                                                    {{calculateDiscount()|currency:'PLN':false}}
+                                                    {{calculateDiscount()|currency:'PLN':'code'}}
                                                 </td>
                                             </tr>
                                             <tr>
                                                 <td></td>
                                                 <td class="text-right strong">Suma:</td>
                                                 <td class="strong font-weight-bold">
-                                                    {{(calculateTotal()+calculateDiscount())|currency:'PLN':false}}
+                                                    {{(calculateTotal()+calculateDiscount())|currency:'PLN':'code'}}
                                                 </td>
                                             </tr>
 
