@@ -1,10 +1,10 @@
 package eu.canpack.fip.bo.order;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import eu.canpack.fip.bo.order.enumeration.OrderStatus;
-import eu.canpack.fip.bo.order.enumeration.OrderType;
 import eu.canpack.fip.bo.client.Client;
 import eu.canpack.fip.bo.estimation.Estimation;
+import eu.canpack.fip.bo.order.enumeration.OrderStatus;
+import eu.canpack.fip.bo.order.enumeration.OrderType;
 import eu.canpack.fip.bo.referenceOrder.ReferenceOrder;
 import eu.canpack.fip.domain.User;
 import org.hibernate.annotations.Cache;
@@ -12,11 +12,14 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.springframework.data.elasticsearch.annotations.Document;
 
 import javax.persistence.*;
-import javax.validation.constraints.*;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.ZonedDateTime;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
 /**
  * A Order.
@@ -104,12 +107,9 @@ public class Order implements Serializable {
     @Size(max = 1024)
     private String deliveryAddress;
 
-
-
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true,fetch = FetchType.EAGER)
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private List<ReferenceOrder> referenceOrders = new ArrayList<>();
-
 
     public Long getId() {
         return id;

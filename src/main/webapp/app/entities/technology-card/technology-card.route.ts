@@ -35,7 +35,7 @@ export const technologyCardRoute: Routes = [
             'pagingParams': TechnologyCardResolvePagingParams
         },
         data: {
-            authorities: ['ROLE_USER'],
+            authorities: ['ROLE_TECHNOLOGIST','ROLE_MANAGER'],
             pageTitle: 'tnApp.technologyCard.home.title'
         },
         canActivate: [UserRouteAccessService]
@@ -44,7 +44,7 @@ export const technologyCardRoute: Routes = [
         path: 'technology-card/:id',
         component: NewTechnologyCardComponent,
         data: {
-            authorities: ['ROLE_USER'],
+            authorities: ['ROLE_TECHNOLOGIST','ROLE_MANAGER'],
             pageTitle: 'tnApp.technologyCard.home.title',
             readOnly: true,
         },
@@ -54,7 +54,7 @@ export const technologyCardRoute: Routes = [
         path: 'technology-card/:id/edit',
         component: NewTechnologyCardComponent,
         data: {
-            authorities: ['ROLE_USER'],
+            authorities: ['ROLE_TECHNOLOGIST','ROLE_MANAGER'],
             pageTitle: 'tnApp.technologyCard.home.title'
         },
         canActivate: [UserRouteAccessService]
@@ -63,7 +63,7 @@ export const technologyCardRoute: Routes = [
         path: 'technology-card-new',
         component: NewTechnologyCardComponent,
         data: {
-            authorities: ['ROLE_USER'],
+            authorities: ['ROLE_TECHNOLOGIST','ROLE_MANAGER'],
             pageTitle: 'tnApp.technologyCard.home.title',
             readOnly: false,
 
@@ -87,7 +87,7 @@ export const technologyCardPopupRoute: Routes = [
         path: 'technology-card-finder',
         component: TechnologyCardFinderComponent,
         data: {
-            authorities: ['ROLE_USER'],
+            authorities: ['ROLE_TECHNOLOGIST','ROLE_MANAGER'],
             pageTitle: 'tnApp.technologyCard.home.title'
         },
         canActivate: [UserRouteAccessService],
@@ -107,7 +107,7 @@ export const technologyCardPopupRoute: Routes = [
         path: 'technology-card/:id/delete',
         component: TechnologyCardDeletePopupComponent,
         data: {
-            authorities: ['ROLE_USER'],
+            authorities: ['ROLE_TECHNOLOGIST','ROLE_MANAGER'],
             pageTitle: 'tnApp.technologyCard.home.title'
         },
         canActivate: [UserRouteAccessService],

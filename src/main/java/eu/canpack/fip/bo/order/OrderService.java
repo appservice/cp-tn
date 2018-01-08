@@ -36,6 +36,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -414,6 +415,8 @@ public class OrderService {
         log.debug("Request to get Order : {}", id);
 
         Order order = orderRepository.findOne(id);
+        secureAccessability(order);
+
         return orderMapper.toDto(order);
     }
 
@@ -428,6 +431,7 @@ public class OrderService {
         log.debug("Request to get Order : {}", id);
         Order order = orderRepository.findOne(id);
         OrderDTO orderDTO = new OrderDTO(order);
+        secureAccessability(order);
 
         order.getEstimations().size();
 
@@ -465,8 +469,11 @@ public class OrderService {
     @Transactional(readOnly = true)
     public OrderDTO getInquiryForClient(Long id) {
         log.debug("Request to get Order : {}", id);
+
         Order order = orderRepository.findOne(id);
-        if (order.getOrderType() != OrderType.ESTIMATION) {
+
+        secureAccessability(order);
+        if (order==null || order.getOrderType() != OrderType.ESTIMATION) {
             return null;
         }
 
@@ -483,6 +490,15 @@ public class OrderService {
 
     }
 
+    private void secureAccessability(Order order) {
+        User currentUser=userService.getLoggedUser();
+        if(currentUser.getClient()!=null){
+            if(!order.getClient().getId().equals(currentUser.getClient().getId())){
+                throw new AccessDeniedException("Can not get this resource");
+            }
+        }
+    }
+
     /**
      * Get one order by id.
      *
@@ -493,6 +509,7 @@ public class OrderService {
     public OrderDTO getOrderEstimated(Long id) {
         log.debug("Request to get Order estimated : {}", id);
         Order order = orderRepository.findOne(id);
+
         List<Estimation> estimations = order.getEstimations().stream()
             .filter(e -> e.getEstimatedCost() != null && e.getEstimatedCost().compareTo(BigDecimal.ZERO) > 0)
 //            .peek(est -> est.getOperations().forEach(o -> o.setId(null)))

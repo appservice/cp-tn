@@ -32,7 +32,7 @@ export const mpkBudgetMapperRoute: Routes = [
             'pagingParams': MpkBudgetMapperResolvePagingParams
         },
         data: {
-            authorities: ['ROLE_USER'],
+            authorities: ['ROLE_TECHNOLOGIS','ROLE_SAP_INTRODUCER'],
             pageTitle: 'tnApp.mpkBudgetMapper.home.title'
         },
         canActivate: [UserRouteAccessService]
@@ -40,7 +40,7 @@ export const mpkBudgetMapperRoute: Routes = [
         path: 'mpk-budget-mapper/:id',
         component: MpkBudgetMapperDetailComponent,
         data: {
-            authorities: ['ROLE_USER'],
+            authorities: ['ROLE_TECHNOLOGIS','ROLE_SAP_INTRODUCER'],
             pageTitle: 'tnApp.mpkBudgetMapper.home.title'
         },
         canActivate: [UserRouteAccessService]
@@ -52,7 +52,7 @@ export const mpkBudgetMapperPopupRoute: Routes = [
         path: 'mpk-budget-mapper-new',
         component: MpkBudgetMapperPopupComponent,
         data: {
-            authorities: ['ROLE_USER'],
+            authorities: ['ROLE_TECHNOLOGIS','ROLE_SAP_INTRODUCER'],
             pageTitle: 'tnApp.mpkBudgetMapper.home.title'
         },
         canActivate: [UserRouteAccessService],
@@ -62,7 +62,7 @@ export const mpkBudgetMapperPopupRoute: Routes = [
         path: 'mpk-budget-mapper/:id/edit',
         component: MpkBudgetMapperPopupComponent,
         data: {
-            authorities: ['ROLE_USER'],
+            authorities: ['ROLE_TECHNOLOGIS','ROLE_SAP_INTRODUCER'],
             pageTitle: 'tnApp.mpkBudgetMapper.home.title'
         },
         canActivate: [UserRouteAccessService],
@@ -72,7 +72,7 @@ export const mpkBudgetMapperPopupRoute: Routes = [
         path: 'mpk-budget-mapper/:id/delete',
         component: MpkBudgetMapperDeletePopupComponent,
         data: {
-            authorities: ['ROLE_USER'],
+            authorities: ['ROLE_TECHNOLOGIS','ROLE_SAP_INTRODUCER'],
             pageTitle: 'tnApp.mpkBudgetMapper.home.title'
         },
         canActivate: [UserRouteAccessService],
