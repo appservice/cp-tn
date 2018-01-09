@@ -176,7 +176,7 @@ dependencies {
     compile "com.fasterxml.jackson.module:jackson-module-afterburner"
     compile "com.ryantenney.metrics:metrics-spring"
     compile "javax.cache:cache-api"
-    compile "org.hibernate:hibernate-core"
+  //  compile "org.hibernate:hibernate-core"
     compile "com.zaxxer:HikariCP"
     compile "org.apache.commons:commons-lang3"
     compile "commons-io:commons-io"

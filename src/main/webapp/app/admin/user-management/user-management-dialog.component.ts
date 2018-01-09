@@ -36,7 +36,7 @@ export class UserMgmtDialogComponent implements OnInit {
             this.authorities = authorities;
         });
 
-        this.clientService.query().subscribe((responseWrapper) => {
+        this.clientService.getAllNotPageable().subscribe((responseWrapper) => {
             this.clients = responseWrapper.json;
         });
 

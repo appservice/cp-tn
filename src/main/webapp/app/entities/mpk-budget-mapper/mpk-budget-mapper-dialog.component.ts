@@ -34,7 +34,7 @@ export class MpkBudgetMapperDialogComponent implements OnInit {
 
     ngOnInit() {
         this.isSaving = false;
-        this.clientService.query()
+        this.clientService.getAllNotPageable()
             .subscribe((res: ResponseWrapper) => { this.clients = res.json; }, (res: ResponseWrapper) => this.onError(res.json));
     }
 

@@ -18,6 +18,7 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.ZonedDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.*;
 
 /**
@@ -147,6 +148,16 @@ public class Estimation implements Serializable {
 
     @Column(name="production_start_date_time")
     private ZonedDateTime productionStartDateTime;
+
+
+    @Column(name="execution_time_value")
+    @Min(0)
+    private Integer executionTimeValue;
+
+
+    @Enumerated(value = EnumType.STRING)
+    @Column(name="execution_time_unit")
+    private ChronoUnit executionTimeUnit;
 
     public ZonedDateTime getDeliveredAt() {
         return deliveredAt;
@@ -520,6 +531,33 @@ public class Estimation implements Serializable {
     public void setProductionStartDateTime(ZonedDateTime productionStartDateTime) {
         this.productionStartDateTime = productionStartDateTime;
     }
+
+    public Integer getExecutionTimeValue() {
+        return executionTimeValue;
+    }
+
+    public void setExecutionTimeValue(Integer executionTimeValue) {
+        this.executionTimeValue = executionTimeValue;
+    }
+
+    public ChronoUnit getExecutionTimeUnit() {
+        return executionTimeUnit;
+    }
+
+    public void setExecutionTimeUnit(ChronoUnit executionTimeUnit) {
+        this.executionTimeUnit = executionTimeUnit;
+    }
+
+    public Estimation executionTimeValue(final Integer executionTimeValue) {
+        this.executionTimeValue = executionTimeValue;
+        return this;
+    }
+
+    public Estimation executionTimeUnit(final ChronoUnit executionTimeUnit) {
+        this.executionTimeUnit = executionTimeUnit;
+        return this;
+    }
+
 
     @Override
     public boolean equals(Object o) {
