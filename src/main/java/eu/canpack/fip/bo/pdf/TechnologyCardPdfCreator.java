@@ -138,7 +138,7 @@ public class TechnologyCardPdfCreator {
             materialSb.append(estimation.getMaterial());
         }
         if(estimation.getMaterialType()!=null){
-            materialSb.append(", gatunek: "+estimation.getMaterialType());
+            materialSb.append(", gatunek: ").append(estimation.getMaterialType());
         }
         table.addCell(createValue2Cell(materialSb.toString()));
 

@@ -64,7 +64,7 @@
                     <label for="field_deliveryAddress">Adres dostawy</label>
 
                     <textarea class="form-control" id="field_deliveryAddress" autosize="" rows="1" [(ngModel)]="order.deliveryAddress"
-                              name="deliveryAddress"  #deliveryAddress_input="ngModel" maxlength="1024" [disabled]="isReadOnly"></textarea>
+                              name="deliveryAddress" #deliveryAddress_input="ngModel" maxlength="1024" [disabled]="isReadOnly"></textarea>
                 </div>
 
             </div>
@@ -112,7 +112,7 @@
                                 <td> {{estimation.mpk}}</td>
                                 <td style="max-width: 150px">
 
-                                    {{convertToDate(estimation.neededRealizationDate)|date:'dd-MM-yyyy'}}
+                                    <span>{{convertToDate(estimation.neededRealizationDate)|date:'dd-MM-yyyy'}}</span>
                                 </td>
 
                                 <td style="width: 100px">
@@ -121,10 +121,16 @@
 
                                 </td>
                                 <td>
-                                    <button type="button" class="btn btn-danger btn-sm" *ngIf="!estimation.pricePublished" (click)="publishPrice(estimation, true)">Nie</button><!--(click)="setActive(user, true)" -->
-                                    <button type="button" class="btn btn-success btn-sm"  *ngIf="estimation.pricePublished" (click)="publishPrice(estimation, false)">Tak</button>
+                                    <button type="button" class="btn btn-danger btn-sm" *ngIf="!estimation.pricePublished" (click)="publishPrice(estimation, true)">Nie</button>
+                                    <!--(click)="setActive(user, true)" -->
+                                    <button type="button" class="btn btn-success btn-sm" *ngIf="estimation.pricePublished" (click)="publishPrice(estimation, false)">Tak</button>
 
-                                <td>{{estimation.estimatedRealizationDate|date:'dd-MM-yyyy'}}</td>
+                                <td>
+                                    <span *ngIf="!estimation.executionTimeValue">{{estimation.estimatedRealizationDate|date:'dd-MM-yyyy'}}</span>
+                                    <span *ngIf="estimation.executionTimeValue">
+                                        {{estimation.executionTimeValue}} {{'tnApp.estimation.'+estimation.executionTimeUnit|translate}}
+                                    </span>
+                                </td>
                                 <td>
                                     <label class="custom-control custom-checkbox text-dark mb-3 mr-sm-3 mb-sm-0 tn-checkbox">
                                         <input type="checkbox" class="custom-control-input" name="checked_{{rowIndex}}" [(ngModel)]="estimation.checked">

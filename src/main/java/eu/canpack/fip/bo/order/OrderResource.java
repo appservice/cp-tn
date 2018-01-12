@@ -4,7 +4,7 @@ import com.codahale.metrics.annotation.Timed;
 import eu.canpack.fip.bo.order.dto.*;
 import eu.canpack.fip.bo.order.enumeration.OrderStatus;
 import eu.canpack.fip.bo.order.enumeration.OrderType;
-import eu.canpack.fip.bo.pdf.Order3PdfCreator;
+import eu.canpack.fip.bo.pdf.OfferPdfCreator;
 import eu.canpack.fip.security.AuthoritiesConstants;
 import eu.canpack.fip.web.rest.util.HeaderUtil;
 import eu.canpack.fip.web.rest.util.PaginationUtil;
@@ -46,17 +46,17 @@ public class OrderResource {
 
     private final OrderMapper orderMapper;
 
-    private final Order3PdfCreator order3PdfCreator;
+    private final OfferPdfCreator offerPdfCreator;
 
     private final OrderQueryService orderQueryService;
 
     private final OrderExcelService orderExcelService;
 
 
-    public OrderResource(OrderService orderService, OrderMapper orderMapper, Order3PdfCreator order3PdfCreator, OrderQueryService orderQueryService, OrderExcelService orderExcelService) {
+    public OrderResource(OrderService orderService, OrderMapper orderMapper, OfferPdfCreator offerPdfCreator, OrderQueryService orderQueryService, OrderExcelService orderExcelService) {
         this.orderService = orderService;
         this.orderMapper = orderMapper;
-        this.order3PdfCreator = order3PdfCreator;
+        this.offerPdfCreator = offerPdfCreator;
         this.orderQueryService = orderQueryService;
         this.orderExcelService = orderExcelService;
     }
@@ -455,7 +455,7 @@ public class OrderResource {
 
         ByteArrayOutputStream os = new ByteArrayOutputStream();
 
-        order3PdfCreator.createPdf(orderDTO, os);
+        offerPdfCreator.createPdf(orderDTO, os);
 
         InputStream inputStream = new ByteArrayInputStream(os.toByteArray());
         InputStreamResource inputStreamResource = new InputStreamResource(inputStream);

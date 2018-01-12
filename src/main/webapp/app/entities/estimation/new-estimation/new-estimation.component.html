@@ -48,7 +48,7 @@
                             <div class="row">
                                 <div class="col-12">
                                     <a (click)="openDrawingCardModal()" [routerLink]="">Rysunek:</a>
-                                    <a (click)="openModal(content)"  [routerLink]=""><strong>{{estimation.itemNumber}}</strong></a>
+                                    <a (click)="openModal(content)" [routerLink]=""><strong>{{estimation.itemNumber}}</strong></a>
 
                                 </div>
                             </div>
@@ -539,14 +539,14 @@
                     <div class="col-md-6" style="margin-top: 20px">
 
                         <div class="row">
-                            <div class="col-12">
+                            <div class="col-md-5">
                                 <label>Marża [%]</label>
                                 <input type="number" class="form-control" [(ngModel)]="estimation.discount"
                                        name="final_discount" (ngModelChange)="calculateOperationsTotalCost()"/>
                             </div>
-                        </div>
-                        <div class="row" style="margin-top: 20px">
-                            <div class="col-12">
+                            <!--</div>-->
+                            <!--<div class="row" style="margin-top: 20px">-->
+                            <div class="col-md-7">
                                 <label>Cena dla klienta</label>
                                 <div class="input-group">
                                     <input class="form-control" currencyMask [options]="currencyMaskOpt"
@@ -559,8 +559,19 @@
                             </div>
                         </div>
                         <div class="row" style="margin-top: 20px">
-                            <div class="col-12">
+                            <div class="col-md-5">
+                                <label>Typ terminu realizacji</label>
+                                <div class="btn-group btn-group-toggle" ngbRadioGroup name="radioBasic" [(ngModel)]="termOfRealzationType">
+                                    <label ngbButtonLabel class="btn-outline-primary">
+                                        <input ngbButton type="radio" value="RELATIVE" class="form-control">WZLGLĘDNY
+                                    </label>
+                                    <label ngbButtonLabel class="btn-outline-primary">
+                                        <input ngbButton type="radio" value="ABSOLUTE" class="form-control"> BEZWGZGLĘDNY
+                                    </label>
+                                </div>
+                            </div>
 
+                            <div class="col-md-7" *ngIf="termOfRealzationType==='ABSOLUTE'">
                                 <label>Szacowana data realizacji</label>
                                 <div class="form-group">
                                     <!--<label class="form-control-label" jhiTranslate="tnApp.order.closeDate" for="field_closeDate">Close Date</label>-->
@@ -572,9 +583,9 @@
                                                [disabled]="isReadOnly" [required]="estimation.estimatedCost">
 
                                         <span class="input-group-btn">
-                    <button type="button" class="btn btn-default" (click)="realizationDateDp.toggle()"
-                            (keyup)="realizationDateDp.toggle()" [disabled]="isReadOnly"><i class="fa fa-calendar"></i></button>
-                </span>
+                                         <button type="button" class="btn btn-default" (click)="realizationDateDp.toggle()"
+                                                 (keyup)="realizationDateDp.toggle()" [disabled]="isReadOnly"><i class="fa fa-calendar"></i></button>
+                                        </span>
 
                                     </div>
                                 </div>
@@ -586,6 +597,29 @@
                                     </small>
                                 </div>
 
+                            </div>
+                            <!--</div>-->
+                            <!--<div class="row">-->
+                            <div class="col-md-7" *ngIf="termOfRealzationType==='RELATIVE'">
+                                <label>Szacowany czas realizacji po otrzymaniu zamówienia</label>
+                                <div class="input-group">
+                                    <input class="form-control" id="filed_executionTimeValue" type="number" [required]="estimation.estimatedCost"
+                                           [(ngModel)]="estimation.executionTimeValue" name="executionTimeValue"/>
+
+                                    <span class="input-group-addon" style="padding: 0; min-width: 200px">
+                                     <select class="form-control" id="filed_executionTimeUnit" [(ngModel)]="estimation.executionTimeUnit" name="execution_Time_Unit">
+                                            <option value="WEEKS">TYGODNIE</option>
+                                            <option value="DAYS">DNI</option>
+                                    </select>
+                                    </span>
+                                </div>
+                                <div [hidden]="!(editForm.controls.executionTimeValue?.dirty && editForm.controls.executionTimeValue?.invalid)">
+                                    <small class="form-text text-danger"
+                                           [hidden]="!editForm.controls.executionTimeValue?.errors?.required"
+                                           jhiTranslate="entity.validation.required">
+                                        This field is required.
+                                    </small>
+                                </div>
                             </div>
                         </div>
 

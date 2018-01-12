@@ -36,6 +36,13 @@ export class Estimation implements BaseEntity {
                 public cooperationList?: Cooperation[],
                 public mpk?: string,
                 public pricePublished?: boolean,
-                public notRealizable?: boolean,) {
+                public notRealizable?: boolean,
+                public executionTimeValue?: number,
+                public executionTimeUnit?: string,) {
     }
 }
+
+// export const enum ExecutionTimeUnit {
+//     WEEKS = 'WEEKS',
+//     DAYS = 'DAYS',
+// }

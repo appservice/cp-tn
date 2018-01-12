@@ -6,22 +6,19 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {Subscription} from 'rxjs/Subscription';
 import {ModalDismissReasons, NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {ResponseWrapper} from '../../../shared';
-import {MachineService, Machine} from '../../machine';
+import {Machine, MachineService} from '../../machine';
 import {CurrencyMaskConfig} from 'ng2-currency-mask/src/currency-mask.config';
 import {Observable} from 'rxjs/Observable';
-import {UnitService, Unit} from '../../unit';
+import {Unit, UnitService} from '../../unit';
 import {EstimationService} from '../estimation.service';
 import {isNullOrUndefined} from 'util';
 import {OrderService} from '../../order';
-import {Order} from '../../order/order.model';
 import {OrderSimpleDTO} from '../../order/order-simpleDTO.model';
 import {TnAlert} from '../../../tn-components/tn-alert';
-import {TechnologyCardFinderComponent, TechnologyCard} from '../../technology-card';
+import {TechnologyCard, TechnologyCardFinderComponent} from '../../technology-card';
 import {DrawingFinderComponent} from '../../drawing';
 import {Operation} from '../../operation';
-import {Cooperation} from '../../cooperation/cooperation.model';
 import {NgForm} from '@angular/forms';
-import {CommercialPart} from '../../commercial-part';
 
 @Component({
     selector: 'new-estimation',
@@ -50,6 +47,8 @@ export class NewEstimationComponent implements OnInit, OnDestroy {
     hideSearchingWhenUnsubscribed = new Observable(() => () => this.searchingUnit = false);
     searchFeild: boolean;
     backButtonClicked: boolean = false;
+    termOfRealzationType: string = 'RELATIVE';//TermOfRealizationType;
+
     @ViewChild('editForm') editForm: NgForm;
 
 
@@ -83,7 +82,7 @@ export class NewEstimationComponent implements OnInit, OnDestroy {
 
                 this.subscription = this.route.params.subscribe((params) => {
                     if (params['id']) {
-                        console.log('params exiest');
+                        // console.log('params exiest');
                         this.load(params['id']);
 
                     }
@@ -228,6 +227,12 @@ export class NewEstimationComponent implements OnInit, OnDestroy {
             this.calculateOperationsTotalCost();
             this.calculateCommercialPartsTotalCost();
             this.calculateCooperationTotalCost();
+            if (this.estimation.estimatedRealizationDate && this.estimation.estimatedRealizationDate != null) {
+                this.termOfRealzationType = 'ABSOLUTE';
+            }
+            if(!this.estimation.executionTimeUnit){
+                this.estimation.executionTimeUnit='WEEKS';
+            }
 
             this.orderService.findOrderSimpleDto(estimation.orderId).subscribe((order => {
                 this.order = order;
@@ -477,4 +482,9 @@ export class NewEstimationComponent implements OnInit, OnDestroy {
 
 
     }
+}
+
+export const enum TermOfRealizationType {
+    'RELATIVE',
+    'ABSOLUTE',
 }

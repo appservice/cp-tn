@@ -12,6 +12,7 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.ZonedDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Objects;
 
@@ -82,6 +83,12 @@ public class EstimationDTO implements Serializable {
     private String materialType;
 
     private Boolean pricePublished;
+
+    private ChronoUnit executionTimeUnit;
+
+    private Integer executionTimeValue;
+
+
 
     public String getItemName() {
         return itemName;
@@ -302,6 +309,22 @@ public class EstimationDTO implements Serializable {
         this.pricePublished = pricePublished;
     }
 
+    public ChronoUnit getExecutionTimeUnit() {
+        return executionTimeUnit;
+    }
+
+    public void setExecutionTimeUnit(ChronoUnit executionTimeUnit) {
+        this.executionTimeUnit = executionTimeUnit;
+    }
+
+    public Integer getExecutionTimeValue() {
+        return executionTimeValue;
+    }
+
+    public void setExecutionTimeValue(Integer executionTimeValue) {
+        this.executionTimeValue = executionTimeValue;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -352,6 +375,9 @@ public class EstimationDTO implements Serializable {
             ", sapNumber='" + sapNumber + '\'' +
             ", mpk='" + mpk + '\'' +
             ", materialType='" + materialType + '\'' +
+            ", pricePublished=" + pricePublished +
+            ", executionTimeUnit=" + executionTimeUnit +
+            ", executionTimeValue=" + executionTimeValue +
             '}';
     }
 }

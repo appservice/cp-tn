@@ -2,8 +2,6 @@ package eu.canpack.fip.bo.pdf;
 
 import com.lowagie.text.*;
 import com.lowagie.text.Font;
-import com.lowagie.text.Image;
-import com.lowagie.text.Rectangle;
 import com.lowagie.text.pdf.BaseFont;
 import com.lowagie.text.pdf.PdfPCell;
 import com.lowagie.text.pdf.PdfPTable;
@@ -19,11 +17,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.awt.*;
-import java.io.IOException;
 import java.io.OutputStream;
 import java.math.BigDecimal;
 import java.text.NumberFormat;
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
+import java.util.Locale;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -37,8 +36,8 @@ import static eu.canpack.fip.bo.pdf.PdfUtil.formatDate;
  * Created by lukasz.mochel on 20.08.2017.
  */
 @Service
-public class Order3PdfCreator {
-    private static final Logger log = LoggerFactory.getLogger(Order3PdfCreator.class);
+public class OfferPdfCreator {
+    private static final Logger log = LoggerFactory.getLogger(OfferPdfCreator.class);
     private static final String FOOTER_TEXT = "CAN-PACK FOOD and INDUSTRIAL PACKAGING sp. z o. o.\n" +
         "39-200 Dębica, Mościckiego 23\n" +
         "Tel.: +48 14 670 28 11, E-mail: officecpfip@canpack.eu\n" +
@@ -50,7 +49,7 @@ public class Order3PdfCreator {
     //        "Konto bankowe: 05 1060 0076 0000 3210 0019 2932 (PLN), 79 1060 0076 0000 3210 0019 2958 (EUR)\n";
     private final OrderRepository orderRepository;
 
-    public Order3PdfCreator(OrderRepository orderRepository) {
+    public OfferPdfCreator(OrderRepository orderRepository) {
         this.orderRepository = orderRepository;
 
     }
@@ -73,8 +72,6 @@ public class Order3PdfCreator {
             doc.open();
 
             doc.add(PdfUtil.getImageLogo(doc.getPageSize()));
-
-
 
 
             Color companyNameColor = new Color(35, 60, 183);
@@ -113,12 +110,12 @@ public class Order3PdfCreator {
             Font remarksFont = new Font(baseFont, 10);
 
             StringBuilder offerRemarksSb = new StringBuilder("");
-            if(order.getOfferRemarks()!=null){
+            if (order.getOfferRemarks() != null) {
                 offerRemarksSb.append(order.getOfferRemarks());
             }
 
 
-                doc.add(new Paragraph(offerRemarksSb.toString(), remarksFont));
+            doc.add(new Paragraph(offerRemarksSb.toString(), remarksFont));
 
             doc.close();
 
@@ -178,7 +175,7 @@ public class Order3PdfCreator {
         table.setWidthPercentage(100);
 
         // set relative columns width
-        table.setWidths(new float[]{0.4f, 3f, 1.2f, 0.7f, 1f, 1f, 1f});
+        table.setWidths(new float[]{0.4f, 3f, 1.2f, 0.6f, 1f, 1.2f, 1.2f});
 
 
         //-----------------Table Cells Label/Value------------------
@@ -187,8 +184,15 @@ public class Order3PdfCreator {
         table.addCell(createLabelCell("LP"));
         table.addCell(createLabelCell("Nazwa"));
         table.addCell(createLabelCell("Nr rysunku"));
-        table.addCell(createLabelCell("Ilość szt"));
-        table.addCell(createLabelCell("Data realizacji"));
+        table.addCell(createLabelCell("Ilość"));
+
+        if (!estimationCreateDTOMap.values().isEmpty() && estimationCreateDTOMap.values().iterator().next().getExecutionTimeValue() != null) {
+            table.addCell(createLabelCell("Czas realizacji"));
+
+        } else {
+            table.addCell(createLabelCell("Termin realizacji"));
+
+        }
         table.addCell(createLabelCell("Cena netto/szt"));
         table.addCell(createLabelCell("Wartość netto"));
 
@@ -207,7 +211,10 @@ public class Order3PdfCreator {
             table.addCell(createValueCell(String.valueOf(estimation.getAmount()), Element.ALIGN_CENTER));
 
             log.info("object {}", estimation.getEstimatedRealizationDate());
-            if (estimation.getEstimatedRealizationDate() != null) {
+            if (estimation.getExecutionTimeValue() != null) {
+                table.addCell(createValueCell(estimation.getExecutionTimeValue()
+                                                  + " " + convertChronoUnitToPl(estimation.getExecutionTimeUnit(), estimation.getExecutionTimeValue()), Element.ALIGN_CENTER));
+            } else if (estimation.getEstimatedRealizationDate() != null) {
                 table.addCell(createValueCell(formatDate(estimation.getEstimatedRealizationDate()), Element.ALIGN_CENTER));//
 
             } else {
@@ -216,8 +223,8 @@ public class Order3PdfCreator {
             }
             if (estimation.getEstimatedCost() != null) {
                 BigDecimal value = estimation.getEstimatedCost().multiply(new BigDecimal(estimation.getAmount())).setScale(2, BigDecimal.ROUND_HALF_UP);
-                table.addCell(createValueCell(getFormattedPrice(estimation.getEstimatedCost().setScale(2, BigDecimal.ROUND_HALF_UP)), Element.ALIGN_RIGHT));
-                table.addCell(createValueCell(getFormattedPrice(value), Element.ALIGN_RIGHT));
+                table.addCell(createValueCell(getFormattedPrice(estimation.getEstimatedCost().setScale(2, BigDecimal.ROUND_HALF_UP)) + " PLN", Element.ALIGN_RIGHT));
+                table.addCell(createValueCell(getFormattedPrice(value) + " PLN", Element.ALIGN_RIGHT));
                 totalCost = totalCost.add(value);
 
             } else {
@@ -237,7 +244,7 @@ public class Order3PdfCreator {
         table.addCell(cprepareCellWithoutBorder(""));
         table.addCell(cprepareCellWithoutBorder("Suma:"));
 
-        table.addCell(cprepareCellWithoutBorder(getFormattedPrice(totalCost.setScale(2, BigDecimal.ROUND_HALF_UP))));
+        table.addCell(cprepareCellWithoutBorder(getFormattedPrice(totalCost.setScale(2, BigDecimal.ROUND_HALF_UP)) + " PLN"));
 
         return table;
 
@@ -245,7 +252,7 @@ public class Order3PdfCreator {
     }
 
     private String getFormattedPrice(BigDecimal price) {
-        NumberFormat numberFormat = NumberFormat.getNumberInstance();
+        NumberFormat numberFormat = NumberFormat.getNumberInstance(Locale.GERMANY);
         numberFormat.setMinimumFractionDigits(2);
         return numberFormat.format(price);
     }
@@ -257,5 +264,25 @@ public class Order3PdfCreator {
         pdfPCell.setBorderWidth(0);
 
         return pdfPCell;
+    }
+
+    String convertChronoUnitToPl(ChronoUnit executionTimeUnit, Integer executionTimeValue) {
+        switch (executionTimeUnit) {
+            case WEEKS:
+                if (executionTimeValue == 1) {
+                    return "tydzień";
+                } else {
+                    return "tyg.";
+                }
+            case DAYS:
+                if (executionTimeValue == 1) {
+                    return "dzień";
+                } else {
+                    return "dni";
+                }
+            default:
+                return "";
+
+        }
     }
 }

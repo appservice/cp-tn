@@ -96,7 +96,11 @@
 
             </td>
             <td>{{estimation.estimatedCost|currency:'PLN'}}</td>
-            <td>{{estimation.estimatedRealizationDate|date:'dd-MM-yyyy'}}</td>
+            <td><span *ngIf="!estimation.executionTimeValue">{{estimation.estimatedRealizationDate|date:'dd-MM-yyyy'}}</span>
+                <span *ngIf="estimation.executionTimeValue">
+                 {{estimation.executionTimeValue}} {{'tnApp.estimation.'+estimation.executionTimeUnit|translate}}
+                 </span>
+            </td>
             <td class="right">
                 <!--                                    <button type="button" class="btn btn-outline-secondary" placement="left"
                                                             [ngbPopover]="popContent" popoverTitle="Uwagi"

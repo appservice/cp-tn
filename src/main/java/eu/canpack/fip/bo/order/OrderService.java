@@ -139,8 +139,7 @@ public class OrderService {
                 .itemNumber(estDTO.getItemNumber())
                 .mpk(estDTO.getMpk());
 
-                updateSapNumber(orderDTO, estDTO, estimation);
-
+            updateSapNumber(orderDTO, estDTO, estimation);
 
 
             if (annualOrderNumber != null && !annualOrderNumber.isEmpty()) {
@@ -473,7 +472,7 @@ public class OrderService {
         Order order = orderRepository.findOne(id);
 
         secureAccessability(order);
-        if (order==null || order.getOrderType() != OrderType.ESTIMATION) {
+        if (order == null || order.getOrderType() != OrderType.ESTIMATION) {
             return null;
         }
 
@@ -491,9 +490,9 @@ public class OrderService {
     }
 
     private void secureAccessability(Order order) {
-        User currentUser=userService.getLoggedUser();
-        if(currentUser.getClient()!=null){
-            if(!order.getClient().getId().equals(currentUser.getClient().getId())){
+        User currentUser = userService.getLoggedUser();
+        if (currentUser.getClient() != null) {
+            if (!order.getClient().getId().equals(currentUser.getClient().getId())) {
                 throw new AccessDeniedException("Can not get this resource");
             }
         }
@@ -663,7 +662,12 @@ public class OrderService {
 
             Estimation newEstimation = new Estimation();
             newEstimation.setAmount(estDTO.getAmount());
-            newEstimation.setEstimatedRealizationDate(est.getEstimatedRealizationDate());
+            if (est.getExecutionTimeValue() != null) {
+                newEstimation.setEstimatedRealizationDate(now.toLocalDate().plus(est.getExecutionTimeValue(), est.getExecutionTimeUnit()));
+            } else {
+                newEstimation.setEstimatedRealizationDate(est.getEstimatedRealizationDate());
+
+            }
             newEstimation.setEstimatedCost(est.getEstimatedCost());
             newEstimation.setDrawing(est.getDrawing());
             newEstimation.setDescription(est.getDescription());

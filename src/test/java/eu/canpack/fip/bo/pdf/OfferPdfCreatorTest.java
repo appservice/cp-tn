@@ -31,11 +31,11 @@ import static org.mockito.Mockito.when;
  * CP S.A.
  * Created by lukasz.mochel on 20.07.2017.
  */
-public class Order3PdfCreatorTest {
+public class OfferPdfCreatorTest {
     public static final String RESULT = "order3.pdf";
     @Rule
     public MockitoRule mockitoRule = MockitoJUnit.rule();
-    private Order3PdfCreator pdfCreator;
+    private OfferPdfCreator pdfCreator;
     @Mock
     private OrderRepository orderRepository;
 
@@ -45,7 +45,7 @@ public class Order3PdfCreatorTest {
     public void setUp() throws Exception {
 
         when(orderRepository.findOne(Mockito.any(Long.class))).thenReturn(getStubOrder());
-        pdfCreator = new Order3PdfCreator(orderRepository);
+        pdfCreator = new OfferPdfCreator(orderRepository);
 
     }
 

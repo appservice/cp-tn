@@ -12,6 +12,7 @@ import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -40,6 +41,8 @@ public class EstimationCreateDTO implements Serializable {
     private List<EstimationRemarkDTO> estimationRemarks;
     private String sapNumber;
     private Boolean pricePublished;
+    private Integer executionTimeValue;
+    private ChronoUnit executionTimeUnit;
   //  private String materialType;
 
     public EstimationCreateDTO() {
@@ -56,7 +59,8 @@ public class EstimationCreateDTO implements Serializable {
 
         }
         this.estimatedCost = estimation.getEstimatedCost();
-        if (estimation.getEstimatedCost() != null && estimation.getEstimatedRealizationDate() != null
+        if (estimation.getEstimatedCost() != null &&
+            (estimation.getEstimatedRealizationDate() != null || estimation.getExecutionTimeValue()!=null)
             || estimation.getOrder().getOrderType() == OrderType.EMERGENCY && !estimation.getOperations().isEmpty()) {
             setChecked(true);
         }
@@ -79,6 +83,8 @@ public class EstimationCreateDTO implements Serializable {
         this.mpk = estimation.getMpk();
         this.notRealizable = estimation.isNotRealizable();
         this.pricePublished=estimation.isPricePublished();
+        this.executionTimeUnit= estimation.getExecutionTimeUnit();
+        this.executionTimeValue=estimation.getExecutionTimeValue();
       //  this.materialType= estimation.getMaterialType();
     }
 
@@ -212,6 +218,22 @@ public class EstimationCreateDTO implements Serializable {
 
     public void setPricePublished(Boolean pricePublished) {
         this.pricePublished = pricePublished;
+    }
+
+    public Integer getExecutionTimeValue() {
+        return executionTimeValue;
+    }
+
+    public void setExecutionTimeValue(Integer executionTimeValue) {
+        this.executionTimeValue = executionTimeValue;
+    }
+
+    public ChronoUnit getExecutionTimeUnit() {
+        return executionTimeUnit;
+    }
+
+    public void setExecutionTimeUnit(ChronoUnit executionTimeUnit) {
+        this.executionTimeUnit = executionTimeUnit;
     }
 
     @Override

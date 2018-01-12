@@ -12,6 +12,7 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.ZonedDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -55,6 +56,11 @@ public class EstimationShowDTO implements Serializable {
     private Long clientId;
 
     private List<EstimationRemarkDTO> estimationRemarks;
+
+
+    private ChronoUnit executionTimeUnit;
+
+    private Integer executionTimeValue;
 
     public String getItemNumber() {
         return itemNumber;
@@ -112,6 +118,8 @@ public class EstimationShowDTO implements Serializable {
 
         this.itemName=estimation.getItemName();
         this.itemNumber=estimation.getItemNumber();
+        this.executionTimeUnit=estimation.getExecutionTimeUnit();
+        this.executionTimeValue=estimation.getExecutionTimeValue();
     }
 
     public EstimationShowDTO(Estimation estimation,Boolean isPricePublised) {
@@ -211,7 +219,21 @@ public class EstimationShowDTO implements Serializable {
         this.orderCreatedAt = orderCreatedAt;
     }
 
+    public ChronoUnit getExecutionTimeUnit() {
+        return executionTimeUnit;
+    }
 
+    public void setExecutionTimeUnit(ChronoUnit executionTimeUnit) {
+        this.executionTimeUnit = executionTimeUnit;
+    }
+
+    public Integer getExecutionTimeValue() {
+        return executionTimeValue;
+    }
+
+    public void setExecutionTimeValue(Integer executionTimeValue) {
+        this.executionTimeValue = executionTimeValue;
+    }
 
     @Override
     public boolean equals(Object o) {

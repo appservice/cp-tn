@@ -13,6 +13,7 @@ import {isDefined} from '@angular/compiler/src/util';
 import {Drawing} from '../../../drawing/drawing.model';
 import {ModalDismissReasons, NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {Estimation} from '../../../estimation/estimation.model';
+import {DatePipe} from '@angular/common';
 
 @Component({
     selector: 'tn-new-purchase-order',
@@ -154,6 +155,8 @@ export class NewPurchaseOrderComponent implements OnInit, OnDestroy {
             console.log('order status: ', order.orderStatus.toString());
             console.log('enum status: ', OrderStatus['WORKING_COPY']);
             console.log('enum 3', order.orderStatus.constructor.name);
+
+
             //     console.log('enum 3', ]);
             this.isReadOnly = order.orderStatus != null && order.orderStatus !== 'WORKING_COPY';
             order.internalNumber = null;
@@ -164,8 +167,26 @@ export class NewPurchaseOrderComponent implements OnInit, OnDestroy {
             order.sapNumber = null;
             order.orderStatus = null;
             order.createdAt = null;
-            // order.description = null;
-            // order.referenceNumber = null;
+
+            let currentDate: Date = new Date();
+            order.estimations.forEach(estimation => {
+                if (estimation.executionTimeValue && estimation.executionTimeValue !== null) {
+                    if (estimation.executionTimeUnit === 'WEEKS') {
+                        let estimatedDate = new Date(currentDate.getTime() +
+                            estimation.executionTimeValue * 7 * 24 * 3600000);
+                        estimation.estimatedRealizationDate = new DatePipe("pl-PL").transform(estimatedDate, 'yyyy-MM-dd');
+
+                    } else if (estimation.executionTimeUnit === 'DAYS') {
+                        let estimatedDate = new Date(currentDate.getTime() +
+                            estimation.executionTimeValue * 24 * 3600000);
+                        estimation.estimatedRealizationDate = new DatePipe("pl-PL").transform(estimatedDate, 'yyyy-MM-dd');
+
+                    }
+
+
+                }
+            });
+
         });
     }
 
@@ -234,6 +255,7 @@ export class NewPurchaseOrderComponent implements OnInit, OnDestroy {
                 this.orderService.updateAsAdmin(this.order));
         }
     }
+
     createNewPurchaseOrder(order: Order) {
 
     }
