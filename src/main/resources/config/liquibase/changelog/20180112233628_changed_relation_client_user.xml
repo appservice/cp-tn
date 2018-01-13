@@ -1,0 +1,37 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+    <changeSet author="lukasz.mochel (generated)" id="1515796648701-1">
+        <createTable tableName="client_user">
+            <column name="client_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="user_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="lukasz.mochel (generated)" id="1515796648701-2">
+        <sql dbms="postgresql" endDelimiter=";">
+            INSERT INTO client_user
+            ( SELECT client_id,id FROM jhi_user where client_id is not null );
+        </sql>
+    </changeSet>
+    <changeSet author="lukasz.mochel (generated)" id="1515796648701-3">
+    <addForeignKeyConstraint baseColumnNames="client_id" baseTableName="client_user" constraintName="FKcatxs6o2rpy2y6skeqj1t4vl3" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="client"/>
+    </changeSet>
+    <changeSet author="lukasz.mochel (generated)" id="1515796648701-4">
+    <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="client_user" constraintName="FKg1ryja56s1stw2fhq9akybw9l" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="jhi_user"/>
+    </changeSet>
+    <changeSet author="lukasz.mochel (generated)" id="1515796648701-5">
+    <dropForeignKeyConstraint baseTableName="jhi_user" constraintName="FK3oovvwb2199gonf1wtj4x6t0p"/>
+    </changeSet>
+    <changeSet author="lukasz.mochel (generated)" id="1515796648701-6">
+    <dropColumn columnName="client_id" tableName="jhi_user"/>
+    </changeSet>
+    <changeSet author="lukasz.mochel (generated)" id="1515796648701-7">
+    <dropNotNullConstraint columnDataType="bigint" columnName="client_id" tableName="jhi_order"/>
+    </changeSet>
+</databaseChangeLog>

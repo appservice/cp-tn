@@ -146,13 +146,18 @@ public class UserService {
                 .collect(Collectors.toSet());
             user.setAuthorities(authorities);
         }
-        if (userDTO.getClientId() != null) {
-            Client client = new Client();
-            client.setId(userDTO.getClientId());
-            user.setClient(client);
-        } else {
-            user.setClient(null);
+        if(userDTO.getClients()!=null){
+          Set<Client> clients=  userDTO.getClients().stream()
+                .map(c -> {
+                    Client client = new Client();
+                    client.setId(c.getId());
+                    return client;
+                }).collect(Collectors.toSet());
+          user.setClients(clients);
+
+
         }
+
         user.setPhone(userDTO.getPhone());
 
         String encryptedPassword = passwordEncoder.encode(applicationProperties.getInitialPassword());//RandomUtil.generatePassword()
@@ -215,12 +220,14 @@ public class UserService {
                 userDTO.getAuthorities().stream()
                     .map(authorityRepository::findOne)
                     .forEach(managedAuthorities::add);
-                if (userDTO.getClientId() != null) {
-                    Client client = new Client();
-                    client.setId(userDTO.getClientId());
-                    user.setClient(client);
-                } else {
-                    user.setClient(null);
+                if (userDTO.getClients() != null) {
+                    Set<Client> clients=  userDTO.getClients().stream()
+                        .map(c -> {
+                            Client client = new Client();
+                            client.setId(c.getId());
+                            return client;
+                        }).collect(Collectors.toSet());
+                    user.setClients(clients);
                 }
                 user.setPhone(userDTO.getPhone());
 

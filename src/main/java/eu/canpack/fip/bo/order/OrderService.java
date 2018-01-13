@@ -395,9 +395,9 @@ public class OrderService {
     public Page<OrderListDTO> findAllByClientAndOrderType(Pageable pageable, OrderType orderType) {
         log.debug("Request to get all Orders");
         User user = userService.getLoggedUser();
-        Client client = user.getClient();
-        if (client != null) {
-            return orderRepository.findAllByClientAndOrderType(client, orderType, pageable).map(orderMapper::toDto);
+        Set<Client> clients = user.getClients();
+        if (clients != null) {
+            return orderRepository.findAllByClientInAndOrderType(clients, orderType, pageable).map(orderMapper::toDto);
         }
         return orderRepository.findAllByOrderType(orderType, pageable)
             .map(orderMapper::toDto);
@@ -491,8 +491,8 @@ public class OrderService {
 
     private void secureAccessability(Order order) {
         User currentUser = userService.getLoggedUser();
-        if (currentUser.getClient() != null) {
-            if (!order.getClient().getId().equals(currentUser.getClient().getId())) {
+        if (!currentUser.getClients().isEmpty()) {
+            if (!currentUser.getClients().contains(order.getClient())) {
                 throw new AccessDeniedException("Can not get this resource");
             }
         }

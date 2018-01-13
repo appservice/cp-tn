@@ -77,5 +77,6 @@
     <include file="config/liquibase/changelog/20171218211406_added_entity_constraints_MpkBudgetMapper.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20171221221223_load_mpk_budget_mapper.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20180108203035_add_execution_time.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20180112233628_changed_relation_client_user.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-constraints-changelog - JHipster will add liquibase constraints changelogs here -->
 </databaseChangeLog>

@@ -58,6 +58,7 @@ public class CacheConfiguration {
             cm.createCache(eu.canpack.fip.domain.User.class.getName(), jcacheConfiguration);
             cm.createCache(eu.canpack.fip.domain.Authority.class.getName(), jcacheConfiguration);
             cm.createCache(eu.canpack.fip.domain.User.class.getName() + ".authorities", jcacheConfiguration);
+            cm.createCache(eu.canpack.fip.domain.User.class.getName() + ".clients", jcacheConfiguration);
             cm.createCache(Order.class.getName(), jcacheConfiguration);
             cm.createCache(Order.class.getName() + ".estimations", jcacheConfiguration);
             cm.createCache(Order.class.getName() + ".referenceOrders", jcacheConfiguration);

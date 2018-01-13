@@ -1,6 +1,7 @@
 package eu.canpack.fip.service.dto;
 
 import eu.canpack.fip.bo.client.Client;
+import eu.canpack.fip.bo.client.ClientShortDTO;
 import eu.canpack.fip.config.Constants;
 
 import eu.canpack.fip.domain.Authority;
@@ -11,6 +12,7 @@ import org.hibernate.validator.constraints.NotBlank;
 
 import javax.validation.constraints.*;
 import java.time.Instant;
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -54,9 +56,7 @@ public class UserDTO {
 
     private Set<String> authorities;
 
-    private Long clientId;
-
-    private String clientName;
+    private List<ClientShortDTO> clients;
 
     private String phone;
 
@@ -69,13 +69,13 @@ public class UserDTO {
             user.getEmail(), user.getActivated(), user.getImageUrl(), user.getLangKey(),
             user.getCreatedBy(), user.getCreatedDate(), user.getLastModifiedBy(), user.getLastModifiedDate(),
             user.getAuthorities().stream().map(Authority::getName)
-                .collect(Collectors.toSet()), user.getClient(),user.getPhone());
+                .collect(Collectors.toSet()), user.getClients(),user.getPhone());
     }
 
     public UserDTO(Long id, String login, String firstName, String lastName,
                    String email, boolean activated, String imageUrl, String langKey,
                    String createdBy, Instant createdDate, String lastModifiedBy, Instant lastModifiedDate,
-                   Set<String> authorities, Client client, String phone) {
+                   Set<String> authorities, Set<Client> clients, String phone) {
 
         this.id = id;
         this.login = login;
@@ -90,10 +90,15 @@ public class UserDTO {
         this.lastModifiedBy = lastModifiedBy;
         this.lastModifiedDate = lastModifiedDate;
         this.authorities = authorities;
-        if(client!=null){
-            this.clientId=client.getId();
-            this.clientName=client.getName();
-        }
+
+      this.clients=  clients.stream().map(c -> {
+            ClientShortDTO client = new ClientShortDTO();
+            client.setId(c.getId());
+            client.setName(c.getName());
+            client.setShortcut(c.getShortcut());
+            return client;
+        }).collect(Collectors.toList());
+
         this.phone=phone;
 
     }
@@ -198,20 +203,12 @@ public class UserDTO {
         return authorities;
     }
 
-    public String getClientName() {
-        return clientName;
+    public List<ClientShortDTO> getClients() {
+        return clients;
     }
 
-    public void setClientName(String clientName) {
-        this.clientName = clientName;
-    }
-
-    public Long getClientId() {
-        return clientId;
-    }
-
-    public void setClientId(Long clientId) {
-        this.clientId = clientId;
+    public void setClients(List<ClientShortDTO> clients) {
+        this.clients = clients;
     }
 
     public String getPhone() {

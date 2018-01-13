@@ -16,10 +16,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Locale;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 import java.time.Instant;
 
 /**
@@ -97,8 +94,10 @@ public class User extends AbstractAuditingEntity implements Serializable {
     @BatchSize(size = 20)
     private Set<Authority> authorities = new HashSet<>();
 
-    @ManyToOne
-    private Client client;
+    @ManyToMany(mappedBy = "users", fetch = FetchType.EAGER)
+//    @BatchSize(size = 20)
+    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+    private Set<Client> clients = new HashSet<>();
 
     @Column(name = "phone", length = 20)
     private String phone;
@@ -208,12 +207,12 @@ public class User extends AbstractAuditingEntity implements Serializable {
         this.authorities = authorities;
     }
 
-    public Client getClient() {
-        return client;
+    public Set<Client> getClients() {
+        return clients;
     }
 
-    public void setClient(Client client) {
-        this.client = client;
+    public void setClients(Set<Client> clients) {
+        this.clients = clients;
     }
 
     public String getPhone() {
@@ -223,7 +222,6 @@ public class User extends AbstractAuditingEntity implements Serializable {
     public void setPhone(String phone) {
         this.phone = phone;
     }
-
 
 
     @Override

@@ -5,7 +5,6 @@ import eu.canpack.fip.bo.client.Client_;
 import eu.canpack.fip.bo.estimation.Estimation;
 import eu.canpack.fip.bo.estimation.Estimation_;
 import eu.canpack.fip.bo.order.dto.OrderCriteria;
-import eu.canpack.fip.bo.order.dto.OrderDTO;
 import eu.canpack.fip.bo.order.dto.OrderListDTO;
 import eu.canpack.fip.bo.order.dto.OrderMapper;
 import eu.canpack.fip.domain.User;
@@ -23,11 +22,11 @@ import org.springframework.data.jpa.domain.Specifications;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.criteria.Expression;
 import javax.persistence.criteria.Join;
 import javax.persistence.criteria.JoinType;
-import java.util.Collection;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -151,7 +150,6 @@ public class OrderQueryService extends QueryService<Order> {
                 specification = specification.and(spec);
 
             }
-            //todo
             if (criteria.getDrawingNumber() != null) {
 //                log.debug("drawingNumber {}",criteria.getDrawingNumber().getContains());
                 Specification<Order> spec = (root, query, builder) -> {
@@ -187,13 +185,13 @@ public class OrderQueryService extends QueryService<Order> {
         log.debug("find by criteria : {}, page: {}", criteria, page);
 
         User user = userService.getLoggedUser();
-        Client client = user.getClient();
-        if (client != null) {
-            log.debug("user client: {}", client);
+        Set<Long> clientsId = user.getClients().stream().map(Client::getId).collect(Collectors.toSet());
+        if (!clientsId.isEmpty() ) {
+            log.debug("user clients ids: {}", clientsId);
             if (criteria.getClientId() == null) {
                 criteria.setClientId(new LongFilter());
             }
-            criteria.getClientId().setEquals(client.getId());
+            criteria.getClientId().setIn(new ArrayList<>(clientsId));
 
         }
         final Specifications<Order> specification = createSpecification(criteria);
@@ -215,15 +213,15 @@ public class OrderQueryService extends QueryService<Order> {
         log.debug("find by criteria : {}, page: {}", criteria);
 
         User user = userService.getLoggedUser();
-        Client client = user.getClient();
-        if (client != null) {
-            log.debug("user client: {}", client);
-            if (criteria.getClientId() == null) {
-                criteria.setClientId(new LongFilter());
-            }
-            criteria.getClientId().setEquals(client.getId());
-
-        }
+//        Client client = user.getClient();
+//        if (client != null) {
+//            log.debug("user client: {}", client);
+//            if (criteria.getClientId() == null) {
+//                criteria.setClientId(new LongFilter());
+//            }
+//            criteria.getClientId().setEquals(client.getId());
+//
+//        }
         Sort sort = new Sort(Sort.Direction.DESC,"id");
         final Specifications<Order> specification = createSpecification(criteria);
 
@@ -243,15 +241,15 @@ public class OrderQueryService extends QueryService<Order> {
         log.debug("find by criteria : {}, page: {}", criteria);
 
         User user = userService.getLoggedUser();
-        Client client = user.getClient();
-        if (client != null) {
-            log.debug("user client: {}", client);
-            if (criteria.getClientId() == null) {
-                criteria.setClientId(new LongFilter());
-            }
-            criteria.getClientId().setEquals(client.getId());
-
-        }
+//        Client client = user.getClient();
+//        if (client != null) {
+//            log.debug("user client: {}", client);
+//            if (criteria.getClientId() == null) {
+//                criteria.setClientId(new LongFilter());
+//            }
+//            criteria.getClientId().setEquals(client.getId());
+//
+//        }
         final Specifications<Order> specification = createSpecification(criteria);
 
         final List<Order> result = OrderRepository.findAll(specification,sort);

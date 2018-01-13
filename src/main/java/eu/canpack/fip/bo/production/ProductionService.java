@@ -21,7 +21,9 @@ import org.springframework.transaction.annotation.Transactional;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.time.ZonedDateTime;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -120,14 +122,16 @@ public class ProductionService {
 
     private void restrictByLoggedClient(EstimationCriteria criteria) {
         User user = userService.getLoggedUser();
-        Client client = user.getClient();
-
-        if (client != null) {
+        Set<Long> clientsId = user.getClients().stream().map(Client::getId).collect(Collectors.toSet());
+        if (!clientsId.isEmpty() ) {
+            log.debug("user clients ids: {}", clientsId);
             if (criteria.getClientId() == null) {
                 criteria.setClientId(new LongFilter());
             }
-            criteria.getClientId().setEquals(client.getId());
+            criteria.getClientId().setIn(new ArrayList<>(clientsId));
+
         }
+
     }
 
 

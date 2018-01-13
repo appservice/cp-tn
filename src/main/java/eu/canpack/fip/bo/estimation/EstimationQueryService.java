@@ -106,7 +106,7 @@ public class EstimationQueryService extends QueryService<Estimation> {
                 Specification<Estimation> spec = (root, query, builder) -> {
                     Join<Estimation, Order> joinToOrder = root.join((eu.canpack.fip.bo.estimation.Estimation_.order), JoinType.INNER);
                     Join<Order, Client> joinToClient = joinToOrder.join(eu.canpack.fip.bo.order.Order_.client, JoinType.INNER);
-                    return builder.equal(joinToClient.get(Client_.id), criteria.getClientId().getEquals());
+                    return builder.isTrue(joinToClient.get(Client_.id).in( criteria.getClientId().getIn()));
 //                    return builder.or(builder.like(joinToClient.get(Client_.name), "%" + criteria.getClientName().getContains().trim() + "%"),
 //                                      builder.like(joinToClient.get(Client_.shortcut), "%" + criteria.getClientName().getContains().trim() + "%"));
 

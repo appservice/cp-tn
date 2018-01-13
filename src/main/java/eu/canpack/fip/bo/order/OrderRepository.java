@@ -13,6 +13,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Set;
 
 
@@ -48,7 +49,7 @@ public interface OrderRepository extends JpaRepository<Order, Long>, JpaSpecific
         "and o.orderType = eu.canpack.fip.bo.order.enumeration.OrderType.ESTIMATION")
     Page<Order> findOrdersClaimToEstimation(Pageable pageable);
 
-    Page<Order> findAllByClientAndOrderType(Client client, OrderType orderType, Pageable pageable);
+    Page<Order> findAllByClientInAndOrderType(Set<Client> clients, OrderType orderType, Pageable pageable);
 
     Page<Order> findAllByOrderType(OrderType orderType, Pageable pageable);
 
