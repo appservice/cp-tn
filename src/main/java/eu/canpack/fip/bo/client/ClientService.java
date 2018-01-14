@@ -92,13 +92,16 @@ public class ClientService {
     @Transactional(readOnly = true)
     public List<ClientDTO> findAllToTypeahead(Pageable pageable) {
         User loggedUser = userService.getLoggedUser();
-//        if (loggedUser.getClients() != null) {
+        if (loggedUser.getClients() != null) {
+            return clientRepository.findAll().stream()
+                .filter(c -> loggedUser.getClients().contains(c))
+                .map(clientMapper::toDto).collect(Collectors.toList());
 //            List<ClientDTO> clientDTOS = new ArrayList<>();
 //            ClientDTO clientDTO = clientMapper.toDto(loggedUser.getClients());
 //            clientDTOS.add(clientDTO);
 //            return clientDTOS;
-//
-//        }
+
+        }
         log.debug("Request to get all Clients");
         return clientRepository.findAll().stream()
             .map(clientMapper::toDto).collect(Collectors.toList());

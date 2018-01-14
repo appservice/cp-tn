@@ -1,3 +1,5 @@
+import {Client} from '../../entities/client';
+
 export class User {
     public id?: any;
     public login?: string;
@@ -12,8 +14,9 @@ export class User {
     public lastModifiedBy?: string;
     public lastModifiedDate?: Date;
     public password?: string;
-    public clientId?: number;
-    public clientName?: string;
+    // public clientId?: number;
+    // public clientName?: string;
+    public clients?: Client[];
     public phone?: string;
 
 
@@ -30,8 +33,9 @@ export class User {
                 lastModifiedBy?: string,
                 lastModifiedDate?: Date,
                 password?: string,
-                clientId?: number,
-                clientName?: string,
+                clients ?: Client[],
+                // clientId?: number,
+                // clientName?: string,
                 phone?: string) {
         this.id = id ? id : null;
         this.login = login ? login : null;
@@ -46,8 +50,9 @@ export class User {
         this.lastModifiedBy = lastModifiedBy ? lastModifiedBy : null;
         this.lastModifiedDate = lastModifiedDate ? lastModifiedDate : null;
         this.password = password ? password : null;
-        this.clientId = clientId ? clientId : null;
-        this.clientName = clientName ? clientName : null;
+        // this.clientId = clientId ? clientId : null;
+        // this.clientName = clientName ? clientName : null;
+        this.clients = clients ? clients : null;
         this.phone = phone ? phone : null;
     }
 }

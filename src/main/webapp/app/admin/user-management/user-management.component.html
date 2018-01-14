@@ -29,8 +29,9 @@
                 <td><a [routerLink]="['../user-management', user.login]">{{user.id}}</a></td>
                 <td>{{user.login}}</td>
                 <td>{{user.email}}</td>
-                <td>{{user.clientName}}</td>
-                <td>{{user.phone}}</td>
+                <!--<td>{{user.clientName}}</td>-->
+                <td><span *ngFor="let client of user.clients "><span class="badge badge-info">{{client.shortcut}}</span> </span></td>
+                <td style="width: 150px">{{user.phone}}</td>
                 <td>
                     <button class="btn btn-danger btn-sm" (click)="setActive(user, true)" *ngIf="!user.activated"
                             jhiTranslate="userManagement.deactivated">Deactivated</button>

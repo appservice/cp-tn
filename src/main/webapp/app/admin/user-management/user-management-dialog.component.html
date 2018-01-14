@@ -92,12 +92,12 @@
                  </small>
             </div>
         </div>
-        <div class="form-group">
+        <!--<div class="form-group">
             <label>Klient</label>
-            <!--<input class="form-control" name="client" type="text">-->
+            &lt;!&ndash;<input class="form-control" name="client" type="text">&ndash;&gt;
             <select class="form-control" id="client" name="client"
                     [(ngModel)]="user.clientId"
-                    > <!--[compareWith]="compareMachine" trackBy: clientOpt.id required-->
+                    > &lt;!&ndash;[compareWith]="compareMachine" trackBy: clientOpt.id required&ndash;&gt;
                 <option [ngValue]="null"></option>
                 <option *ngFor="let clientOpt of clients; "
                         [ngValue]="clientOpt.id">
@@ -105,6 +105,15 @@
 
                 </option>
             </select>
+        </div>-->
+
+        <div class="form-group">
+            <label>Przypisani Klienci</label>
+            <!--<select class="form-control" multiple name="clients" [(ngModel)]="user.clients" [compareWith]="compareClients" >-->
+                <!--<option *ngFor="let client of clients; trackBy: trackByClientId"   [value]="client">{{client.shortcut}}</option>-->
+            <!--</select>-->
+            <p-multiSelect [autoWidth]="false" defaultLabel="Wybierz"  selectedItemsLabel="{0} zaznaczonych pozycji" [maxSelectedLabels]="5"
+                dataKey="id"   [options]="clients" [(ngModel)]="user.clients" optionLabel="shortcut" name="user_clients"></p-multiSelect>
         </div>
         <div class="form-group">
             <label >Telefon</label>

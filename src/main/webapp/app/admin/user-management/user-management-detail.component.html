@@ -19,7 +19,16 @@
         <dt><span jhiTranslate="userManagement.email">Email</span></dt>
         <dd>{{user.email}}</dd>
         <dt><span >Klient</span></dt>
-        <dd>{{user.clientName}}</dd>
+        <dd>
+
+            <table class="table table-striped table-sm" style="width: auto !important">
+                <tr><th>Nazwa</th><th>Skrót</th></tr>
+                <tr *ngFor="let client of user.clients">
+                    <td>{{client.name}}</td><td>{{client.shortcut}}</td>
+
+                </tr>
+            </table>
+      </dd>
         <dt><span >Telefon</span></dt>
         <dd>{{user.phone}}</dd>
         <dt><span jhiTranslate="userManagement.langKey">Lang Key</span></dt>

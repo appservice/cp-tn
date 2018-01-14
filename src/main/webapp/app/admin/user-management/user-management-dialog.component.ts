@@ -1,13 +1,15 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import {Component, OnDestroy, OnInit} from '@angular/core';
+import {ActivatedRoute} from '@angular/router';
 
-import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { JhiEventManager } from 'ng-jhipster';
+import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
+import {JhiEventManager} from 'ng-jhipster';
 
-import { UserModalService } from './user-modal.service';
-import { JhiLanguageHelper, User, UserService } from '../../shared';
+import {UserModalService} from './user-modal.service';
+import {JhiLanguageHelper, User, UserService} from '../../shared';
 import {ClientService} from '../../entities/client/client.service';
 import {Client} from '../../entities/client/client.model';
+import {Machine} from '../../entities/machine/machine.model';
+import {isNullOrUndefined} from "util";
 
 @Component({
     selector: 'jhi-user-mgmt-dialog',
@@ -32,11 +34,13 @@ export class UserMgmtDialogComponent implements OnInit {
     ngOnInit() {
         this.isSaving = false;
         this.authorities = [];
+
         this.userService.authorities().subscribe((authorities) => {
             this.authorities = authorities;
         });
-
+        this.clients=[];
         this.clientService.getAllNotPageable().subscribe((responseWrapper) => {
+            console.log(responseWrapper.json);
             this.clients = responseWrapper.json;
         });
 
@@ -68,6 +72,17 @@ export class UserMgmtDialogComponent implements OnInit {
     private onSaveError() {
         this.isSaving = false;
     }
+
+    trackByClientId(index: number, item: Client) {
+        return index;
+    }
+
+    compareClients(c1: Client, c2: Client): boolean {
+        if (!isNullOrUndefined(c1) && !isNullOrUndefined(c2)) {
+            return c1.id === c2.id;
+
+        }
+    }
 }
 
 @Component({
@@ -96,4 +111,8 @@ export class UserDialogComponent implements OnInit, OnDestroy {
     ngOnDestroy() {
         this.routeSub.unsubscribe();
     }
+
+
+
+
 }

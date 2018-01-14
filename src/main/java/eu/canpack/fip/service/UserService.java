@@ -1,6 +1,7 @@
 package eu.canpack.fip.service;
 
 import eu.canpack.fip.bo.client.Client;
+import eu.canpack.fip.bo.client.ClientRepository;
 import eu.canpack.fip.config.ApplicationProperties;
 import eu.canpack.fip.domain.Authority;
 import eu.canpack.fip.domain.User;
@@ -49,13 +50,16 @@ public class UserService {
 
     private final ApplicationProperties applicationProperties;
 
-    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, UserSearchRepository userSearchRepository, AuthorityRepository authorityRepository, CacheManager cacheManager, ApplicationProperties applicationProperties, ApplicationProperties applicationProperties1) {
+    private final ClientRepository clientRepository;
+
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, UserSearchRepository userSearchRepository, AuthorityRepository authorityRepository, CacheManager cacheManager, ApplicationProperties applicationProperties, ApplicationProperties applicationProperties1, ClientRepository clientRepository) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.userSearchRepository = userSearchRepository;
         this.authorityRepository = authorityRepository;
         this.cacheManager = cacheManager;
         this.applicationProperties = applicationProperties1;
+        this.clientRepository = clientRepository;
     }
 
     public Optional<User> activateRegistration(String key) {
@@ -146,15 +150,16 @@ public class UserService {
                 .collect(Collectors.toSet());
             user.setAuthorities(authorities);
         }
-        if(userDTO.getClients()!=null){
-          Set<Client> clients=  userDTO.getClients().stream()
+        if (userDTO.getClients() != null) {
+            log.debug("add clients: {}", userDTO.getClients() );
+            Set<Client> clients = userDTO.getClients().stream()
                 .map(c -> {
-                    Client client = new Client();
-                    client.setId(c.getId());
-                    return client;
-                }).collect(Collectors.toSet());
-          user.setClients(clients);
-
+                         Client client = clientRepository.findOne(c.getId());
+                         client.getUsers().add(user);
+                         return client;
+                     }
+                ).collect(Collectors.toSet());
+            user.setClients(clients);
 
         }
 
@@ -221,13 +226,17 @@ public class UserService {
                     .map(authorityRepository::findOne)
                     .forEach(managedAuthorities::add);
                 if (userDTO.getClients() != null) {
-                    Set<Client> clients=  userDTO.getClients().stream()
+                    log.debug("add clients: {}", userDTO.getClients() );
+                    user.getClients().clear();
+                    Set<Client> clients = userDTO.getClients().stream()
                         .map(c -> {
-                            Client client = new Client();
-                            client.setId(c.getId());
-                            return client;
-                        }).collect(Collectors.toSet());
+                                 Client client = clientRepository.findOne(c.getId());
+                                 client.getUsers().add(user);
+                                 return client;
+                             }
+                        ).collect(Collectors.toSet());
                     user.setClients(clients);
+
                 }
                 user.setPhone(userDTO.getPhone());
 

@@ -53,7 +53,12 @@ public class Client implements Serializable {
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<Order> orders = new HashSet<>();
 
-    @ManyToMany(cascade = CascadeType.PERSIST)
+    @ManyToMany(cascade =      {
+        CascadeType.DETACH,
+        CascadeType.MERGE,
+        CascadeType.REFRESH,
+        CascadeType.PERSIST
+    })
     @JsonIgnore
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     @JoinTable(name = "client_user", joinColumns = { @JoinColumn(name = "client_id") }, inverseJoinColumns = { @JoinColumn(name = "user_id") })

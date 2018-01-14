@@ -29,11 +29,13 @@ import {
     UserResolve,
     UserModalService
 } from './';
+import {MultiSelectModule} from 'primeng/primeng';
 
 @NgModule({
     imports: [
         TnSharedModule,
         RouterModule.forChild(adminState),
+        MultiSelectModule,
         /* jhipster-needle-add-admin-module - JHipster will add admin modules here */
     ],
     declarations: [
