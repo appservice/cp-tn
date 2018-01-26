@@ -9,6 +9,7 @@ import {ITEMS_PER_PAGE, Principal, ResponseWrapper} from '../../shared';
 import {PaginationConfig} from '../../blocks/config/uib-pagination.config';
 import {URLSearchParams} from '@angular/http';
 import {DrawingFilter} from './drawing-finder/drawing-filter';
+import {EstimationFilter} from '../order/estimation-filter.model';
 
 
 @Component({
@@ -51,29 +52,16 @@ export class DrawingComponent implements OnInit, OnDestroy {
             this.reverse = data['pagingParams'].ascending;
             this.predicate = data['pagingParams'].predicate;
         });
-        this.currentSearch = activatedRoute.snapshot.params['search'] ? activatedRoute.snapshot.params['search'] : '';
         this.drawingFilter = new DrawingFilter();
+        this.drawingFilter.number = activatedRoute.snapshot.params['number'] ? activatedRoute.snapshot.params['number'] : '';
+        this.drawingFilter.name = activatedRoute.snapshot.params['name'] ? activatedRoute.snapshot.params['name'] : '';
     }
 
 
     loadAll() {
-        if (this.currentSearch) {
 
-            this.drawingService.search({
-                query: this.currentSearch,
-                size: this.itemsPerPage,
-                sort: this.sort()
-            },).subscribe(
-                (res: ResponseWrapper) => this.onSuccess(res.json, res.headers),
-                (res: ResponseWrapper) => this.onError(res.json)
-            );
-            return;
-        }
-        let urlSearchParams = new URLSearchParams();
-        urlSearchParams.append('number.contains', this.drawingFilter.number);
-        urlSearchParams.append('name.contains', this.drawingFilter.name);
-        urlSearchParams.append('createdAt.greaterOrEqualThan', this.drawingFilter.getValidFromString());
-        urlSearchParams.append('createdAt.lessOrEqualThan', this.drawingFilter.getValidToString());
+        let urlSearchParams = this.createSearchParams();
+
         this.drawingService.query({
             page: this.page - 1,
             size: this.itemsPerPage,
@@ -84,13 +72,6 @@ export class DrawingComponent implements OnInit, OnDestroy {
         );
     }
 
-    clearFilterAndLoadAll() {
-        this.drawingFilter.name = null;
-        this.drawingFilter.number = null;
-        this.drawingFilter.createdAtFrom = null;
-        this.drawingFilter.createdAtTo = null;
-        this.loadAll();
-    }
 
     loadPage(page: number) {
         if (page !== this.previousPage) {
@@ -109,30 +90,6 @@ export class DrawingComponent implements OnInit, OnDestroy {
                     sort: this.predicate + ',' + (this.reverse ? 'asc' : 'desc')
                 }
         });
-        this.loadAll();
-    }
-
-    clear() {
-        this.page = 0;
-        this.currentSearch = '';
-        this.router.navigate(['/drawing', {
-            page: this.page,
-            sort: this.predicate + ',' + (this.reverse ? 'asc' : 'desc')
-        }]);
-        this.loadAll();
-    }
-
-    search(query) {
-        if (!query) {
-            return this.clear();
-        }
-        this.page = 0;
-        this.currentSearch = query;
-        this.router.navigate(['/drawing', {
-            search: this.currentSearch,
-            page: this.page,
-            sort: this.predicate + ',' + (this.reverse ? 'asc' : 'desc')
-        }]);
         this.loadAll();
     }
 
@@ -185,10 +142,63 @@ export class DrawingComponent implements OnInit, OnDestroy {
         this.alertService.error(error.message, null, null);
     }
 
+
+    createSearchParams(): URLSearchParams {
+        let urlSearchParams = new URLSearchParams();
+        if (this.drawingFilter.number !== null && this.drawingFilter.number !== '')
+            urlSearchParams.append('number.contains', this.drawingFilter.number);
+
+        if (this.drawingFilter.name !== null && this.drawingFilter.name !== '')
+            urlSearchParams.append('name.contains', this.drawingFilter.name);
+
+        if (this.drawingFilter.createdAtFrom !== null)
+            urlSearchParams.append('createdAt.greaterOrEqualThan', this.drawingFilter.createdAtFrom);
+
+        if (this.drawingFilter.createdAtTo !== null)
+            urlSearchParams.append('createdAt.lessOrEqualThan', this.drawingFilter.createdAtTo);
+
+        return urlSearchParams;
+    }
+
+    loadFilter(filter: DrawingFilter) {
+        if (filter) {
+            this.page = 0;
+            this.router.navigate(['/drawing', {
+                number: this.drawingFilter.number,
+                name: this.drawingFilter.name,
+                // createdAtFrom: this.drawingFilter.createdAtFrom,
+                // createdAtTo: this.drawingFilter.createdAtTo,
+                page: this.page,
+                sort: this.predicate + ',' + (this.reverse ? 'asc' : 'desc')
+            }]);
+        }
+    }
+
+
+    search() {
+        this.loadFilter(this.drawingFilter)
+        this.loadAll();
+    }
+
     onEnterClickFilter(event: any) {
         if (event.keyCode == 13) {
+            this.loadFilter(this.drawingFilter)
             this.loadAll();
         }
 
     }
+
+    clearFilterAndLoadAll() {
+        this.page = 0;
+        this.drawingFilter.number = '';
+        this.drawingFilter.name = '';
+        this.drawingFilter.createdAtFrom = null;
+        this.drawingFilter.createdAtTo = null;
+        this.router.navigate(['/drawing', {
+            page: this.page,
+            sort: this.predicate + ',' + (this.reverse ? 'asc' : 'desc')
+        }]);
+        this.loadAll();
+    }
+
 }

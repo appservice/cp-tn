@@ -7,6 +7,8 @@ import { OrderService } from '../../order.service';
 import { ITEMS_PER_PAGE, Principal, ResponseWrapper } from '../../../../shared';
 import { PaginationConfig } from '../../../../blocks/config/uib-pagination.config';
 import {Order} from '../../order.model';
+import {OrderFilter} from '../../order-filter.model';
+import {URLSearchParams} from '@angular/http';
 
 @Component({
     selector: 'order-to-estimation',
@@ -29,6 +31,8 @@ currentAccount: any;
     predicate: any;
     previousPage: any;
     reverse: any;
+    orderFilter: OrderFilter;
+
 
     constructor(
         private orderService: OrderService,
@@ -48,24 +52,19 @@ currentAccount: any;
             this.reverse = data['pagingParams'].ascending;
             this.predicate = data['pagingParams'].predicate;
         });
-        this.currentSearch = activatedRoute.snapshot.params['search'] ? activatedRoute.snapshot.params['search'] : '';
+        this.orderFilter = new OrderFilter();
+        this.orderFilter.internalNumber = activatedRoute.snapshot.params['internalNumber'] ? activatedRoute.snapshot.params['internalNumber'] : '';
+        this.orderFilter.referenceNumber = activatedRoute.snapshot.params['referenceNumber'] ? activatedRoute.snapshot.params['referenceNumber'] : '';
+        this.orderFilter.clientName = activatedRoute.snapshot.params['clientName'] ? activatedRoute.snapshot.params['clientName'] : '';
+        this.orderFilter.title = activatedRoute.snapshot.params['title'] ? activatedRoute.snapshot.params['title'] : '';
     }
 
     loadAll() {
-        if (this.currentSearch) {
-            this.orderService.orderForStartEstimation({
-                query: this.currentSearch,
-                size: this.itemsPerPage,
-                sort: this.sort()}).subscribe(
-                    (res: ResponseWrapper) => this.onSuccess(res.json, res.headers),
-                    (res: ResponseWrapper) => this.onError(res.json)
-                );
-            return;
-        }
+        let urlSearchParams =this.createSearchParams();
         this.orderService.orderForStartEstimation({
             page: this.page - 1,
             size: this.itemsPerPage,
-            sort: this.sort()}).subscribe(
+            sort: this.sort()},urlSearchParams).subscribe(
             (res: ResponseWrapper) => this.onSuccess(res.json, res.headers),
             (res: ResponseWrapper) => this.onError(res.json)
         );
@@ -88,28 +87,8 @@ currentAccount: any;
         this.loadAll();
     }
 
-    clear() {
-        this.page = 0;
-        this.currentSearch = '';
-        this.router.navigate(['/orders-to-estimation', {
-            page: this.page,
-            sort: this.predicate + ',' + (this.reverse ? 'asc' : 'desc')
-        }]);
-        this.loadAll();
-    }
-    search(query) {
-        if (!query) {
-            return this.clear();
-        }
-        this.page = 0;
-        this.currentSearch = query;
-        this.router.navigate(['/order-to-estimation', {
-            search: this.currentSearch,
-            page: this.page,
-            sort: this.predicate + ',' + (this.reverse ? 'asc' : 'desc')
-        }]);
-        this.loadAll();
-    }
+
+
     ngOnInit() {
         this.loadAll();
         this.principal.identity().then((account) => {
@@ -155,5 +134,77 @@ currentAccount: any;
             }
 
         );
+    }
+
+
+    createSearchParams(): URLSearchParams {
+        let urlSearchParams = new URLSearchParams();
+        if (this.orderFilter.internalNumber !== null && this.orderFilter.internalNumber !== '')
+            urlSearchParams.append('internalNumber.contains', this.orderFilter.internalNumber);
+
+        if (this.orderFilter.referenceNumber !== null && this.orderFilter.referenceNumber !== '')
+            urlSearchParams.append('referenceNumber.contains', this.orderFilter.referenceNumber);
+
+        if (this.orderFilter.clientName !== null && this.orderFilter.clientName !== '')
+            urlSearchParams.append('clientName.contains', this.orderFilter.clientName);
+
+        if (this.orderFilter.validFrom !== null )//&& this.orderFilter.validFrom !== ''
+            urlSearchParams.append('createdAt.greaterOrEqualThan', this.orderFilter.getValidFromString());
+
+        if (this.orderFilter.title !== null && this.orderFilter.title !== '')
+            urlSearchParams.append('title.contains', this.orderFilter.title);
+
+        if (this.orderFilter.validTo !== null )//&& this.orderFilter.validTo !== ''
+            urlSearchParams.append('createdAt.lessOrEqualThan', this.orderFilter.getValidToString());
+        return urlSearchParams;
+    }
+
+
+    loadFilter(filter: OrderFilter) {
+        if (filter) {
+
+
+            this.page = 0;
+            // this.currentSearch = query;
+            this.router.navigate(['/orders-to-estimation', {
+                internalNumber: this.orderFilter.internalNumber,
+                referenceNumber: this.orderFilter.referenceNumber,
+                clientName: this.orderFilter.clientName,
+                title: this.orderFilter.title,
+                // validFrom: this.orderFilter.validFrom.year+'-'+this.orderFilter.validFrom.month+'-'+this.orderFilter.validFrom.day,
+                page: this.page,
+                sort: this.predicate + ',' + (this.reverse ? 'asc' : 'desc')
+            }]);
+        }
+    }
+
+
+    search() {
+        this.loadFilter(this.orderFilter);
+        this.loadAll();
+    }
+
+    onEnterClickFilter(event: any) {
+        if (event.keyCode == 13) {
+            this.loadFilter(this.orderFilter);
+            this.loadAll();
+        }
+    }
+
+    clearFilterAndLoadAll() {
+        this.orderFilter.internalNumber = '';
+        this.orderFilter.referenceNumber = '';
+        this.orderFilter.orderStatus = '';
+        this.orderFilter.clientName = '';
+        this.orderFilter.validFrom = null
+        this.orderFilter.validTo = null;
+        this.orderFilter.title = '';
+        this.page = 0;
+        this.currentSearch = '';
+        this.router.navigate(['/orders-to-estimation', {
+            page: this.page,
+            sort: this.predicate + ',' + (this.reverse ? 'asc' : 'desc')
+        }]);
+        this.loadAll();
     }
 }

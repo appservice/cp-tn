@@ -53,8 +53,13 @@ currentAccount: any;
             this.reverse = data['pagingParams'].ascending;
             this.predicate = data['pagingParams'].predicate;
         });
-        this.currentSearch = activatedRoute.snapshot.params['search'] ? activatedRoute.snapshot.params['search'] : '';
         this.orderFilter = new OrderFilter();
+        this.orderFilter.internalNumber = activatedRoute.snapshot.params['internalNumber'] ? activatedRoute.snapshot.params['internalNumber'] : '';
+        this.orderFilter.referenceNumber = activatedRoute.snapshot.params['referenceNumber'] ? activatedRoute.snapshot.params['referenceNumber'] : '';
+        this.orderFilter.clientName = activatedRoute.snapshot.params['clientName'] ? activatedRoute.snapshot.params['clientName'] : '';
+        this.orderFilter.orderStatus = activatedRoute.snapshot.params['orderStatus'] ? activatedRoute.snapshot.params['orderStatus'] : '';
+        this.orderFilter.title = activatedRoute.snapshot.params['title'] ? activatedRoute.snapshot.params['title'] : '';
+
 
     }
 
@@ -70,14 +75,7 @@ currentAccount: any;
             return;
         }
 
-        let urlSearchParams = new URLSearchParams();
-        urlSearchParams.append('internalNumber.contains', this.orderFilter.internalNumber);
-        urlSearchParams.append('referenceNumber.contains', this.orderFilter.referenceNumber);
-        urlSearchParams.append('clientName.contains', this.orderFilter.clientName);
-        urlSearchParams.append('orderStatus.equals', this.orderFilter.orderStatus);
-        urlSearchParams.append('createdAt.greaterOrEqualThan', this.orderFilter.getValidFromString());
-        urlSearchParams.append('createdAt.lessOrEqualThan', this.orderFilter.getValidToString());
-        urlSearchParams.append('title.contains', this.orderFilter.title);
+        let urlSearchParams =this.createSearchParams();
 
         this.orderService.archivedOrders({
             page: this.page - 1,
@@ -105,28 +103,6 @@ currentAccount: any;
         this.loadAll();
     }
 
-    clear() {
-        this.page = 0;
-        this.currentSearch = '';
-        this.router.navigate(['/archived-orders', {
-            page: this.page,
-            sort: this.predicate + ',' + (this.reverse ? 'asc' : 'desc')
-        }]);
-        this.loadAll();
-    }
-    search(query) {
-        if (!query) {
-            return this.clear();
-        }
-        this.page = 0;
-        this.currentSearch = query;
-        this.router.navigate(['/archived-orders', {
-            search: this.currentSearch,
-            page: this.page,
-            sort: this.predicate + ',' + (this.reverse ? 'asc' : 'desc')
-        }]);
-        this.loadAll();
-    }
     ngOnInit() {
         this.loadAll();
         this.principal.identity().then((account) => {
@@ -174,21 +150,79 @@ currentAccount: any;
         );
     }
 
-    clearFilterAndLoadAll() {
-        this.orderFilter.internalNumber = null;
-        this.orderFilter.referenceNumber = null;
-        this.orderFilter.orderStatus = null;
-        this.orderFilter.clientName = null;
-        this.orderFilter.validFrom = null
-        this.orderFilter.validTo = null;
-        this.orderFilter.title=null;
+    createSearchParams(): URLSearchParams {
+        let urlSearchParams = new URLSearchParams();
+        if (this.orderFilter.internalNumber !== null && this.orderFilter.internalNumber !== '')
+            urlSearchParams.append('internalNumber.contains', this.orderFilter.internalNumber);
+
+        if (this.orderFilter.referenceNumber !== null && this.orderFilter.referenceNumber !== '')
+            urlSearchParams.append('referenceNumber.contains', this.orderFilter.referenceNumber);
+
+        if (this.orderFilter.clientName !== null && this.orderFilter.clientName !== '')
+            urlSearchParams.append('clientName.contains', this.orderFilter.clientName);
+
+        if (this.orderFilter.orderStatus !== null && this.orderFilter.orderStatus !== '')
+            urlSearchParams.append('orderStatus.equals', this.orderFilter.orderStatus);
+
+        if (this.orderFilter.validFrom !== null )//&& this.orderFilter.validFrom !== ''
+            urlSearchParams.append('createdAt.greaterOrEqualThan', this.orderFilter.getValidFromString());
+
+        if (this.orderFilter.title !== null && this.orderFilter.title !== '')
+            urlSearchParams.append('title.contains', this.orderFilter.title);
+
+        if (this.orderFilter.validTo !== null )//&& this.orderFilter.validTo !== ''
+            urlSearchParams.append('createdAt.lessOrEqualThan', this.orderFilter.getValidToString());
+        return urlSearchParams;
+    }
+
+
+    loadFilter(filter: OrderFilter) {
+        if (filter) {
+
+
+            this.page = 0;
+            // this.currentSearch = query;
+            this.router.navigate(['/archived-orders', {
+                internalNumber: this.orderFilter.internalNumber,
+                referenceNumber: this.orderFilter.referenceNumber,
+                clientName: this.orderFilter.clientName,
+                orderStatus: this.orderFilter.orderStatus,
+                title: this.orderFilter.title,
+                // validFrom: this.orderFilter.validFrom.year+'-'+this.orderFilter.validFrom.month+'-'+this.orderFilter.validFrom.day,
+                page: this.page,
+                sort: this.predicate + ',' + (this.reverse ? 'asc' : 'desc')
+            }]);
+        }
+    }
+
+
+    search() {
+        this.loadFilter(this.orderFilter);
         this.loadAll();
     }
+
     onEnterClickFilter(event: any) {
         if (event.keyCode == 13) {
+            this.loadFilter(this.orderFilter);
             this.loadAll();
         }
+    }
 
+    clearFilterAndLoadAll() {
+        this.orderFilter.internalNumber = '';
+        this.orderFilter.referenceNumber = '';
+        this.orderFilter.orderStatus = '';
+        this.orderFilter.clientName = '';
+        this.orderFilter.validFrom = null
+        this.orderFilter.validTo = null;
+        this.orderFilter.title = '';
+        this.page = 0;
+        this.currentSearch = '';
+        this.router.navigate(['/archived-orders', {
+            page: this.page,
+            sort: this.predicate + ',' + (this.reverse ? 'asc' : 'desc')
+        }]);
+        this.loadAll();
     }
 
 }

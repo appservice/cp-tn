@@ -395,15 +395,33 @@ public class OrderResource {
      */
     @GetMapping("/orders/not-estimated/")
     @Timed
-    public ResponseEntity<List<OrderListDTO>> findOrderToClaimEstimation(@ApiParam Pageable pageable) {
+    public ResponseEntity<List<OrderListDTO>> findOrderToClaimEstimation(OrderCriteria orderCriteria,@ApiParam Pageable pageable) {
         log.debug("REST request to get Orders to estimation : {}");
 
-        Page<OrderListDTO> page = orderService.findOrderToClaimEstimation(pageable);
+        Page<OrderListDTO> page = orderQueryService.findOrdersClaimToEstimation(orderCriteria,pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/orders/not-estimated");
 
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
 
     }
+//
+//    /**
+//     * GET  /orders/simple-dto/:id : get the "id" order.
+//     *
+//     * @param pageable the id of the orderDTO to retrieve
+//     * @return the ResponseEntity with status 200 (OK) and with body the orderDTO, or with status 404 (Not Found)
+//     */
+//    @GetMapping("/orders/not-estimated/")
+//    @Timed
+//    public ResponseEntity<List<OrderListDTO>> findOrderToClaimEstimation(@ApiParam Pageable pageable) {
+//        log.debug("REST request to get Orders to estimation : {}");
+//
+//        Page<OrderListDTO> page = orderService.findOrderToClaimEstimation(pageable);
+//        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/orders/not-estimated");
+//
+//        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+//
+//    }
 
     /**
      * GET  /orders/simple-dto/:id : get the "id" order.

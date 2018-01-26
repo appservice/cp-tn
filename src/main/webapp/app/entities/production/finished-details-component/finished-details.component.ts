@@ -53,13 +53,15 @@ export class FinishedDetailsComponent implements OnInit, OnDestroy {
             this.reverse = data['pagingParams'].ascending;
             this.predicate = data['pagingParams'].predicate;
         });
-        this.currentSearch = activatedRoute.snapshot.params['search'] ? activatedRoute.snapshot.params['search'] : '';
         this.estimationFilter = new EstimationFilter();
+        this.estimationFilter.itemName  = activatedRoute.snapshot.params['itemName'] ? activatedRoute.snapshot.params['itemName'] : '';
+        this.estimationFilter.itemNumber= activatedRoute.snapshot.params['itemNumber'] ? activatedRoute.snapshot.params['itemNumber'] : '';
+        this.estimationFilter.clientName = activatedRoute.snapshot.params['clientName'] ? activatedRoute.snapshot.params['clientName'] : '';
+        this.estimationFilter.orderNumber = activatedRoute.snapshot.params['orderNumber'] ? activatedRoute.snapshot.params['orderNumber'] : '';
 
     }
 
     loadAll() {
-
 
         let urlSearchParams = this.createSearchParams();
 
@@ -143,19 +145,15 @@ export class FinishedDetailsComponent implements OnInit, OnDestroy {
     }
 
 
-    onEnterClickFilter(event: any) {
-        if (event.keyCode == 13) {
-            this.loadAll();
-        }
 
-    }
+    exportToExcel() {
+        this.waitForResponse = true;
+        let urlSearchParams = this.createSearchParams();
 
-    clearFilterAndLoadAll(): void {
-        this.estimationFilter.itemName = null;
-        this.estimationFilter.clientName = null;
-        this.estimationFilter.itemNumber = null;
-        this.estimationFilter.orderNumber = null;
-        this.loadAll();
+        this.productionService.getFinishedProductionAsExcel(urlSearchParams).subscribe((res: any) => {
+                this.waitForResponse = false;
+            }
+        );
     }
 
     createSearchParams(): URLSearchParams {
@@ -174,15 +172,44 @@ export class FinishedDetailsComponent implements OnInit, OnDestroy {
         return urlSearchParams;
     }
 
-    exportToExcel() {
-        this.waitForResponse = true;
-        let urlSearchParams = this.createSearchParams();
-
-        this.productionService.getFinishedProductionAsExcel(urlSearchParams).subscribe((res: any) => {
-                this.waitForResponse = false;
-            }
-        );
+    loadFilter(filter: EstimationFilter) {
+        if (filter) {
+            this.page = 0;
+            this.router.navigate(['/items-finished', {
+                itemNumber: this.estimationFilter.itemNumber,
+                itemName: this.estimationFilter.itemName,
+                orderNumber: this.estimationFilter.orderNumber,
+                clientName: this.estimationFilter.clientName,
+               // sapNumber: this.estimationFilter.sapNumber,
+                page: this.page,
+                sort: this.predicate + ',' + (this.reverse ? 'asc' : 'desc')
+            }]);
+        }
     }
 
+    search() {
+        this.loadFilter(this.estimationFilter);
+        this.loadAll();
+    }
 
+    onEnterClickFilter(event: any) {
+        if (event.keyCode == 13) {
+            this.loadFilter(this.estimationFilter);
+            this.loadAll();
+        }
+    }
+
+    clearFilterAndLoadAll(): void {
+        this.estimationFilter.itemName = '';
+        this.estimationFilter.clientName = '';
+        this.estimationFilter.itemNumber = '';
+        this.estimationFilter.orderNumber = '';
+      //  this.estimationFilter.sapNumber = '';
+        this.page = 0;
+        this.router.navigate(['/items-finished', {
+            page: this.page,
+            sort: this.predicate + ',' + (this.reverse ? 'asc' : 'desc')
+        }]);
+        this.loadAll();
+    }
 }

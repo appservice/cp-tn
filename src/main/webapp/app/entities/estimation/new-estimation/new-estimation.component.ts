@@ -230,14 +230,16 @@ export class NewEstimationComponent implements OnInit, OnDestroy {
             if (this.estimation.estimatedRealizationDate && this.estimation.estimatedRealizationDate != null) {
                 this.termOfRealzationType = 'ABSOLUTE';
             }
-            if(!this.estimation.executionTimeUnit){
-                this.estimation.executionTimeUnit='WEEKS';
+            if (!this.estimation.executionTimeUnit) {
+                this.estimation.executionTimeUnit = 'WEEKS';
             }
 
-            this.orderService.findOrderSimpleDto(estimation.orderId).subscribe((order => {
+            this.orderService.findOrderSimpleDto(estimation.orderId).subscribe((order) => {
                 this.order = order;
 
-            }));
+            }, (error) => {
+                this.onError(error);
+            });
 
 
         });

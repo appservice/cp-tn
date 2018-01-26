@@ -172,14 +172,15 @@ export class OrderService {
     }
 
 
-    orderForStartEstimation(req?: any) {
+    orderForStartEstimation(req?: any, urlSearchParams?: URLSearchParams) {
         const options = createRequestOption(req);
-
+        if (urlSearchParams) {
+            options.params.appendAll(urlSearchParams);
+        }
         return this.http
             .get(`${this.resourceUrl}/not-estimated/`, options).map((res: Response) => {
                 return this.convertResponse(res)
             });
-
     }
 
     ordersInEstimation(req?: any) {
@@ -284,7 +285,7 @@ export class OrderService {
         let options = new RequestOptions({responseType: ResponseContentType.Blob, headers});
         if (urlSearchParams) {
             console.log(urlSearchParams);
-            options.params=urlSearchParams;
+            options.params = urlSearchParams;
 
         }
 
@@ -303,7 +304,7 @@ export class OrderService {
         let options = new RequestOptions({responseType: ResponseContentType.Blob, headers});
         if (urlSearchParams) {
             console.log(urlSearchParams);
-            options.params=urlSearchParams;
+            options.params = urlSearchParams;
 
         }
 

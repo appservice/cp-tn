@@ -26,6 +26,73 @@
             </form>
         </div>
     </div>-->
+
+    <div class="row" style="margin-top: 40px">
+        <div class="col-md-2">
+            <!--<label>Numer rys.</label>-->
+            <input type="text" class="form-control" name="filterInternalNumber"
+                   [(ngModel)]="orderFilter.internalNumber" placeholder="Numer wewn."
+                   (keydown)="onEnterClickFilter($event)">
+
+        </div>
+        <div class="col-md-2">
+            <!--<label>Nazwa</label>-->
+            <input type="text" class="form-control" name="filterReferenceNumber"
+                   [(ngModel)]="orderFilter.referenceNumber" placeholder="Numer zamówienia klienta"
+                   (keydown)="onEnterClickFilter($event)">
+        </div>
+        <div class="col-md-2">
+            <!--<label>Nazwa</label>-->
+            <input type="text" class="form-control" name="filterClientName" [(ngModel)]="orderFilter.clientName"
+                   placeholder="Nazwa klienta" (keydown)="onEnterClickFilter($event)">
+        </div>
+
+        <div class="form-group col-md-2">
+
+            <div class="input-group">
+                <input type="text" class="form-control"
+                       name="validFromFilter"
+                       [showWeekdays]="true"
+                       [(ngModel)]="orderFilter.validFrom" placeholder="Utworzono po:" ngbDatepicker #realizationDateDp="ngbDatepicker"/>
+                <span class="input-group-btn">
+                    <button type="button" class="btn btn-default" (click)="realizationDateDp.toggle()"
+                            (keyup)="realizationDateDp.toggle()"><i class="fa fa-calendar"></i></button>
+                </span>
+            </div>
+        </div>
+        <div class="form-group col-md-2">
+            <!--<my-date-picker locale="pl"  [(ngModel)]="orderFilter.validTo" placeholder="Utworzono przed:"></my-date-picker>-->
+            <!--<my-date-picker locale="pl"  [(ngModel)]="orderFilter.validTo"  placeholder="Utworzono przed:"></my-date-picker>-->
+            <!--<label class="form-control-label" jhiTranslate="tnApp.order.closeDate" for="field_closeDate">Close Date</label>-->
+            <div class="input-group">
+                <input type="text" class="form-control" name="validToFilter" ngbDatepicker #createdToEnd="ngbDatepicker" [showWeekdays]="true"
+                       [(ngModel)]="orderFilter.validTo" placeholder="Utworzono przed:"/>
+                <span class="input-group-btn">
+                    <button type="button" class="btn btn-default" (click)="createdToEnd.toggle()"
+                            (keyup)="createdToEnd.toggle()"><i class="fa fa-calendar"></i></button>
+                </span>
+            </div>
+        </div>
+    </div>
+    <div class="row" style="margin-top: 10px">
+        <div class="col-md-2">
+            <!--<label>Numer rys.</label>-->
+            <input type="text" class="form-control" name="filterTitle"
+                   [(ngModel)]="orderFilter.title" placeholder="Tytuł zam."
+                   (keydown)="onEnterClickFilter($event)">
+
+        </div>
+        <div class="col-md-4">
+            <label>&nbsp;</label>
+            <button class="btn btn-outline-dark" type="button" (click)="search()"><span
+                class="fa fa-search"></span> Filtruj
+            </button>
+            <button class="btn btn-outline-dark" type="button" (click)="clearFilterAndLoadAll()"><span
+                class="fa fa-trash-o"></span> Wyczyść filtr
+            </button>
+        </div>
+
+    </div>
     <br/>
     <div class="table-responsive" *ngIf="orders">
         <table class="table table-striped">

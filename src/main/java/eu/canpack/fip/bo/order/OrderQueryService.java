@@ -7,6 +7,8 @@ import eu.canpack.fip.bo.estimation.Estimation_;
 import eu.canpack.fip.bo.order.dto.OrderCriteria;
 import eu.canpack.fip.bo.order.dto.OrderListDTO;
 import eu.canpack.fip.bo.order.dto.OrderMapper;
+import eu.canpack.fip.bo.order.enumeration.OrderStatus;
+import eu.canpack.fip.bo.order.enumeration.OrderType;
 import eu.canpack.fip.domain.User;
 import eu.canpack.fip.domain.User_;
 import eu.canpack.fip.service.UserService;
@@ -95,6 +97,21 @@ public class OrderQueryService extends QueryService<Order> {
     }
 
     /**
+     * Return a {@link Page} of {%link Order} which matches the criteria from the database
+     *
+     * @param criteria The object which holds all the filters, which the entities should match.
+     * @param page     The page, which should be returned.
+     * @return the matching entities.
+     */
+    @Transactional(readOnly = true)
+    public Page<OrderListDTO> findOrdersClaimToEstimation(OrderCriteria criteria, Pageable page) {
+        log.debug("find by criteria : {}, page: {}", criteria, page);
+        final Specifications<Order> specification = createOderToClaimToEstimationSecification(criteria);
+        final Page<Order> result = OrderRepository.findAll(specification, page);
+        return result.map(OrderMapper::toDto);
+    }
+
+    /**
      * Function to convert OrderCriteria to a {@link Specifications}
      */
     private Specifications<Order> createSpecification(OrderCriteria criteria) {
@@ -173,6 +190,17 @@ public class OrderQueryService extends QueryService<Order> {
     }
 
 
+    Specifications<Order> createOderToClaimToEstimationSecification(OrderCriteria orderCriteria) {
+        Specifications<Order> specification = createSpecification(orderCriteria);
+
+        specification = specification.and((root, query, cb) -> cb.isNull(root.get(eu.canpack.fip.bo.order.Order_.estimationMaker)));
+        specification = specification.and((root, query, cb) -> cb.notEqual(root.get(eu.canpack.fip.bo.order.Order_.orderStatus), OrderStatus.WORKING_COPY));
+        specification = specification.and(((root, query, cb) -> cb.equal(root.get(eu.canpack.fip.bo.order.Order_.orderType), OrderType.ESTIMATION)));
+
+
+        return specification;
+    }
+
     /**
      * Return a {@link Page} of {%link OrderDTO} which matches the criteria from the database
      *
@@ -186,7 +214,7 @@ public class OrderQueryService extends QueryService<Order> {
 
         User user = userService.getLoggedUser();
         Set<Long> clientsId = user.getClients().stream().map(Client::getId).collect(Collectors.toSet());
-        if (!clientsId.isEmpty() ) {
+        if (!clientsId.isEmpty()) {
             log.debug("user clients ids: {}", clientsId);
             if (criteria.getClientId() == null) {
                 criteria.setClientId(new LongFilter());
@@ -205,7 +233,7 @@ public class OrderQueryService extends QueryService<Order> {
      * Return a {@link Page} of {%link OrderDTO} which matches the criteria from the database
      *
      * @param criteria The object which holds all the filters, which the entities should match.
-//     * @param page     The page, which should be returned.
+     *                 //     * @param page     The page, which should be returned.
      * @return the matching entities.
      */
     @Transactional(readOnly = true)
@@ -222,18 +250,19 @@ public class OrderQueryService extends QueryService<Order> {
 //            criteria.getClientId().setEquals(client.getId());
 //
 //        }
-        Sort sort = new Sort(Sort.Direction.DESC,"id");
+        Sort sort = new Sort(Sort.Direction.DESC, "id");
         final Specifications<Order> specification = createSpecification(criteria);
 
-        final List<Order> result = OrderRepository.findAll(specification,sort);
+        final List<Order> result = OrderRepository.findAll(specification, sort);
 
         return result.stream().map(OrderMapper::toDto).collect(Collectors.toList());
     }
+
     /**
      * Return a {@link Page} of {%link OrderDTO} which matches the criteria from the database
      *
      * @param criteria The object which holds all the filters, which the entities should match.
-//     * @param page     The page, which should be returned.
+     *                 //     * @param page     The page, which should be returned.
      * @return the matching entities.
      */
     @Transactional(readOnly = true)
@@ -252,7 +281,7 @@ public class OrderQueryService extends QueryService<Order> {
 //        }
         final Specifications<Order> specification = createSpecification(criteria);
 
-        final List<Order> result = OrderRepository.findAll(specification,sort);
+        final List<Order> result = OrderRepository.findAll(specification, sort);
 
         return result.stream().map(OrderMapper::toDto).collect(Collectors.toList());
     }

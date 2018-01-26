@@ -1,17 +1,15 @@
-import {Component, OnInit, OnDestroy} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {Subscription} from 'rxjs/Rx';
-import {JhiEventManager, JhiParseLinks, JhiPaginationUtil, JhiLanguageService, JhiAlertService} from 'ng-jhipster';
+import {JhiAlertService, JhiEventManager, JhiPaginationUtil, JhiParseLinks} from 'ng-jhipster';
 import {URLSearchParams} from '@angular/http';
 
 import {Estimation} from './estimation.model';
-import {EstimationService} from './estimation.service';
-import {ITEMS_PER_PAGE, Principal, ResponseWrapper} from '../../shared';
+import {ITEMS_PER_PAGE, ResponseWrapper} from '../../shared';
 import {PaginationConfig} from '../../blocks/config/uib-pagination.config';
 import {ProductionService} from './production.service';
 import {ProductionItem} from './production-item.model';
 import {EstimationFilter} from "../order/estimation-filter.model";
-import * as FileSaver from 'file-saver';
 
 
 @Component({
@@ -55,8 +53,14 @@ export class ProductionStanComponent implements OnInit, OnDestroy {
             this.reverse = data['pagingParams'].ascending;
             this.predicate = data['pagingParams'].predicate;
         });
-        this.currentSearch = activatedRoute.snapshot.params['search'] ? activatedRoute.snapshot.params['search'] : '';
         this.estimationFilter = new EstimationFilter();
+        this.estimationFilter.itemName  = activatedRoute.snapshot.params['itemName'] ? activatedRoute.snapshot.params['itemName'] : '';
+        this.estimationFilter.itemNumber= activatedRoute.snapshot.params['itemNumber'] ? activatedRoute.snapshot.params['itemNumber'] : '';
+        this.estimationFilter.clientName = activatedRoute.snapshot.params['clientName'] ? activatedRoute.snapshot.params['clientName'] : '';
+        this.estimationFilter.orderNumber = activatedRoute.snapshot.params['orderNumber'] ? activatedRoute.snapshot.params['orderNumber'] : '';
+        this.estimationFilter.sapNumber = activatedRoute.snapshot.params['sapNumber'] ? activatedRoute.snapshot.params['sapNumber'] : '';
+
+
 
     }
 
@@ -94,15 +98,6 @@ export class ProductionStanComponent implements OnInit, OnDestroy {
         this.loadAll();
     }
 
-    clear() {
-        this.page = 0;
-        this.currentSearch = '';
-        this.router.navigate(['/production', {
-            page: this.page,
-            sort: this.predicate + ',' + (this.reverse ? 'asc' : 'desc')
-        }]);
-        this.loadAll();
-    }
 
     ngOnInit() {
         this.loadAll();
@@ -144,22 +139,6 @@ export class ProductionStanComponent implements OnInit, OnDestroy {
     }
 
 
-    onEnterClickFilter(event: any) {
-        if (event.keyCode == 13) {
-            this.loadAll();
-        }
-
-    }
-
-    clearFilterAndLoadAll(): void {
-        this.estimationFilter.itemName = null;
-        this.estimationFilter.clientName = null;
-        this.estimationFilter.itemNumber = null;
-        this.estimationFilter.orderNumber = null;
-        this.estimationFilter.sapNumber = null;
-        this.loadAll();
-    }
-
     exportToExcel() {
         this.waitForResponse = true;
         let urlSearchParams = this.createSearchParams();
@@ -188,6 +167,47 @@ export class ProductionStanComponent implements OnInit, OnDestroy {
         if (this.estimationFilter.sapNumber !== null && this.estimationFilter.sapNumber !== '')
             urlSearchParams.append('sapNumber.contains', this.estimationFilter.sapNumber);
         return urlSearchParams;
+    }
+
+    loadFilter(filter: EstimationFilter) {
+        if (filter) {
+            this.page = 0;
+            this.router.navigate(['/production', {
+                itemNumber: this.estimationFilter.itemNumber,
+                itemName: this.estimationFilter.itemName,
+                orderNumber: this.estimationFilter.orderNumber,
+                clientName: this.estimationFilter.clientName,
+                sapNumber: this.estimationFilter.sapNumber,
+                page: this.page,
+                sort: this.predicate + ',' + (this.reverse ? 'asc' : 'desc')
+            }]);
+        }
+    }
+
+    search() {
+        this.loadFilter(this.estimationFilter);
+        this.loadAll();
+    }
+
+    onEnterClickFilter(event: any) {
+        if (event.keyCode == 13) {
+            this.loadFilter(this.estimationFilter);
+            this.loadAll();
+        }
+    }
+
+    clearFilterAndLoadAll(): void {
+        this.estimationFilter.itemName = '';
+        this.estimationFilter.clientName = '';
+        this.estimationFilter.itemNumber = '';
+        this.estimationFilter.orderNumber = '';
+        this.estimationFilter.sapNumber = '';
+        this.page = 0;
+        this.router.navigate(['/production', {
+            page: this.page,
+            sort: this.predicate + ',' + (this.reverse ? 'asc' : 'desc')
+        }]);
+        this.loadAll();
     }
 
 }

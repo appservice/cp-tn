@@ -227,7 +227,7 @@ export class TechnologyEditComponent implements OnInit, OnDestroy {
             this.orderService.findOrderSimpleDto(estimation.orderId).subscribe((order => {
                 this.order = order;
                 if(this.order.orderStatus!=='TECHNOLOGY_VERIFICATION'){
-                    this.isReadOnly=true;
+  //                  this.isReadOnly=true;
                 }
 
             }));
