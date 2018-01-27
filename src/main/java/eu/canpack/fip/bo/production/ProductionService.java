@@ -5,16 +5,22 @@ import eu.canpack.fip.bo.estimation.Estimation;
 import eu.canpack.fip.bo.estimation.EstimationQueryService;
 import eu.canpack.fip.bo.estimation.EstimationRepository;
 import eu.canpack.fip.bo.estimation.dto.EstimationCriteria;
+import eu.canpack.fip.bo.order.Order;
+import eu.canpack.fip.bo.order.OrderRepository;
 import eu.canpack.fip.bo.order.enumeration.OrderStatus;
 import eu.canpack.fip.domain.User;
+import eu.canpack.fip.security.AuthoritiesConstants;
+import eu.canpack.fip.security.SecurityUtils;
 import eu.canpack.fip.service.UserService;
 import eu.canpack.fip.web.rest.errors.CustomParameterizedException;
 import io.github.jhipster.service.filter.LongFilter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.boot.actuate.autoconfigure.ShellProperties;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -46,12 +52,15 @@ public class ProductionService {
 
     private final FinishedProductionExcelService finishedProductionExcelService;
 
-    public ProductionService(UserService userService, EstimationRepository estimationRepository, EstimationQueryService estimationQueryService, ProductionExcelService productionExcelService, FinishedProductionExcelService finishedProductionExcelService) {
+    private final OrderRepository orderRepository;
+
+    public ProductionService(UserService userService, EstimationRepository estimationRepository, EstimationQueryService estimationQueryService, ProductionExcelService productionExcelService, FinishedProductionExcelService finishedProductionExcelService, OrderRepository orderRepository) {
         this.userService = userService;
         this.estimationRepository = estimationRepository;
         this.estimationQueryService = estimationQueryService;
         this.productionExcelService = productionExcelService;
         this.finishedProductionExcelService = finishedProductionExcelService;
+        this.orderRepository = orderRepository;
     }
 
     public Page<ProductionItemDTO> showActualProduction(Pageable pageable) {
@@ -123,7 +132,7 @@ public class ProductionService {
     private void restrictByLoggedClient(EstimationCriteria criteria) {
         User user = userService.getLoggedUser();
         Set<Long> clientsId = user.getClients().stream().map(Client::getId).collect(Collectors.toSet());
-        if (!clientsId.isEmpty() ) {
+        if (!clientsId.isEmpty()) {
             log.debug("user clients ids: {}", clientsId);
             if (criteria.getClientId() == null) {
                 criteria.setClientId(new LongFilter());
@@ -153,6 +162,28 @@ public class ProductionService {
         if (isOrderFinished) {
             estimation.getOrder().setOrderStatus(OrderStatus.FINISHED);
 
+        }
+    }
+
+
+    @Transactional
+    @Secured(AuthoritiesConstants.ADMIN)
+    public void returnToTechnologyVerification(Long orderId) {
+
+        Order order = this.orderRepository.findOne(orderId);
+        if (order != null) {
+            switch (order.getOrderType()) {
+                case PRODUCTION:
+                    order.setOrderStatus(OrderStatus.TECHNOLOGY_VERIFICATION);
+                    break;
+                case EMERGENCY:
+                    order.setOrderStatus(OrderStatus.TECHNOLOGY_CREATION);
+                    break;
+                default:
+                    log.warn("Type: {} should not occured");
+
+
+            }
         }
     }
 }

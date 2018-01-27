@@ -195,5 +195,10 @@ public class ProductionResource {
         return ResponseEntity.ok().build();
     }
 
+    @GetMapping("production/return-to-technology-verification/{orderId}")
+    public ResponseEntity<Void> returnToTechnologyVerification(@PathVariable Long orderId){
+        productionService.returnToTechnologyVerification( orderId);
+        return ResponseEntity.ok().build();
+    }
 
 }

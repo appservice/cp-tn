@@ -106,4 +106,7 @@ export class ProductionService {
         FileSaver.saveAs(data, fileName, disableAutoBOM);
     }
 
+    returnToTechnologyVerification(orderId: number) :Observable<ResponseWrapper>{
+       return this.http.get(this.resourceUrl+'/return-to-technology-verification/'+orderId);
+    }
 }

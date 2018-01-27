@@ -54,12 +54,11 @@ export class ProductionStanComponent implements OnInit, OnDestroy {
             this.predicate = data['pagingParams'].predicate;
         });
         this.estimationFilter = new EstimationFilter();
-        this.estimationFilter.itemName  = activatedRoute.snapshot.params['itemName'] ? activatedRoute.snapshot.params['itemName'] : '';
-        this.estimationFilter.itemNumber= activatedRoute.snapshot.params['itemNumber'] ? activatedRoute.snapshot.params['itemNumber'] : '';
+        this.estimationFilter.itemName = activatedRoute.snapshot.params['itemName'] ? activatedRoute.snapshot.params['itemName'] : '';
+        this.estimationFilter.itemNumber = activatedRoute.snapshot.params['itemNumber'] ? activatedRoute.snapshot.params['itemNumber'] : '';
         this.estimationFilter.clientName = activatedRoute.snapshot.params['clientName'] ? activatedRoute.snapshot.params['clientName'] : '';
         this.estimationFilter.orderNumber = activatedRoute.snapshot.params['orderNumber'] ? activatedRoute.snapshot.params['orderNumber'] : '';
         this.estimationFilter.sapNumber = activatedRoute.snapshot.params['sapNumber'] ? activatedRoute.snapshot.params['sapNumber'] : '';
-
 
 
     }
@@ -210,4 +209,11 @@ export class ProductionStanComponent implements OnInit, OnDestroy {
         this.loadAll();
     }
 
+    returnToTechnologyVerification(orderId: number) {
+        this.productionService.returnToTechnologyVerification(orderId).subscribe((resp: ResponseWrapper) => {
+            this.loadAll();
+        }, (error: any) => {
+            this.onError(this.error)
+        });
+    }
 }
