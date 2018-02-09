@@ -369,4 +369,10 @@ export class OrderService {
             return res;
         });
     }
+
+
+    cloneOrder(orderId: number): Observable<Response> {
+        return this.http.put(`${this.resourceUrl}/${orderId}/clone`, null);
+    }
+
 }

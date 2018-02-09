@@ -33,6 +33,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 
 import java.io.ByteArrayOutputStream;
+import java.time.LocalDate;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -208,7 +209,13 @@ public class EstimationService {
         EstimationDTO result=estimationMapper.toDto(estimation);
 
         if(!machineIds.isEmpty()){
-           Map<Long, MachineDTO> machineDTOsMap = machineRepository.findAllByOperationDate(estimation.getCreatedAt().toLocalDate(), machineIds)
+            LocalDate creationDate;
+            if(estimation.getCreatedAt()==null){
+                creationDate=LocalDate.now();
+            }else{
+                creationDate=estimation.getCreatedAt().toLocalDate();
+            }
+           Map<Long, MachineDTO> machineDTOsMap = machineRepository.findAllByOperationDate(creationDate, machineIds)
                .stream().collect(Collectors.toMap(MachineDTO::getId, m -> m));
 
          for(OperationDTO operationDTO:result.getOperations()){

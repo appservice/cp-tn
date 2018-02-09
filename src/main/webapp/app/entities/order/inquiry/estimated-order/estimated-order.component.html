@@ -156,7 +156,7 @@
 
                         <div class="row align-content-center" style="margin-top: 20px">
                             <div class="col-md-8">
-                                <textarea class="form-control border-primary" rows="10" [(ngModel)]="order.offerRemarks" name="offerRemarks"></textarea>
+                                <textarea class="form-control border-primary" rows="10" [(ngModel)]="order.offerRemarks" name="offerRemarks" maxlength="1024"></textarea>
                             </div>
                             <div class="col-md-1 align-self-center">
                                 <button type="button" class="btn btn-outline-primary " (click)="addOfferRemarks()"><span class="fa fa-save"></span>&nbsp;Zapisz</button>

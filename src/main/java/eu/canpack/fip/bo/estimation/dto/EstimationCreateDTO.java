@@ -94,7 +94,9 @@ public class EstimationCreateDTO implements Serializable {
         if(showPrice!=null){
             if(!showPrice){
                 this.setEstimatedCost(null);
-
+                this.setExecutionTimeUnit(null);
+                this.setExecutionTimeValue(null);
+                this.setEstimatedRealizationDate(null);
             }
         }
 

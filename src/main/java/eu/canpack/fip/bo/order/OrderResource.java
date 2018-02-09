@@ -496,6 +496,16 @@ public class OrderResource {
         return ResponseEntity.ok().build();
     }
 
+    @PutMapping("/orders/{id}/clone")
+    @Timed
+    public ResponseEntity<Void> cloneOrder(@PathVariable Long id) {
+        log.debug("REST request to clone order with id: {}", id);
+
+
+        orderService.cloneOrder(id);
+        return ResponseEntity.ok().build();
+    }
+
     @PostMapping("/purchase-orders")
     @Timed
     public ResponseEntity<OrderListDTO> createPurchaseOrder(@RequestBody OrderDTO orderDTO) {

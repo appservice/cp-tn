@@ -46,9 +46,7 @@ export class OrderDetailComponent implements OnInit, OnDestroy {
                 private router: Router,
                 private route: ActivatedRoute,
                 private modalService: NgbModal,
-                private excelService: ExcelService,
-
-    ) {
+                private excelService: ExcelService,) {
         this.order = new Order();
         this.order.estimations = [];
 
@@ -177,16 +175,16 @@ export class OrderDetailComponent implements OnInit, OnDestroy {
 
     convertToDate(ngBootstrapDate: any): Date {
 
-      if(ngBootstrapDate && ngBootstrapDate!=null){
+        if (ngBootstrapDate && ngBootstrapDate != null) {
             if (typeof ngBootstrapDate === 'string') {
                 return null;
                 // return new Date( ngBootstrapDate);
             }
-            let date= new Date(ngBootstrapDate.year, ngBootstrapDate.month-1, ngBootstrapDate.day);
+            let date = new Date(ngBootstrapDate.year, ngBootstrapDate.month - 1, ngBootstrapDate.day);
             // console.log(date);
             return date;
-       }
-       console.log('test', ngBootstrapDate);
+        }
+        console.log('test', ngBootstrapDate);
         return null;
     }
 
@@ -199,6 +197,17 @@ export class OrderDetailComponent implements OnInit, OnDestroy {
         //     isDisabled=false;
         // }
         return isDisabled;
+    }
+
+    cloneOrder(): void {
+        this.orderService.cloneOrder(this.order.id).subscribe((resp: any) => {
+                this.router.navigateByUrl("/order")
+            },
+            (error: any) => {
+                this.alertService.error('error.canNotCloneOrder');
+                console.log(error);
+
+            });
     }
 
 }

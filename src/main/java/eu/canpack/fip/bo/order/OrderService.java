@@ -5,6 +5,7 @@ import eu.canpack.fip.bo.attachment.AttachmentRepository;
 import eu.canpack.fip.bo.client.Client;
 import eu.canpack.fip.bo.client.ClientRepository;
 import eu.canpack.fip.bo.commercialPart.CommercialPart;
+import eu.canpack.fip.bo.cooperation.Cooperation;
 import eu.canpack.fip.bo.drawing.Drawing;
 import eu.canpack.fip.bo.drawing.DrawingRepository;
 import eu.canpack.fip.bo.estimation.Estimation;
@@ -28,6 +29,7 @@ import eu.canpack.fip.security.AuthoritiesConstants;
 import eu.canpack.fip.security.SecurityUtils;
 import eu.canpack.fip.service.UserService;
 import eu.canpack.fip.web.rest.errors.CustomParameterizedException;
+import org.apache.commons.io.FilenameUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -37,9 +39,14 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.IOException;
 import java.math.BigDecimal;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
@@ -613,7 +620,6 @@ public class OrderService {
     }
 
 
-
     public void claimByEstimatior(Long orderId) {
 
         Order order = orderRepository.findOne(orderId);
@@ -822,5 +828,118 @@ public class OrderService {
         order.setEstimationMaker(null);
         order.setOrderStatus(OrderStatus.SENT_TO_ESTIMATION);
 
+    }
+
+    public Order cloneOrder(Long orderId) {
+        Order oldOrder = orderRepository.findOne(orderId);
+
+        Order newOrder = new Order();
+        newOrder.setOrderStatus(OrderStatus.WORKING_COPY);
+        newOrder.setOrderType(oldOrder.getOrderType());
+        newOrder.setDeliveryAddress(oldOrder.getDeliveryAddress());
+        newOrder.setClient(oldOrder.getClient());
+        newOrder.setCreatedBy(userService.getLoggedUser());
+        newOrder.setCreatedAt(ZonedDateTime.now());
+        newOrder.setOfferRemarks(oldOrder.getOfferRemarks());
+        newOrder.setName(oldOrder.getName());
+        prepareDocumentNumber(newOrder);
+
+        oldOrder.getEstimations()
+            .forEach(estimation -> {
+                Estimation newEstimation = new Estimation();
+                newEstimation.setMpk(estimation.getMpk());
+                newEstimation.setPricePublished(false);
+                newEstimation.setOrder(newOrder);
+                newEstimation.setSapNumber(estimation.getSapNumber());
+                newEstimation.setItemName(estimation.getItemName());
+                newEstimation.setItemNumber(estimation.getItemNumber());
+                newEstimation.setAmount(estimation.getAmount());
+                newEstimation.setDescription(estimation.getDescription());
+                newEstimation.setMaterialType(estimation.getMaterialType());
+                newEstimation.setMaterial(estimation.getMaterial());
+                newEstimation.setMass(estimation.getMass());
+                newEstimation.setSapNumber(estimation.getSapNumber());
+                newEstimation.setExecutionTimeUnit(estimation.getExecutionTimeUnit());
+                newEstimation.setExecutionTimeValue(estimation.getExecutionTimeValue());
+                newEstimation.setDrawing(estimation.getDrawing());
+                estimation.getOperations()
+                    .forEach(operation -> {
+                        Operation newOperation = new Operation();
+                        newOperation.setSequenceNumber(operation.getSequenceNumber());
+                        newOperation.setEstimation(newEstimation);
+                        newOperation.setOperationType(operation.getOperationType());
+                        newOperation.setDescription(operation.getDescription());
+                        newOperation.setEstimatedTime(operation.getEstimatedTime());
+                        newOperation.setMachine(operation.getMachine());
+                        newEstimation.getOperations().add(newOperation);
+                    });
+                estimation.getCommercialParts()
+                    .forEach(commercialPart -> {
+                        CommercialPart newCommercialPart = new CommercialPart();
+                        newCommercialPart.setEstimation(newEstimation);
+                        newCommercialPart.setAmount(commercialPart.getAmount());
+                        newCommercialPart.setName(commercialPart.getName());
+                        newCommercialPart.setPrice(commercialPart.getPrice());
+                        newCommercialPart.setUnit(commercialPart.getUnit());
+                        newEstimation.getCommercialParts().add(newCommercialPart);
+                    });
+                estimation.getCooperationList()
+                    .forEach(cooperation -> {
+                        Cooperation newCooperation = new Cooperation();
+                        newCooperation.setAmount(cooperation.getAmount());
+                        newCooperation.setCounterparty(cooperation.getCounterparty());
+                        newCooperation.setEstimation(newEstimation);
+                        newCooperation.setName(cooperation.getName());
+                        newCooperation.setPrice(cooperation.getPrice());
+                        newEstimation.getCooperationList().add(newCooperation);
+                    });
+
+
+                Drawing oldDrawing = estimation.getDrawing();
+                Drawing newDrawing = new Drawing();
+                newDrawing.setNumber(oldDrawing.getNumber());
+                newDrawing.setName(oldDrawing.getName());
+                newDrawing.getEstimations().add(estimation);
+                newDrawing.setCreatedAt(ZonedDateTime.now());
+
+                oldDrawing.getAttachments().forEach(attachment -> {
+                    Attachment newAttachment = new Attachment();
+                    newAttachment.setDataContentType(attachment.getDataContentType());
+                    newAttachment.setUploadDate(attachment.getUploadDate());
+                    newAttachment.setName(attachment.getName());
+
+                    String newPath = copyAttachmentFile(attachment.getPath());
+                    newAttachment.setPath(newPath);
+                    newDrawing.getAttachments().add(newAttachment);
+                });
+
+
+                newEstimation.setDrawing(drawingRepository.save(newDrawing));
+                newOrder.getEstimations().add(newEstimation);
+
+            });
+
+
+        return orderRepository.save(newOrder);
+
+    }
+
+    protected String copyAttachmentFile(String attachmentPath) {
+        ZonedDateTime now = ZonedDateTime.now();
+        Path path = Paths.get(attachmentPath);
+
+        String fileName = path.toFile().getName();
+        String dateString = now.format(DateTimeFormatter.ofPattern("yyyy-MM-dd_HH.mm.ss"));
+        String fileExtensions = FilenameUtils.getExtension(fileName);
+        String fileBaseName = FilenameUtils.getBaseName(fileName);
+        log.debug("fileBaseName: {}",fileBaseName);
+        String newFileName = fileBaseName.substring(0, fileBaseName.length() - 19).concat(dateString) + "." + fileExtensions;
+        try {
+            Path newPath = Files.copy(path, Paths.get(path.getParent().toAbsolutePath().toString(), newFileName));
+            return newPath.toAbsolutePath().toString();
+        } catch (IOException e) {
+            log.error("can not copy file {}", attachmentPath, e);
+            throw new CustomParameterizedException("error.copyAttachemntFileError", attachmentPath);
+        }
     }
 }
