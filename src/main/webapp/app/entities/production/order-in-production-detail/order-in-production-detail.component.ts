@@ -55,6 +55,9 @@ export class OrderInProductionDetailComponent implements OnInit, OnDestroy {
 
     ngOnInit() {
         this.isSaving = false;
+        this.principal.identity().then((account) => {
+            this.currentAccount = account;
+        });
 
         this.clientService.query()
             .subscribe((res: ResponseWrapper) => {
@@ -69,9 +72,7 @@ export class OrderInProductionDetailComponent implements OnInit, OnDestroy {
             }
         });
 
-        this.principal.identity().then((account) => {
-            this.currentAccount = account;
-        });
+
     }
 
     private onError(error) {

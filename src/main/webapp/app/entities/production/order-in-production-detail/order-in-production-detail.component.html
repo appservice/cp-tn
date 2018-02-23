@@ -85,7 +85,7 @@
                                         <td> SZT</td>
                                         <td style="width: 170px">
                                             <input type="text" class="form-control" [(ngModel)]="estimation.mpk" name="estimation_mpk_{{rowIndex}}"
-                                                   [disabled]="!(currentAccount.authorities.indexOf('ROLE_SAP_INTRODUCER')>-1) || order.orderStatus!=='CREATING_SAP_ORDER'"></td>
+                                                   [disabled]="!(currentAccount.authorities.indexOf('ROLE_SAP_INTRODUCER')>-1) || order.orderStatus!=='CREATING_SAP_ORDER' && !(currentAccount.authorities.indexOf('ROLE_ADMIN')>-1)"></td>
 
                                         <td style="width: 100px">
 
@@ -106,9 +106,9 @@
                                             <tn-estimation-remark [estimationRemarks]="estimation.estimationRemarks"
                                                                   *ngIf="estimation.estimationRemarks!=null && estimation.estimationRemarks.length>0"></tn-estimation-remark>
                                         </td>
-                                        <td><input type="text" class="form-control" [(ngModel)]="estimation.sapNumber" required *ngIf="order.orderStatus==='CREATING_SAP_ORDER'"
+                                        <td><input type="text" class="form-control" [(ngModel)]="estimation.sapNumber" required *ngIf="order.orderStatus==='CREATING_SAP_ORDER' || (currentAccount.authorities.indexOf('ROLE_ADMIN')>-1)"
                                                    name="sapNumber_{{rowIndex}}">
-                                            <span *ngIf="order.orderStatus!=='CREATING_SAP_ORDER'">  {{estimation.sapNumber}}</span>
+                                            <span *ngIf="order.orderStatus!=='CREATING_SAP_ORDER' && !(currentAccount.authorities.indexOf('ROLE_ADMIN')>-1)">  {{estimation.sapNumber}}</span>
                                         </td>
                                         <td>
                                             <label class="custom-control custom-checkbox mb-3 mr-sm-3 mb-sm-0 tn-checkbox">
@@ -169,7 +169,7 @@
                 <span class="fa fa-arrow-circle-right"></span>
                 Wyślij do produkcji
             </button>
-            <button type="button" class="btn btn-outline-primary" (click)="saveSapNumbers()" *ngIf="order.orderStatus==='CREATING_SAP_ORDER'"
+            <button type="button" class="btn btn-outline-primary" (click)="saveSapNumbers()" *ngIf="order.orderStatus==='CREATING_SAP_ORDER'|| (currentAccount && currentAccount.authorities.indexOf('ROLE_ADMIN')>-1) "
                     [disabled]="editForm.form.invalid || isSaving">
                 <span class="fa fa-save"></span>
                 Zapisz

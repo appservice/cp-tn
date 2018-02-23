@@ -1,17 +1,19 @@
 package eu.canpack.fip.bo.order.dto;
 
-import java.io.Serializable;
-//import eu.canpack.fip.domain.enumeration.FirstEnum;
-//import io.github.jhipster.service.filter.BooleanFilter;
-//import io.github.jhipster.service.filter.DoubleFilter;
 import eu.canpack.fip.bo.order.enumeration.OrderStatus;
 import eu.canpack.fip.bo.order.enumeration.OrderType;
 import io.github.jhipster.service.filter.Filter;
-//import io.github.jhipster.service.filter.FloatFilter;
-//import io.github.jhipster.service.filter.IntegerFilter;
 import io.github.jhipster.service.filter.LongFilter;
 import io.github.jhipster.service.filter.StringFilter;
 import io.github.jhipster.service.filter.ZonedDateTimeFilter;
+
+import java.io.Serializable;
+
+//import eu.canpack.fip.domain.enumeration.FirstEnum;
+//import io.github.jhipster.service.filter.BooleanFilter;
+//import io.github.jhipster.service.filter.DoubleFilter;
+//import io.github.jhipster.service.filter.FloatFilter;
+//import io.github.jhipster.service.filter.IntegerFilter;
 //import io.github.jhipster.service.filter.StringFilter;
 //import io.github.jhipster.service.filter.BigDecimalFilter;
 //
@@ -57,15 +59,14 @@ public class OrderCriteria implements Serializable {
 
     private StringFilter clientName;
 
-    private StringFilter createdByLastName;
-
-    private StringFilter createdByFirstName;
 
     private OrderTypeFilter orderType;
 
     private StringFilter title;
 
     private StringFilter drawingNumber;
+
+    private StringFilter creatorName;
 
 //
 //    private StringFilter test;
@@ -156,26 +157,9 @@ public class OrderCriteria implements Serializable {
         this.clientName = clientName;
     }
 
-    public StringFilter getCreatedByLastName() {
-        return createdByLastName;
-    }
-
-    public void setCreatedByLastName(StringFilter createdByLastName) {
-        this.createdByLastName = createdByLastName;
-    }
-
-    public StringFilter getCreatedByFirstName() {
-        return createdByFirstName;
-    }
-
-    public void setCreatedByFirstName(StringFilter createdByFirstName) {
-        this.createdByFirstName = createdByFirstName;
-    }
-
     public OrderTypeFilter getOrderType() {
         return orderType;
     }
-
 
 
     public void setOrderType(OrderTypeFilter orderType) {
@@ -190,6 +174,14 @@ public class OrderCriteria implements Serializable {
         this.title = title;
     }
 
+    public StringFilter getCreatorName() {
+        return creatorName;
+    }
+
+    public void setCreatorName(StringFilter creatorName) {
+        this.creatorName = creatorName;
+    }
+
     @Override
     public String toString() {
         return "OrderCriteria{" +
@@ -197,12 +189,10 @@ public class OrderCriteria implements Serializable {
                 (referenceNumber != null ? "referenceNumber=" + referenceNumber + ", " : "") +
                 (createdAt != null ? "createdAt=" + createdAt + ", " : "") +
                 (createdById != null ? "createdById=" + createdById + ", " : "") +
-                (createdByFirstName != null ? "createdByFirstName=" + createdByFirstName + ", " : "") +
                 (title != null ? "title=" + title + ", " : "") +
                 (orderType != null ? "orderType=" + orderType + ", " : "") +
                 (orderStatus != null ? "orderStatus=" + orderStatus + ", " : "") +
-                (createdByLastName != null ? "createdByLastName=" + createdByLastName + ", " : "") +
-                (createdByFirstName != null ? "createdByFirstName=" + createdByFirstName + ", " : "") +
+                (creatorName != null ? "creatorName=" + creatorName + ", " : "") +
 
             "}";
     }

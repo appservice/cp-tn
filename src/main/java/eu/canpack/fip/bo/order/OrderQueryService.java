@@ -143,12 +143,12 @@ public class OrderQueryService extends QueryService<Order> {
 //            if (criteria.getClientName() != null) {
 //                specification = specification.and(buildReferringEntitySpecification(criteria.getClientName(), eu.canpack.fip.bo.order.Order_.client, Client_.name));
 //            }
-            if (criteria.getCreatedByLastName() != null) {
-                specification = specification.and(buildReferringEntitySpecification(criteria.getCreatedByLastName(), eu.canpack.fip.bo.order.Order_.createdBy, User_.lastName));
-            }
-            if (criteria.getCreatedByFirstName() != null) {
-                specification = specification.and(buildReferringEntitySpecification(criteria.getCreatedByFirstName(), eu.canpack.fip.bo.order.Order_.createdBy, User_.firstName));
-            }
+//            if (criteria.getCreatedByLastName() != null) {
+//                specification = specification.and(buildReferringEntitySpecification(criteria.getCreatedByLastName(), eu.canpack.fip.bo.order.Order_.createdBy, User_.lastName));
+//            }
+//            if (criteria.getCreatedByFirstName() != null) {
+//                specification = specification.and(buildReferringEntitySpecification(criteria.getCreatedByFirstName(), eu.canpack.fip.bo.order.Order_.createdBy, User_.firstName));
+//            }
             if (criteria.getOrderType() != null) {
                 specification = specification.and(buildSpecification(criteria.getOrderType(), eu.canpack.fip.bo.order.Order_.orderType));
             }
@@ -162,11 +162,20 @@ public class OrderQueryService extends QueryService<Order> {
                     return builder.or(builder.like(builder.upper(joinToClient.get(Client_.name)), "%" + criteria.getClientName().getContains().trim().toUpperCase() + "%"),
                                       builder.like(builder.upper(joinToClient.get(Client_.shortcut)), "%" + criteria.getClientName().getContains().trim().toUpperCase() + "%"));
 
+                };
+                specification = specification.and(spec);
+            }
+            if (criteria.getCreatorName() != null) {
+                Specification<Order> spec = (root, query, builder) -> {
+                    Join<Order, User> joinToClient = root.join(eu.canpack.fip.bo.order.Order_.createdBy, JoinType.INNER);
+                    return builder.or(builder.like(builder.upper(joinToClient.get(User_.firstName)), "%" + criteria.getCreatorName().getContains().trim().toUpperCase() + "%"),
+                                      builder.like(builder.upper(joinToClient.get(User_.lastName)), "%" + criteria.getCreatorName().getContains().trim().toUpperCase() + "%"));
 
                 };
                 specification = specification.and(spec);
-
             }
+
+
             if (criteria.getDrawingNumber() != null) {
 //                log.debug("drawingNumber {}",criteria.getDrawingNumber().getContains());
                 Specification<Order> spec = (root, query, builder) -> {
@@ -212,6 +221,15 @@ public class OrderQueryService extends QueryService<Order> {
     public Page<OrderListDTO> findByCriteriaAndClient(OrderCriteria criteria, Pageable page) {
         log.debug("find by criteria : {}, page: {}", criteria, page);
 
+        updateCriteriaByClient(criteria);
+        final Specifications<Order> specification = createSpecification(criteria);
+
+        final Page<Order> result = OrderRepository.findAll(specification, page);
+
+        return result.map(OrderMapper::toDto);
+    }
+
+    private void updateCriteriaByClient(OrderCriteria criteria) {
         User user = userService.getLoggedUser();
         Set<Long> clientsId = user.getClients().stream().map(Client::getId).collect(Collectors.toSet());
         if (!clientsId.isEmpty()) {
@@ -222,11 +240,6 @@ public class OrderQueryService extends QueryService<Order> {
             criteria.getClientId().setIn(new ArrayList<>(clientsId));
 
         }
-        final Specifications<Order> specification = createSpecification(criteria);
-
-        final Page<Order> result = OrderRepository.findAll(specification, page);
-
-        return result.map(OrderMapper::toDto);
     }
 
     /**
@@ -239,17 +252,17 @@ public class OrderQueryService extends QueryService<Order> {
     @Transactional(readOnly = true)
     public List<OrderListDTO> findByCriteriaAndClient(OrderCriteria criteria) {
         log.debug("find by criteria : {}, page: {}", criteria);
-
-        User user = userService.getLoggedUser();
-//        Client client = user.getClient();
-//        if (client != null) {
-//            log.debug("user client: {}", client);
-//            if (criteria.getClientId() == null) {
-//                criteria.setClientId(new LongFilter());
-//            }
-//            criteria.getClientId().setEquals(client.getId());
-//
-//        }
+        updateCriteriaByClient(criteria);
+//        User user = userService.getLoggedUser();
+////        Client client = user.getClient();
+////        if (client != null) {
+////            log.debug("user client: {}", client);
+////            if (criteria.getClientId() == null) {
+////                criteria.setClientId(new LongFilter());
+////            }
+////            criteria.getClientId().setEquals(client.getId());
+////
+////        }
         Sort sort = new Sort(Sort.Direction.DESC, "id");
         final Specifications<Order> specification = createSpecification(criteria);
 
@@ -269,16 +282,7 @@ public class OrderQueryService extends QueryService<Order> {
     public List<OrderListDTO> findByCriteriaAndClient(OrderCriteria criteria, Sort sort) {
         log.debug("find by criteria : {}, page: {}", criteria);
 
-        User user = userService.getLoggedUser();
-//        Client client = user.getClient();
-//        if (client != null) {
-//            log.debug("user client: {}", client);
-//            if (criteria.getClientId() == null) {
-//                criteria.setClientId(new LongFilter());
-//            }
-//            criteria.getClientId().setEquals(client.getId());
-//
-//        }
+        updateCriteriaByClient(criteria);
         final Specifications<Order> specification = createSpecification(criteria);
 
         final List<Order> result = OrderRepository.findAll(specification, sort);

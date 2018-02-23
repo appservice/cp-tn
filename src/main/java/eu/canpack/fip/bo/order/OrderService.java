@@ -790,12 +790,20 @@ public class OrderService {
         orderDTO.getEstimations().forEach(e -> {
             Estimation estimation = estimationRepository.findOne(e.getId());
             estimation.setSapNumber(e.getSapNumber());
+            estimation.setMpk(e.getMpk());
         });
         Order order = orderRepository.findOne(orderDTO.getId());
         boolean hasOrderEmptySapNumber = order.getEstimations().stream()
             .anyMatch(e -> e.getSapNumber() == null || e.getSapNumber().isEmpty());
-        if (!hasOrderEmptySapNumber) {
-            order.setOrderStatus(OrderStatus.TECHNOLOGY_VERIFICATION);
+        if (!hasOrderEmptySapNumber && order.getOrderStatus()==OrderStatus.CREATING_SAP_ORDER) {
+            switch (order.getOrderType()) {
+                case PRODUCTION:
+                    order.setOrderStatus(OrderStatus.TECHNOLOGY_VERIFICATION);
+                    break;
+                case EMERGENCY:
+                    order.setOrderStatus(OrderStatus.TECHNOLOGY_CREATION);
+
+            }
         }
         return new OrderDTO(order);
 
@@ -932,7 +940,7 @@ public class OrderService {
         String dateString = now.format(DateTimeFormatter.ofPattern("yyyy-MM-dd_HH.mm.ss"));
         String fileExtensions = FilenameUtils.getExtension(fileName);
         String fileBaseName = FilenameUtils.getBaseName(fileName);
-        log.debug("fileBaseName: {}",fileBaseName);
+        log.debug("fileBaseName: {}", fileBaseName);
         String newFileName = fileBaseName.substring(0, fileBaseName.length() - 19).concat(dateString) + "." + fileExtensions;
         try {
             Path newPath = Files.copy(path, Paths.get(path.getParent().toAbsolutePath().toString(), newFileName));
