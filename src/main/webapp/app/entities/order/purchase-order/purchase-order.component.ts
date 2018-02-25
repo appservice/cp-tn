@@ -61,6 +61,7 @@ export class PurchaseOrderComponent implements OnInit, OnDestroy {
         this.orderFilter.clientName = activatedRoute.snapshot.params['clientName'] ? activatedRoute.snapshot.params['clientName'] : '';
         this.orderFilter.orderStatus = activatedRoute.snapshot.params['orderStatus'] ? activatedRoute.snapshot.params['orderStatus'] : '';
         this.orderFilter.title = activatedRoute.snapshot.params['title'] ? activatedRoute.snapshot.params['title'] : '';
+        this.orderFilter.creatorName = activatedRoute.snapshot.params['creatorName'] ? activatedRoute.snapshot.params['creatorName'] : '';
 
     }
 
@@ -164,6 +165,7 @@ export class PurchaseOrderComponent implements OnInit, OnDestroy {
         urlSearchParams.append('createdAt.greaterOrEqualThan', this.orderFilter.getValidFromString());
         urlSearchParams.append('createdAt.lessOrEqualThan', this.orderFilter.getValidToString());
         urlSearchParams.append('title.contains', this.orderFilter.title);
+        urlSearchParams.append('creatorName.contains', this.orderFilter.creatorName);
         this.orderService.getPurchaseOrdersAsExcel(urlSearchParams);
     }
 
@@ -187,6 +189,9 @@ export class PurchaseOrderComponent implements OnInit, OnDestroy {
         if (this.orderFilter.title !== null && this.orderFilter.title !== '')
             urlSearchParams.append('title.contains', this.orderFilter.title);
 
+        if (this.orderFilter.creatorName !== null && this.orderFilter.creatorName !== '')
+            urlSearchParams.append('creatorName.contains', this.orderFilter.creatorName);
+
         if (this.orderFilter.validTo !== null )//&& this.orderFilter.validTo !== ''
             urlSearchParams.append('createdAt.lessOrEqualThan', this.orderFilter.getValidToString());
         return urlSearchParams;
@@ -205,6 +210,7 @@ export class PurchaseOrderComponent implements OnInit, OnDestroy {
                 clientName: this.orderFilter.clientName,
                 orderStatus: this.orderFilter.orderStatus,
                 title: this.orderFilter.title,
+                creatorName: this.orderFilter.creatorName,
                 // validFrom: this.orderFilter.validFrom.year+'-'+this.orderFilter.validFrom.month+'-'+this.orderFilter.validFrom.day,
                 page: this.page,
                 sort: this.predicate + ',' + (this.reverse ? 'asc' : 'desc')
@@ -233,6 +239,7 @@ export class PurchaseOrderComponent implements OnInit, OnDestroy {
         this.orderFilter.validFrom = null
         this.orderFilter.validTo = null;
         this.orderFilter.title = '';
+        this.orderFilter.creatorName = '';
         this.page = 0;
         this.currentSearch = '';
         this.router.navigate(['/purchase-order', {

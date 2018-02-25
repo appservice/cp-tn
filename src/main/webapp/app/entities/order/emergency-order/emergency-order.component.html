@@ -76,6 +76,12 @@
                    (keydown)="onEnterClickFilter($event)">
 
         </div>
+        <div class="col-md-2">
+            <input type="text" class="form-control" name="filterCreator"
+                   [(ngModel)]="orderFilter.creatorName" placeholder="Utworzył"
+                   (keydown)="onEnterClickFilter($event)">
+
+        </div>
         <div class="col-md-4">
             <label>&nbsp;</label>
             <button class="btn btn-outline-dark" type="button" (click)="search()"><span

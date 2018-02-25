@@ -316,7 +316,9 @@ public class UserService {
         if (SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.ADMIN)) {
             return allAuthorities.stream().map(Authority::getName).collect(Collectors.toList());
         } else {
-            return allAuthorities.stream().map(Authority::getName).filter(a -> !a.equals(AuthoritiesConstants.ADMIN)).collect(Collectors.toList());
+            return allAuthorities.stream().map(Authority::getName)
+                .filter(a -> !a.equals(AuthoritiesConstants.ADMIN))
+                .collect(Collectors.toList());
         }
 
     }

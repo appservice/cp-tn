@@ -152,6 +152,8 @@
 
 </form>
 
+<button class="btn btn-outline-secondary" *jhiHasAnyAuthority="['ROLE_ADMIN','ROLE_AUDITOR']" [routerLink]="['/order-audit',order.id,{'orderNumber':order.internalNumber}]">Audyt</button>
+
 <ng-template #content let-c="close" let-d="dismiss">
     <div class="modal-header">
         <h4 class="modal-title">Załączniki</h4>

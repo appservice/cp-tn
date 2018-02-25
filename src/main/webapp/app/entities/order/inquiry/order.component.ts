@@ -60,13 +60,14 @@ export class OrderComponent implements OnInit, OnDestroy {
             this.reverse = data['pagingParams'].ascending;
             this.predicate = data['pagingParams'].predicate;
         });
-      //  this.currentSearch = activatedRoute.snapshot.params['search'] ? activatedRoute.snapshot.params['search'] : '';
+        //  this.currentSearch = activatedRoute.snapshot.params['search'] ? activatedRoute.snapshot.params['search'] : '';
         this.orderFilter = new OrderFilter();
         this.orderFilter.internalNumber = activatedRoute.snapshot.params['internalNumber'] ? activatedRoute.snapshot.params['internalNumber'] : '';
         this.orderFilter.referenceNumber = activatedRoute.snapshot.params['referenceNumber'] ? activatedRoute.snapshot.params['referenceNumber'] : '';
         this.orderFilter.clientName = activatedRoute.snapshot.params['clientName'] ? activatedRoute.snapshot.params['clientName'] : '';
         this.orderFilter.orderStatus = activatedRoute.snapshot.params['orderStatus'] ? activatedRoute.snapshot.params['orderStatus'] : '';
         this.orderFilter.title = activatedRoute.snapshot.params['title'] ? activatedRoute.snapshot.params['title'] : '';
+        this.orderFilter.creatorName = activatedRoute.snapshot.params['creatorName'] ? activatedRoute.snapshot.params['creatorName'] : '';
         // this.orderFilter.validFrom = activatedRoute.snapshot.params['validFrom'] ? activatedRoute.snapshot.params['validFrom'] : null;
 
 
@@ -88,7 +89,7 @@ export class OrderComponent implements OnInit, OnDestroy {
                 return;
             }
             ;
-            let urlSearchParams =this.createSearchParams();
+            let urlSearchParams = this.createSearchParams();
             /*new URLSearchParams();
 
             urlSearchParams.append('internalNumber.contains', this.orderFilter.internalNumber);
@@ -205,8 +206,6 @@ export class OrderComponent implements OnInit, OnDestroy {
     }
 
 
-
-
     model: any;
 
 
@@ -238,7 +237,7 @@ export class OrderComponent implements OnInit, OnDestroy {
         return d.getDay() === 0 || d.getDay() === 6;
     }
 
-    exportToExcel(){
+    exportToExcel() {
         let urlSearchParams = new URLSearchParams();
         urlSearchParams.append('internalNumber.contains', this.orderFilter.internalNumber);
         urlSearchParams.append('referenceNumber.contains', this.orderFilter.referenceNumber);
@@ -247,22 +246,23 @@ export class OrderComponent implements OnInit, OnDestroy {
         urlSearchParams.append('createdAt.greaterOrEqualThan', this.orderFilter.getValidFromString());
         urlSearchParams.append('createdAt.lessOrEqualThan', this.orderFilter.getValidToString());
         urlSearchParams.append('title.contains', this.orderFilter.title);
+        urlSearchParams.append('creatorName.contains', this.orderFilter.creatorName);
         this.orderService.getInquiriesAsExcel(urlSearchParams);
     }
-
 
 
     onInputFieldChanged(event: IMyInputFieldChanged) {
         console.log('onInputFieldChanged(): Value: ', event.value, ' - dateFormat: ', event.dateFormat, ' - valid: ', event.valid);
         //   console.log(event);
-        if(event.value!=null && event.value){
-            this.validDate=event.valid;
+        if (event.value != null && event.value) {
+            this.validDate = event.valid;
         }
 
     }
+
     myOptions: INgxMyDpOptions = {
         // other options...
-        showWeekNumbers:true,
+        showWeekNumbers: true,
         dateFormat: 'dd-mm-yyyy',
         todayBtnTxt: 'Dzisiaj',
         dayLabels: {su: "Nie", mo: "Pon", tu: "Wto", we: "Sro", th: "Czw", fr: "Pią", sa: "Sob"},
@@ -293,13 +293,16 @@ export class OrderComponent implements OnInit, OnDestroy {
         if (this.orderFilter.orderStatus !== null && this.orderFilter.orderStatus !== '')
             urlSearchParams.append('orderStatus.equals', this.orderFilter.orderStatus);
 
-        if (this.orderFilter.validFrom !== null )//&& this.orderFilter.validFrom !== ''
+        if (this.orderFilter.validFrom !== null)//&& this.orderFilter.validFrom !== ''
             urlSearchParams.append('createdAt.greaterOrEqualThan', this.orderFilter.getValidFromString());
 
         if (this.orderFilter.title !== null && this.orderFilter.title !== '')
             urlSearchParams.append('title.contains', this.orderFilter.title);
 
-        if (this.orderFilter.validTo !== null )//&& this.orderFilter.validTo !== ''
+        if (this.orderFilter.creatorName !== null && this.orderFilter.creatorName !== '')
+            urlSearchParams.append('creatorName.contains', this.orderFilter.creatorName);
+
+        if (this.orderFilter.validTo !== null)//&& this.orderFilter.validTo !== ''
             urlSearchParams.append('createdAt.lessOrEqualThan', this.orderFilter.getValidToString());
         return urlSearchParams;
     }
@@ -317,6 +320,7 @@ export class OrderComponent implements OnInit, OnDestroy {
                 clientName: this.orderFilter.clientName,
                 orderStatus: this.orderFilter.orderStatus,
                 title: this.orderFilter.title,
+                creatorName: this.orderFilter.creatorName,
                 // validFrom: this.orderFilter.validFrom.year+'-'+this.orderFilter.validFrom.month+'-'+this.orderFilter.validFrom.day,
                 page: this.page,
                 sort: this.predicate + ',' + (this.reverse ? 'asc' : 'desc')
@@ -345,6 +349,7 @@ export class OrderComponent implements OnInit, OnDestroy {
         this.orderFilter.validFrom = null
         this.orderFilter.validTo = null;
         this.orderFilter.title = '';
+        this.orderFilter.creatorName = '';
         this.page = 0;
         this.currentSearch = '';
         this.router.navigate(['/order', {

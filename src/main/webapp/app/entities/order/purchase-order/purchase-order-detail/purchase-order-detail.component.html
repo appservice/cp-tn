@@ -122,6 +122,7 @@
     </div>
 
 </form>
+<button class="btn btn-outline-secondary" *jhiHasAnyAuthority="['ROLE_ADMIN','ROLE_AUDITOR']" [routerLink]="['/order-audit',order.id]">Audyt</button>
 
 
 <ng-template #content let-c="close" let-d="dismiss">

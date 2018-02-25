@@ -25,6 +25,7 @@ public interface OrderMapper extends EntityMapper<OrderListDTO, Order> {
     @Mapping(source = "clientId", target = "client")
     @Mapping(target = "estimationMaker", ignore = true)
     @Mapping(target = "createdBy", ignore = true)
+    @Mapping(target = "audits", ignore = true)
     Order toEntity(OrderListDTO orderListDTO);
 
     default Order fromId(Long id) {
@@ -41,6 +42,7 @@ public interface OrderMapper extends EntityMapper<OrderListDTO, Order> {
     @Mapping(target = "createdBy", ignore = true)
     @Mapping(target = "closeDate", ignore = true)
     @Mapping(target = "estimations", ignore = true)
+    @Mapping(target = "audits", ignore = true)
     Order toEntity(OrderDTO orderDTO);
 
 

@@ -29,7 +29,7 @@
     "ng2-file-upload": "^1.3.0",
     "ngx-cookie": "2.0.1",
     "ngx-infinite-scroll": "0.5.1",
-    "ngx-mydatepicker": "^2.4.1",
+    "ngx-mydatepicker": "^2.4.4",
     "ngx-webstorage": "2.0.1",
     "primeng": "^5.0.2",
     "reflect-metadata": "0.1.10",

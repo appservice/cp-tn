@@ -1,0 +1,27 @@
+<div>
+    <h2>
+        <span>Audyt zamówienia: {{orderNumber}}</span>
+
+    </h2>
+    <jhi-alert></jhi-alert>
+
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>Data</th>
+            <th>Utworzone przez</th>
+            <th>Operacja</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let audit of orderAudits">
+            <td> {{audit.createdAt|date:'dd-MM-yyyy'}}&nbsp;&nbsp;&nbsp;{{audit.createdAt|date:'HH:mm:ss'}}</td>
+            <td> {{audit.createdBy.firstName}}a {{audit.createdBy.lastName}}</td>
+            <td> {{'tnApp.AuditOperation.'+audit.operation|translate}}</td>
+        </tr>
+        </tbody>
+    </table>
+    <br/>
+    <button type="button" class="btn btn-outline-danger" (click)="previousState()"><span class="fa fa-arrow-left"></span> Powrót</button>
+
+</div>

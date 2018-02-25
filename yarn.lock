@@ -5585,9 +5585,9 @@ ngx-infinite-scroll@0.5.1:
   version "0.5.1"
   resolved "https://registry.yarnpkg.com/ngx-infinite-scroll/-/ngx-infinite-scroll-0.5.1.tgz#dd9452c602ff7c3222f0ca168481aa14140286b7"
 
-ngx-mydatepicker@^2.4.1:
-  version "2.4.1"
-  resolved "https://registry.yarnpkg.com/ngx-mydatepicker/-/ngx-mydatepicker-2.4.1.tgz#6f7e90746311693c4c2d64ad71af787982463238"
+ngx-mydatepicker@^2.4.4:
+  version "2.4.4"
+  resolved "https://registry.yarnpkg.com/ngx-mydatepicker/-/ngx-mydatepicker-2.4.4.tgz#e896a6a4392b61902e98aaa6cf303c4d32be8e73"
 
 ngx-webstorage@2.0.1:
   version "2.0.1"

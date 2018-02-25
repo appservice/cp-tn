@@ -1,0 +1,36 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+    <changeSet author="lukasz.mochel (generated)" id="1519510887232-1">
+        <createTable tableName="tn_audit">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true" primaryKeyName="tn_auditPK"/>
+            </column>
+            <column name="created_at" type="TIMESTAMP WITHOUT TIME ZONE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="audited_operation" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_by_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="order_id" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+    <!--<changeSet author="lukasz.mochel (generated)" id="1519510887232-2">-->
+        <!--<addPrimaryKey columnNames="user_id, client_id" tableName="client_user"/>-->
+    <!--</changeSet>-->
+
+    <changeSet author="lukasz.mochel (generated)" id="1519510887232-4">
+        <addForeignKeyConstraint baseColumnNames="order_id" baseTableName="tn_audit" constraintName="FK8lld30rlbb14y4wktddi7261h" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="jhi_order"/>
+    </changeSet>
+    <changeSet author="lukasz.mochel (generated)" id="1519510887232-5">
+        <addForeignKeyConstraint baseColumnNames="created_by_id" baseTableName="tn_audit" constraintName="FKkqngl1g9jaq0dro1bym64vud4" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="jhi_user"/>
+    </changeSet>
+    <changeSet author="lukasz.mochel (generated)" id="1519510887232-6">
+        <sql dbms="postgresql" endDelimiter=";">
+            INSERT INTO jhi_authority (name) values ('ROLE_AUDITOR');
+        </sql>
+    </changeSet>
+
+</databaseChangeLog>

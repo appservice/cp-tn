@@ -56,10 +56,17 @@ public class OrderExcelService {
             }
             row.createCell(columnNo++).setCellValue(o.getClientShortcut());
 
+            if(o.getEstimationMaker()!=null){
+                row.createCell(columnNo++).setCellValue(o.getEstimationMaker().getFirstName()+" "+o.getEstimationMaker().getLastName());
+
+            }else{
+                row.createCell(columnNo++).setCellValue("");
+            }
+
             rowId++;
         }
 
-        IntStream.range(0, 8).forEach(spreadsheet::autoSizeColumn);
+        IntStream.range(0, 9).forEach(spreadsheet::autoSizeColumn);
         spreadsheet.createFreezePane(0, 1);
 
         workbook.write(os);
@@ -116,9 +123,14 @@ public class OrderExcelService {
 
         }}
 
-        Cell cell8 = headerRow.createCell(columnNo);
+        Cell cell8 = headerRow.createCell(columnNo++);
         cell8.setCellStyle(getHeaderCellStyle(spreadsheet.getWorkbook()));
         cell8.setCellValue("Klient");
+
+
+        Cell cell9 = headerRow.createCell(columnNo);
+        cell9.setCellStyle(getHeaderCellStyle(spreadsheet.getWorkbook()));
+        cell9.setCellValue("Wycenę/Technologię utworzył");
 
 
     }

@@ -1,5 +1,6 @@
 package eu.canpack.fip.config;
 
+import eu.canpack.fip.bo.audit.Audit;
 import eu.canpack.fip.bo.cooperation.Cooperation;
 import eu.canpack.fip.bo.machine.MachineDtl;
 import eu.canpack.fip.bo.mpkBudgetMapper.MpkBudgetMapper;
@@ -62,6 +63,7 @@ public class CacheConfiguration {
             cm.createCache(Order.class.getName(), jcacheConfiguration);
             cm.createCache(Order.class.getName() + ".estimations", jcacheConfiguration);
             cm.createCache(Order.class.getName() + ".referenceOrders", jcacheConfiguration);
+            cm.createCache(Order.class.getName() + ".audits", jcacheConfiguration);
             cm.createCache(Estimation.class.getName(), jcacheConfiguration);
 //            cm.createCache(Estimation.class.getName() + ".drawings", jcacheConfiguration);
             cm.createCache(Estimation.class.getName() + ".operations", jcacheConfiguration);
@@ -89,6 +91,7 @@ public class CacheConfiguration {
             cm.createCache(CommercialPart.class.getName(), jcacheConfiguration);
             cm.createCache(EstimationRemark.class.getName(), jcacheConfiguration);
             cm.createCache(ReferenceOrder.class.getName(), jcacheConfiguration);
+            cm.createCache(Audit.class.getName(), jcacheConfiguration);
 //            cm.createCache(eu.canpack.fip.domain.Order.class.getName(), jcacheConfiguration);
 //            cm.createCache(eu.canpack.fip.domain.Order.class.getName() + ".estimations", jcacheConfiguration);
 //            cm.createCache(eu.canpack.fip.domain.Estimation.class.getName(), jcacheConfiguration);

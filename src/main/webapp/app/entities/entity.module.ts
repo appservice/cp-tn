@@ -13,6 +13,8 @@ import { TnTechnologyCardModule } from './technology-card/technology-card.module
 import { TnOperatorModule } from './operator/operator.module';
 import { TnCooperationModule } from './cooperation/cooperation.module';
 import { TnMpkBudgetMapperModule } from './mpk-budget-mapper/mpk-budget-mapper.module';
+import { OrderAuditComponent } from './order-audit/order-audit.component';
+import {OrderAuditModule} from './order-audit/order-audit.module.module';
 /* jhipster-needle-add-entity-module-import - JHipster will add entity modules imports here */
 
 @NgModule({
@@ -30,6 +32,7 @@ import { TnMpkBudgetMapperModule } from './mpk-budget-mapper/mpk-budget-mapper.m
         TnOperatorModule,
         TnCooperationModule,
         TnMpkBudgetMapperModule,
+        OrderAuditModule
         /* jhipster-needle-add-entity-module - JHipster will add entity modules here */
     ],
     declarations: [],

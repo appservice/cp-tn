@@ -1,0 +1,23 @@
+{
+    "tnApp": {
+        "AuditOperation" : {
+            "null": "",
+            "CREATED":"Utworzono",
+            "CREATED_AND_SEND_TO_ESTIMATION":"Utworzono i wysłano do wyceny",
+            "UPDATED":"Uaktualniono",
+            "UPDATED_AND_SEND_TO_ESTIMATION":"Uaktualniono i wysłano do wyceny",
+            "UPDATED_BY_ADMIN":"Uaktualniono przez administratora",
+            "INQUIRY_SEND_TO_ESTIMATION":"INQUIRY_SEND_TO_ESTIMATION",
+            "CLAIMED_ESTIMATION":"Przypisano jako wykonawca wyceny",
+            "UNCLAIMED_ESTIMATION":"Wycofano przypisanie jako wykonawca wyceny",
+            "MOVED_TO_ARCHIVE":"Przeniesiono do archiwum",
+            "MOVED_TO_PRODUCTION":"Przekazano do produkcji",
+            "FILLED_SAP_NUMBER":"Uzupełniono nr SAP",
+            "CLONED":"Skopiowano",
+            "MARK_FINISHED":"Ukończono wszystkie pozycje zamówienia",
+            "RETURN_TO_TECHNOLOGY_VERIFICATION":"Cofnięto zamówienie do etapu weryfikacji technologii",
+            "RETURN_TO_TECHNOLOGY_CREATION":"Cofnięto zamówienie do etapu tworzenia technologii",
+            "RETURN_TO_PRODUCTION":"Cofnięto zamówienie do etapu produkcji"
+        }
+    }
+}

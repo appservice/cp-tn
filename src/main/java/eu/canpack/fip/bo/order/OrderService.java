@@ -2,6 +2,8 @@ package eu.canpack.fip.bo.order;
 
 import eu.canpack.fip.bo.attachment.Attachment;
 import eu.canpack.fip.bo.attachment.AttachmentRepository;
+import eu.canpack.fip.bo.audit.Audit;
+import eu.canpack.fip.bo.audit.AuditedOperation;
 import eu.canpack.fip.bo.client.Client;
 import eu.canpack.fip.bo.client.ClientRepository;
 import eu.canpack.fip.bo.commercialPart.CommercialPart;
@@ -11,7 +13,6 @@ import eu.canpack.fip.bo.drawing.DrawingRepository;
 import eu.canpack.fip.bo.estimation.Estimation;
 import eu.canpack.fip.bo.estimation.dto.EstimationCreateDTO;
 import eu.canpack.fip.bo.estimation.EstimationRepository;
-import eu.canpack.fip.bo.mpkBudgetMapper.MpkBudgetMapperRepository;
 import eu.canpack.fip.bo.mpkBudgetMapper.MpkBudgetMapperService;
 import eu.canpack.fip.bo.operation.Operation;
 import eu.canpack.fip.bo.operation.enumeration.OperationType;
@@ -70,17 +71,15 @@ public class OrderService {
 
     private final OrderSearchRepository orderSearchRepository;
 
-    private final UserRepository userRepository;
-
     private final DrawingRepository drawingRepository;
 
     private final AttachmentRepository attachmentRepository;
+
     private final EstimationRepository estimationRepository;
 
     private final ApplicationProperties applicationProperties;
 
     private final ClientRepository clientRepository;
-
 
     private final UserService userService;
 
@@ -93,7 +92,6 @@ public class OrderService {
         this.orderRepository = orderRepository;
         this.orderMapper = orderMapper;
         this.orderSearchRepository = orderSearchRepository;
-        this.userRepository = userRepository;
         this.drawingRepository = drawingRepository;
         this.attachmentRepository = attachmentRepository;
         this.estimationRepository = estimationRepository;
@@ -192,6 +190,16 @@ public class OrderService {
 //        order.setOrderStatus(OrderStatus.WORKING_COPY);
         log.debug("Order to save: {}", order);
 
+        Audit audit = new Audit()
+            .createdAt(now)
+            .createdBy(loggedUser)
+            .operation(AuditedOperation.CREATED)
+            .order(order);
+        if(order.getOrderStatus()==OrderStatus.SENT_TO_ESTIMATION){
+            audit.setOperation(AuditedOperation.UPDATED_AND_SEND_TO_ESTIMATION);
+        }
+        order.getAudits().add(audit);
+
         return orderRepository.save(order);
 
     }
@@ -226,6 +234,18 @@ public class OrderService {
         order.setCreatedBy(loggedUser);
 
         order.createdAt(now);
+
+        Audit audit = new Audit()
+            .createdAt(now)
+            .createdBy(loggedUser)
+            .operation(AuditedOperation.UPDATED)
+            .order(order);
+        if(order.getOrderStatus()==OrderStatus.SENT_TO_ESTIMATION){
+            audit.setOperation(AuditedOperation.UPDATED_AND_SEND_TO_ESTIMATION);
+        }
+        Set<Audit> audits = orderFromDb.getAudits();
+        audits.add(audit);
+        order.getAudits().addAll(audits);
         log.debug("Order to save: {}", order);
 
         return orderMapper.toDto(orderRepository.save(order));
@@ -264,6 +284,17 @@ public class OrderService {
         order.setOrderStatus(orderFromDb.getOrderStatus());
 
         log.debug("Order to save: {}", order);
+        Audit audit = new Audit()
+            .createdAt(now)
+            .createdBy(loggedUser)
+           .operation(AuditedOperation.UPDATED_BY_ADMIN)
+
+            .order(order);
+
+
+        Set<Audit> audits = orderFromDb.getAudits();
+        audits.add(audit);
+        order.getAudits().addAll(audits);
 
         return orderMapper.toDto(orderRepository.save(order));
 
@@ -625,8 +656,15 @@ public class OrderService {
         Order order = orderRepository.findOne(orderId);
         order.setEstimationMaker(userService.getLoggedUser());
         order.setOrderStatus(OrderStatus.IN_ESTIMATION);
+        Audit audit = new Audit()
+            .order(order)
+            .operation(AuditedOperation.CLAIMED_ESTIMATION)
+            .createdAt(ZonedDateTime.now())
+            .createdBy(userService.getLoggedUser());
+        order.getAudits().add(audit);
     }
 
+    @Transactional(readOnly = true)
     Page<Order> findOrderToEstimationByUser(Pageable pageable) {
         if (SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.ADMIN)) {
             return orderRepository.findOrdersByOrderStatus(OrderStatus.IN_ESTIMATION, pageable);
@@ -635,13 +673,19 @@ public class OrderService {
         return orderRepository.findOrderToEstimationByUser(logedUser.getId(), pageable);
     }
 
-    void moveOrderToArchive(Long id) {
+
+   public void moveOrderToArchive(Long id) {
         log.debug("moveOrderToArchive with id {}", id);
 
         Order order = orderRepository.findOne(id);
         order.setOrderStatus(OrderStatus.SENT_OFFER_TO_CLIENT);
         order.setEstimationFinsihDate(ZonedDateTime.now());
-
+        Audit audit = new Audit()
+            .order(order)
+            .operation(AuditedOperation.MOVED_TO_ARCHIVE)
+            .createdAt(ZonedDateTime.now())
+            .createdBy(userService.getLoggedUser());
+        order.getAudits().add(audit);
         orderRepository.save(order);
     }
 
@@ -748,6 +792,14 @@ public class OrderService {
         ReferenceOrder inquiryReferenceOrder = createReferenceOrder(order, inquiry);
         order.getReferenceOrders().add(inquiryReferenceOrder);
         inquiry.getReferenceOrders().add(purchaseReferenceOrder);
+
+        Audit audit = new Audit()
+            .order(order)
+            .operation(AuditedOperation.CREATED)
+            .createdAt(now)
+            .createdBy(loggedUser);
+        order.getAudits().add(audit);
+
         return order;
 
     }
@@ -805,6 +857,14 @@ public class OrderService {
 
             }
         }
+        Audit audit = new Audit()
+            .order(order)
+            .operation(AuditedOperation.FILLED_SAP_NUMBER)
+            .createdAt(ZonedDateTime.now())
+            .createdBy(userService.getLoggedUser());
+        order.getAudits().add(audit);
+
+
         return new OrderDTO(order);
 
     }
@@ -821,7 +881,12 @@ public class OrderService {
                 e.setInProduction(true);
                 e.setProductionStartDateTime(now);
             });
-
+        Audit audit = new Audit()
+            .order(order)
+            .operation(AuditedOperation.MOVED_TO_PRODUCTION)
+            .createdAt(ZonedDateTime.now())
+            .createdBy(userService.getLoggedUser());
+        order.getAudits().add(audit);
         orderRepository.save(order);
     }
 
@@ -835,6 +900,12 @@ public class OrderService {
         Order order = orderRepository.findOne(orderId);
         order.setEstimationMaker(null);
         order.setOrderStatus(OrderStatus.SENT_TO_ESTIMATION);
+        Audit audit = new Audit()
+            .order(order)
+            .operation(AuditedOperation.UNCLAIMED_ESTIMATION)
+            .createdAt(ZonedDateTime.now())
+            .createdBy(userService.getLoggedUser());
+        order.getAudits().add(audit);
 
     }
 
@@ -926,7 +997,12 @@ public class OrderService {
                 newOrder.getEstimations().add(newEstimation);
 
             });
-
+        Audit audit = new Audit()
+            .order(newOrder)
+            .operation(AuditedOperation.CLONED)
+            .createdAt(ZonedDateTime.now())
+            .createdBy(userService.getLoggedUser());
+        newOrder.getAudits().add(audit);
 
         return orderRepository.save(newOrder);
 

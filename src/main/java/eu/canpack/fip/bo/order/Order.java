@@ -1,6 +1,7 @@
 package eu.canpack.fip.bo.order;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import eu.canpack.fip.bo.audit.Audit;
 import eu.canpack.fip.bo.client.Client;
 import eu.canpack.fip.bo.estimation.Estimation;
 import eu.canpack.fip.bo.order.enumeration.OrderStatus;
@@ -17,9 +18,7 @@ import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.ZonedDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 /**
  * A Order.
@@ -110,6 +109,10 @@ public class Order implements Serializable {
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true,fetch = FetchType.EAGER)
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private List<ReferenceOrder> referenceOrders = new ArrayList<>();
+
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL,orphanRemoval = true)
+    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+    private Set<Audit> audits = new HashSet<>();
 
     public Long getId() {
         return id;
@@ -358,6 +361,14 @@ public class Order implements Serializable {
 
     public void setReferenceOrders(List<ReferenceOrder> referenceOrders) {
         this.referenceOrders = referenceOrders;
+    }
+
+    public Set<Audit> getAudits() {
+        return audits;
+    }
+
+    public void setAudits(Set<Audit> audits) {
+        this.audits = audits;
     }
 
     @Override

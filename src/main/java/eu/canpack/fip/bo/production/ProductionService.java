@@ -1,5 +1,7 @@
 package eu.canpack.fip.bo.production;
 
+import eu.canpack.fip.bo.audit.Audit;
+import eu.canpack.fip.bo.audit.AuditedOperation;
 import eu.canpack.fip.bo.client.Client;
 import eu.canpack.fip.bo.estimation.Estimation;
 import eu.canpack.fip.bo.estimation.EstimationQueryService;
@@ -161,6 +163,12 @@ public class ProductionService {
             .allMatch(Estimation::getFinished);
         if (isOrderFinished) {
             estimation.getOrder().setOrderStatus(OrderStatus.FINISHED);
+            Audit audit = new Audit()
+                .order(estimation.getOrder())
+                .operation(AuditedOperation.MARK_FINISHED)
+                .createdAt(ZonedDateTime.now())
+                .createdBy(userService.getLoggedUser());
+            estimation.getOrder().getAudits().add(audit);
 
         }
     }
@@ -172,18 +180,72 @@ public class ProductionService {
 
         Order order = this.orderRepository.findOne(orderId);
         if (order != null) {
+            Audit audit = new Audit()
+                .order(order)
+                .createdAt(ZonedDateTime.now())
+                .createdBy(userService.getLoggedUser());
             switch (order.getOrderType()) {
                 case PRODUCTION:
                     order.setOrderStatus(OrderStatus.TECHNOLOGY_VERIFICATION);
+                    audit.setOperation(AuditedOperation.RETURN_TO_TECHNOLOGY_VERIFICATION);
                     break;
                 case EMERGENCY:
                     order.setOrderStatus(OrderStatus.TECHNOLOGY_CREATION);
+                    audit.setOperation(AuditedOperation.RETURN_TO_TECHNOLOGY_CREATION);
+
                     break;
                 default:
                     log.warn("Type: {} should not occured");
 
+                    order.getAudits().add(audit);
 
             }
         }
     }
+
+
+//    @Transactional
+//    @Secured(AuthoritiesConstants.ADMIN)
+//    public void returnToProduction(Long orderId) {
+//
+//        Order order = this.orderRepository.findOne(orderId);
+//        if (order != null) {
+//            Audit audit = new Audit()
+//                .order(order)
+//                .createdAt(ZonedDateTime.now())
+//                .createdBy(userService.getLoggedUser())
+//                .operation(AuditedOperation.RETURN_TO_PRODUCTION);
+//
+//            order.getAudits().add(audit);
+//            order
+//
+//        }
+//    }
+    @Transactional
+    @Secured(AuthoritiesConstants.ADMIN)
+    public void returnToProduction(Long estimationId) {
+
+        Estimation estimation = this.estimationRepository.findOne(estimationId);
+        if (estimation != null) {
+
+            estimation.setFinished(false);
+            estimation.setReceiver(null);
+            estimation.setDeliveredAt(null);
+
+            if(estimation.getOrder().getOrderStatus()==OrderStatus.FINISHED){
+                estimation.getOrder().setOrderStatus(OrderStatus.IN_PRODUCTION);
+                Audit audit = new Audit()
+                    .order(estimation.getOrder())
+                    .createdAt(ZonedDateTime.now())
+                    .createdBy(userService.getLoggedUser())
+                    .operation(AuditedOperation.RETURN_TO_PRODUCTION);
+
+                estimation.getOrder().getAudits().add(audit);
+            }
+
+
+
+        }
+    }
+
 }

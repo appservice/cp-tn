@@ -201,4 +201,10 @@ public class ProductionResource {
         return ResponseEntity.ok().build();
     }
 
+    @GetMapping("production/return-to-production/{estimationId}")
+    public ResponseEntity<Void> returnToProduction(@PathVariable Long estimationId){
+        productionService.returnToProduction( estimationId);
+        return ResponseEntity.ok().build();
+    }
+
 }
