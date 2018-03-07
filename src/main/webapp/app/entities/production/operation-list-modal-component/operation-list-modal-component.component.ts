@@ -33,6 +33,7 @@ export class OperationListModalComponent implements OnInit {
 
 
     ngOnInit() {
+        console.log(this.operationsReportList);
     }
 
 

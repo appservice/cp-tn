@@ -13,7 +13,7 @@ export class OperationReportDTO {
                 public sequenceNumber ?: number,
                 public operationStatus ?: string,
                 // public machineCost?: number,
-                public operationEventList ?: OperationEventDTO [],
+                public operationEvents ?: OperationEventDTO [],
                 public estimationId?: number,) {
     }
 }

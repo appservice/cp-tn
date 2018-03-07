@@ -2,6 +2,7 @@ package eu.canpack.fip.bo.operation;
 
 import com.codahale.metrics.annotation.Timed;
 import eu.canpack.fip.bo.operation.dto.OperationDTO;
+import eu.canpack.fip.bo.operation.dto.OperationEventDTO;
 import eu.canpack.fip.bo.operation.dto.OperationReportDTO;
 import eu.canpack.fip.bo.operation.dto.OperationWideDTO;
 import eu.canpack.fip.web.rest.util.HeaderUtil;
@@ -21,6 +22,7 @@ import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
 
+import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -180,6 +182,16 @@ public class OperationResource {
     public ResponseEntity<Void> setAllOperationsFinished(@PathVariable Long estimationId){
         log.debug("REST request setAllOperationsFinished for estimationId {}", estimationId);
         operationService.setAllOperationsFinished(estimationId);
+        return ResponseEntity.ok().build();
+
+    }
+
+    @PutMapping("/operations/add-operation-event")
+    public ResponseEntity<Void> addOperationEvent(@RequestBody OperationEventDTO operationEventDTO){
+        log.debug("REST request for add operation event  {}", operationEventDTO);
+        operationEventDTO.setCreatedAt(ZonedDateTime.now());
+        operationService.addOperationEvent(operationEventDTO);
+
         return ResponseEntity.ok().build();
 
     }

@@ -204,7 +204,8 @@ public class EstimationService {
         Estimation estimation = estimationRepository.findOne(id);
 
       //  estimation.getOperations().sort(Comparator.comparing(Operation::getSequenceNumber));
-        Set<Long>machineIds=estimation.getOperations().stream().map(o->o.getMachine().getId()).collect(Collectors.toSet());;
+        Set<Long>machineIds=estimation.getOperations().stream()
+            .filter(op-> op.getMachine()!=null).map(o->o.getMachine().getId()).collect(Collectors.toSet());;
 
         EstimationDTO result=estimationMapper.toDto(estimation);
 

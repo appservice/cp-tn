@@ -196,7 +196,7 @@ public class OrderService {
             .operation(AuditedOperation.CREATED)
             .order(order);
         if(order.getOrderStatus()==OrderStatus.SENT_TO_ESTIMATION){
-            audit.setOperation(AuditedOperation.UPDATED_AND_SEND_TO_ESTIMATION);
+            audit.setOperation(AuditedOperation.CREATED_AND_SEND_TO_ESTIMATION);
         }
         order.getAudits().add(audit);
 
@@ -1013,7 +1013,7 @@ public class OrderService {
         Path path = Paths.get(attachmentPath);
 
         String fileName = path.toFile().getName();
-        String dateString = now.format(DateTimeFormatter.ofPattern("yyyy-MM-dd_HH.mm.ss"));
+        String dateString = now.format(DateTimeFormatter.ofPattern("yyyy-MM-dd_HH.mm.ss_SSS"));
         String fileExtensions = FilenameUtils.getExtension(fileName);
         String fileBaseName = FilenameUtils.getBaseName(fileName);
         log.debug("fileBaseName: {}", fileBaseName);

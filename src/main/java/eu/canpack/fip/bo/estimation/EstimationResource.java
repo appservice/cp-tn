@@ -19,6 +19,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -41,8 +42,14 @@ public class EstimationResource {
     private final Logger log = LoggerFactory.getLogger(EstimationResource.class);
     private final EstimationService estimationService;
 
-    public EstimationResource(EstimationService estimationService) {
+    private final EstimationQueryService estimationQueryService;
+
+    private final EstimationExcelService estimationExcelService;
+
+    public EstimationResource(EstimationService estimationService, EstimationQueryService estimationQueryService, EstimationExcelService estimationExcelService) {
         this.estimationService = estimationService;
+        this.estimationQueryService = estimationQueryService;
+        this.estimationExcelService = estimationExcelService;
     }
 
     /**
@@ -228,4 +235,33 @@ public class EstimationResource {
         }
     }
 
+
+    /**
+     * GET  /estimations : get all the estimaitonos by criteria.
+     *
+     * @return the ResponseEntity with status 200 (OK) and the list of orders in body
+     */
+    @GetMapping("/estimations/to-excel")
+    @Timed
+    @Transactional
+    public byte[] getAllEstimationsInExcel(EstimationCriteria criteria) throws IOException {
+        log.debug("REST request to get a page of Orders2");
+//        if (orderCriteria == null) {
+//            orderCriteria = new OrderCriteria();
+//        }
+        // orderCriteria.getOrderType().setEquals(OrderType.ESTIMATION);
+//        OrderCriteria.OrderTypeFilter orderTypeFilter = new OrderCriteria.OrderTypeFilter();
+//        orderTypeFilter.setEquals(OrderType.PRODUCTION);
+//        orderCriteria.setOrderType(orderTypeFilter);
+//        List<OrderListDTO> list = orderQueryService.findByCriteriaAndClient(orderCriteria);//orderService.findAllByClientAndOrderType(pageable, OrderType.ESTIMATION);
+
+        List<Estimation> estimations = estimationQueryService.findByCriteria(criteria);
+
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        estimationExcelService.createExcelFile(estimations, outputStream);
+
+        // HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/orders/inquiries");
+
+        return outputStream.toByteArray();//new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+    }
 }

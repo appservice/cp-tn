@@ -244,6 +244,7 @@ export class EstimatedOrderComponent implements OnInit, OnDestroy {
     moveToArchive() {
         const modalRef = this.modalService.open(MoveToArchiveDialogComponent);
         modalRef.componentInstance.order = this.order;
+
     }
 
 

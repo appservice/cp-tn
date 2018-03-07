@@ -168,4 +168,10 @@ public class OperatorResource {
         return ResponseEntity.ok().header(HttpHeaders.CONTENT_DISPOSITION, "attachment;filename=" + "karta_operatora.pdf").contentType(MediaType.APPLICATION_PDF).body(inputStreamResource);
 
     }
+
+    @GetMapping("/operators/by-card-number/{cardNumber}")
+    public ResponseEntity<OperatorDTO> getTechnologyCard(@PathVariable(name = "cardNumber") String cardNumber) throws IOException {
+        Optional<OperatorDTO> response = operatorService.findOperatorByCardNumber(cardNumber);
+        return ResponseUtil.wrapOrNotFound(response);
+    }
 }

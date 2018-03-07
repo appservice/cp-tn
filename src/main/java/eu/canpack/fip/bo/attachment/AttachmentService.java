@@ -39,7 +39,7 @@ public class AttachmentService {
 
     public Attachment upload(MultipartFile multipartFile, String fileName) throws IOException {
         ZonedDateTime now = ZonedDateTime.now();
-        String dateString = now.format(DateTimeFormatter.ofPattern("yyyy-MM-dd_HH.mm.ss"));
+        String dateString = now.format(DateTimeFormatter.ofPattern("yyyy-MM-dd_HH.mm.ss_SSS"));
         String fileExtensions = FilenameUtils.getExtension(fileName);
         String fileBaseName = FilenameUtils.getBaseName(fileName);
         String pathFileName=fileBaseName+"_"+dateString+"."+fileExtensions;

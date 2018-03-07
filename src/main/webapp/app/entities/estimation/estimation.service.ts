@@ -89,7 +89,7 @@ export class EstimationService {
         this.http.get(`${this.resourceUrl}/${estimation.id}/technology-card`, options)
             .map((res: Response) => res.blob())
             .subscribe((data: any) => {
-                this.saveDownload(data, estimation.drawing.number, 'application/pdf');
+                this.saveDownload(data, 'Karta_obiegowa_' +estimation.drawing.number+ '.pdf', 'application/pdf');
 
             });
     }
@@ -99,7 +99,7 @@ export class EstimationService {
 
         const disableAutoBOM = true;
 
-        FileSaver.saveAs(data, 'Karta_obiegowa_' + fileName + '.pdf', disableAutoBOM);
+        FileSaver.saveAs(data,  fileName , disableAutoBOM);
     }
 
 
@@ -141,5 +141,24 @@ export class EstimationService {
 
     publishPrice(estimationId: number, isPublished: boolean): Observable<Response> {
         return this.http.put(`${this.resourceUrl}/${estimationId}/publishPrice`, {'published': isPublished});
+    }
+
+    getAsExcel(urlSearchParams?: URLSearchParams): void {
+        // const copy = this.convert(order);
+
+        let headers = new Headers({'Content-Type': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'});
+        let options = new RequestOptions({responseType: ResponseContentType.Blob, headers});
+        if (urlSearchParams) {
+            console.log(urlSearchParams);
+            options.params = urlSearchParams;
+
+        }
+
+        this.http.get(`api/estimations/to-excel`, options)
+            .map((res: Response) => res.blob())
+            .subscribe((data: any) => {
+                this.saveDownload(data, 'Wyceny.xlsx', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+
+            });
     }
 }

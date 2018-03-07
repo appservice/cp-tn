@@ -15,6 +15,11 @@ public interface OperationWideMapper {
 
 
     @Mapping(source = "estimation.id", target = "estimationId")
+    @Mapping(source = "estimation.material", target = "material")
+    @Mapping(source = "estimation.materialType", target = "materialType")
+    @Mapping(source = "estimation.order.internalNumber", target = "orderInternalNumber")
+    @Mapping(source = "estimation.itemNumber", target = "drawingNumber")
+    @Mapping(source = "estimation.itemName", target = "detailName")
     OperationWideDTO toDto(Operation operation);
 
     @Mapping(source = "estimationId", target = "estimation")

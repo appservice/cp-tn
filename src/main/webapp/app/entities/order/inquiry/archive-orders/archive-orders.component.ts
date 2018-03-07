@@ -9,6 +9,7 @@ import { ITEMS_PER_PAGE, Principal, ResponseWrapper } from '../../../../shared';
 import { PaginationConfig } from '../../../../blocks/config/uib-pagination.config';
 import {OrderFilter} from '../../order-filter.model';
 import {URLSearchParams} from '@angular/http';
+import {EstimationService} from '../../../estimation';
 
 
 @Component({
@@ -44,7 +45,8 @@ currentAccount: any;
         private router: Router,
         private eventManager: JhiEventManager,
         private paginationUtil: JhiPaginationUtil,
-        private paginationConfig: PaginationConfig
+        private paginationConfig: PaginationConfig,
+        private estimationService: EstimationService,
     ) {
         this.itemsPerPage = ITEMS_PER_PAGE;
         this.routeData = this.activatedRoute.data.subscribe((data) => {
@@ -225,4 +227,8 @@ currentAccount: any;
         this.loadAll();
     }
 
+
+    public  getEstimationsAsExcelFile():void{
+        this.estimationService.getAsExcel();
+    }
 }

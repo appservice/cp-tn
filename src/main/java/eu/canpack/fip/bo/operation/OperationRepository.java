@@ -1,6 +1,5 @@
 package eu.canpack.fip.bo.operation;
 
-import eu.canpack.fip.bo.operation.dto.OperationReportDTO;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -16,7 +15,7 @@ import java.util.List;
 @Repository
 public interface OperationRepository extends JpaRepository<Operation, Long> {
 
-    @Query("select o from Operation  o " +
+    @Query("select distinct o from Operation  o " +
         "left join fetch o.operationEvents " +
         "where o.estimation.id =:estimationId")
     List<Operation> findOperationReportByEstimationId(@Param("estimationId") Long estimationId);

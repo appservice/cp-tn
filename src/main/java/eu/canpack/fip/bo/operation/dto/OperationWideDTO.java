@@ -22,7 +22,6 @@ public class OperationWideDTO implements Serializable {
 
     private Integer sequenceNumber;
 
-
     private String description;
 
     private String remark;
@@ -33,16 +32,24 @@ public class OperationWideDTO implements Serializable {
 
     private MachineDTO machine;
 
-    private  Long estimationId;
+    private Long estimationId;
 
     private OperationStatus operationStatus;
 
+    private String material;
+
+    private String materialType;
+
+    private String drawingNumber;
+
+
+    private String orderInternalNumber;
 
     private OperationType operationType;
 
-
     private ProductionStatus productionStatus;
 
+    private String detailName;
 
     private List<OperationEventDTO> operationEvents = new ArrayList<>();
 
@@ -142,6 +149,46 @@ public class OperationWideDTO implements Serializable {
         this.estimationId = estimationId;
     }
 
+    public String getMaterial() {
+        return material;
+    }
+
+    public void setMaterial(String material) {
+        this.material = material;
+    }
+
+    public String getMaterialType() {
+        return materialType;
+    }
+
+    public void setMaterialType(String materialType) {
+        this.materialType = materialType;
+    }
+
+    public String getDrawingNumber() {
+        return drawingNumber;
+    }
+
+    public void setDrawingNumber(String drawingNumber) {
+        this.drawingNumber = drawingNumber;
+    }
+
+    public String getOrderInternalNumber() {
+        return orderInternalNumber;
+    }
+
+    public void setOrderInternalNumber(String orderInternalNumber) {
+        this.orderInternalNumber = orderInternalNumber;
+    }
+
+    public String getDetailName() {
+        return detailName;
+    }
+
+    public void setDetailName(String detailName) {
+        this.detailName = detailName;
+    }
+
     @Override
     public String toString() {
         return "OperationWideDTO{" +
@@ -154,8 +201,13 @@ public class OperationWideDTO implements Serializable {
             ", machine=" + machine +
             ", estimationId=" + estimationId +
             ", operationStatus=" + operationStatus +
+            ", material='" + material + '\'' +
+            ", materialType='" + materialType + '\'' +
+            ", drawingNumber='" + drawingNumber + '\'' +
+            ", orderInternalNumber='" + orderInternalNumber + '\'' +
             ", operationType=" + operationType +
             ", productionStatus=" + productionStatus +
+            ", detailName='" + detailName + '\'' +
             ", operationEvents=" + operationEvents +
             '}';
     }

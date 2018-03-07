@@ -19,6 +19,7 @@ import {TechnologyCard, TechnologyCardFinderComponent} from '../../technology-ca
 import {DrawingFinderComponent} from '../../drawing';
 import {Operation} from '../../operation';
 import {NgForm} from '@angular/forms';
+import {TnModalConfirmComponent} from '../../../tn-components/tn-modal-confirm/tn-modal-confirm.component';
 
 @Component({
     selector: 'new-estimation',
@@ -31,6 +32,9 @@ export class NewEstimationComponent implements OnInit, OnDestroy {
     private operationsTotalCost: number = 0;
     private cooperationTotalCost: number = 0;
     private sumOfWorkingHours: number = 0;
+
+    @ViewChild(TnModalConfirmComponent)
+    tnModalConfirm: TnModalConfirmComponent;
 
 
     estimation: Estimation;
@@ -161,6 +165,7 @@ export class NewEstimationComponent implements OnInit, OnDestroy {
     }
 
     onSaveBtnClick() {
+        //  this.tnModalConfirm.openSaveAndCloseModal()
 
         this.save();
     }
@@ -476,12 +481,21 @@ export class NewEstimationComponent implements OnInit, OnDestroy {
     }
 
     hasChanges(): boolean {
-
         if (this.isSaving) {
             return false;
         }
         return this.editForm.dirty
+    }
 
+    openSaveAndCloseModal() {
+        const modalRef = this.modalService.open(TnModalConfirmComponent);
+        modalRef.componentInstance.headerText = 'Zakończenie edycji wyceny';
+        modalRef.componentInstance.contentText = 'Czy wyeksportowałeś kartę technologii?';
+        modalRef.result.then((value:any)=>{
+            this.onSaveBtnClick();
+        },(rejectValue:any)=>{
+
+        });
 
     }
 }

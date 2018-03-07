@@ -1,6 +1,7 @@
 package eu.canpack.fip.bo.operation;
 
 import eu.canpack.fip.bo.operation.dto.*;
+import eu.canpack.fip.bo.operation.enumeration.OperationEventType;
 import eu.canpack.fip.bo.operation.enumeration.OperationStatus;
 import eu.canpack.fip.repository.search.OperationSearchRepository;
 import org.slf4j.Logger;
@@ -34,11 +35,14 @@ public class OperationService {
 
     private final OperationWideMapper operationWideMapper;
 
-    public OperationService(OperationRepository operationRepository, OperationMapper operationMapper, OperationSearchRepository operationSearchRepository, OperationWideMapper operationWideMapper) {
+    private final OperationEventMapper operationEventMapper;
+
+    public OperationService(OperationRepository operationRepository, OperationMapper operationMapper, OperationSearchRepository operationSearchRepository, OperationWideMapper operationWideMapper, OperationEventMapper operationEventMapper) {
         this.operationRepository = operationRepository;
         this.operationMapper = operationMapper;
         this.operationSearchRepository = operationSearchRepository;
         this.operationWideMapper = operationWideMapper;
+        this.operationEventMapper = operationEventMapper;
     }
 
     /**
@@ -123,28 +127,50 @@ public class OperationService {
     }
 
     @Transactional(readOnly = true)
-    public List<OperationReportDTO> getOperationReports(Long estimationId){
+    public List<OperationReportDTO> getOperationReports(Long estimationId) {
 
-      return operationRepository.findOperationReportByEstimationId(estimationId).stream()
-          .sorted(Comparator.comparing(Operation::getSequenceNumber))
-          .map(OperationReportDTO::new).collect(Collectors.toList());
+        return operationRepository.findOperationReportByEstimationId(estimationId).stream()
+            .sorted(Comparator.comparing(Operation::getSequenceNumber))
+            .map(OperationReportDTO::new).collect(Collectors.toList());
     }
 
     public void updateOperationsStatus(List<OperationReportDTO> operationReportList) {
 
         operationReportList.forEach(
-            opDTO-> {
+            opDTO -> {
                 Operation operation = operationRepository.findOne(opDTO.getId());
                 operation.setOperationStatus(opDTO.getOperationStatus());
             }
         );
     }
 
-    public void setAllOperationsFinished(Long estimationId){
+    public void setAllOperationsFinished(Long estimationId) {
         List<Operation> operations = operationRepository.findAllByEstimationId(estimationId);
         operations.forEach(
             operation -> operation.setOperationStatus(OperationStatus.FINISHED)
         );
+
+    }
+
+
+    public void addOperationEvent(OperationEventDTO operationEventDTO) {
+        OperationEvent operationEvent = operationEventMapper.toEntity(operationEventDTO);
+        Operation operation = operationRepository.findOne(operationEventDTO.getOperationId());
+        operation.getOperationEvents().add(operationEvent);
+        switch (operationEventDTO.getOperationEventType()) {
+            case START:
+                operation.setOperationStatus(OperationStatus.STARTED);
+                break;
+            case PAUSE:
+                operation.setOperationStatus(OperationStatus.PAUSED);
+                break;
+            case STOP:
+                operation.setOperationStatus(OperationStatus.FINISHED);
+                break;
+            case RESUME:
+                operation.setOperationStatus(OperationStatus.STARTED);
+                break;
+        }
 
     }
 }

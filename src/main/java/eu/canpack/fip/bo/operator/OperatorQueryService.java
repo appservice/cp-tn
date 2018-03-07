@@ -13,7 +13,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import io.github.jhipster.service.QueryService;
 
-import eu.canpack.fip.repository.OperatorRepository;
 import eu.canpack.fip.repository.search.OperatorSearchRepository;
 
 import eu.canpack.fip.service.mapper.OperatorMapper;

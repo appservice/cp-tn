@@ -21,6 +21,7 @@ import {TnComponentsModule} from '../../tn-components/tn-components.module';
 import {CurrencyMaskModule} from 'ng2-currency-mask';
 import {TnAlert} from '../../tn-components/tn-alert';
 import {ConfirmDeactivateGuard} from './estimation.route';
+import {TnModalConfirmComponent} from '../../tn-components/tn-modal-confirm/tn-modal-confirm.component';
 
 const ENTITY_STATES = [
     ...estimationRoute,
@@ -53,7 +54,7 @@ const ENTITY_STATES = [
         EstimationPopupComponent,
         EstimationDeleteDialogComponent,
         EstimationDeletePopupComponent,
-        TnAlert
+        TnAlert,
     ],
     providers: [
         EstimationService,

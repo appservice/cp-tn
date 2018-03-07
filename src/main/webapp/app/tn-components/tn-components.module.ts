@@ -8,12 +8,13 @@ import {PlnCurrencyPipe} from './pln-currency.pipe';
 import {FileSizePipe} from './file-size-pipe';
 import {TnAlert} from './tn-alert';
 import {TnEstimationRemarkComponent} from './tn-estimation-remark-component/tn-estimation-remark-component';
-import { NgbModule} from '@ng-bootstrap/ng-bootstrap';
+import {NgbActiveModal, NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {ExcelService} from './excel.service';
 import {NgbdDatepickerI18n} from './datepicker-pl';
 import {TnDatePickerComponent} from './tn-date-picker/tn-date-picker.component';
 import {NgxMyDatePickerModule} from 'ngx-mydatepicker';
 import {FormsModule} from '@angular/forms';
+import { TnModalConfirmComponent } from './tn-modal-confirm/tn-modal-confirm.component';
 
 @NgModule({
     imports: [
@@ -30,6 +31,7 @@ import {FormsModule} from '@angular/forms';
             TnEstimationRemarkComponent,
             NgbdDatepickerI18n,
             TnDatePickerComponent,
+            TnModalConfirmComponent,
 
         ],
     exports:
@@ -40,13 +42,15 @@ import {FormsModule} from '@angular/forms';
             TnAlert,
             TnEstimationRemarkComponent,
             NgbdDatepickerI18n,
-            TnDatePickerComponent
+            TnDatePickerComponent,
+            TnModalConfirmComponent
 
 
         ],
     providers:
     [
-        ExcelService
+        ExcelService,
+        NgbActiveModal
     ]
 })
 export class TnComponentsModule {

@@ -1,4 +1,4 @@
-<form name="editForm" role="form" novalidate (ngSubmit)="onSaveBtnClick()" #editForm="ngForm">
+<form name="editForm" role="form" novalidate #editForm="ngForm">
 
     <div>
         <h4>
@@ -126,10 +126,11 @@
                                     </small>
                                 </div>
                             </div>
-                            <div class="col-md-3"><label>Cena materiału [PLN]/SZT</label>
+                            <div class="col-md-3"><label>Cena materiału [PLN]/SZT <i class="fa fa-exclamation-triangle text-danger" aria-hidden="true"
+                                                                                     *ngIf="!estimation.materialPrice || estimation.materialPrice===0"></i></label>
                                 <input class="form-control" name="material_price" [(ngModel)]="estimation.materialPrice"
                                        currencyMask
-                                       [options]="currencyMaskOpt"/>
+                                       [options]="currencyMaskOpt" />
                             </div><!-- currencyMask  -->
                             <div class="col-md-3"><label>Masa [kg]</label>
                                 <input name="weight" class="form-control" type="number" [(ngModel)]="estimation.mass"/>
@@ -633,8 +634,9 @@
     <div class="text-center" style="margin-top: 30px">
         <button type="button" class="btn btn-outline-danger" (click)="previousState()"><span class="fa fa-arrow-left"></span> Powrót</button>
 
-        <button class="btn btn-outline-primary" type="submit" [disabled]="editForm.form.invalid || isSaving">
-            <span class="fa fa-save"></span>&nbsp;Zapisz
+        <button class="btn btn-outline-primary" type="button" [disabled]="editForm.form.invalid || isSaving"
+                (click)="openSaveAndCloseModal(saveAndCloseModal)">
+            <span class="fa fa-save" ></span>&nbsp;Zapisz
         </button>
 
 
@@ -665,4 +667,5 @@
 <ng-template #rt let-r="result" let-t="term">
     {{r.name}}
 </ng-template>
+
 <!--<p-chips [(ngModel)]="myValues">test</p-chips>-->

@@ -45,7 +45,6 @@ export class ConfirmDeactivateGuard implements CanDeactivate<NewEstimationCompon
                 });
                 target.backButtonClicked=false;
                 return false;
-                // this.router.navigate([this.router.url]);
             }
             return canChangeState;
         }

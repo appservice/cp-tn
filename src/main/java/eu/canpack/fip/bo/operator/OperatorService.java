@@ -1,6 +1,5 @@
 package eu.canpack.fip.bo.operator;
 
-import eu.canpack.fip.repository.OperatorRepository;
 import eu.canpack.fip.repository.search.OperatorSearchRepository;
 import eu.canpack.fip.service.mapper.OperatorMapper;
 import org.slf4j.Logger;
@@ -10,6 +9,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+
+import java.util.Optional;
 
 import static org.elasticsearch.index.query.QueryBuilders.*;
 
@@ -89,7 +90,7 @@ public class OperatorService {
     /**
      * Search for the operator corresponding to the query.
      *
-     * @param query the query of the search
+     * @param query    the query of the search
      * @param pageable the pagination information
      * @return the list of entities
      */
@@ -98,5 +99,12 @@ public class OperatorService {
         log.debug("Request to search for a page of Operators for query {}", query);
         Page<Operator> result = operatorSearchRepository.search(queryStringQuery(query), pageable);
         return result.map(operatorMapper::toDto);
+    }
+
+    @Transactional(readOnly = true)
+    public Optional<OperatorDTO> findOperatorByCardNumber(String cardNumber) {
+        return operatorRepository.findOneByCardNumber(cardNumber).map(operatorMapper::toDto);
+
+
     }
 }

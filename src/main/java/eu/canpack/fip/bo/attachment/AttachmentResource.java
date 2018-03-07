@@ -65,7 +65,7 @@ public class AttachmentResource {
             return    ResponseEntity.ok()
                 .contentLength(path.toFile().length())
                 .contentType(MediaType.parseMediaType(attachment.getDataContentType()))
-                .header("Content-disposition", "attachment;filename=" + path.getFileName())
+               // .header("Content-disposition", "attachment;filename=" + path.getFileName())
                 .body(inputStreamResource);
 
         }
