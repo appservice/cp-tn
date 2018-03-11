@@ -27,15 +27,20 @@ export class EstimationResolvePagingParams implements Resolve<any> {
 }
 
 import {CanDeactivate} from '@angular/router';
+import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import {TnModalConfirmComponent} from '../../tn-components/tn-modal-confirm/tn-modal-confirm.component';
 
 @Injectable()
 export class ConfirmDeactivateGuard implements CanDeactivate<NewEstimationComponent> {
-    constructor(private router: Router) {
+    constructor(private router: Router,private modalService: NgbModal) {
 
     }
 
     canDeactivate(target: NewEstimationComponent) {
         if (target.hasChanges()) {
+
+
+
             let canChangeState = window.confirm('Czy chcesz wyjść z tej strony nie zachowując wprowadzonych zmian?');
             if (canChangeState == false && target.backButtonClicked) {
                 const destinationLink = window.location.href;

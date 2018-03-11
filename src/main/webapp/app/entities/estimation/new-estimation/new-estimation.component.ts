@@ -489,11 +489,13 @@ export class NewEstimationComponent implements OnInit, OnDestroy {
 
     openSaveAndCloseModal() {
         const modalRef = this.modalService.open(TnModalConfirmComponent);
-        modalRef.componentInstance.headerText = 'Zakończenie edycji wyceny';
-        modalRef.componentInstance.contentText = 'Czy wyeksportowałeś kartę technologii?';
+        modalRef.componentInstance.headerText = 'Zapis wyceny';
+        modalRef.componentInstance.contentText = 'Czy wyeksportować kartę technologii?';
         modalRef.result.then((value:any)=>{
+            this.exportToTechnologyCard();
             this.onSaveBtnClick();
         },(rejectValue:any)=>{
+            this.onSaveBtnClick();
 
         });
 
