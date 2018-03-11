@@ -435,6 +435,12 @@
                             <span>Elastic Reindex</span>
                         </a>
                     </li>
+                    <li *jhiHasAnyAuthority="['ROLE_ADMIN']">
+                        <a class="dropdown-item" (click)="clearCache()">
+                            <span>Wyczyść cache</span>
+                            <i class="fa fa-fw fa-book" aria-hidden="true"></i>
+                        </a>
+                    </li>
                         </span>
                     <!-- jhipster-needle-add-element-to-admin-menu - JHipster will add entities to the admin menu here -->
                 </ul>

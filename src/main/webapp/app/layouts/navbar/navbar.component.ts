@@ -121,4 +121,9 @@ export class NavbarComponent implements OnInit, OnDestroy {
         },(error: any)=>console.log(error));
     }
 
+    clearCache():void {
+        this.http.get('api/cache/clear',null).subscribe((resp:Response)=>{
+            console.log('Cleared cache. ',resp)
+        },(error: any)=>console.log(error));
+    }
 }

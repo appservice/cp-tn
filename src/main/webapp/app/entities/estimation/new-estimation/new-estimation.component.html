@@ -635,7 +635,7 @@
         <button type="button" class="btn btn-outline-danger" (click)="previousState()"><span class="fa fa-arrow-left"></span> Powrót</button>
 
         <button class="btn btn-outline-primary" type="button" [disabled]="editForm.form.invalid || isSaving"
-                (click)="openSaveAndCloseModal(saveAndCloseModal)">
+                (click)="openSaveAndCloseModal()">
             <span class="fa fa-save" ></span>&nbsp;Zapisz
         </button>
 

@@ -42,7 +42,7 @@ public class CacheOperationResource {
         this.cacheCleanerService = cacheCleanerService;
     }
 
-    @GetMapping("cache/clear")
+    @PostMapping("cache/clear")
     public void clearCache(){
         log.debug("REST request to clear cache");
 
