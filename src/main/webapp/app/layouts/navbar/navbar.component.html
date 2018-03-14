@@ -68,13 +68,13 @@
                         <hr/>
                     </li>
                     <li>
-                        <a class="dropdown-item" routerLink="emergency-order"  routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
+                        <a class="dropdown-item" routerLink="emergency-order" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
                             <i class="fa fa-fw fa-exclamation-triangle text-danger" aria-hidden="true"></i>
                             <span>Zlecenia awaryjne/usługowe</span>
                         </a>
                     </li>
                     <li>
-                        <a class="dropdown-item" routerLink="emergency-order-item-finder"  routerLinkActive="active"
+                        <a class="dropdown-item" routerLink="emergency-order-item-finder" routerLinkActive="active"
                            [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
                             <i class="fa fa-fw fa-search" aria-hidden="true"></i>
                             <span>Szukaj zlec. awar./usł. po detalu</span>
@@ -134,7 +134,8 @@
                     </li>
                 </ul>
             </li>
-            <li *jhiHasAnyAuthority="['ROLE_TECHNOLOGIST','ROLE_MANAGER','ROLE_SAP_INTRODUCER','ROLE_TEAM_LEADER','ROLE_ORDER_INTRODUCER']" ngbDropdown class="nav-item dropdown pointer"
+            <li *jhiHasAnyAuthority="['ROLE_TECHNOLOGIST','ROLE_MANAGER','ROLE_SAP_INTRODUCER','ROLE_TEAM_LEADER','ROLE_ORDER_INTRODUCER']" ngbDropdown
+                class="nav-item dropdown pointer"
                 routerLinkActive="active"
                 [routerLinkActiveOptions]="{exact: true}">
                 <a class="nav-link dropdown-toggle" ngbDropdownToggle href="javascript:void(0);" id="production-menu">
@@ -155,14 +156,14 @@
                         </a>
                     </li>
                     <li *jhiHasAnyAuthority="['ROLE_TECHNOLOGIST','ROLE_MANAGER','ROLE_TEAM_LEADER','ROLE_ORDER_INTRODUCER']">
-                        <a  class="dropdown-item" routerLink="production" routerLinkActive="active"
+                        <a class="dropdown-item" routerLink="production" routerLinkActive="active"
                            [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
                             <i class="fa fa-fw fa-line-chart" aria-hidden="true"></i>
                             <span>Aktulanie w produkcji</span>
                         </a>
                     </li>
                     <li *jhiHasAnyAuthority="['ROLE_TECHNOLOGIST','ROLE_MANAGER','ROLE_TEAM_LEADER','ROLE_ORDER_INTRODUCER']">
-                        <a  class="dropdown-item"  routerLinkActive="active" routerLink="items-finished"
+                        <a class="dropdown-item" routerLinkActive="active" routerLink="items-finished"
                            [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
                             <i class="fa fa-fw fa-archive" aria-hidden="true"></i>
                             <span>Zlecenia zakończone</span>
@@ -185,9 +186,9 @@
                     </span>
                 </a>
                 <ul class="dropdown-menu" ngbDropdownMenu>
-                    <li >
-                        <a class="dropdown-item" routerLink="client"routerLinkActive="active"
-                           [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()" >
+                    <li>
+                        <a class="dropdown-item" routerLink="client" routerLinkActive="active"
+                           [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
                             <i class="fa fa-fw fa-asterisk" aria-hidden="true"></i>
                             <span jhiTranslate="global.menu.entities.client">Klient</span>
                         </a>
@@ -445,22 +446,22 @@
                     <!-- jhipster-needle-add-element-to-admin-menu - JHipster will add entities to the admin menu here -->
                 </ul>
             </li>
-            <!--            <li ngbDropdown class="nav-item dropdown pointer" *ngIf="languages">
-                            <a class="nav-link dropdown-toggle" ngbDropdownToggle href="javascript:void(0);"
-                               id="languagesnavBarDropdown" *ngIf="languages.length > 1">
+            <!--<li ngbDropdown class="nav-item dropdown pointer" *ngIf="languages">
+                <a class="nav-link dropdown-toggle" ngbDropdownToggle href="javascript:void(0);"
+                   id="languagesnavBarDropdown" *ngIf="languages.length > 1">
                                 <span>
                                     <i class="fa fa-flag" aria-hidden="true"></i>
                                     <span jhiTranslate="global.menu.language">Language</span>
                                     <b class="caret"></b>
                                 </span>
-                            </a>
-                            <ul class="dropdown-menu" ngbDropdownMenu *ngIf="languages.length > 1">
-                                <li *ngFor="let language of languages">
-                                    <a class="dropdown-item" [jhiActiveMenu]="language" href="javascript:void(0);"
-                                       (click)="changeLanguage(language);collapseNavbar();">{{language | findLanguageFromKey}}</a>
-                                </li>
-                            </ul>
-                        </li>-->
+                </a>
+                <ul class="dropdown-menu" ngbDropdownMenu *ngIf="languages.length > 1">
+                    <li *ngFor="let language of languages">
+                        <a class="dropdown-item" [jhiActiveMenu]="language" href="javascript:void(0);"
+                           (click)="changeLanguage(language);collapseNavbar();">{{language | findLanguageFromKey}}</a>
+                    </li>
+                </ul>
+            </li>-->
             <li ngbDropdown class="nav-item dropdown pointer" routerLinkActive="active" placement="bottom-right"
                 [routerLinkActiveOptions]="{exact: true}" *jhiHasAnyAuthority="['ROLE_USER']">
                 <a class="nav-link dropdown-toggle" ngbDropdownToggle href="javascript:void(0);" id="account-menu">
@@ -491,10 +492,10 @@
                         </a>
                     </li>
                     <!--<li *ngSwitchCase="true">-->
-                        <!--<a class="dropdown-item" (click)="logout()" id="logout">-->
-                            <!--<i class="fa fa-fw fa-sign-out" aria-hidden="true"></i>-->
-                            <!--<span jhiTranslate="global.menu.account.logout">Sign out</span>-->
-                        <!--</a>-->
+                    <!--<a class="dropdown-item" (click)="logout()" id="logout">-->
+                    <!--<i class="fa fa-fw fa-sign-out" aria-hidden="true"></i>-->
+                    <!--<span jhiTranslate="global.menu.account.logout">Sign out</span>-->
+                    <!--</a>-->
                     <!--</li>-->
 
                     <!--  <li *ngSwitchCase="false">
@@ -505,12 +506,12 @@
                                         </li>-->
                 </ul>
             </li>
-            <li *ngSwitchCase="false"  class="nav-item">
-            <a class="nav-link" (click)="login()" id="login">
-                <i class="fa fa-fw fa-sign-in" aria-hidden="true"></i>
-                <span jhiTranslate="global.menu.account.login">Sign in</span>
-            </a>
-        </li>
+            <li *ngSwitchCase="false" class="nav-item">
+                <a class="nav-link" (click)="login()" id="login">
+                    <i class="fa fa-fw fa-sign-in" aria-hidden="true"></i>
+                    <span jhiTranslate="global.menu.account.login">Sign in</span>
+                </a>
+            </li>
             <li *ngSwitchCase="true" class="nav-item">
                 <a class="nav-link" (click)="logout()" id="logout">
                     <i class="fa fa-fw fa-sign-out" aria-hidden="true"></i>

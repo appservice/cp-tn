@@ -5,7 +5,7 @@ import {JhiEventManager, JhiParseLinks, JhiPaginationUtil, JhiLanguageService, J
 
 import {Order, OrderType} from '../order.model';
 import {OrderService} from '../order.service';
-import {ITEMS_PER_PAGE, Principal, ResponseWrapper} from '../../../shared';
+import {Globals, ITEMS_PER_PAGE, Principal, ResponseWrapper} from '../../../shared';
 import {PaginationConfig} from '../../../blocks/config/uib-pagination.config';
 import {OrderFilter} from '../order-filter.model';
 import {URLSearchParams} from '@angular/http';
@@ -44,7 +44,8 @@ export class PurchaseOrderComponent implements OnInit, OnDestroy {
                 private router: Router,
                 private eventManager: JhiEventManager,
                 private paginationUtil: JhiPaginationUtil,
-                private paginationConfig: PaginationConfig) {
+                private paginationConfig: PaginationConfig,
+                public globals: Globals) {
         this.itemsPerPage = ITEMS_PER_PAGE;
         this.routeData = this.activatedRoute.data.subscribe((data) => {
             console.log(data);
@@ -54,7 +55,7 @@ export class PurchaseOrderComponent implements OnInit, OnDestroy {
             this.reverse = data['pagingParams'].ascending;
             this.predicate = data['pagingParams'].predicate;
         });
-       // this.currentSearch = activatedRoute.snapshot.params['search'] ? activatedRoute.snapshot.params['search'] : '';
+        // this.currentSearch = activatedRoute.snapshot.params['search'] ? activatedRoute.snapshot.params['search'] : '';
         this.orderFilter = new OrderFilter();
         this.orderFilter.internalNumber = activatedRoute.snapshot.params['internalNumber'] ? activatedRoute.snapshot.params['internalNumber'] : '';
         this.orderFilter.referenceNumber = activatedRoute.snapshot.params['referenceNumber'] ? activatedRoute.snapshot.params['referenceNumber'] : '';
@@ -67,16 +68,16 @@ export class PurchaseOrderComponent implements OnInit, OnDestroy {
 
     loadAll() {
 
-        if(this.orderType==OrderType.PRODUCTION){
+        if (this.orderType == OrderType.PRODUCTION) {
 
 
-            let urlSearchParams =this.createSearchParams();
+            let urlSearchParams = this.createSearchParams();
 
             this.orderService.getAllProductionOrders({
                 page: this.page - 1,
                 size: this.itemsPerPage,
                 sort: this.sort()
-            },urlSearchParams).subscribe(
+            }, urlSearchParams).subscribe(
                 (res: ResponseWrapper) => this.onSuccess(res.json, res.headers),
                 (res: ResponseWrapper) => this.onError(res.json)
             );
@@ -112,7 +113,6 @@ export class PurchaseOrderComponent implements OnInit, OnDestroy {
         }]);
         this.loadAll();
     }
-
 
 
     ngOnInit() {
@@ -156,16 +156,8 @@ export class PurchaseOrderComponent implements OnInit, OnDestroy {
     }
 
 
-    exportToExcel(){
-        let urlSearchParams = new URLSearchParams();
-        urlSearchParams.append('internalNumber.contains', this.orderFilter.internalNumber);
-        urlSearchParams.append('referenceNumber.contains', this.orderFilter.referenceNumber);
-        urlSearchParams.append('clientName.contains', this.orderFilter.clientName);
-        urlSearchParams.append('orderStatus.equals', this.orderFilter.orderStatus);
-        urlSearchParams.append('createdAt.greaterOrEqualThan', this.orderFilter.getValidFromString());
-        urlSearchParams.append('createdAt.lessOrEqualThan', this.orderFilter.getValidToString());
-        urlSearchParams.append('title.contains', this.orderFilter.title);
-        urlSearchParams.append('creatorName.contains', this.orderFilter.creatorName);
+    exportToExcel() {
+        let urlSearchParams = this.createSearchParams();
         this.orderService.getPurchaseOrdersAsExcel(urlSearchParams);
     }
 
@@ -183,7 +175,7 @@ export class PurchaseOrderComponent implements OnInit, OnDestroy {
         if (this.orderFilter.orderStatus !== null && this.orderFilter.orderStatus !== '')
             urlSearchParams.append('orderStatus.equals', this.orderFilter.orderStatus);
 
-        if (this.orderFilter.validFrom !== null )//&& this.orderFilter.validFrom !== ''
+        if (this.orderFilter.validFrom !== null)//&& this.orderFilter.validFrom !== ''
             urlSearchParams.append('createdAt.greaterOrEqualThan', this.orderFilter.getValidFromString());
 
         if (this.orderFilter.title !== null && this.orderFilter.title !== '')
@@ -192,7 +184,7 @@ export class PurchaseOrderComponent implements OnInit, OnDestroy {
         if (this.orderFilter.creatorName !== null && this.orderFilter.creatorName !== '')
             urlSearchParams.append('creatorName.contains', this.orderFilter.creatorName);
 
-        if (this.orderFilter.validTo !== null )//&& this.orderFilter.validTo !== ''
+        if (this.orderFilter.validTo !== null)//&& this.orderFilter.validTo !== ''
             urlSearchParams.append('createdAt.lessOrEqualThan', this.orderFilter.getValidToString());
         return urlSearchParams;
     }

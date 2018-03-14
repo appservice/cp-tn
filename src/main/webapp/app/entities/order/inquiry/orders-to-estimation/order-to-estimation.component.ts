@@ -4,7 +4,7 @@ import { Subscription } from 'rxjs/Rx';
 import { JhiEventManager, JhiParseLinks, JhiPaginationUtil, JhiLanguageService, JhiAlertService } from 'ng-jhipster';
 
 import { OrderService } from '../../order.service';
-import { ITEMS_PER_PAGE, Principal, ResponseWrapper } from '../../../../shared';
+import {Globals, ITEMS_PER_PAGE, Principal, ResponseWrapper} from '../../../../shared';
 import { PaginationConfig } from '../../../../blocks/config/uib-pagination.config';
 import {Order} from '../../order.model';
 import {OrderFilter} from '../../order-filter.model';
@@ -43,7 +43,8 @@ currentAccount: any;
         private router: Router,
         private eventManager: JhiEventManager,
         private paginationUtil: JhiPaginationUtil,
-        private paginationConfig: PaginationConfig
+        private paginationConfig: PaginationConfig,
+        public globals: Globals
     ) {
         this.itemsPerPage = ITEMS_PER_PAGE;
         this.routeData = this.activatedRoute.data.subscribe((data) => {

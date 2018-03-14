@@ -12,6 +12,7 @@ import {ExcelService} from '../../../tn-components/excel.service';
 import {ITEMS_PER_PAGE} from '../../../shared/constants/pagination.constants';
 import {ResponseWrapper} from '../../../shared/model/response-wrapper.model';
 import {URLSearchParams} from '@angular/http';
+import {Globals} from '../../../shared';
 
 
 @Component({
@@ -50,7 +51,8 @@ export class EmergencyOrderComponent implements OnInit, OnDestroy {
                 private eventManager: JhiEventManager,
                 private paginationUtil: JhiPaginationUtil,
                 private paginationConfig: PaginationConfig,
-                private excelService: ExcelService) {
+                private excelService: ExcelService,
+                public globals:Globals) {
         this.itemsPerPage = ITEMS_PER_PAGE;
         this.routeData = this.activatedRoute.data.subscribe((data) => {
             this.orderType = data['orderType'];
@@ -153,15 +155,7 @@ export class EmergencyOrderComponent implements OnInit, OnDestroy {
     model: any;
 
     exportToExcel(){
-        let urlSearchParams = new URLSearchParams();
-        urlSearchParams.append('internalNumber.contains', this.orderFilter.internalNumber);
-        urlSearchParams.append('referenceNumber.contains', this.orderFilter.referenceNumber);
-        urlSearchParams.append('clientName.contains', this.orderFilter.clientName);
-        urlSearchParams.append('orderStatus.equals', this.orderFilter.orderStatus);
-        urlSearchParams.append('createdAt.greaterOrEqualThan', this.orderFilter.getValidFromString());
-        urlSearchParams.append('createdAt.lessOrEqualThan', this.orderFilter.getValidToString());
-        urlSearchParams.append('title.contains', this.orderFilter.title);
-        urlSearchParams.append('creatorName.contains', this.orderFilter.creatorName);
+        let urlSearchParams = this.createSearchParams();
         this.orderService.getEmergencyOrdersAsExcel(urlSearchParams);
     }
 

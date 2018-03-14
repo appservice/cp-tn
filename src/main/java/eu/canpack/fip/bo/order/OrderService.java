@@ -690,11 +690,11 @@ public class OrderService {
     }
 
     @Transactional
-    public Order createPurchaseOrder(OrderDTO orderDTO) {
+    public Order createPurchaseOrder(OrderDTO inquiryDTO) {
 
-        log.debug("createPurchaseOrder orderDTO: {}", orderDTO);
-        Order inquiry = orderRepository.findOne(orderDTO.getInquiryId());
-        Order order = orderMapper.toEntity(orderDTO);
+        log.debug("createPurchaseOrder orderDTO: {}", inquiryDTO);
+        Order inquiry = orderRepository.findOne(inquiryDTO.getInquiryId());
+        Order order = orderMapper.toEntity(inquiryDTO);
         order.setEstimationMaker(inquiry.getEstimationMaker());
         order.setId(null);
 
@@ -704,7 +704,7 @@ public class OrderService {
 
 //        PropertyFilter filter = PropertyFilters.getAnnotationFilter(Id.class);
 
-        for (EstimationCreateDTO estDTO : orderDTO.getEstimations()) {
+        for (EstimationCreateDTO estDTO : inquiryDTO.getEstimations()) {
             Estimation est = estimationRepository.findOne(estDTO.getId());
             est.getCommercialParts().size();
             est.getOperations().size();
@@ -732,8 +732,8 @@ public class OrderService {
             newEstimation.setMaterialType(est.getMaterialType());
             newEstimation.setPricePublished(true);
 
-            if (est.getMpk() != null && orderDTO.getClientId() != null) {
-                mpkBudgetMapperService.findOneByMpkAndClientId(est.getMpk(), orderDTO.getClientId())
+            if (est.getMpk() != null && inquiryDTO.getClientId() != null) {
+                mpkBudgetMapperService.findOneByMpkAndClientId(est.getMpk(), inquiryDTO.getClientId())
                     .ifPresent(mpkBudgetMapper ->
                                    newEstimation.setSapNumber(mpkBudgetMapper.getBudget())
                     );
@@ -773,6 +773,16 @@ public class OrderService {
                 newCp.setUnit(cp.getUnit());
                 newEstimation.getCommercialParts().add(newCp);
             }
+
+            for (Cooperation coop : est.getCooperationList()) {
+                Cooperation newCooperatoin = new Cooperation();
+                newCooperatoin.setEstimation(newEstimation);
+                newCooperatoin.setAmount(coop.getAmount());
+                newCooperatoin.setPrice(coop.getPrice());
+                newCooperatoin.setName(coop.getName());
+                newCooperatoin.setCounterparty(coop.getCounterparty());
+                newEstimation.getCooperationList().add(newCooperatoin);
+            }
             newEstimation.setOrder(order);
             order.getEstimations().add(newEstimation);
         }
@@ -781,7 +791,7 @@ public class OrderService {
         order.setCreatedAt(now);
         order.createdBy(loggedUser);
         preparePurchaseOrderDocumentNumber(order);
-        if (!orderDTO.getOrderStatus().equals(OrderStatus.WORKING_COPY)) {
+        if (!inquiryDTO.getOrderStatus().equals(OrderStatus.WORKING_COPY)) {
             order.setOrderStatus(OrderStatus.CREATING_SAP_ORDER);
 
         }

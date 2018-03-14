@@ -10,110 +10,120 @@
         </button>
     </h2>
     <jhi-alert></jhi-alert>
+    <form name="editForm" role="form" novalidate #editForm="ngForm">
 
-    <div class="row" style="margin-top: 40px">
-        <div class="col-md-2">
-            <!--<label>Numer rys.</label>-->
-            <input type="text" class="form-control" name="filterInternalNumber"
-                   [(ngModel)]="orderFilter.internalNumber" placeholder="Numer wewn."
-                   (keydown)="onEnterClickFilter($event)">
+        <div class="row" style="margin-top: 40px">
+            <div class="col-md-2">
+                <!--<label>Numer rys.</label>-->
+                <input type="text" class="form-control" name="filterInternalNumber"
+                       [(ngModel)]="orderFilter.internalNumber" placeholder="Numer wewn."
+                       (keydown)="onEnterClickFilter($event)">
 
-        </div>
-        <div class="col-md-2">
-            <!--<label>Nazwa</label>-->
-            <input type="text" class="form-control" name="filterReferenceNumber"
-                   [(ngModel)]="orderFilter.referenceNumber" placeholder="Numer zamówienia klienta"
-                   (keydown)="onEnterClickFilter($event)">
-        </div>
-        <div class="col-md-2">
-            <!--<label>Nazwa</label>-->
-            <input type="text" class="form-control" name="filterClientName" [(ngModel)]="orderFilter.clientName"
-                   placeholder="Nazwa klienta" (keydown)="onEnterClickFilter($event)">
-        </div>
-
-        <div class="col-md-2">
-            <!--<label class="form-control-label" jhiTranslate="tnApp.order.orderStatus" for="field_orderStatus">Order Status</label>-->
-            <select class="form-control" name="orderStatus" [(ngModel)]="orderFilter.orderStatus"
-                    id="field_orderStatus" (keydown)="onEnterClickFilter($event)">
-                <option value="undefined" disabled selected hidden>Status zamówienia</option>
-                <option value="null" disabled selected hidden>Status zamówienia</option>
-                <option value="WORKING_COPY">KOPIA ROBOCZA</option>
-                <!--jhiTranslate="tnApp.OrderStatus.FOR_ESTIMATION"-->
-                <option value="IN_ESTIMATION">W TRAKCIE WYCENY</option>
-                <option value="SENT_OFFER_TO_CLIENT">OFERTA UKOŃCZONA</option>
-                <!--<option value="CREATED_PURCHASE_ORDER">ZAMÓWIENIE UTWORZONE</option>-->
-            </select>
-        </div>
-
-        <div class="form-group col-md-2">
-
-            <div class="input-group">
-                <input type="text" class="form-control"
-                       name="validFromFilter"
-                       [showWeekdays]="true"
-                       [(ngModel)]="orderFilter.validFrom" placeholder="Utworzono po:" ngbDatepicker #realizationDateDp="ngbDatepicker"/>
-                <span class="input-group-btn">
-                    <button type="button" class="btn btn-default" (click)="realizationDateDp.toggle()"
-                            (keyup)="realizationDateDp.toggle()"><i class="fa fa-calendar"></i></button>
-                </span>
             </div>
-        </div>
+            <div class="col-md-2">
+                <!--<label>Nazwa</label>-->
+                <input type="text" class="form-control" name="filterReferenceNumber"
+                       [(ngModel)]="orderFilter.referenceNumber" placeholder="Numer zamówienia klienta"
+                       (keydown)="onEnterClickFilter($event)">
+            </div>
+            <div class="col-md-2">
+                <!--<label>Nazwa</label>-->
+                <input type="text" class="form-control" name="filterClientName" [(ngModel)]="orderFilter.clientName"
+                       placeholder="Nazwa klienta" (keydown)="onEnterClickFilter($event)">
+            </div>
 
-            <!--<div class="col-md-2">
+            <div class="col-md-2">
+                <!--<label class="form-control-label" jhiTranslate="tnApp.order.orderStatus" for="field_orderStatus">Order Status</label>-->
+                <select class="form-control" name="orderStatus" [(ngModel)]="orderFilter.orderStatus"
+                        id="field_orderStatus" (keydown)="onEnterClickFilter($event)">
+                    <option value="undefined" disabled selected hidden>Status zamówienia</option>
+                    <option value="null" disabled selected hidden>Status zamówienia</option>
+                    <option value="WORKING_COPY">KOPIA ROBOCZA</option>
+                    <!--jhiTranslate="tnApp.OrderStatus.FOR_ESTIMATION"-->
+                    <option value="IN_ESTIMATION">W TRAKCIE WYCENY</option>
+                    <option value="SENT_OFFER_TO_CLIENT">OFERTA UKOŃCZONA</option>
+                    <!--<option value="CREATED_PURCHASE_ORDER">ZAMÓWIENIE UTWORZONE</option>-->
+                </select>
+            </div>
+            <!--
+                    <div class="form-group col-md-2">
+
+                        <div class="input-group">
+                            <input type="text" class="form-control"
+                                   name="validFromFilter"
+                                   [showWeekdays]="true"
+                                   [(ngModel)]="orderFilter.validFrom" placeholder="Utworzono po:" ngbDatepicker #realizationDateDp="ngbDatepicker"/>
+                            <span class="input-group-btn">
+                                <button type="button" class="btn btn-default" (click)="realizationDateDp.toggle()"
+                                        (keyup)="realizationDateDp.toggle()"><i class="fa fa-calendar"></i></button>
+                            </span>
+                        </div>
+                    </div>-->
+
+            <div class="col-md-2">
                 <div class="input-group">
-                    <input class="form-control " placeholder="data od" ngx-mydatepicker name="mydate"
-                           [(ngModel)]="orderFilter.validFrom" #dp="ngx-mydatepicker" (inputFieldChanged)="onInputFieldChanged($event)" [options]="myOptions"
-                           (dateChanged)="onDateChanged($event)" [ngClass]="{'is-invalid':!validDate}">
+                    <input class="form-control " placeholder="Utworzono po:" ngx-mydatepicker name="validFromFilter"
+                           [(ngModel)]="orderFilter.validFrom" #dp="ngx-mydatepicker" [options]="globals.myOptions">
+                    <!--(dateChanged)="globals.onDateChanged($event)" [ngClass]="{'is-invalid':!validDate}" (inputFieldChanged)="globals.onInputFieldChanged($event)"-->
 
                     <span class="input-group-btn">
-            <button type="button" class="btn btn-default" (click)="dp.clearDate()">
-                <i class="fa fa-remove"></i>
-                </button>
-            <button type="button" class="btn btn-default" (click)="dp.toggleCalendar()" >
-                <i class="fa fa-calendar"></i>
-            </button>
-        </span>
+                     <!--<button type="button" class="btn btn-default" (click)="dp.clearDate()"> <i class="fa fa-remove"></i>  </button>-->
+                     <button type="button" class="btn btn-default" (click)="dp.toggleCalendar()">  <i class="fa fa-calendar"></i></button>
+                    </span>
                 </div>
-            </div>-->
-        <div class="form-group col-md-2">
-            <div class="input-group">
-                <input type="text" class="form-control" name="validToFilter" ngbDatepicker #createdToEnd="ngbDatepicker" [showWeekdays]="true"
-                       [(ngModel)]="orderFilter.validTo" placeholder="Utworzono przed:"/>
-                <span class="input-group-btn">
+            </div>
+
+            <div class="col-md-2">
+                <div class="input-group">
+                    <input class="form-control " placeholder="Utworzono przed:" ngx-mydatepicker name="validToFilter"
+                           [(ngModel)]="orderFilter.validTo" #dp_validTo="ngx-mydatepicker" [options]="globals.myOptions">
+
+                    <span class="input-group-btn">
+                         <!--<button type="button" class="btn btn-default" (click)="dp_validTo.clearDate()">  <i class="fa fa-remove"></i></button>-->
+                         <button type="button" class="btn btn-default" (click)="dp_validTo.toggleCalendar()">  <i class="fa fa-calendar"></i> </button>
+                    </span>
+                </div>
+            </div>
+            <!--<div class="form-group col-md-2">
+                <div class="input-group">
+                    <input type="text" class="form-control" name="validToFilter" ngbDatepicker #createdToEnd="ngbDatepicker" [showWeekdays]="true"
+                           [(ngModel)]="orderFilter.validTo" placeholder="Utworzono przed:"/>
+                    <span class="input-group-btn">
                     <button type="button" class="btn btn-default" (click)="createdToEnd.toggle()"
                             (keyup)="createdToEnd.toggle()"><i class="fa fa-calendar"></i></button>
                 </span>
+                </div>
+            </div>-->
+        </div>
+        <div class="row" style="margin-top: 10px">
+            <div class="col-md-2">
+                <!--<label>Numer rys.</label>-->
+                <input type="text" class="form-control" name="filterTitle"
+                       [(ngModel)]="orderFilter.title" placeholder="Tytuł zam."
+                       (keydown)="onEnterClickFilter($event)">
+
             </div>
-        </div>
-    </div>
-    <div class="row" style="margin-top: 10px">
-        <div class="col-md-2">
-            <!--<label>Numer rys.</label>-->
-            <input type="text" class="form-control" name="filterTitle"
-                   [(ngModel)]="orderFilter.title" placeholder="Tytuł zam."
-                   (keydown)="onEnterClickFilter($event)">
+            <div class="col-md-2">
+                <input type="text" class="form-control" name="filterCreator"
+                       [(ngModel)]="orderFilter.creatorName" placeholder="Utworzył"
+                       (keydown)="onEnterClickFilter($event)">
+
+            </div>
+            <div class="col-md-4">
+                <label>&nbsp;</label>
+                <button class="btn btn-outline-dark" type="button" (click)="search()" [disabled]="editForm.form.invalid"><span
+                    class="fa fa-search"></span> Filtruj
+                </button>
+                <button class="btn btn-outline-dark" type="button" (click)="clearFilterAndLoadAll()"><span
+                    class="fa fa-trash-o"></span> Wyczyść filtr
+                </button>
+            </div>
 
         </div>
-        <div class="col-md-2">
-            <input type="text" class="form-control" name="filterCreator"
-                   [(ngModel)]="orderFilter.creatorName" placeholder="Utworzył"
-                   (keydown)="onEnterClickFilter($event)">
-
-        </div>
-        <div class="col-md-4">
-            <label>&nbsp;</label>
-            <button class="btn btn-outline-dark" type="button" (click)="search()" ><span
-                class="fa fa-search"></span> Filtruj
-            </button>
-            <button class="btn btn-outline-dark" type="button" (click)="clearFilterAndLoadAll()"><span
-                class="fa fa-trash-o"></span> Wyczyść filtr
-            </button>
-        </div>
-
-    </div>
-
+    </form>
 
 </div>
+
 <!--</div></div>-->
 
 <br/>

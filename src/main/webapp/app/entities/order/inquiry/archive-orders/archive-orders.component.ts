@@ -5,7 +5,7 @@ import { JhiEventManager, JhiParseLinks, JhiPaginationUtil, JhiLanguageService, 
 
 import { Order } from '../../order.model';
 import { OrderService } from '../../order.service';
-import { ITEMS_PER_PAGE, Principal, ResponseWrapper } from '../../../../shared';
+import {Globals, ITEMS_PER_PAGE, Principal, ResponseWrapper} from '../../../../shared';
 import { PaginationConfig } from '../../../../blocks/config/uib-pagination.config';
 import {OrderFilter} from '../../order-filter.model';
 import {URLSearchParams} from '@angular/http';
@@ -47,6 +47,7 @@ currentAccount: any;
         private paginationUtil: JhiPaginationUtil,
         private paginationConfig: PaginationConfig,
         private estimationService: EstimationService,
+        public globals: Globals,
     ) {
         this.itemsPerPage = ITEMS_PER_PAGE;
         this.routeData = this.activatedRoute.data.subscribe((data) => {

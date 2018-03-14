@@ -37,9 +37,32 @@
                 <option value="IN_PRODUCTION">W PRODUKCJI</option>
             </select>
         </div>
+        <div class="col-md-2">
+            <div class="input-group">
+                <input class="form-control " placeholder="Utworzono po:" ngx-mydatepicker name="validFromFilter"
+                       [(ngModel)]="orderFilter.validFrom" #dp="ngx-mydatepicker" [options]="globals.myOptions">
+                <!--(dateChanged)="globals.onDateChanged($event)" [ngClass]="{'is-invalid':!validDate}" (inputFieldChanged)="globals.onInputFieldChanged($event)"-->
 
-        <div class="form-group col-md-2">
-            <!--<label class="form-control-label" jhiTranslate="tnApp.order.closeDate" for="field_closeDate">Close Date</label>-->
+                <span class="input-group-btn">
+                     <!--<button type="button" class="btn btn-default" (click)="dp.clearDate()"> <i class="fa fa-remove"></i>  </button>-->
+                     <button type="button" class="btn btn-default" (click)="dp.toggleCalendar()">  <i class="fa fa-calendar"></i></button>
+                    </span>
+            </div>
+        </div>
+
+        <div class="col-md-2">
+            <div class="input-group">
+                <input class="form-control " placeholder="Utworzono przed:" ngx-mydatepicker name="validToFilter"
+                       [(ngModel)]="orderFilter.validTo" #dp_validTo="ngx-mydatepicker" [options]="globals.myOptions">
+
+                <span class="input-group-btn">
+                         <!--<button type="button" class="btn btn-default" (click)="dp_validTo.clearDate()">  <i class="fa fa-remove"></i></button>-->
+                         <button type="button" class="btn btn-default" (click)="dp_validTo.toggleCalendar()">  <i class="fa fa-calendar"></i> </button>
+                    </span>
+            </div>
+        </div>
+<!--        <div class="form-group col-md-2">
+            &lt;!&ndash;<label class="form-control-label" jhiTranslate="tnApp.order.closeDate" for="field_closeDate">Close Date</label>&ndash;&gt;
             <div class="input-group">
                 <input type="text" class="form-control"
                        name="validFromFilter"
@@ -52,7 +75,7 @@
             </div>
         </div>
         <div class="form-group col-md-2">
-            <!--<label class="form-control-label" jhiTranslate="tnApp.order.closeDate" for="field_closeDate">Close Date</label>-->
+            &lt;!&ndash;<label class="form-control-label" jhiTranslate="tnApp.order.closeDate" for="field_closeDate">Close Date</label>&ndash;&gt;
             <div class="input-group">
                 <input type="text" class="form-control" name="validToFilter" ngbDatepicker #createdToEnd="ngbDatepicker" [displayMonths]="true" [showWeekdays]="true"
                        [(ngModel)]="orderFilter.validTo" placeholder="Utworzono przed:"/>
@@ -61,7 +84,7 @@
                             (keyup)="createdToEnd.toggle()"><i class="fa fa-calendar"></i></button>
                 </span>
             </div>
-        </div>
+        </div>-->
     </div>
     <div class="row" style="margin-top: 10px">
         <div class="col-md-2">

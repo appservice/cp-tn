@@ -5,7 +5,7 @@ import {JhiEventManager, JhiParseLinks, JhiPaginationUtil, JhiLanguageService, J
 
 import {Order, OrderType} from '../order.model';
 import {OrderService} from '../order.service';
-import {ITEMS_PER_PAGE, Principal, ResponseWrapper} from '../../../shared';
+import {Globals, ITEMS_PER_PAGE, Principal, ResponseWrapper} from '../../../shared';
 import {PaginationConfig} from '../../../blocks/config/uib-pagination.config';
 import {OrderFilter} from '../order-filter.model';
 import {URLSearchParams} from '@angular/http';
@@ -51,7 +51,8 @@ export class OrderComponent implements OnInit, OnDestroy {
                 private eventManager: JhiEventManager,
                 private paginationUtil: JhiPaginationUtil,
                 private paginationConfig: PaginationConfig,
-                private excelService: ExcelService) {
+                private excelService: ExcelService,
+                public globals: Globals) {
         this.itemsPerPage = ITEMS_PER_PAGE;
         this.routeData = this.activatedRoute.data.subscribe((data) => {
             this.orderType = data['orderType'];
@@ -68,7 +69,14 @@ export class OrderComponent implements OnInit, OnDestroy {
         this.orderFilter.orderStatus = activatedRoute.snapshot.params['orderStatus'] ? activatedRoute.snapshot.params['orderStatus'] : '';
         this.orderFilter.title = activatedRoute.snapshot.params['title'] ? activatedRoute.snapshot.params['title'] : '';
         this.orderFilter.creatorName = activatedRoute.snapshot.params['creatorName'] ? activatedRoute.snapshot.params['creatorName'] : '';
-        // this.orderFilter.validFrom = activatedRoute.snapshot.params['validFrom'] ? activatedRoute.snapshot.params['validFrom'] : null;
+
+       // if(activatedRoute.snapshot.params['validFrom'] && activatedRoute.snapshot.params['validFrom']!=''){
+       //     console.log(activatedRoute.snapshot.params['validFrom']);
+       //
+       //     this.orderFilter.validFrom={
+       //          jsdate:new Date(activatedRoute.snapshot.params['validFrom'])}
+       //
+       // }
 
 
     }
@@ -88,17 +96,8 @@ export class OrderComponent implements OnInit, OnDestroy {
                 );
                 return;
             }
-            ;
             let urlSearchParams = this.createSearchParams();
-            /*new URLSearchParams();
 
-            urlSearchParams.append('internalNumber.contains', this.orderFilter.internalNumber);
-            urlSearchParams.append('referenceNumber.contains', this.orderFilter.referenceNumber);
-            urlSearchParams.append('clientName.contains', this.orderFilter.clientName);
-            urlSearchParams.append('orderStatus.equals', this.orderFilter.orderStatus);
-            urlSearchParams.append('createdAt.greaterOrEqualThan', this.orderFilter.getValidFromString());
-            urlSearchParams.append('createdAt.lessOrEqualThan', this.orderFilter.getValidToString());
-            urlSearchParams.append('title.contains', this.orderFilter.title);*/
             this.orderService.getAllInquiries({
                 page: this.page - 1,
                 size: this.itemsPerPage,
@@ -238,44 +237,8 @@ export class OrderComponent implements OnInit, OnDestroy {
     }
 
     exportToExcel() {
-        let urlSearchParams = new URLSearchParams();
-        urlSearchParams.append('internalNumber.contains', this.orderFilter.internalNumber);
-        urlSearchParams.append('referenceNumber.contains', this.orderFilter.referenceNumber);
-        urlSearchParams.append('clientName.contains', this.orderFilter.clientName);
-        urlSearchParams.append('orderStatus.equals', this.orderFilter.orderStatus);
-        urlSearchParams.append('createdAt.greaterOrEqualThan', this.orderFilter.getValidFromString());
-        urlSearchParams.append('createdAt.lessOrEqualThan', this.orderFilter.getValidToString());
-        urlSearchParams.append('title.contains', this.orderFilter.title);
-        urlSearchParams.append('creatorName.contains', this.orderFilter.creatorName);
+        let urlSearchParams = this.createSearchParams();
         this.orderService.getInquiriesAsExcel(urlSearchParams);
-    }
-
-
-    onInputFieldChanged(event: IMyInputFieldChanged) {
-        console.log('onInputFieldChanged(): Value: ', event.value, ' - dateFormat: ', event.dateFormat, ' - valid: ', event.valid);
-        //   console.log(event);
-        if (event.value != null && event.value) {
-            this.validDate = event.valid;
-        }
-
-    }
-
-    myOptions: INgxMyDpOptions = {
-        // other options...
-        showWeekNumbers: true,
-        dateFormat: 'dd-mm-yyyy',
-        todayBtnTxt: 'Dzisiaj',
-        dayLabels: {su: "Nie", mo: "Pon", tu: "Wto", we: "Sro", th: "Czw", fr: "Pią", sa: "Sob"},
-        monthLabels: {1: "Sty", 2: "Lut", 3: "Mar", 4: "Kwi", 5: "Maj", 6: "Cze", 7: "Lip", 8: "Sier", 9: "Wrz", 10: "Paź", 11: "Lis", 12: "Gru"},
-    };
-
-    // optional date changed callback
-    onDateChanged(event: IMyDateModel): void {
-        //       console.log(event);
-        this.validDate = true;
-        // this.dateValue=event;
-        // this.registerOnChange(event);
-
     }
 
 
@@ -321,6 +284,7 @@ export class OrderComponent implements OnInit, OnDestroy {
                 orderStatus: this.orderFilter.orderStatus,
                 title: this.orderFilter.title,
                 creatorName: this.orderFilter.creatorName,
+                validFrom: this.orderFilter.validFrom? this.orderFilter.validFrom.epoc:'',
                 // validFrom: this.orderFilter.validFrom.year+'-'+this.orderFilter.validFrom.month+'-'+this.orderFilter.validFrom.day,
                 page: this.page,
                 sort: this.predicate + ',' + (this.reverse ? 'asc' : 'desc')

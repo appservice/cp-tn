@@ -15,6 +15,7 @@ import {
     Principal,
     HasAnyAuthorityDirective,
 } from './';
+import {Globals} from './globals.service';
 
 @NgModule({
     imports: [
@@ -34,7 +35,8 @@ import {
         CSRFService,
         AuthServerProvider,
         UserService,
-        DatePipe
+        DatePipe,
+        Globals
     ],
     entryComponents: [JhiLoginModalComponent],
     exports: [
