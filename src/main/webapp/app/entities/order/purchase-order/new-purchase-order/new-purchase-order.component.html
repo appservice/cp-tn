@@ -86,7 +86,7 @@
                                 </td>
                                 <td style="max-width: 150px;">
                                     <input type="text" class="form-control" name="estimation_itemNumber_{{rowIndex}}"
-                                           [(ngModel)]="estimation.itemNumber" disabled/>
+                                           [(ngModel)]="estimation.itemNumber" [disabled]="!order.canEditAsAdmin"/>
                                 </td>
                                 <td style="max-width: 80px">
                                     <input type="number" class="form-control" [(ngModel)]="estimation.amount"
