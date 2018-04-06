@@ -168,7 +168,7 @@ public class OperationService {
                 operation.setOperationStatus(OperationStatus.FINISHED);
                 break;
             case RESUME:
-                operation.setOperationStatus(OperationStatus.STARTED);
+                operation.setOperationStatus(OperationStatus.RESUMED);
                 break;
         }
 
