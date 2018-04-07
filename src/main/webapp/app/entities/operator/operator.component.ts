@@ -146,4 +146,8 @@ currentAccount: any;
     private onError(error) {
         this.jhiAlertService.error(error.message, null, null);
     }
+
+    public printCard(){
+        this.operatorService.downloadOperatorsCards();
+    }
 }

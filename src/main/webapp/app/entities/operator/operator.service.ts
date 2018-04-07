@@ -88,7 +88,19 @@ export class OperatorService {
         this.http.get(`${this.resourceUrl}/${operator.id}/print-card`, options)
             .map((res: Response) => res.blob())
             .subscribe((data: any) => {
-                OperatorService.saveDownload(data, operator.firstName + " " + operator.lastName, 'application/pdf');
+                OperatorService.saveDownload(data, 'Karta_'+operator.firstName + " " + operator.lastName, 'application/pdf');
+
+            });
+    }
+
+    downloadOperatorsCards(): void {
+        let headers = new Headers({'Content-Type': 'application/json'});
+        let options = new RequestOptions({responseType: ResponseContentType.Blob, headers});
+
+        this.http.get(`${this.resourceUrl}/print-card`, options)
+            .map((res: Response) => res.blob())
+            .subscribe((data: any) => {
+                OperatorService.saveDownload(data, "Karty operatorów", 'application/pdf');
 
             });
     }
@@ -98,6 +110,6 @@ export class OperatorService {
 
         const disableAutoBOM = true;
 
-        FileSaver.saveAs(data, 'Karta_' + fileName + '.pdf', disableAutoBOM);
+        FileSaver.saveAs(data,  fileName + '.pdf', disableAutoBOM);
     }
 }

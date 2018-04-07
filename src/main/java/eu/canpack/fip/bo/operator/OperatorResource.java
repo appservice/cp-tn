@@ -1,12 +1,12 @@
 package eu.canpack.fip.bo.operator;
 
 import com.codahale.metrics.annotation.Timed;
+import eu.canpack.fip.bo.pdf.OperatorCardListCreatorService;
 import eu.canpack.fip.web.rest.errors.BadRequestAlertException;
 import eu.canpack.fip.bo.pdf.OperatorCardCreatorService;
 import eu.canpack.fip.web.rest.util.HeaderUtil;
 import eu.canpack.fip.web.rest.util.PaginationUtil;
 
-import io.swagger.annotations.ApiParam;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,8 +27,10 @@ import java.io.InputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * REST controller for managing Operator.
@@ -45,10 +47,13 @@ public class OperatorResource {
 
     private final OperatorCardCreatorService operatorCardCreatorService;
 
-    public OperatorResource(OperatorService operatorService, OperatorQueryService operatorQueryService, OperatorCardCreatorService operatorCardCreatorService) {
+    private final OperatorCardListCreatorService operatorCardListCreatorService;
+
+    public OperatorResource(OperatorService operatorService, OperatorQueryService operatorQueryService, OperatorCardCreatorService operatorCardCreatorService, OperatorCardListCreatorService operatorCardListCreatorService) {
         this.operatorService = operatorService;
         this.operatorQueryService = operatorQueryService;
         this.operatorCardCreatorService = operatorCardCreatorService;
+        this.operatorCardListCreatorService = operatorCardListCreatorService;
     }
 
     /**
@@ -159,6 +164,24 @@ public class OperatorResource {
         OperatorDTO operator = operatorService.findOne(operatorId);
         ByteArrayOutputStream os = new ByteArrayOutputStream();
         operatorCardCreatorService.createOperatorCard(os, operator);
+
+        InputStream inputStream = new ByteArrayInputStream(os.toByteArray());
+        InputStreamResource inputStreamResource = new InputStreamResource(inputStream);
+        os.close();
+        inputStream.close();
+
+        return ResponseEntity.ok().header(HttpHeaders.CONTENT_DISPOSITION, "attachment;filename=" + "karta_operatora.pdf").contentType(MediaType.APPLICATION_PDF).body(inputStreamResource);
+
+    }
+
+    @GetMapping("/operators/print-card")
+    public ResponseEntity<InputStreamResource> printCards(OperatorCriteria criteria) throws IOException {
+        List<OperatorDTO> operators = operatorQueryService.findByCriteria(criteria)
+            .stream()
+            .sorted(Comparator.comparing(OperatorDTO::getLastName))
+            .collect(Collectors.toList());
+        ByteArrayOutputStream os = new ByteArrayOutputStream();
+        operatorCardListCreatorService.createOperatorCard(os, operators);
 
         InputStream inputStream = new ByteArrayInputStream(os.toByteArray());
         InputStreamResource inputStreamResource = new InputStreamResource(inputStream);

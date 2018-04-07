@@ -75,22 +75,22 @@ public class OperatorQueryService extends QueryService<Operator> {
         Specifications<Operator> specification = Specifications.where(null);
         if (criteria != null) {
             if (criteria.getId() != null) {
-                specification = specification.and(buildSpecification(criteria.getId(), Operator_.id));
+                specification = specification.and(buildSpecification(criteria.getId(), eu.canpack.fip.bo.operator.Operator_.id));
             }
             if (criteria.getFirstName() != null) {
-                specification = specification.and(buildStringSpecification(criteria.getFirstName(), Operator_.firstName));
+                specification = specification.and(buildStringSpecification(criteria.getFirstName(), eu.canpack.fip.bo.operator.Operator_.firstName));
             }
             if (criteria.getLastName() != null) {
-                specification = specification.and(buildStringSpecification(criteria.getLastName(), Operator_.lastName));
+                specification = specification.and(buildStringSpecification(criteria.getLastName(), eu.canpack.fip.bo.operator.Operator_.lastName));
             }
             if (criteria.getCardNumber() != null) {
-                specification = specification.and(buildStringSpecification(criteria.getCardNumber(), Operator_.cardNumber));
+                specification = specification.and(buildStringSpecification(criteria.getCardNumber(), eu.canpack.fip.bo.operator.Operator_.cardNumber));
             }
             if (criteria.getJobTitle() != null) {
-                specification = specification.and(buildStringSpecification(criteria.getJobTitle(), Operator_.jobTitle));
+                specification = specification.and(buildStringSpecification(criteria.getJobTitle(), eu.canpack.fip.bo.operator.Operator_.jobTitle));
             }
             if (criteria.getActive() != null) {
-                specification = specification.and(buildSpecification(criteria.getActive(), Operator_.active));
+                specification = specification.and(buildSpecification(criteria.getActive(), eu.canpack.fip.bo.operator.Operator_.active));
             }
         }
         return specification;

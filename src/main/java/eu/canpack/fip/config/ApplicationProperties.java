@@ -16,6 +16,19 @@ public class ApplicationProperties {
 
     private String initialOfferRemarks;
 
+    private int columnOnPageWithOperatorCard;
+
+    public ApplicationProperties() {
+            }
+
+    public int getColumnOnPageWithOperatorCard() {
+        return columnOnPageWithOperatorCard;
+    }
+
+    public void setColumnOnPageWithOperatorCard(int columnOnPageWithOperatorCard) {
+        this.columnOnPageWithOperatorCard = columnOnPageWithOperatorCard;
+    }
+
     public String getDrawingDirectoryPath() {
         return drawingDirectoryPath;
     }

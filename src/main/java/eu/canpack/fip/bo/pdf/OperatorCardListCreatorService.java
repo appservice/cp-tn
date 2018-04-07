@@ -8,6 +8,7 @@ import com.lowagie.text.pdf.PdfPCell;
 import com.lowagie.text.pdf.PdfPTable;
 import com.lowagie.text.pdf.PdfWriter;
 import eu.canpack.fip.bo.operator.OperatorDTO;
+import eu.canpack.fip.config.ApplicationProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -17,6 +18,7 @@ import java.awt.*;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.List;
 
 /**
  * CP S.A.
@@ -24,33 +26,38 @@ import java.io.OutputStream;
  */
 @Service
 @Transactional
-public class OperatorCardCreatorService {
+public class OperatorCardListCreatorService {
 
-    private static final Logger log = LoggerFactory.getLogger(OperatorCardCreatorService.class);
+    private static final Logger log = LoggerFactory.getLogger(OperatorCardListCreatorService.class);
     private static BaseFont baseFont = PdfUtil.getArialUnicodeBaseFont();
 
     private final BarcodeCreatorService barcodeCreatorService;
+    private final ApplicationProperties applicationProperties;
 
-    public OperatorCardCreatorService(BarcodeCreatorService barcodeCreatorService) {
+    public OperatorCardListCreatorService(BarcodeCreatorService barcodeCreatorService, ApplicationProperties applicationProperties) {
         this.barcodeCreatorService = barcodeCreatorService;
+        this.applicationProperties = applicationProperties;
     }
 
-    public void createOperatorCard(OutputStream os, OperatorDTO operator) {
+    public void createOperatorCard(OutputStream os, List<OperatorDTO> operators) {
         Document doc = new Document(PageSize.A4);
 
         try {
             PdfWriter writer = PdfWriter.getInstance(doc, os);
             doc.open();
 
-            PdfPTable table = new PdfPTable(1);
-            table.setWidthPercentage(33);
-            PdfPTable tableContent = new PdfPTable(1);
-            tableContent.setWidthPercentage(100);
-            PdfPCell cell1 = createCell(operator.getFirstName() + " " + operator.getLastName(), 16);
-            tableContent.addCell(cell1);
-            tableContent.addCell(createImageCell(barcodeImage(operator.getCardNumber())));
-            tableContent.addCell(createCell(operator.getCardNumber(), 12));
-            table.addCell(tableContent);
+            PdfPTable table = new PdfPTable(applicationProperties.getColumnOnPageWithOperatorCard());
+            table.setWidthPercentage(100);
+            operators.forEach(operator -> {
+                PdfPTable tableContent = new PdfPTable(1);
+                tableContent.setWidthPercentage(40);
+                PdfPCell cell1 = createCell(operator.getFirstName() + " " + operator.getLastName(),16);
+                tableContent.addCell(cell1);
+
+                tableContent.addCell(createImageCell(barcodeImage(operator.getCardNumber())));
+                tableContent.addCell(createCell(operator.getCardNumber(),12));
+                table.addCell(tableContent);
+            });
 
             doc.add(table);
 
