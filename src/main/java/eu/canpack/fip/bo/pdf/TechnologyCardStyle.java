@@ -80,7 +80,9 @@ public class TechnologyCardStyle {
         // font
         Font font = new Font(baseFont, 12, Font.NORMAL, Color.BLACK);
         PdfPCell cell = new PdfPCell(new Phrase(text, font));
-        cell.setPadding(10f);
+        cell.setPaddingTop(10f);
+        cell.setPaddingBottom(10f);
+        cell.setPaddingLeft(7f);
 
         cell.setBorder(0);
         return cell;
@@ -90,17 +92,19 @@ public class TechnologyCardStyle {
         // font
         Font font = new Font(baseFont, 12, Font.NORMAL, Color.BLACK);
         PdfPCell cell = new PdfPCell(new Phrase(text, font));
-        cell.setPadding(10f);
+        cell.setPaddingTop(10f);
+        cell.setPaddingBottom(10f);
+        cell.setPaddingLeft(7f);
         return cell;
     }
 
     static PdfPCell createColspannedCell(String text){
-        Font font = new Font(baseFont, 12, Font.NORMAL, Color.BLACK);
+        Font font = new Font(baseFont, 11, Font.NORMAL, Color.BLACK);
         PdfPCell pdfPCell = new PdfPCell();
         pdfPCell.setBorder(0);
         pdfPCell.setPhrase(new Phrase(text, font));
         pdfPCell.setColspan(2);
-        pdfPCell.setPadding(5f);
+        pdfPCell.setPadding(7f);
         return pdfPCell;
     }
 
@@ -108,7 +112,8 @@ public class TechnologyCardStyle {
         PdfPCell imageCell = new PdfPCell();
         imageCell.setBorder(0);
         imageCell.addElement(image);
-        imageCell.setPadding(7f);
+        imageCell.setPaddingTop(1);
+        imageCell.setPaddingBottom(5f);
         return imageCell;
     }
 

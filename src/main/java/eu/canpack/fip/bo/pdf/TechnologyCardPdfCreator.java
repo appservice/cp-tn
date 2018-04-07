@@ -181,7 +181,8 @@ public class TechnologyCardPdfCreator {
         for (Operation operation : estimation.getOperations()) {
             Image image = barcodeImage(operation.getId());
 
-            addRowTable2(table, String.valueOf(operation.getSequenceNumber()), operation.getMachine().getName(), image, operation.getDescription());
+            addRowTable2(table, String.valueOf(operation.getSequenceNumber()), operation.getMachine().getName(), image, operation.getDescription(),
+                         String.valueOf(operation.getId()));
             i++;
         }
 
@@ -191,11 +192,19 @@ public class TechnologyCardPdfCreator {
 
     }
 
-    private void addRowTable2(PdfPTable table, String lp, String machine, Image image, String description) throws DocumentException {
+    private void addRowTable2(PdfPTable table, String lp, String machine, Image image, String description, String operationNumber) throws DocumentException {
         PdfPTable nestedTable = new PdfPTable(2);
+
+        PdfPTable barcodeTable = createBarcodeTable(image, operationNumber);
+
         nestedTable.setWidths(new float[]{2f, 1f});
         nestedTable.addCell(createNestedTableCellWithoutBorder(machine));
-        nestedTable.addCell(createImageCell(image));
+
+        PdfPCell barcodeCell = new PdfPCell(barcodeTable);
+        barcodeCell.setBorder(0);
+        nestedTable.addCell(barcodeCell);
+/*        nestedTable.addCell("");
+        nestedTable.addCell("1234");*/
         nestedTable.addCell(createColspannedCell(description));
 
         //    nestedTable.addCell(createLabel2Cell("Kod"));
@@ -208,6 +217,20 @@ public class TechnologyCardPdfCreator {
         table.addCell(cellWithNested);
         table.addCell(createLabel2Cell(""));
         table.addCell(createLabel2Cell(""));
+    }
+
+    private PdfPTable createBarcodeTable(Image image, String operationNumber) {
+        PdfPTable barcodeTable = new PdfPTable(1);
+        barcodeTable.getDefaultCell().setBorder(0);
+        PdfPCell barcodeNumberCell = new PdfPCell(new Phrase(operationNumber, new Font(baseFont, 8)));
+        barcodeNumberCell.setVerticalAlignment(Element.ALIGN_CENTER);
+        barcodeNumberCell.setHorizontalAlignment(Element.ALIGN_CENTER);
+        barcodeNumberCell.setBorder(0);
+        barcodeNumberCell.setPaddingTop(4f);
+        barcodeNumberCell.setPaddingBottom(1f);
+        barcodeTable.addCell(barcodeNumberCell);
+        barcodeTable.addCell(createImageCell(image));
+        return barcodeTable;
     }
 
     private void addHeader(PdfPTable table, String lp, String machine, String barcode, String description, String time, String createdBy) throws DocumentException {
@@ -234,7 +257,8 @@ public class TechnologyCardPdfCreator {
     private Image barcodeImage(Long operationId) {
         try (ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream()) {
             barcodeCreatorService.createBarcode(String.valueOf(operationId), byteArrayOutputStream);
-            return Image.getInstance(byteArrayOutputStream.toByteArray());
+            Image image= Image.getInstance(byteArrayOutputStream.toByteArray());
+            return image;
 
         } catch (BadElementException | IOException e) {
             log.error(e.getMessage(), e);
