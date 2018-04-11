@@ -13,7 +13,9 @@
 
 
         </div>
-
+        <div *jhiHasAnyAuthority="['ROLE_ADMIN']" class="alert alert-primary" >
+            Plik aplikacji klienckiej <span class="pl-5"></span> <button class="btn btn-primary" (click)="downloadFile()" [disabled]="isButtonDisabled">Pobierz</button>
+        </div>
 
     </div>
     <div class="col-md-3"></div>
