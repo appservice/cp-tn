@@ -16,8 +16,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import io.github.jhipster.service.QueryService;
 
-import eu.canpack.fip.repository.search.CooperationSearchRepository;
-
 import eu.canpack.fip.bo.cooperation.dto.CooperationMapper;
 
 /**
@@ -37,12 +35,9 @@ public class CooperationQueryService extends QueryService<Cooperation> {
 
     private final CooperationMapper cooperationMapper;
 
-    private final CooperationSearchRepository cooperationSearchRepository;
-
-    public CooperationQueryService(CooperationRepository cooperationRepository, CooperationMapper cooperationMapper, CooperationSearchRepository cooperationSearchRepository) {
+    public CooperationQueryService(CooperationRepository cooperationRepository, CooperationMapper cooperationMapper ) {
         this.cooperationRepository = cooperationRepository;
         this.cooperationMapper = cooperationMapper;
-        this.cooperationSearchRepository = cooperationSearchRepository;
     }
 
     /**

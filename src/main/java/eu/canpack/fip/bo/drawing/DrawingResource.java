@@ -128,21 +128,5 @@ public class DrawingResource {
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
     }
 
-    /**
-     * SEARCH  /_search/drawings?query=:query : search for the drawing corresponding
-     * to the query.
-     *
-     * @param query the query of the drawing search
-     * @param pageable the pagination information
-     * @return the result of the search
-     */
-    @GetMapping("/_search/drawings")
-    @Timed
-    public ResponseEntity<List<DrawingDTO>> searchDrawings(@RequestParam String query, @ApiParam Pageable pageable) {
-        log.debug("REST request to search for a page of Drawings for query {}", query);
-        Page<DrawingDTO> page = drawingService.search(query, pageable);
-        HttpHeaders headers = PaginationUtil.generateSearchPaginationHttpHeaders(query, page, "/api/_search/drawings");
-        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
-    }
 
 }

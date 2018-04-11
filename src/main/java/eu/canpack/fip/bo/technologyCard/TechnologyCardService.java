@@ -14,10 +14,10 @@ import eu.canpack.fip.bo.technologyCard.mapper.TechnologyCardDTO;
 import eu.canpack.fip.bo.technologyCard.mapper.TechnologyCardListDTO;
 import eu.canpack.fip.bo.technologyCard.mapper.TechnologyCardListMapper;
 import eu.canpack.fip.bo.technologyCard.mapper.TechnologyCardMapper;
-import eu.canpack.fip.repository.search.TechnologyCardSearchRepository;
+//import eu.canpack.fip.repository.search.TechnologyCardSearchRepository;
 import eu.canpack.fip.service.UserService;
 import eu.canpack.fip.web.rest.errors.CustomParameterizedException;
-import org.elasticsearch.index.query.QueryStringQueryBuilder;
+//import org.elasticsearch.index.query.QueryStringQueryBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -45,7 +45,7 @@ public class TechnologyCardService {
 
     private final TechnologyCardListMapper technologyCardListMapper;
 
-    private final TechnologyCardSearchRepository technologyCardSearchRepository;
+//    private final TechnologyCardSearchRepository technologyCardSearchRepository;
 
     private final OperationMapper operationMapper;
 
@@ -59,10 +59,10 @@ public class TechnologyCardService {
 
     private final UserService userService;
 
-    public TechnologyCardService(TechnologyCardRepository technologyCardRepository, TechnologyCardListMapper technologyCardListMapper, TechnologyCardSearchRepository technologyCardSearchRepository, OperationMapper operationMapper, CommercialPartMapper commercialPartMapper, CooperationMapper cooperationMapper, TechnologyCardMapper technologyCardMapper, DrawingRepository drawingRepository, UserService userService) {
+    public TechnologyCardService(TechnologyCardRepository technologyCardRepository, TechnologyCardListMapper technologyCardListMapper, /*TechnologyCardSearchRepository technologyCardSearchRepository,*/ OperationMapper operationMapper, CommercialPartMapper commercialPartMapper, CooperationMapper cooperationMapper, TechnologyCardMapper technologyCardMapper, DrawingRepository drawingRepository, UserService userService) {
         this.technologyCardRepository = technologyCardRepository;
         this.technologyCardListMapper = technologyCardListMapper;
-        this.technologyCardSearchRepository = technologyCardSearchRepository;
+//        this.technologyCardSearchRepository = technologyCardSearchRepository;
         this.operationMapper = operationMapper;
         this.commercialPartMapper = commercialPartMapper;
         this.cooperationMapper = cooperationMapper;
@@ -87,7 +87,7 @@ public class TechnologyCardService {
 
 
         TechnologyCardDTO result = technologyCardMapper.toDto(technologyCard);
-        technologyCardSearchRepository.save(technologyCard);
+   //     technologyCardSearchRepository.save(technologyCard);
         return result;
     }
 
@@ -126,23 +126,23 @@ public class TechnologyCardService {
     public void delete(Long id) {
         log.debug("Request to delete TechnologyCard : {}", id);
         technologyCardRepository.delete(id);
-        technologyCardSearchRepository.delete(id);
+//        technologyCardSearchRepository.delete(id);
     }
 
-    /**
-     * Search for the technologyCard corresponding to the query.
-     *
-     * @param query    the query of the search
-     * @param pageable the pagination information
-     * @return the list of entities
-     */
-    @Transactional(readOnly = true)
-    public Page<TechnologyCardListDTO> search(String query, Pageable pageable) {
-        log.debug("Request to search for a page of TechnologyCards for query {}", query);
-       QueryStringQueryBuilder queryBuilder= queryStringQuery(query);//.field("");
-        Page<TechnologyCard> result = technologyCardSearchRepository.search(queryBuilder, pageable);
-        return result.map(technologyCardListMapper::toDto);
-    }
+//    /**
+//     * Search for the technologyCard corresponding to the query.
+//     *
+//     * @param query    the query of the search
+//     * @param pageable the pagination information
+//     * @return the list of entities
+//     */
+//    @Transactional(readOnly = true)
+//    public Page<TechnologyCardListDTO> search(String query, Pageable pageable) {
+//        log.debug("Request to search for a page of TechnologyCards for query {}", query);
+//       QueryStringQueryBuilder queryBuilder= queryStringQuery(query);//.field("");
+//        Page<TechnologyCard> result = technologyCardSearchRepository.search(queryBuilder, pageable);
+//        return result.map(technologyCardListMapper::toDto);
+//    }
 
     public TechnologyCard createFromEstimation(EstimationDTO estimationDTO) {
         if(estimationDTO.getMaterial()==null){
@@ -187,7 +187,7 @@ public class TechnologyCardService {
 
         technologyCard.setCreatedBy(userService.getLoggedUser());
         technologyCard = technologyCardRepository.save(technologyCard);
-        technologyCardSearchRepository.save(technologyCard);
+//        technologyCardSearchRepository.save(technologyCard);
         return technologyCard;
 
     }

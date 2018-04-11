@@ -128,21 +128,6 @@ public class CooperationResource {
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
     }
 
-    /**
-     * SEARCH  /_search/cooperation?query=:query : search for the cooperation corresponding
-     * to the query.
-     *
-     * @param query the query of the cooperation search
-     * @param pageable the pagination information
-     * @return the result of the search
-     */
-    @GetMapping("/_search/cooperation")
-    @Timed
-    public ResponseEntity<List<CooperationDTO>> searchCooperation(@RequestParam String query, Pageable pageable) {
-        log.debug("REST request to search for a page of Cooperation for query {}", query);
-        Page<CooperationDTO> page = cooperationService.search(query, pageable);
-        HttpHeaders headers = PaginationUtil.generateSearchPaginationHttpHeaders(query, page, "/api/_search/cooperation");
-        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
-    }
+
 
 }

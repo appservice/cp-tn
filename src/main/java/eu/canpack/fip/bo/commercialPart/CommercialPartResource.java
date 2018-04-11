@@ -123,21 +123,6 @@ public class CommercialPartResource {
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
     }
 
-    /**
-     * SEARCH  /_search/commercial-parts?query=:query : search for the commercialPart corresponding
-     * to the query.
-     *
-     * @param query the query of the commercialPart search
-     * @param pageable the pagination information
-     * @return the result of the search
-     */
-    @GetMapping("/_search/commercial-parts")
-    @Timed
-    public ResponseEntity<List<CommercialPartDTO>> searchCommercialParts(@RequestParam String query, @ApiParam Pageable pageable) {
-        log.debug("REST request to search for a page of CommercialParts for query {}", query);
-        Page<CommercialPartDTO> page = commercialPartService.search(query, pageable);
-        HttpHeaders headers = PaginationUtil.generateSearchPaginationHttpHeaders(query, page, "/api/_search/commercial-parts");
-        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
-    }
+
 
 }

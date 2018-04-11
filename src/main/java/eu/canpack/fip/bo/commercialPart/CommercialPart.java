@@ -18,7 +18,6 @@ import java.util.Objects;
 @Entity
 @Table(name = "commercial_part")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-@Document(indexName = "commercialpart")
 public class CommercialPart implements Serializable {
 
     private static final long serialVersionUID = 1L;

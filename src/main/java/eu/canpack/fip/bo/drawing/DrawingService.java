@@ -3,7 +3,6 @@ package eu.canpack.fip.bo.drawing;
 import eu.canpack.fip.bo.attachment.Attachment;
 import eu.canpack.fip.bo.attachment.AttachmentRepository;
 import eu.canpack.fip.bo.drawing.dto.DrawingDTO;
-import eu.canpack.fip.repository.search.DrawingSearchRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -31,14 +30,12 @@ public class DrawingService {
 
     private final DrawingMapper drawingMapper;
 
-    private final DrawingSearchRepository drawingSearchRepository;
 
     private final AttachmentRepository attachmentRepository;
 
-    public DrawingService(DrawingRepository drawingRepository, DrawingMapper drawingMapper, DrawingSearchRepository drawingSearchRepository, AttachmentRepository attachmentRepository) {
+    public DrawingService(DrawingRepository drawingRepository, DrawingMapper drawingMapper,  AttachmentRepository attachmentRepository) {
         this.drawingRepository = drawingRepository;
         this.drawingMapper = drawingMapper;
-        this.drawingSearchRepository = drawingSearchRepository;
         this.attachmentRepository = attachmentRepository;
     }
 
@@ -54,7 +51,6 @@ public class DrawingService {
         drawing.setCreatedAt(ZonedDateTime.now());
         drawing = drawingRepository.save(drawing);
         DrawingDTO result = drawingMapper.toDto(drawing);
-        drawingSearchRepository.save(drawing);
         return result;
     }
 
@@ -76,7 +72,6 @@ public class DrawingService {
         drawing.setCreatedAt(ZonedDateTime.now());
         Drawing response = drawingRepository.save(drawing);
         DrawingDTO result = drawingMapper.toDto(response);
-        drawingSearchRepository.save(response);
         return result;
     }
 
@@ -114,20 +109,6 @@ public class DrawingService {
     public void delete(Long id) {
         log.debug("Request to delete Drawing : {}", id);
         drawingRepository.delete(id);
-        drawingSearchRepository.delete(id);
     }
 
-    /**
-     * Search for the drawing corresponding to the query.
-     *
-     * @param query    the query of the search
-     * @param pageable the pagination information
-     * @return the list of entities
-     */
-    @Transactional(readOnly = true)
-    public Page<DrawingDTO> search(String query, Pageable pageable) {
-        log.debug("Request to search for a page of Drawings for query {}", query);
-        Page<Drawing> result = drawingSearchRepository.search(queryStringQuery(query), pageable);
-        return result.map(drawingMapper::toDto);
-    }
 }

@@ -26,7 +26,6 @@ import java.util.*;
 @Entity
 @Table(name = "jhi_order")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-@Document(indexName = "order")
 public class Order implements Serializable {
 
     private static final long serialVersionUID = 1L;

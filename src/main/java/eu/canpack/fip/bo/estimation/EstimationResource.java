@@ -140,22 +140,7 @@ public class EstimationResource {
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
     }
 
-    /**
-     * SEARCH  /_search/estimations?query=:query : search for the estimation corresponding
-     * to the query.
-     *
-     * @param query    the query of the estimation search
-     * @param pageable the pagination information
-     * @return the result of the search
-     */
-    @GetMapping("/_search/estimations")
-    @Timed
-    public ResponseEntity<List<EstimationDTO>> searchEstimations(@RequestParam String query, @ApiParam Pageable pageable) {
-        log.debug("REST request to search for a page of Estimations for query {}", query);
-        Page<EstimationDTO> page = estimationService.search(query, pageable);
-        HttpHeaders headers = PaginationUtil.generateSearchPaginationHttpHeaders(query, page, "/api/_search/estimations");
-        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
-    }
+
 
     @GetMapping("/estimations/{id}/technology-card")
     public ResponseEntity<InputStreamResource> getTechnologyCard(@PathVariable(name = "id") Long estimationId) throws IOException {

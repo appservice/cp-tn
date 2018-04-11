@@ -3,7 +3,7 @@ package eu.canpack.fip.bo.operation;
 import eu.canpack.fip.bo.operation.dto.*;
 import eu.canpack.fip.bo.operation.enumeration.OperationEventType;
 import eu.canpack.fip.bo.operation.enumeration.OperationStatus;
-import eu.canpack.fip.repository.search.OperationSearchRepository;
+import eu.canpack.fip.web.rest.errors.CustomParameterizedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -11,12 +11,12 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-
 import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
-import static org.elasticsearch.index.query.QueryBuilders.*;
+import static org.elasticsearch.index.query.QueryBuilders.queryStringQuery;
 
 /**
  * Service Implementation for managing Operation.
@@ -31,18 +31,18 @@ public class OperationService {
 
     private final OperationMapper operationMapper;
 
-    private final OperationSearchRepository operationSearchRepository;
-
     private final OperationWideMapper operationWideMapper;
 
     private final OperationEventMapper operationEventMapper;
 
-    public OperationService(OperationRepository operationRepository, OperationMapper operationMapper, OperationSearchRepository operationSearchRepository, OperationWideMapper operationWideMapper, OperationEventMapper operationEventMapper) {
+    private final OperationEventRepository operationEventRepository;
+
+    public OperationService(OperationRepository operationRepository, OperationMapper operationMapper, OperationWideMapper operationWideMapper, OperationEventMapper operationEventMapper, OperationEventRepository operationEventRepository) {
         this.operationRepository = operationRepository;
         this.operationMapper = operationMapper;
-        this.operationSearchRepository = operationSearchRepository;
         this.operationWideMapper = operationWideMapper;
         this.operationEventMapper = operationEventMapper;
+        this.operationEventRepository = operationEventRepository;
     }
 
     /**
@@ -56,7 +56,6 @@ public class OperationService {
         Operation operation = operationMapper.toEntity(operationDTO);
         operation = operationRepository.save(operation);
         OperationDTO result = operationMapper.toDto(operation);
-        operationSearchRepository.save(operation);
         return result;
     }
 
@@ -96,7 +95,11 @@ public class OperationService {
     public OperationWideDTO findOneWide(Long id) {
         log.debug("Request findOneWide to get Operation with wide dto : {}", id);
         Operation operation = operationRepository.findOne(id);
+        if (operation == null) {
+            return null;
+        }
         OperationWideDTO operationWideDTO = operationWideMapper.toDto(operation);
+        operationWideDTO.getOperationEvents().sort(Comparator.comparing(OperationEventDTO::getCreatedAt));
         log.debug("operationWideDTO: {}", operationWideDTO);
         return operationWideDTO;
     }
@@ -109,21 +112,6 @@ public class OperationService {
     public void delete(Long id) {
         log.debug("Request to delete Operation : {}", id);
         operationRepository.delete(id);
-        operationSearchRepository.delete(id);
-    }
-
-    /**
-     * Search for the operation corresponding to the query.
-     *
-     * @param query    the query of the search
-     * @param pageable the pagination information
-     * @return the list of entities
-     */
-    @Transactional(readOnly = true)
-    public Page<OperationDTO> search(String query, Pageable pageable) {
-        log.debug("Request to search for a page of Operations for query {}", query);
-        Page<Operation> result = operationSearchRepository.search(queryStringQuery(query), pageable);
-        return result.map(operationMapper::toDto);
     }
 
     @Transactional(readOnly = true)
@@ -153,10 +141,11 @@ public class OperationService {
     }
 
 
-    public void addOperationEvent(OperationEventDTO operationEventDTO) {
+    public Long addOperationEvent(OperationEventDTO operationEventDTO) {
         OperationEvent operationEvent = operationEventMapper.toEntity(operationEventDTO);
         Operation operation = operationRepository.findOne(operationEventDTO.getOperationId());
-        operation.getOperationEvents().add(operationEvent);
+        OperationEvent oe = operationEventRepository.save(operationEvent);
+        operation.getOperationEvents().add(oe);
         switch (operationEventDTO.getOperationEventType()) {
             case START:
                 operation.setOperationStatus(OperationStatus.STARTED);
@@ -171,6 +160,48 @@ public class OperationService {
                 operation.setOperationStatus(OperationStatus.RESUMED);
                 break;
         }
+        return oe.getId();
+
+    }
+
+    public void deleteOperationEvent(Long operationEventId) {
+        OperationEvent oe = operationEventRepository.findOne(operationEventId);
+
+        Operation operation = oe.getOperation();
+        List<OperationEvent> events = operation.getOperationEvents();
+        events.sort(Comparator.comparing(OperationEvent::getCreatedAt));
+        if (!events.isEmpty() && !events.get(events.size() - 1).equals(oe)){
+            throw new CustomParameterizedException("Deleted could be only last operation event");
+        }
+
+        operation.getOperationEvents().remove(oe);
+
+        Optional<OperationEventType> operationEventTypeOptional = operation.getOperationEvents().stream()
+            .sorted(Comparator.comparing(OperationEvent::getCreatedAt))
+            .map(OperationEvent::getOperationEventType)
+            .reduce((first, second) -> second);
+
+        if (operationEventTypeOptional.isPresent()) {
+            switch (operationEventTypeOptional.get()) {
+                case START:
+                    operation.setOperationStatus(OperationStatus.STARTED);
+                    break;
+                case PAUSE:
+                    operation.setOperationStatus(OperationStatus.PAUSED);
+                    break;
+                case STOP:
+                    operation.setOperationStatus(OperationStatus.FINISHED);
+                    break;
+                case RESUME:
+                    operation.setOperationStatus(OperationStatus.RESUMED);
+                    break;
+            }
+        } else {
+            operation.setOperationStatus(null);
+        }
+
+
+        //operationEventRepository.delete(operationEventId);
 
     }
 }

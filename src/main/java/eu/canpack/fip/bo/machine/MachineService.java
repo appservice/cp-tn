@@ -1,7 +1,6 @@
 package eu.canpack.fip.bo.machine;
 
 import eu.canpack.fip.config.Constants;
-import eu.canpack.fip.repository.search.MachineSearchRepository;
 import eu.canpack.fip.web.rest.errors.CustomParameterizedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,14 +29,12 @@ public class MachineService {
 
     private final MachineMapper machineMapper;
 
-    private final MachineSearchRepository machineSearchRepository;
 
     private final MachineDtlRepository machineDtlRepository;
 
-    public MachineService(MachineRepository machineRepository, MachineMapper machineMapper, MachineSearchRepository machineSearchRepository, MachineDtlRepository machineDtlRepository) {
+    public MachineService(MachineRepository machineRepository, MachineMapper machineMapper,  MachineDtlRepository machineDtlRepository) {
         this.machineRepository = machineRepository;
         this.machineMapper = machineMapper;
-        this.machineSearchRepository = machineSearchRepository;
         this.machineDtlRepository = machineDtlRepository;
     }
 
@@ -52,7 +49,6 @@ public class MachineService {
         Machine machine = machineMapper.toEntity(machineDTO);
         machine = machineRepository.save(machine);
         MachineDTO result = machineMapper.toDto(machine);
-        machineSearchRepository.save(machine);
         return result;
     }
 
@@ -106,7 +102,6 @@ public class MachineService {
 
         machine = machineRepository.save(machine);
         MachineDTO result = machineMapper.toDto(machine);
-        machineSearchRepository.save(machine);
         return result;
     }
 
@@ -127,7 +122,6 @@ public class MachineService {
         machine.getMachineDtls().add(machineDtl);
         machine = machineRepository.save(machine);
         //   MachineDTO result = machineMapper.toDto(machine);
-        machineSearchRepository.save(machine);
 
         return new MachineDTO(machine, machineDtl);
     }
@@ -185,20 +179,6 @@ public class MachineService {
     public void delete(Long id) {
         log.debug("Request to delete Machine : {}", id);
         machineRepository.delete(id);
-        machineSearchRepository.delete(id);
     }
 
-    /**
-     * Search for the machine corresponding to the query.
-     *
-     * @param query    the query of the search
-     * @param pageable the pagination information
-     * @return the list of entities
-     */
-    @Transactional(readOnly = true)
-    public Page<MachineDTO> search(String query, Pageable pageable) {
-        log.debug("Request to search for a page of Machines for query {}", query);
-        Page<Machine> result = machineSearchRepository.search(queryStringQuery(query), pageable);
-        return result.map(machineMapper::toDto);
-    }
 }

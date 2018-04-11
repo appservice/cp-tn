@@ -19,7 +19,6 @@ import eu.canpack.fip.bo.pdf.TechnologyCardPdfCreator;
 import eu.canpack.fip.bo.remark.EstimationRemark;
 import eu.canpack.fip.domain.User;
 import eu.canpack.fip.repository.UserRepository;
-import eu.canpack.fip.repository.search.EstimationSearchRepository;
 import eu.canpack.fip.bo.commercialPart.CommercialPartMapper;
 import eu.canpack.fip.service.UserService;
 import eu.canpack.fip.bo.cooperation.dto.CooperationMapper;
@@ -56,7 +55,6 @@ public class EstimationService {
 
     private final EstimationMapper estimationMapper;
 
-    private final EstimationSearchRepository estimationSearchRepository;
 
     private final OperationMapper operationMapper;
 
@@ -76,10 +74,9 @@ public class EstimationService {
 
     private final CooperationMapper cooperationMapper;
 
-    public EstimationService(EstimationRepository estimationRepository, EstimationMapper estimationMapper, EstimationSearchRepository estimationSearchRepository, OperationMapper operationMapper, CommercialPartMapper commercialPartMapper, UserRepository userRepository, TechnologyCardPdfCreator technologyCardPdfCreator, UserService userService, OrderRepository orderRepository, EstimationQueryService estimationQueryService, MachineRepository machineRepository, CooperationMapper cooperationMapper) {
+    public EstimationService(EstimationRepository estimationRepository, EstimationMapper estimationMapper, OperationMapper operationMapper, CommercialPartMapper commercialPartMapper, UserRepository userRepository, TechnologyCardPdfCreator technologyCardPdfCreator, UserService userService, OrderRepository orderRepository, EstimationQueryService estimationQueryService, MachineRepository machineRepository, CooperationMapper cooperationMapper) {
         this.estimationRepository = estimationRepository;
         this.estimationMapper = estimationMapper;
-        this.estimationSearchRepository = estimationSearchRepository;
         this.operationMapper = operationMapper;
         this.commercialPartMapper = commercialPartMapper;
         this.userRepository = userRepository;
@@ -149,7 +146,6 @@ public class EstimationService {
 
 
         estimation = estimationRepository.save(estimation);
-        estimationSearchRepository.save(estimation);
         EstimationDTO result = estimationMapper.toDto(estimation);
 
         return result;
@@ -236,22 +232,8 @@ public class EstimationService {
     public void delete(Long id) {
         log.debug("Request to delete Estimation : {}", id);
         estimationRepository.delete(id);
-        estimationSearchRepository.delete(id);
     }
 
-    /**
-     * Search for the estimation corresponding to the query.
-     *
-     * @param query    the query of the search
-     * @param pageable the pagination information
-     * @return the list of entities
-     */
-    @Transactional(readOnly = true)
-    public Page<EstimationDTO> search(String query, Pageable pageable) {
-        log.debug("Request to search for a page of Estimations for query {}", query);
-        Page<Estimation> result = estimationSearchRepository.search(queryStringQuery(query), pageable);
-        return result.map(estimationMapper::toDto);
-    }
 
 
     public ByteArrayOutputStream getTechnologyCard(Long estimationId) {

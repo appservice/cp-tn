@@ -9,7 +9,7 @@ import eu.canpack.fip.bo.order.dto.OrderMapperImpl
 import eu.canpack.fip.bo.referenceOrder.ReferenceOrderRepository
 import eu.canpack.fip.config.ApplicationProperties
 import eu.canpack.fip.repository.UserRepository
-import eu.canpack.fip.repository.search.OrderSearchRepository
+
 import eu.canpack.fip.service.UserService
 import groovy.util.logging.Slf4j
 import spock.lang.Specification
@@ -22,7 +22,6 @@ import spock.lang.Specification
 class OrderServiceTest extends Specification {
     private OrderService orderService
     private OrderRepository orderRepository=Mock();
-    private OrderSearchRepository orderSearchRepository=Mock()
     private UserRepository userRepository=Mock()
     private UserService userService=Mock()
     private DrawingRepository drawingRepository=Mock()
@@ -35,7 +34,7 @@ class OrderServiceTest extends Specification {
 
 
     void setup() {
-        orderService=new OrderService(orderRepository,new OrderMapperImpl(),orderSearchRepository,userRepository,
+        orderService=new OrderService(orderRepository,new OrderMapperImpl(),userRepository,
         drawingRepository,attachmentRepository,estimationRepository,userService,applicationProperties,clientRepository,
         referenceOrderRepository,mapperService)
     }

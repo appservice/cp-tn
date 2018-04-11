@@ -11,12 +11,15 @@ import eu.canpack.fip.bo.cooperation.Cooperation;
 import eu.canpack.fip.bo.drawing.Drawing;
 import eu.canpack.fip.bo.drawing.DrawingRepository;
 import eu.canpack.fip.bo.estimation.Estimation;
-import eu.canpack.fip.bo.estimation.dto.EstimationCreateDTO;
 import eu.canpack.fip.bo.estimation.EstimationRepository;
+import eu.canpack.fip.bo.estimation.dto.EstimationCreateDTO;
 import eu.canpack.fip.bo.mpkBudgetMapper.MpkBudgetMapperService;
 import eu.canpack.fip.bo.operation.Operation;
 import eu.canpack.fip.bo.operation.enumeration.OperationType;
-import eu.canpack.fip.bo.order.dto.*;
+import eu.canpack.fip.bo.order.dto.OrderDTO;
+import eu.canpack.fip.bo.order.dto.OrderListDTO;
+import eu.canpack.fip.bo.order.dto.OrderMapper;
+import eu.canpack.fip.bo.order.dto.OrderSimpleDTO;
 import eu.canpack.fip.bo.order.enumeration.OrderStatus;
 import eu.canpack.fip.bo.order.enumeration.OrderType;
 import eu.canpack.fip.bo.referenceOrder.ReferenceOrder;
@@ -25,7 +28,6 @@ import eu.canpack.fip.bo.remark.EstimationRemark;
 import eu.canpack.fip.config.ApplicationProperties;
 import eu.canpack.fip.domain.User;
 import eu.canpack.fip.repository.UserRepository;
-import eu.canpack.fip.repository.search.OrderSearchRepository;
 import eu.canpack.fip.security.AuthoritiesConstants;
 import eu.canpack.fip.security.SecurityUtils;
 import eu.canpack.fip.service.UserService;
@@ -54,8 +56,6 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import static org.elasticsearch.index.query.QueryBuilders.queryStringQuery;
-
 /**
  * Service Implementation for managing Order.
  */
@@ -68,8 +68,6 @@ public class OrderService {
     private final OrderRepository orderRepository;
 
     private final OrderMapper orderMapper;
-
-    private final OrderSearchRepository orderSearchRepository;
 
     private final DrawingRepository drawingRepository;
 
@@ -87,11 +85,10 @@ public class OrderService {
 
     private final MpkBudgetMapperService mpkBudgetMapperService;
 
-    public OrderService(OrderRepository orderRepository, OrderMapper orderMapper, OrderSearchRepository orderSearchRepository, UserRepository userRepository, DrawingRepository drawingRepository, AttachmentRepository attachmentRepository,
+    public OrderService(OrderRepository orderRepository, OrderMapper orderMapper,  UserRepository userRepository, DrawingRepository drawingRepository, AttachmentRepository attachmentRepository,
                         EstimationRepository estimationRepository, UserService userService, ApplicationProperties applicationProperties, ClientRepository clientRepository, ReferenceOrderRepository referenceOrderRepository, MpkBudgetMapperService mpkBudgetMapperService) {
         this.orderRepository = orderRepository;
         this.orderMapper = orderMapper;
-        this.orderSearchRepository = orderSearchRepository;
         this.drawingRepository = drawingRepository;
         this.attachmentRepository = attachmentRepository;
         this.estimationRepository = estimationRepository;
@@ -113,7 +110,6 @@ public class OrderService {
         Order order = orderMapper.toEntity(orderListDTO);
         order = orderRepository.save(order);
         OrderListDTO result = orderMapper.toDto(order);
-        orderSearchRepository.save(order);
         return result;
     }
 
@@ -580,7 +576,6 @@ public class OrderService {
 
 
             orderRepository.delete(id);
-            orderSearchRepository.delete(id);
             referenceOrderRepository.deleteInBatch(referenceOrderToDelete);
 
         } else {
@@ -589,19 +584,6 @@ public class OrderService {
 
     }
 
-    /**
-     * Search for the order corresponding to the query.
-     *
-     * @param query    the query of the search
-     * @param pageable the pagination information
-     * @return the list of entities
-     */
-    @Transactional(readOnly = true)
-    public Page<OrderListDTO> search(String query, Pageable pageable) {
-        log.debug("Request to search for a page of Orders for query {}", query);
-        Page<Order> result = orderSearchRepository.search(queryStringQuery(query), pageable);
-        return result.map(orderMapper::toDto);
-    }
 
     private void prepareDocumentNumber(Order order) {
         int year = LocalDate.now().getYear();

@@ -144,22 +144,22 @@ public class TechnologyCardResource {
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
     }
 
-    /**
-     * SEARCH  /_search/technology-cards?query=:query : search for the technologyCard corresponding
-     * to the query.
-     *
-     * @param query the query of the technologyCard search
-     * @param pageable the pagination information
-     * @return the result of the search
-     */
-    @GetMapping("/_search/technology-cards")
-    @Timed
-    public ResponseEntity<List<TechnologyCardListDTO>> searchTechnologyCards(@RequestParam String query, @ApiParam Pageable pageable) {
-        log.debug("REST request to search for a page of TechnologyCards for query {}", query);
-        Page<TechnologyCardListDTO> page = technologyCardService.search(query, pageable);
-        HttpHeaders headers = PaginationUtil.generateSearchPaginationHttpHeaders(query, page, "/api/_search/technology-cards");
-        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
-    }
+//    /**
+//     * SEARCH  /_search/technology-cards?query=:query : search for the technologyCard corresponding
+//     * to the query.
+//     *
+//     * @param query the query of the technologyCard search
+//     * @param pageable the pagination information
+//     * @return the result of the search
+//     */
+//    @GetMapping("/_search/technology-cards")
+//    @Timed
+//    public ResponseEntity<List<TechnologyCardListDTO>> searchTechnologyCards(@RequestParam String query, @ApiParam Pageable pageable) {
+//        log.debug("REST request to search for a page of TechnologyCards for query {}", query);
+//        Page<TechnologyCardListDTO> page = technologyCardService.search(query, pageable);
+//        HttpHeaders headers = PaginationUtil.generateSearchPaginationHttpHeaders(query, page, "/api/_search/technology-cards");
+//        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+//    }
 
     @PostMapping("/technology-cards/created-from-estimation")
     @Timed

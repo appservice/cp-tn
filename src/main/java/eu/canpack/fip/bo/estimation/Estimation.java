@@ -27,7 +27,7 @@ import java.util.*;
 @Entity
 @Table(name = "estimation")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-@Document(indexName = "estimation")
+//@Document(indexName = "estimation")
 public class Estimation implements Serializable {
 
     private static final long serialVersionUID = 1L;

@@ -12,9 +12,9 @@ import eu.canpack.fip.bo.machine.Machine;
 import eu.canpack.fip.bo.machine.MachineRepository;
 import eu.canpack.fip.bo.operation.Operation;
 import eu.canpack.fip.bo.operation.OperationRepository;
+import eu.canpack.fip.bo.operator.OperatorRepository;
 import eu.canpack.fip.bo.order.Order;
 import eu.canpack.fip.bo.order.OrderRepository;
-import eu.canpack.fip.bo.technologyCard.TechnologyCard;
 import eu.canpack.fip.bo.technologyCard.TechnologyCardRepository;
 import eu.canpack.fip.domain.Unit;
 import eu.canpack.fip.domain.User;
@@ -28,6 +28,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.data.elasticsearch.core.ElasticsearchTemplate;
 import org.springframework.data.elasticsearch.repository.ElasticsearchRepository;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.expression.spel.ast.Operator;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -45,29 +46,29 @@ public class ElasticsearchIndexService {
 
     private final ClientSearchRepository clientSearchRepository;
 
-    private final CommercialPartRepository commercialPartRepository;
-
-    private final CommercialPartSearchRepository commercialPartSearchRepository;
-
-    private final DrawingRepository drawingRepository;
-
-    private final DrawingSearchRepository drawingSearchRepository;
-
-    private final EstimationRepository estimationRepository;
-
-    private final EstimationSearchRepository estimationSearchRepository;
-
-    private final MachineRepository machineRepository;
-
-    private final MachineSearchRepository machineSearchRepository;
-
-    private final OperationRepository operationRepository;
-
-    private final OperationSearchRepository operationSearchRepository;
-
-    private final OrderRepository orderRepository;
-
-    private final OrderSearchRepository orderSearchRepository;
+//    private final CommercialPartRepository commercialPartRepository;
+//
+//    private final CommercialPartSearchRepository commercialPartSearchRepository;
+//
+//    private final DrawingRepository drawingRepository;
+//
+//    private final DrawingSearchRepository drawingSearchRepository;
+//
+//    private final EstimationRepository estimationRepository;
+//
+//    private final EstimationSearchRepository estimationSearchRepository;
+//
+//    private final MachineRepository machineRepository;
+//
+//    private final MachineSearchRepository machineSearchRepository;
+//
+//    private final OperationRepository operationRepository;
+//
+//    private final OperationSearchRepository operationSearchRepository;
+//
+//    private final OrderRepository orderRepository;
+//
+//    private final OrderSearchRepository orderSearchRepository;
 
     private final UnitRepository unitRepository;
 
@@ -77,9 +78,13 @@ public class ElasticsearchIndexService {
 
     private final UserSearchRepository userSearchRepository;
 
-    private final TechnologyCardRepository technologyCardRepository;
+//    private final TechnologyCardRepository technologyCardRepository;
 
-    private final TechnologyCardSearchRepository technologyCardSearchRepository;
+    private final OperatorSearchRepository operatorSearchRepository;
+
+    private final OperatorRepository operatorRepository;
+
+//    private final TechnologyCardSearchRepository technologyCardSearchRepository;
 
     private final ElasticsearchTemplate elasticsearchTemplate;
 
@@ -88,41 +93,43 @@ public class ElasticsearchIndexService {
         UserSearchRepository userSearchRepository,
         ClientRepository clientRepository,
         ClientSearchRepository clientSearchRepository,
-        CommercialPartRepository commercialPartRepository,
-        CommercialPartSearchRepository commercialPartSearchRepository,
-        DrawingRepository drawingRepository,
-        DrawingSearchRepository drawingSearchRepository,
-        EstimationRepository estimationRepository,
-        EstimationSearchRepository estimationSearchRepository,
-        MachineRepository machineRepository,
-        MachineSearchRepository machineSearchRepository,
-        OperationRepository operationRepository,
-        OperationSearchRepository operationSearchRepository,
-        OrderRepository orderRepository,
-        OrderSearchRepository orderSearchRepository,
+//        CommercialPartRepository commercialPartRepository,
+//        CommercialPartSearchRepository commercialPartSearchRepository,
+//        DrawingRepository drawingRepository,
+//        DrawingSearchRepository drawingSearchRepository,
+//        EstimationRepository estimationRepository,
+//        EstimationSearchRepository estimationSearchRepository,
+//        MachineRepository machineRepository,
+//        MachineSearchRepository machineSearchRepository,
+//        OperationRepository operationRepository,
+//        OperationSearchRepository operationSearchRepository,
+//        OrderRepository orderRepository,
+//        OrderSearchRepository orderSearchRepository,
         UnitRepository unitRepository,
         UnitSearchRepository unitSearchRepository,
-        TechnologyCardRepository technologyCardRepository, TechnologyCardSearchRepository technologyCardSearchRepository, ElasticsearchTemplate elasticsearchTemplate) {
+        TechnologyCardRepository technologyCardRepository, /*TechnologyCardSearchRepository technologyCardSearchRepository,*/ OperatorSearchRepository operatorSearchRepository, OperatorRepository operatorRepository, ElasticsearchTemplate elasticsearchTemplate) {
         this.userRepository = userRepository;
         this.userSearchRepository = userSearchRepository;
         this.clientRepository = clientRepository;
         this.clientSearchRepository = clientSearchRepository;
-        this.commercialPartRepository = commercialPartRepository;
-        this.commercialPartSearchRepository = commercialPartSearchRepository;
-        this.drawingRepository = drawingRepository;
-        this.drawingSearchRepository = drawingSearchRepository;
-        this.estimationRepository = estimationRepository;
-        this.estimationSearchRepository = estimationSearchRepository;
-        this.machineRepository = machineRepository;
-        this.machineSearchRepository = machineSearchRepository;
-        this.operationRepository = operationRepository;
-        this.operationSearchRepository = operationSearchRepository;
-        this.orderRepository = orderRepository;
-        this.orderSearchRepository = orderSearchRepository;
+//        this.commercialPartRepository = commercialPartRepository;
+//        this.commercialPartSearchRepository = commercialPartSearchRepository;
+//        this.drawingRepository = drawingRepository;
+//        this.drawingSearchRepository = drawingSearchRepository;
+//        this.estimationRepository = estimationRepository;
+//        this.estimationSearchRepository = estimationSearchRepository;
+//        this.machineRepository = machineRepository;
+//        this.machineSearchRepository = machineSearchRepository;
+//        this.operationRepository = operationRepository;
+//        this.operationSearchRepository = operationSearchRepository;
+//        this.orderRepository = orderRepository;
+//        this.orderSearchRepository = orderSearchRepository;
         this.unitRepository = unitRepository;
         this.unitSearchRepository = unitSearchRepository;
-        this.technologyCardRepository = technologyCardRepository;
-        this.technologyCardSearchRepository = technologyCardSearchRepository;
+        this.operatorSearchRepository = operatorSearchRepository;
+        this.operatorRepository = operatorRepository;
+//        this.technologyCardRepository = technologyCardRepository;
+//        this.technologyCardSearchRepository = technologyCardSearchRepository;
         this.elasticsearchTemplate = elasticsearchTemplate;
     }
 
@@ -130,23 +137,24 @@ public class ElasticsearchIndexService {
     @Timed
     public void reindexAll() {
         reindexForClass(Client.class, clientRepository, clientSearchRepository);
-        reindexForClass(CommercialPart.class, commercialPartRepository, commercialPartSearchRepository);
-        reindexForClass(Drawing.class, drawingRepository, drawingSearchRepository);
-        reindexForClass(Estimation.class, estimationRepository, estimationSearchRepository);
-        reindexForClass(Machine.class, machineRepository, machineSearchRepository);
-        reindexForClass(Operation.class, operationRepository, operationSearchRepository);
-        reindexForClass(Order.class, orderRepository, orderSearchRepository);
+//        reindexForClass(CommercialPart.class, commercialPartRepository, commercialPartSearchRepository);
+//        reindexForClass(Drawing.class, drawingRepository, drawingSearchRepository);
+//        reindexForClass(Estimation.class, estimationRepository, estimationSearchRepository);
+//        reindexForClass(Machine.class, machineRepository, machineSearchRepository);
+//        reindexForClass(Operation.class, operationRepository, operationSearchRepository);
+//        reindexForClass(Order.class, orderRepository, orderSearchRepository);
         reindexForClass(Unit.class, unitRepository, unitSearchRepository);
         reindexForClass(User.class, userRepository, userSearchRepository);
-        reindexForClass(TechnologyCard.class,technologyCardRepository,technologyCardSearchRepository);
+        reindexForClass(eu.canpack.fip.bo.operator.Operator.class, operatorRepository, operatorSearchRepository);
+//        reindexForClass(TechnologyCard.class,technologyCardRepository,technologyCardSearchRepository);
 
         log.info("Elasticsearch: Successfully performed reindexing");
     }
 
     @Transactional(readOnly = true)
     @SuppressWarnings("unchecked")
-    private <T, ID extends Serializable> void reindexForClass(Class<T> entityClass, JpaRepository<T, ID> jpaRepository,
-                                                              ElasticsearchRepository<T, ID> elasticsearchRepository) {
+    public <T, ID extends Serializable> void reindexForClass(Class<T> entityClass, JpaRepository<T, ID> jpaRepository,
+                                                             ElasticsearchRepository<T, ID> elasticsearchRepository) {
         elasticsearchTemplate.deleteIndex(entityClass);
         try {
             elasticsearchTemplate.createIndex(entityClass);

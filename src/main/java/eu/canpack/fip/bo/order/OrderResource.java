@@ -356,24 +356,6 @@ public class OrderResource {
     }
 
     /**
-     * SEARCH  /_search/orders?query=:query : search for the order corresponding
-     * to the query.
-     *
-     * @param query    the query of the order search
-     * @param pageable the pagination information
-     * @return the result of the search
-     */
-    @GetMapping("/_search/orders")
-    @Timed
-    public ResponseEntity<List<OrderListDTO>> searchOrders(@RequestParam String query, @ApiParam Pageable pageable) {
-        log.debug("REST request to search for a page of Orders for query {}", query);
-        Page<OrderListDTO> page = orderService.search(query, pageable);
-        HttpHeaders headers = PaginationUtil.generateSearchPaginationHttpHeaders(query, page, "/api/_search/orders");
-        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
-    }
-
-
-    /**
      * GET  /orders/simple-dto/:id : get the "id" order.
      *
      * @param id the id of the orderDTO to retrieve

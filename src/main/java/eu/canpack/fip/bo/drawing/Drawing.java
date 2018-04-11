@@ -21,7 +21,6 @@ import java.util.*;
 @Entity
 @Table(name = "drawing")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-@Document(indexName = "drawing")
 public class Drawing implements Serializable {
 
     private static final long serialVersionUID = 1L;

@@ -23,7 +23,7 @@ import java.util.*;
 @Entity
 @Table(name = "technology_card")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-@Document(indexName = "technologycard")
+//@Document(indexName = "technologycard")
 public class TechnologyCard implements Serializable {
 
     private static final long serialVersionUID = 1L;

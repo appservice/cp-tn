@@ -4,7 +4,6 @@ import eu.canpack.fip.TnApp;
 import eu.canpack.fip.bo.cooperation.*;
 import eu.canpack.fip.bo.cooperation.dto.CooperationDTO;
 import eu.canpack.fip.bo.cooperation.dto.CooperationMapper;
-import eu.canpack.fip.repository.search.CooperationSearchRepository;
 import eu.canpack.fip.web.rest.errors.ExceptionTranslator;
 import org.junit.Before;
 import org.junit.Test;
@@ -60,8 +59,6 @@ public class CooperationResourceIntTest {
     @Autowired
     private CooperationService cooperationService;
 
-    @Autowired
-    private CooperationSearchRepository cooperationSearchRepository;
 
     @Autowired
     private CooperationQueryService cooperationQueryService;
@@ -110,7 +107,6 @@ public class CooperationResourceIntTest {
 
     @Before
     public void initTest() {
-        cooperationSearchRepository.deleteAll();
         cooperation = createEntity(em);
     }
 
@@ -135,9 +131,7 @@ public class CooperationResourceIntTest {
         assertThat(testCooperation.getAmount()).isEqualTo(DEFAULT_AMOUNT);
         assertThat(testCooperation.getPrice()).isEqualTo(DEFAULT_PRICE);
 
-        // Validate the Cooperation in Elasticsearch
-        Cooperation cooperationEs = cooperationSearchRepository.findOne(testCooperation.getId());
-        assertThat(cooperationEs).isEqualToIgnoringGivenFields(testCooperation);
+
     }
 
     @Test
@@ -483,7 +477,6 @@ public class CooperationResourceIntTest {
     public void updateCooperation() throws Exception {
         // Initialize the database
         cooperationRepository.saveAndFlush(cooperation);
-        cooperationSearchRepository.save(cooperation);
         int databaseSizeBeforeUpdate = cooperationRepository.findAll().size();
 
         // Update the cooperation
@@ -511,9 +504,7 @@ public class CooperationResourceIntTest {
         assertThat(testCooperation.getAmount()).isEqualTo(UPDATED_AMOUNT);
         assertThat(testCooperation.getPrice()).isEqualTo(UPDATED_PRICE);
 
-        // Validate the Cooperation in Elasticsearch
-        Cooperation cooperationEs = cooperationSearchRepository.findOne(testCooperation.getId());
-        assertThat(cooperationEs).isEqualToIgnoringGivenFields(testCooperation);
+
     }
 
     @Test
@@ -540,7 +531,6 @@ public class CooperationResourceIntTest {
     public void deleteCooperation() throws Exception {
         // Initialize the database
         cooperationRepository.saveAndFlush(cooperation);
-        cooperationSearchRepository.save(cooperation);
         int databaseSizeBeforeDelete = cooperationRepository.findAll().size();
 
         // Get the cooperation
@@ -548,9 +538,6 @@ public class CooperationResourceIntTest {
             .accept(TestUtil.APPLICATION_JSON_UTF8))
             .andExpect(status().isOk());
 
-        // Validate Elasticsearch is empty
-        boolean cooperationExistsInEs = cooperationSearchRepository.exists(cooperation.getId());
-        assertThat(cooperationExistsInEs).isFalse();
 
         // Validate the database is empty
         List<Cooperation> cooperationList = cooperationRepository.findAll();
@@ -562,7 +549,6 @@ public class CooperationResourceIntTest {
     public void searchCooperation() throws Exception {
         // Initialize the database
         cooperationRepository.saveAndFlush(cooperation);
-        cooperationSearchRepository.save(cooperation);
 
         // Search the cooperation
         restCooperationMockMvc.perform(get("/api/_search/cooperation?query=id:" + cooperation.getId()))

@@ -18,7 +18,6 @@ import java.util.Objects;
 @Entity
 @Table(name = "cooperation")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-@Document(indexName = "cooperation")
 public class Cooperation implements Serializable {
 
     private static final long serialVersionUID = 1L;

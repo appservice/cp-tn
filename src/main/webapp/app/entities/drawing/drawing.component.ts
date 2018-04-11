@@ -148,7 +148,7 @@ export class DrawingComponent implements OnInit, OnDestroy {
         if (this.drawingFilter.number !== null && this.drawingFilter.number !== '')
             urlSearchParams.append('number.contains', this.drawingFilter.number);
 
-        if (this.drawingFilter.name !== null && this.drawingFilter.name !== '')
+        if (this.drawingFilter && this.drawingFilter.name !== null &&  this.drawingFilter.name !== '')
             urlSearchParams.append('name.contains', this.drawingFilter.name);
 
         if (this.drawingFilter.createdAtFrom !== null)

@@ -142,23 +142,6 @@ public class OperationResource {
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
     }
 
-    /**
-     * SEARCH  /_search/operations?query=:query : search for the operation corresponding
-     * to the query.
-     *
-     * @param query    the query of the operation search
-     * @param pageable the pagination information
-     * @return the result of the search
-     */
-    @GetMapping("/_search/operations")
-    @Timed
-    public ResponseEntity<List<OperationDTO>> searchOperations(@RequestParam String query, @ApiParam Pageable pageable) {
-        log.debug("REST request to search for a page of Operations for query {}", query);
-        Page<OperationDTO> page = operationService.search(query, pageable);
-        HttpHeaders headers = PaginationUtil.generateSearchPaginationHttpHeaders(query, page, "/api/_search/operations");
-        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
-    }
-
 
     @GetMapping("/operations/{estimationId}/operationsReport")
     public ResponseEntity<List<OperationReportDTO>> getOperationsReport(@PathVariable Long estimationId){
@@ -187,12 +170,21 @@ public class OperationResource {
     }
 
     @PutMapping("/operations/add-operation-event")
-    public ResponseEntity<Void> addOperationEvent(@RequestBody OperationEventDTO operationEventDTO){
+    public ResponseEntity<Long> addOperationEvent(@RequestBody OperationEventDTO operationEventDTO){
         log.debug("REST request for add operation event  {}", operationEventDTO);
         operationEventDTO.setCreatedAt(ZonedDateTime.now());
-        operationService.addOperationEvent(operationEventDTO);
+       Long response= operationService.addOperationEvent(operationEventDTO);
 
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok(response);
+
+    }
+
+    @DeleteMapping("/operations/operation-event/{operationEventId}")
+    public ResponseEntity<Void> deleteOperationEvent(@PathVariable("operationEventId") Long operationEventId){
+        log.debug("REST request to delete operation event  {}", operationEventId);
+        operationService.deleteOperationEvent(operationEventId);
+
+        return ResponseEntity.noContent().build();
 
     }
 }

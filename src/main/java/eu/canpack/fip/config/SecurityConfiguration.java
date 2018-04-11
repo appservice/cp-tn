@@ -7,7 +7,9 @@ import org.springframework.beans.factory.BeanInitializationException;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
+import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -82,7 +84,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
             .antMatchers("/i18n/**")
             .antMatchers("/content/**")
             .antMatchers("/swagger-ui/index.html")
-            .antMatchers("/test/**");
+            .antMatchers("/test/**")
+           ;
     }
 
     @Override
@@ -92,17 +95,18 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
             .exceptionHandling()
             .authenticationEntryPoint(problemSupport)
             .accessDeniedHandler(problemSupport)
-        .and()
+            .and()
             .csrf()
             .disable()
             .headers()
             .frameOptions()
             .disable()
-        .and()
+            .and()
             .sessionManagement()
             .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-        .and()
+            .and()
             .authorizeRequests()
+         //   .antMatchers("/api/fx-client/**").permitAll()
             .antMatchers("/api/register").permitAll()
             .antMatchers("/api/activate").permitAll()
             .antMatchers("/api/authenticate").permitAll()
@@ -117,7 +121,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
             .antMatchers("/swagger-ui/index.html").hasAuthority(AuthoritiesConstants.ADMIN)
             .antMatchers("/login/impersonate*").hasAuthority(AuthoritiesConstants.ROLE_DEV)
             .antMatchers("/logout/impersonate").authenticated()
-        .and()
+            .and()
             .apply(securityConfigurerAdapter());
 
     }
@@ -132,16 +136,14 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     }
 
 
-    @Bean public SwitchUserFilter switchUserFilter(){
-        SwitchUserFilter switchUserFilter=new SwitchUserFilter();
+    @Bean
+    public SwitchUserFilter switchUserFilter() {
+        SwitchUserFilter switchUserFilter = new SwitchUserFilter();
         switchUserFilter.setUserDetailsService(userDetailsService);
         switchUserFilter.setSwitchUserUrl("/login/impersonate");
-//            switchUserFilter.setExitUserUrl();
         switchUserFilter.setSwitchAuthorityRole(AuthoritiesConstants.ROLE_DEV);
-//            switchUserFilter.setSwitchUserUrl("/logout/impersonate");
         switchUserFilter.setFailureHandler(authenticationFailureHandler());
         switchUserFilter.setSuccessHandler(switchUserSuccessHandler);
-//            switchUser.
         return switchUserFilter;
     }
 
