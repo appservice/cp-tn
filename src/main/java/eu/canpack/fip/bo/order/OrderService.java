@@ -1,6 +1,7 @@
 package eu.canpack.fip.bo.order;
 
 import eu.canpack.fip.bo.attachment.Attachment;
+import eu.canpack.fip.bo.attachment.AttachmentDTO;
 import eu.canpack.fip.bo.attachment.AttachmentRepository;
 import eu.canpack.fip.bo.audit.Audit;
 import eu.canpack.fip.bo.audit.AuditedOperation;
@@ -50,10 +51,7 @@ import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -162,10 +160,17 @@ public class OrderService {
                     drawing.setNumber(estDTO.getItemNumber());
                     drawing.setName(estDTO.getItemName());
                     drawing.setCreatedAt(now);
-                    List<Attachment> attahcments = estDTO.getDrawing().getAttachments().stream()
-                        .map(a -> attachmentRepository.findOne(a.getId())).collect(Collectors.toList());
+
+                    List<Attachment> attahcments = new ArrayList<>();
+                    for (AttachmentDTO a : estDTO.getDrawing().getAttachments()) {
+                        Attachment one = attachmentRepository.findOne(a.getId());
+                        one.setDrawing(drawing);
+                        attahcments.add(one);
+                    }
+
                     drawing.setAttachments(attahcments);
                     drawing = drawingRepository.save(drawing);
+
                 }
 
 
@@ -323,6 +328,9 @@ public class OrderService {
                     if (estimation.getDrawing() != null) {
                         estimation.getDrawing().setNumber(estDTO.getItemNumber());
                         estimation.getDrawing().setName(estDTO.getItemName());
+                        for(Attachment attachment:attachments){
+                            attachment.setDrawing(estimation.getDrawing());
+                        }
                         estimation.getDrawing().setAttachments(attachments);
 
 
@@ -330,6 +338,9 @@ public class OrderService {
                         Drawing drawing = new Drawing();
                         drawing.setName(estDTO.getItemName());
                         drawing.setNumber(estDTO.getItemNumber());
+                        for(Attachment attachment:attachments){
+                            attachment.setDrawing(drawing);
+                        }
                         drawing.setAttachments(attachments);
                         drawing.getEstimations().add(estimation);
                         drawing.setCreatedAt(now);
@@ -375,8 +386,12 @@ public class OrderService {
                     drawing.setNumber(estDTO.getItemNumber());
                     drawing.setName(estDTO.getItemName());
                     drawing.setId(estDTO.getDrawing().getId());
-                    List<Attachment> attahcments = estDTO.getDrawing().getAttachments().stream()
-                        .map(a -> attachmentRepository.findOne(a.getId())).collect(Collectors.toList());
+                    List<Attachment> attahcments = new ArrayList<>();
+                    for (AttachmentDTO a : estDTO.getDrawing().getAttachments()) {
+                        Attachment one = attachmentRepository.findOne(a.getId());
+                        one.setDrawing(drawing);
+                        attahcments.add(one);
+                    }
                     drawing.setAttachments(attahcments);
                     drawing.setCreatedAt(now);
                     drawingRepository.save(drawing);
@@ -978,6 +993,7 @@ public class OrderService {
                     newAttachment.setDataContentType(attachment.getDataContentType());
                     newAttachment.setUploadDate(attachment.getUploadDate());
                     newAttachment.setName(attachment.getName());
+                    newAttachment.setDrawing(newDrawing);
 
                     String newPath = copyAttachmentFile(attachment.getPath());
                     newAttachment.setPath(newPath);

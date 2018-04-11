@@ -1,5 +1,7 @@
 package eu.canpack.fip.bo.estimation;
 
+import eu.canpack.fip.bo.attachment.Attachment;
+import eu.canpack.fip.bo.attachment.AttachmentMapper;
 import eu.canpack.fip.bo.client.Client;
 import eu.canpack.fip.bo.cooperation.Cooperation;
 import eu.canpack.fip.bo.estimation.dto.EstimationCriteria;
@@ -40,8 +42,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import static org.elasticsearch.index.query.QueryBuilders.*;
-
 /**
  * Service Implementation for managing Estimation.
  */
@@ -74,7 +74,9 @@ public class EstimationService {
 
     private final CooperationMapper cooperationMapper;
 
-    public EstimationService(EstimationRepository estimationRepository, EstimationMapper estimationMapper, OperationMapper operationMapper, CommercialPartMapper commercialPartMapper, UserRepository userRepository, TechnologyCardPdfCreator technologyCardPdfCreator, UserService userService, OrderRepository orderRepository, EstimationQueryService estimationQueryService, MachineRepository machineRepository, CooperationMapper cooperationMapper) {
+    private final AttachmentMapper attachmentMapper;
+
+    public EstimationService(EstimationRepository estimationRepository, EstimationMapper estimationMapper, OperationMapper operationMapper, CommercialPartMapper commercialPartMapper, UserRepository userRepository, TechnologyCardPdfCreator technologyCardPdfCreator, UserService userService, OrderRepository orderRepository, EstimationQueryService estimationQueryService, MachineRepository machineRepository, CooperationMapper cooperationMapper, AttachmentMapper attachmentMapper) {
         this.estimationRepository = estimationRepository;
         this.estimationMapper = estimationMapper;
         this.operationMapper = operationMapper;
@@ -88,6 +90,7 @@ public class EstimationService {
         this.estimationQueryService = estimationQueryService;
         this.machineRepository = machineRepository;
         this.cooperationMapper = cooperationMapper;
+        this.attachmentMapper = attachmentMapper;
     }
 
     /**
@@ -133,7 +136,13 @@ public class EstimationService {
         User currentUser = userService.getLoggedUser();
         estimation.setCreatedBy(currentUser);
 
-        if (estimation.getDrawing() != null) {
+        if (estimation.getDrawing() != null && estimationDTO.getDrawing()!=null && estimationDTO.getDrawing().getAttachments()!=null) {
+//            List<Attachment>attachments=attachmentMapper.toEntity(estimationDTO.getDrawing().getAttachments());
+//            for(Attachment attachment:attachments){
+//                attachment.setDrawing(estimation.getDrawing());
+//            }
+//            estimation.getDrawing().setAttachments(attachments);
+           // attachments.forEach(a->a.setDrawing(estimation.getDrawing()));
             log.debug("estimation DrawingO: {}", estimation.getDrawing());
             log.debug("attachmentsO: {}", estimation.getDrawing().getAttachments());
 
