@@ -392,19 +392,7 @@ export class NewEstimationComponent implements OnInit, OnDestroy {
         //  console.log(response());
     }
 
-    // openTechnologyCardModal() {
-    //
-    //     const modalRef = this.modalService.open(TechnologyCardFinderComponent, {size: 'lg'});
-    //
-    //     console.log(modalRef.result);
-    //     modalRef.result.then(result => {
-    //         this.insertOperationFromTechnologyCard(result)
-    //     }, (reason: any) => {
-    //         console.log(reason)
-    //     });
-    // }
 
-    // promisetechnologyCard: Promise<TechnologyCard>;
 
     private insertOperationFromTechnologyCard(technologyCard: TechnologyCard): void {
         console.log(technologyCard);

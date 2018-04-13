@@ -1,5 +1,5 @@
 
-<p-dialog header="Wyszukaj kartę technologiczną" [(visible)]="display" [positionTop]="40"  [modal]="true">
+<p-dialog header="Wyszukaj kartę technologiczną" [(visible)]="display" [positionTop]="40"   [width]="1000" [minWidth]="600" [minY]="70" [modal]="true">
     <div class="row">
         <div class="col-4">
             <!--<label for="drawing_number_field">Nr rysunku</label>-->
@@ -52,7 +52,7 @@
         </div>
         <div class="row justify-content-center">
             <ngb-pagination [collectionSize]="totalItems" [(page)]="page" (pageChange)="loadPage(page)" [pageSize]="itemsPerPage"
-                            [maxSize]="5"></ngb-pagination><!---->
+                            [maxSize]="5" [boundaryLinks]="true"></ngb-pagination><!---->
         </div>
     </div>
 </p-dialog>
