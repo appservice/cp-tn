@@ -22,6 +22,7 @@ import {CurrencyMaskModule} from 'ng2-currency-mask';
 import {TnAlert} from '../../tn-components/tn-alert';
 import {ConfirmDeactivateGuard} from './estimation.route';
 import {DialogModule} from 'primeng/primeng';
+import {TnTechnologyCardModule} from '../technology-card/technology-card.module';
 
 const ENTITY_STATES = [
     ...estimationRoute,
@@ -35,6 +36,7 @@ const ENTITY_STATES = [
         TnComponentsModule,
         CurrencyMaskModule,
         DialogModule,
+        TnTechnologyCardModule,
 
 
 

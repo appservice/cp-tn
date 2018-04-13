@@ -18,6 +18,7 @@ import {ArchiveProdDialogComponent, ArchiveProdDialogPopupComponent} from './arc
 import {ArchiveProdPopupService} from './archive-prod-dialog/archive-prod-popup.service';
 import {FinishedDetailsComponent} from './finished-details-component/finished-details.component';
 import {FinishedItemsPagingParams} from './production.route';
+import {TnTechnologyCardModule} from '../technology-card/technology-card.module';
 
 const ENTITY_STATES = [
     ...productionRoute,
@@ -30,6 +31,7 @@ const ENTITY_STATES = [
         RouterModule.forRoot(ENTITY_STATES, {useHash: true}),
         TnComponentsModule,
         CurrencyMaskModule,
+        TnTechnologyCardModule,
 
 
     ],

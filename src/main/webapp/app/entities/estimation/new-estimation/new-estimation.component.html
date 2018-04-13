@@ -258,11 +258,8 @@
                     </button>
                 </div>
                 <div style="margin-top:10px">
-                    <button type="button" class="btn btn-outline-dark" (click)="openTechnologyCardModal();"
-                            style="width: 200px"><i
-                        class="fa fa-plus"></i>
-                        Wczytaj z karty techn.
-                    </button>
+                    <jhi-technology-card-finder (onChooseTechnologyCard)="insertOperationFromTechnologyCard($event)"></jhi-technology-card-finder>
+
                     <span class="pull-right">
                     <button type="button" class="btn btn-outline-dark" (click)="exportToTechnologyCard()"
                             [disabled]="editForm.form.invalid || isExporting"

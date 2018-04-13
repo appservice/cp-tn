@@ -15,11 +15,13 @@ import {
     technologyCardPopupRoute,
     TechnologyCardResolvePagingParams,
 
+
 } from './';
 import {NewTechnologyCardComponent} from './new-technology-card/new-technology-card.component';
 import {TnComponentsModule} from '../../tn-components/tn-components.module';
 import {TechnologyCardFinderComponent} from './technology-card-finder/technology-card-finder.component';
 import {CurrencyMaskModule} from 'ng2-currency-mask';
+import {DialogModule} from 'primeng/primeng';
 
 
 const ENTITY_STATES = [
@@ -33,9 +35,11 @@ const ENTITY_STATES = [
         RouterModule.forRoot(ENTITY_STATES, { useHash: true }),
         TnComponentsModule,
         CurrencyMaskModule,
+        DialogModule,
 
 
     ],
+    exports:[TechnologyCardFinderComponent],
     declarations: [
         TechnologyCardComponent,
         TechnologyCardDetailComponent,

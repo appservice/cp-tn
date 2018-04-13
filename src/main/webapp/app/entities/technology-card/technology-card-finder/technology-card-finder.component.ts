@@ -1,4 +1,4 @@
-import {Component, EventEmitter, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
 import {TechnologyCard} from '../technology-card.model';
 import {TechnologyCardService} from '../technology-card.service';
@@ -13,15 +13,19 @@ import {URLSearchParams} from '@angular/http';
 })
 export class TechnologyCardFinderComponent implements OnInit {
 
-    // @Output()
-    //     onChooseRow: EventEmitter<TechnologyCard> =new EventEmitter<TechnologyCard>();
+
+    @Input()
+    display: boolean=false;
+
+    @Output()
+    onChooseTechnologyCard: EventEmitter<TechnologyCard> = new EventEmitter<TechnologyCard>();
 
     technologyCards: TechnologyCard [];
     links: any;
     totalItems: any;
     queryCount: any;
-    itemsPerPage: any = 5;
-    page: any = '1';
+    itemsPerPage: number = 5;
+    page: number = 1;
     predicate: any;
     previousPage: any;
     reverse: any;
@@ -69,7 +73,9 @@ export class TechnologyCardFinderComponent implements OnInit {
 
     onChooseRow(technologyCard: TechnologyCard) {
         this.technologyCardService.find(technologyCard.id).subscribe(res => {
-                this.activeModal.close(res);
+            this.display=false;
+            this.onChooseTechnologyCard.emit(res);
+               // this.activeModal.close(res);
             },
         );
 
@@ -87,5 +93,8 @@ export class TechnologyCardFinderComponent implements OnInit {
         }
     }
 
+    showModal(){
+        this.display=true;
+    }
 
 }

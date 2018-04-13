@@ -1,10 +1,5 @@
-<div class="modal-header">
-    <h4 class="modal-title">Wyszukaj kartę technologiczną</h4>
-    <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
-        <span aria-hidden="true">&times;</span>
-    </button>
-</div>
-<div class="modal-body">
+
+<p-dialog header="Wyszukaj kartę technologiczną" [(visible)]="display" [positionTop]="40"  [modal]="true">
     <div class="row">
         <div class="col-4">
             <!--<label for="drawing_number_field">Nr rysunku</label>-->
@@ -13,21 +8,16 @@
 
         </div>
         <div class="col-5">
-            <!--<label for="drawing_name_field">Nazwa</label>-->
-            <input type="text" class="form-control" id="drawing_name_field" name="drawing_name" placeholder="Nazwa"  [(ngModel)]="nameFilter"  (keydown)="onEnterClickFilter($event)">
+            <input type="text" class="form-control" id="drawing_name_field" name="drawing_name" placeholder="Nazwa" [(ngModel)]="nameFilter" (keydown)="onEnterClickFilter($event)">
 
         </div>
         <div class="col-3"><span class="btn-group">
 
-            <button class="btn  btn-outline-primary" (click)="findTechnologyCard()">Szukaj</button>
-            <button class="btn  btn-outline-danger" (click)="clearFilter()">Resetuj</button>
+            <button type="button" class="btn  btn-outline-primary" (click)="findTechnologyCard()">Szukaj</button>
+            <button type="button" class="btn  btn-outline-danger" (click)="clearFilter()">Resetuj</button>
 
         </span></div>
-        <!--<div class="col-3">-->
-        <!--<label for="drawing_number_field">Nr rysunku</label>-->
-        <!--<input type="text" class="form-control" id="drawing_number_field" name="drawing_number">-->
 
-        <!--</div>-->
 
     </div>
 
@@ -45,13 +35,13 @@
         </thead>
         <tbody>
         <tr *ngFor="let technologyCard of technologyCards;let rowIndex=index">
-            <td>{{rowIndex+1}}</td>
+            <td>{{rowIndex+1+itemsPerPage*(page-1)}}</td>
             <td>{{technologyCard.drawingNumber}}</td>
             <td>{{technologyCard.drawingName}}</td>
             <td>{{technologyCard.createdAt|date:'dd-MM-yyyy HH:mm'}}</td>
             <td>{{technologyCard.createdByName}}</td>
             <td>
-                <button class="btn btn-outline-dark" (click)="onChooseRow(technologyCard)">OK</button>
+                <button type="button" class="btn btn-outline-dark" (click)="onChooseRow(technologyCard)">OK</button>
             </td>
         </tr>
         </tbody>
@@ -61,10 +51,12 @@
             <jhi-item-count [page]="page" [total]="queryCount" [itemsPerPage]="itemsPerPage"></jhi-item-count>
         </div>
         <div class="row justify-content-center">
-            <ngb-pagination [collectionSize]="totalItems" [(page)]="page" (pageChange)="loadPage(page)" [pageSize]="itemsPerPage" ></ngb-pagination><!---->
+            <ngb-pagination [collectionSize]="totalItems" [(page)]="page" (pageChange)="loadPage(page)" [pageSize]="itemsPerPage"
+                            [maxSize]="5"></ngb-pagination><!---->
         </div>
     </div>
-</div>
-<!--<div class="modal-footer">-->
-    <!--<button type="button" class="btn btn-outline-dark" (click)="activeModal.close('Close click')">Zamknij</button>-->
-<!--</div>-->
+</p-dialog>
+<button type="button" class="btn btn-outline-dark" (click)="showModal()" style="width: 200px">
+    <i class="fa fa-plus"></i>
+    Wczytaj z karty techn.
+</button>

@@ -1,4 +1,4 @@
-<form name="editForm" role="form" novalidate (ngSubmit)="onSaveBtnClick()" #editForm="ngForm">
+<form name="editForm" role="form" novalidate  #editForm="ngForm">
 
     <div>
         <h4>
@@ -245,11 +245,8 @@
                     </div>
                 </fieldset>
                 <div style="margin-top:10px">
-                    <button type="button" class="btn btn-outline-dark" (click)="openTechnologyCardModal();" [disabled]="isReadOnly"
-                            style="width: 200px"><i
-                        class="fa fa-plus"></i>
-                        Wczytaj z karty techn.
-                    </button>
+                    <jhi-technology-card-finder (onChooseTechnologyCard)="insertOperationFromTechnologyCard($event)"></jhi-technology-card-finder>
+
                     <span class="pull-right">
                     <button type="button" class="btn btn-outline-dark" (click)="exportToTechnologyCard()"
                             [disabled]="editForm.form.invalid || isExporting"
@@ -574,7 +571,7 @@
     <div class="text-center" style="margin-top: 30px">
         <button type="button" class="btn btn-outline-danger" (click)="previousState()"><span class="fa fa-arrow-left"></span> Powrót</button>
 
-        <button class="btn btn-outline-primary " type="submit" [disabled]="editForm.form.invalid || isSaving || isReadOnly">
+        <button class="btn btn-outline-primary " type="button" [disabled]="editForm.form.invalid || isSaving || isReadOnly" (click)="onSaveBtnClick()">
             <span class="fa fa-save"></span>&nbsp;Zapisz
             <!--<span jhiTranslate="entity.action.save">Save</span>-->
         </button>

@@ -368,19 +368,6 @@ export class TechnologyEditComponent implements OnInit, OnDestroy {
         //  console.log(response());
     }
 
-    openTechnologyCardModal() {
-
-        const modalRef = this.modalService.open(TechnologyCardFinderComponent, {size: 'lg'});
-
-        console.log(modalRef.result);
-        modalRef.result.then(result => {
-            this.insertOperationFromTechnologyCard(result)
-        }, (reason: any) => {
-            console.log(reason)
-        });
-        // modalRef.componentInstance.name = 'World';
-    }
-
     private insertOperationFromTechnologyCard(technologyCard: TechnologyCard): void {
         console.log(technologyCard);
         if (!this.estimation.material || this.estimation.material == null) {
