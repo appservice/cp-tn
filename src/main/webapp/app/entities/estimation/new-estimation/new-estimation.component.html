@@ -130,7 +130,7 @@
                                                                                      *ngIf="!estimation.materialPrice || estimation.materialPrice===0"></i></label>
                                 <input class="form-control" name="material_price" [(ngModel)]="estimation.materialPrice"
                                        currencyMask
-                                       [options]="currencyMaskOpt" />
+                                       [options]="currencyMaskOpt"/>
                             </div><!-- currencyMask  -->
                             <div class="col-md-3"><label>Masa [kg]</label>
                                 <input name="weight" class="form-control" type="number" [(ngModel)]="estimation.mass"/>
@@ -636,7 +636,7 @@
 
         <button class="btn btn-outline-primary" type="button" [disabled]="editForm.form.invalid || isSaving"
                 (click)="openSaveAndCloseModal()">
-            <span class="fa fa-save" ></span>&nbsp;Zapisz
+            <span class="fa fa-save"></span>&nbsp;Zapisz
         </button>
 
 
@@ -645,27 +645,19 @@
 </form>
 
 
-<ng-template #content let-c="close" let-d="dismiss">
-    <div class="modal-header">
-        <h4 class="modal-title">Załączniki</h4>
-
-        <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
-            <span aria-hidden="true">&times;</span>
-        </button>
-    </div>
-    <div class="modal-body">
-        <h5> Rusunek: {{estimation.drawing.number}} {{estimation.drawing.name}}</h5>
-        <tn-file-uploader (notify)="onFileArrayChange($event);" [isViewOnly]="true"
-                          [attachments]="estimation.drawing.attachments"></tn-file-uploader>
-    </div>
-    <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" (click)="c('Close click')">Close</button>
-    </div>
-</ng-template>
 
 
 <ng-template #rt let-r="result" let-t="term">
     {{r.name}}
 </ng-template>
 
-<!--<p-chips [(ngModel)]="myValues">test</p-chips>-->
+<p-dialog header="Załączniki" [(visible)]="display" modal="modal" [responsive]="true" [width]="800" [minWidth]="600" [minY]="70" [positionTop]="40">
+    <span>
+        <h5> Rusunek: {{estimation.drawing.number}} {{estimation.drawing.name}}</h5>
+        <tn-file-uploader (notify)="onFileArrayChange($event);" [isViewOnly]="true" [attachments]="estimation.drawing.attachments"></tn-file-uploader>
+    </span>
+    <p-footer>
+        <button type="button" class="btn btn-secondary" icon="fa-close" (click)="display=false">Zamknij</button>
+    </p-footer>
+</p-dialog>
+

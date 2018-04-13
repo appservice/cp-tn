@@ -1,27 +1,27 @@
-import {NgModule, CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
+import {CUSTOM_ELEMENTS_SCHEMA, NgModule} from '@angular/core';
 import {RouterModule} from '@angular/router';
 
 import {TnSharedModule} from '../../shared';
 
 import {
-    EstimationService,
-    EstimationPopupService,
     EstimationComponent,
+    EstimationDeleteDialogComponent,
+    EstimationDeletePopupComponent,
     EstimationDetailComponent,
     EstimationDialogComponent,
     EstimationPopupComponent,
-    EstimationDeletePopupComponent,
-    EstimationDeleteDialogComponent,
-    estimationRoute,
     estimationPopupRoute,
+    EstimationPopupService,
     EstimationResolvePagingParams,
+    estimationRoute,
+    EstimationService,
 } from './';
 import {NewEstimationComponent} from './new-estimation/new-estimation.component';
 import {TnComponentsModule} from '../../tn-components/tn-components.module';
 import {CurrencyMaskModule} from 'ng2-currency-mask';
 import {TnAlert} from '../../tn-components/tn-alert';
 import {ConfirmDeactivateGuard} from './estimation.route';
-import {TnModalConfirmComponent} from '../../tn-components/tn-modal-confirm/tn-modal-confirm.component';
+import {DialogModule} from 'primeng/primeng';
 
 const ENTITY_STATES = [
     ...estimationRoute,
@@ -34,6 +34,7 @@ const ENTITY_STATES = [
         RouterModule.forRoot(ENTITY_STATES, {useHash: true}),
         TnComponentsModule,
         CurrencyMaskModule,
+        DialogModule,
 
 
 

@@ -255,15 +255,16 @@ export class NewEstimationComponent implements OnInit, OnDestroy {
     }
 
     openModal(content) {
-        if (this.estimation.drawing) {
-
-
-            this.modalService.open(content, {size: 'lg'}).result.then((result) => {
-                this.closeResult = `Closed with: ${result}`;
-            }, (reason) => {
-                this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
-            });
-        }
+        this.showDialog();
+        // if (this.estimation.drawing) {
+        //
+        //
+        //     this.modalService.open(content, {size: 'lg'}).result.then((result) => {
+        //         this.closeResult = `Closed with: ${result}`;
+        //     }, (reason) => {
+        //         this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+        //     });
+        // }
     }
 
     private getDismissReason(reason: any): string {
@@ -499,6 +500,11 @@ export class NewEstimationComponent implements OnInit, OnDestroy {
 
         });
 
+    }
+    display: boolean = false;
+
+    showDialog() {
+        this.display = true;
     }
 }
 

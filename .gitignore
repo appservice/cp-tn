@@ -149,3 +149,4 @@ Desktop.ini
 ######################
 .eslintcache
 /es-data/**
+app.pid
