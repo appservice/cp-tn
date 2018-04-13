@@ -41,6 +41,10 @@ export class TechnologyCardFinderComponent implements OnInit {
     ngOnInit() {
         this.technologyCards = [];
     }
+    findTechnologyCardAndLoadFirstPage(){
+        this.page=1;
+        this.findTechnologyCard();
+    }
 
     findTechnologyCard() {
         let urlSearchParams = new URLSearchParams();
@@ -89,7 +93,7 @@ export class TechnologyCardFinderComponent implements OnInit {
 
     onEnterClickFilter(event: any) {
         if (event.keyCode == 13) {
-            this.findTechnologyCard();
+            this.findTechnologyCardAndLoadFirstPage();
         }
     }
 
