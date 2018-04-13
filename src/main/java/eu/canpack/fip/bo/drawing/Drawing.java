@@ -46,7 +46,7 @@ public class Drawing implements Serializable {
 
     @OneToMany(cascade = {CascadeType.PERSIST,CascadeType.MERGE,CascadeType.REFRESH,CascadeType.DETACH}, orphanRemoval = false)
     @JoinColumn(name = "drawing_id",referencedColumnName = "id")
-    @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     @JsonManagedReference
     private List<Attachment> attachments = new ArrayList<>();
 
