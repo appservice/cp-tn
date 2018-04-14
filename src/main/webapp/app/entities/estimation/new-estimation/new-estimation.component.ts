@@ -255,7 +255,7 @@ export class NewEstimationComponent implements OnInit, OnDestroy {
     }
 
     openModal(content) {
-        this.showDialog();
+        this.showAttachmentDialog();
         // if (this.estimation.drawing) {
         //
         //
@@ -491,7 +491,7 @@ export class NewEstimationComponent implements OnInit, OnDestroy {
     }
     display: boolean = false;
 
-    showDialog() {
+    showAttachmentDialog() {
         this.display = true;
     }
 
