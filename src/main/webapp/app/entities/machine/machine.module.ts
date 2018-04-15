@@ -16,6 +16,7 @@ import {
     MachineResolvePagingParams,
 } from './';
 import {MyDatePickerModule} from 'mydatepicker';
+import {NgxMyDatePickerModule} from 'ngx-mydatepicker';
 
 const ENTITY_STATES = [
     ...machineRoute,
@@ -27,6 +28,8 @@ const ENTITY_STATES = [
         TnSharedModule,
         RouterModule.forRoot(ENTITY_STATES, { useHash: true }),
         MyDatePickerModule,
+        NgxMyDatePickerModule,
+
     ],
     declarations: [
         MachineComponent,

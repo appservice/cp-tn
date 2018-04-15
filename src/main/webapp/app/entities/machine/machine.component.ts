@@ -5,7 +5,7 @@ import {JhiEventManager, JhiParseLinks, JhiPaginationUtil, JhiLanguageService, J
 
 import {Machine} from './machine.model';
 import {MachineService} from './machine.service';
-import {ITEMS_PER_PAGE, Principal, ResponseWrapper} from '../../shared';
+import {Globals, ITEMS_PER_PAGE, Principal, ResponseWrapper} from '../../shared';
 import {PaginationConfig} from '../../blocks/config/uib-pagination.config';
 import {IMyDate, IMyDateModel} from 'mydatepicker';
 import {URLSearchParams } from '@angular/http';
@@ -43,7 +43,9 @@ export class MachineComponent implements OnInit, OnDestroy {
                 private eventManager: JhiEventManager,
                 private paginationUtil: JhiPaginationUtil,
                 private dateUtils: JhiDateUtils,
-                private paginationConfig: PaginationConfig) {
+                private paginationConfig: PaginationConfig,
+                private globals:Globals
+    ) {
         this.itemsPerPage = ITEMS_PER_PAGE;
         this.routeData = this.activatedRoute.data.subscribe((data) => {
             this.page = data['pagingParams'].page;

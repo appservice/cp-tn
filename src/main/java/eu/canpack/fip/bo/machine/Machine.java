@@ -2,6 +2,7 @@ package eu.canpack.fip.bo.machine;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import eu.canpack.fip.bo.operation.Operation;
+import org.checkerframework.checker.units.qual.C;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.springframework.data.elasticsearch.annotations.Document;
@@ -35,6 +36,9 @@ public class Machine implements Serializable {
     @NotNull
     @Column(name = "shortcut", nullable = false)
     private String shortcut;
+
+    @Column(name = "default_technology_desc",length = 512)
+    private String defaultTechnologyDesc;
 
 //    @Column(name = "working_hour_price", precision=10, scale=2)
 //    private BigDecimal workingHourPrice;
@@ -80,6 +84,10 @@ public class Machine implements Serializable {
         return this;
     }
 
+    public String getDefaultTechnologyDesc() {
+        return defaultTechnologyDesc;
+    }
+
     public void setShortcut(String shortcut) {
         this.shortcut = shortcut;
     }
@@ -120,6 +128,10 @@ public class Machine implements Serializable {
         return this;
     }
 
+    public void setDefaultTechnologyDesc(String defaultTechnologyDesc) {
+        this.defaultTechnologyDesc = defaultTechnologyDesc;
+    }
+
     public List<MachineDtl> getMachineDtls() {
         return machineDtls;
     }
@@ -154,6 +166,7 @@ public class Machine implements Serializable {
             "id=" + getId() +
             ", name='" + getName() + "'" +
             ", shortcut='" + getShortcut() + "'" +
+            ",default_technology_description="+defaultTechnologyDesc+
 //            ", workingHourPrice='" + getWorkingHourPrice() + "'" +
             "}";
     }

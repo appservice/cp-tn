@@ -22,12 +22,15 @@ public class MachineDTO implements Serializable {
 
     private BigDecimal workingHourPrice;
 
+    private String defaultTechnologyDesc;
+
     private LocalDate validFrom;
 
     public MachineDTO() {
     }
 
     public MachineDTO(Machine machine, MachineDtl machineDtl) {
+
        this.id=machine.getId();
        this.name=machine.getName();
        this.shortcut=machine.getShortcut();
@@ -36,6 +39,7 @@ public class MachineDTO implements Serializable {
            this.validFrom=machineDtl.getValidFrom();
 
        }
+       this.defaultTechnologyDesc=machine.getDefaultTechnologyDesc();
     }
 
     //    private Long operationsId;
@@ -79,13 +83,16 @@ public class MachineDTO implements Serializable {
     public void setValidFrom(LocalDate validFrom) {
         this.validFrom = validFrom;
     }
-    //    public Long getOperationsId() {
-//        return operationsId;
-//    }
-//
-//    public void setOperationsId(Long operationId) {
-//        this.operationsId = operationId;
-//    }
+
+    public String getDefaultTechnologyDesc() {
+        return defaultTechnologyDesc;
+    }
+
+    public void setDefaultTechnologyDesc(String defaultTechnologyDesc) {
+        this.defaultTechnologyDesc = defaultTechnologyDesc;
+    }
+
+
 
     @Override
     public boolean equals(Object o) {
@@ -115,6 +122,7 @@ public class MachineDTO implements Serializable {
             ", name='" + name + '\'' +
             ", shortcut='" + shortcut + '\'' +
             ", workingHourPrice=" + workingHourPrice +
+            ", defaultTechnologyDesc='" + defaultTechnologyDesc + '\'' +
             ", validFrom=" + validFrom +
             '}';
     }

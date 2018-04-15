@@ -200,7 +200,7 @@ export class TechnologyEditComponent implements OnInit, OnDestroy {
     private onSaveSuccess(result: Estimation) {
         this.eventManager.broadcast({name: 'estimationListModification', content: 'OK'});
         this.isSaving = false;
-        this.previousState();
+       // this.previousState();
         //      this.router.navigate()
         // this.router.navigate(['estimation']);
         // this.activeModal.dismiss(result);
@@ -288,6 +288,12 @@ export class TechnologyEditComponent implements OnInit, OnDestroy {
     onSelectItem(event: any) {
 
         console.log('item ', event.item);
+    }
+    onMachineChanged(operation:Operation){
+        if(operation.machine && operation.machine.defaultTechnologyDesc && operation.machine.defaultTechnologyDesc!==null){
+            operation.description=operation.machine.defaultTechnologyDesc;
+        }
+        this.calculateOperationsTotalCost();
     }
 
     calculateOperationsTotalCost() {

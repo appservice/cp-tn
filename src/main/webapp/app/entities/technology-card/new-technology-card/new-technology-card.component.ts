@@ -17,6 +17,7 @@ import {isNullOrUndefined} from 'util';
 import {OrderService} from '../../order/order.service';
 import {OrderSimpleDTO} from '../../order/order-simpleDTO.model';
 import {DrawingFinderComponent} from '../../drawing/drawing-finder/drawing-finder.component';
+import {Operation} from '../../operation/operation.model';
 
 @Component({
     selector: 'new-etechnology-card',
@@ -123,6 +124,12 @@ export class NewTechnologyCardComponent implements OnInit, OnDestroy {
         return index;
     }
 
+    onMachineChanged(operation:Operation){
+        if(operation.machine && operation.machine.defaultTechnologyDesc && operation.machine.defaultTechnologyDesc!==null){
+            operation.description=operation.machine.defaultTechnologyDesc;
+        }
+
+    }
     addOperation() {
         this.technologyCard.operations.push({
             id: null,

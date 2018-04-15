@@ -460,6 +460,7 @@ public class OrderService {
         log.debug("Request to get Order : {}", id);
 
         Order order = orderRepository.findOne(id);
+        order.getEstimations().sort(Comparator.comparing(Estimation::getId));
         secureAccessability(order);
 
         return orderMapper.toDto(order);
@@ -482,10 +483,12 @@ public class OrderService {
 
         List<EstimationCreateDTO> estimationCreateDTOS = order.getEstimations().stream()
             .map(EstimationCreateDTO::new)
+            .sorted(Comparator.comparing(EstimationCreateDTO::getId))
             .collect(Collectors.toList());
         orderDTO.setEstimations(estimationCreateDTOS);
         orderDTO.setCanEdit(canEditOrder(order));
         orderDTO.setCanEditAsAdmin(canEditOrderAsAdmin(order));
+      //  orderDTO.getEstimations().sort(Comparator.comparing(EstimationCreateDTO::getId));
         return orderDTO;
 
     }
@@ -529,6 +532,7 @@ public class OrderService {
 
         List<EstimationCreateDTO> estimationCreateDTOS = order.getEstimations().stream()
             .map(estimation -> new EstimationCreateDTO(estimation, estimation.isPricePublished()))
+            .sorted(Comparator.comparing(EstimationCreateDTO::getId))
             .collect(Collectors.toList());
         orderDTO.setEstimations(estimationCreateDTOS);
         return orderDTO;
@@ -559,6 +563,7 @@ public class OrderService {
             .filter(e -> e.getEstimatedCost() != null && e.getEstimatedCost().compareTo(BigDecimal.ZERO) > 0)
 //            .peek(est -> est.getOperations().forEach(o -> o.setId(null)))
 //            .peek(e -> e.setId(null))
+            .sorted(Comparator.comparing(Estimation::getId))
             .collect(Collectors.toList());
         order.setEstimations(estimations);
 

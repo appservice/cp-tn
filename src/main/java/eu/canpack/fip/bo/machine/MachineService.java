@@ -63,6 +63,7 @@ public class MachineService {
         Machine machine = machineRepository.findOne(machineDTO.getId());
         machine.setName(machineDTO.getName());
         machine.setShortcut(machineDTO.getShortcut());
+        machine.setDefaultTechnologyDesc(machineDTO.getDefaultTechnologyDesc());
        // Machine machine = machineMapper.toEntity(machineDTO);
         Optional<MachineDtl> mDtlOptional = machine.getMachineDtls().stream().filter(m -> m.getValidFrom().equals(machineDTO.getValidFrom())).findFirst();
         if (mDtlOptional.isPresent()) {
@@ -119,6 +120,8 @@ public class MachineService {
         machineDtl.setValidTo(Constants.DATE_UNTIL_NOTICE);
         machineDtl.setWorkingHourPrice(machineDTO.getWorkingHourPrice());
         machineDtl.setMachine(machine);
+
+        machine.setDefaultTechnologyDesc(machineDTO.getDefaultTechnologyDesc());
         machine.getMachineDtls().add(machineDtl);
         machine = machineRepository.save(machine);
         //   MachineDTO result = machineMapper.toDto(machine);
@@ -168,7 +171,21 @@ public class MachineService {
     public MachineDTO findOne(Long id) {
         log.debug("Request to get Machine : {}", id);
         Machine machine = machineRepository.findOne(id);
+
         return machineMapper.toDto(machine);
+    }
+
+    /**
+     * Get one machine by id.
+     *
+     * @param id the id of the entity
+     * @return the entity
+     */
+    @Transactional(readOnly = true)
+    public MachineDTO findOneWithDetailsByOperationDate(Long id, LocalDate operationDate) {
+        log.debug("Request to get Machine : {}", id);
+        return machineRepository.findOneByOperationDate(id, operationDate);
+
     }
 
     /**

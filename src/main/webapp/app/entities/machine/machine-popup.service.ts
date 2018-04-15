@@ -25,7 +25,7 @@ export class MachinePopupService {
             }
 
             if (id) {
-                this.machineService.find(id).subscribe((machine) => {
+                this.machineService.findOneWithDetails(id).subscribe((machine) => {
                     this.ngbModalRef = this.machineModalRef(component, machine);
                     resolve(this.ngbModalRef);
                 });

@@ -7,6 +7,7 @@ export class Machine implements BaseEntity {
         public shortcut?: string,
         public workingHourPrice?: number,
         public validFrom?: any,
+        public defaultTechnologyDesc ?: string,
         // public operationsId?: number,
     ) {
     }

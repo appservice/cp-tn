@@ -20,6 +20,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 
 import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.List;
 import java.util.Optional;
 
@@ -135,6 +136,21 @@ public class MachineResource {
     public ResponseEntity<MachineDTO> getMachine(@PathVariable Long id) {
         log.debug("REST request to get Machine : {}", id);
         MachineDTO machineDTO = machineService.findOne(id);
+        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(machineDTO));
+    }
+
+    /**
+     * GET  /machines/:id/with-details : get the "id" machine.
+     *
+     * @param id the id of the machineDTO to retrieve
+     * @return the ResponseEntity with status 200 (OK) and with body the machineDTO, or with status 404 (Not Found)
+     */
+    @GetMapping("/machines/{id}/with-details")
+    @Timed
+    public ResponseEntity<MachineDTO> getMachineWithDetails(@PathVariable Long id) {
+        log.debug("REST request to get Machine : {}", id);
+        LocalDate now=LocalDate.now();
+        MachineDTO machineDTO = machineService.findOneWithDetailsByOperationDate(id,now);
         return ResponseUtil.wrapOrNotFound(Optional.ofNullable(machineDTO));
     }
 

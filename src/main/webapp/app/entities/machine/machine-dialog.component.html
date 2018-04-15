@@ -36,10 +36,17 @@
         </div>
 
         <div class="form-group">
-            <label class="form-control-label">Data</label>
-            <my-date-picker  [(ngModel)]="validFromData"  name="validFrom" locale="pl" [options]="myDatePickerOptions" required></my-date-picker>
-            <!--<input type="number" class="form-control" name="validFrom" id="field_validFrom"-->
-                <!--[(ngModel)]="machine.validFrom"  />-->
+            <label class="form-control-label">Data od której obowiązuje cena rbh</label>
+            <div class="input-group">
+                <input class="form-control " ngx-mydatepicker name="validFrom"
+                       [(ngModel)]="validFromDate" #dp="ngx-mydatepicker" [options]="globals.myOptions" required>
+
+                <span class="input-group-btn">
+                     <button type="button" class="btn btn-default" (click)="dp.clearDate()"> <i class="fa fa-remove"></i>  </button>
+                     <button type="button" class="btn btn-default" (click)="dp.toggleCalendar()">  <i class="fa fa-calendar"></i></button>
+                    </span>
+            </div>
+
         </div>
 
         <div class="form-group">
@@ -49,7 +56,13 @@
                 [(ngModel)]="machine.workingHourPrice"  required="" />
         </div>
 
+        <div class="form-group">
+            <label class="form-control-label"  for="field_name">Domyślny tekst technologii</label>
+            <textarea autosize="" class="form-control" id="field_def_techn_desc"
+                      name="def_techn_desc" [(ngModel)]="machine.defaultTechnologyDesc"></textarea>
 
+
+        </div>
     </div>
     <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal" (click)="clear()">

@@ -9,26 +9,21 @@
         </button>
     </h2>
     <jhi-alert></jhi-alert>
-    <!--<div class="row">
-        <div class="col-sm-12">
-            <form name="searchForm" class="form-inline">
-                <div class="input-group w-100 mt-3">
-                    <input type="text" class="form-control" [(ngModel)]="currentSearch" id="currentSearch" name="currentSearch" placeholder="{{ 'tnApp.machine.home.search' | translate }}">
-                    <button class="input-group-addon btn btn-info" (click)="search(currentSearch)">
-                        <span class="fa fa-search"></span>
-                    </button>
-                    <button class="input-group-addon btn btn-danger" (click)="clear()" *ngIf="currentSearch">
-                        <span class="fa fa-trash-o"></span>
-                    </button>
-                </div>
-            </form>
-        </div>
-    </div>-->
+
     <br/>
     <div class="row">
         <div class="col-md-4">
             <label>Dane obowiązujące na dzień:</label>
-            <my-date-picker [locale]="'pl'" [(ngModel)]="dateValidFrom" (dateChanged)="onDateChanged($event)" ></my-date-picker>
+            <div class="input-group">
+                <input class="form-control "  ngx-mydatepicker name="validFromFilter" (dateChanged)="onDateChanged($event)"
+                       [(ngModel)]="dateValidFrom" #dp="ngx-mydatepicker" [options]="globals.myOptions" required>
+
+                <span class="input-group-btn">
+                     <button type="button" class="btn btn-default" (click)="dp.clearDate()"> <i class="fa fa-remove"></i>  </button>
+                     <button type="button" class="btn btn-default" (click)="dp.toggleCalendar()">  <i class="fa fa-calendar"></i></button>
+                    </span>
+            </div>
+            <!--<my-date-picker [locale]="'pl'" [(ngModel)]="dateValidFrom" (dateChanged)="onDateChanged($event)" ></my-date-picker>-->
 
         </div>
     </div>
@@ -42,6 +37,7 @@
             <th jhiSortBy="name"><span jhiTranslate="tnApp.machine.name">Name</span> <span class="fa fa-sort"></span></th>
             <th jhiSortBy="shortcut"><span jhiTranslate="tnApp.machine.shortcut">Shortcut</span> <span class="fa fa-sort"></span></th>
             <th ><span jhiTranslate="tnApp.machine.workingHourPrice">Working Hour Price</span> </th>
+            <th ><span >Domyślny opis technologii</span> </th>
             <th></th>
             </tr>
             </thead>
@@ -51,6 +47,7 @@
                 <td>{{machine.name}}</td>
                 <td>{{machine.shortcut}}</td>
                 <td>{{machine.workingHourPrice|currency:'PLN'}}</td>
+                <td>{{machine.defaultTechnologyDesc}}</td>
                 <td class="text-right">
                     <div class="btn-group flex-btn-group-container">
                         <button type="submit"

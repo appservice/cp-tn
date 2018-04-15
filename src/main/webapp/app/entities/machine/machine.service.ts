@@ -4,6 +4,7 @@ import { Observable } from 'rxjs/Rx';
 
 import { Machine } from './machine.model';
 import { ResponseWrapper, createRequestOption } from '../../shared';
+import {JhiDateUtils} from 'ng-jhipster';
 
 @Injectable()
 export class MachineService {
@@ -11,7 +12,8 @@ export class MachineService {
     private resourceUrl = 'api/machines';
     private resourceSearchUrl = 'api/_search/machines';
 
-    constructor(private http: Http) { }
+    constructor(private http: Http,
+                private dateUtils:JhiDateUtils) { }
 
     create(machine: Machine): Observable<Machine> {
         const copy = this.convert(machine);
@@ -30,6 +32,23 @@ export class MachineService {
     find(id: number): Observable<Machine> {
         return this.http.get(`${this.resourceUrl}/${id}`).map((res: Response) => {
             return res.json();
+        });
+    }
+
+    findOneWithDetails(id: number): Observable<Machine> {
+        return this.http.get(`${this.resourceUrl}/${id}/with-details`).map((res: Response) => {
+            let jsonResponse= res.json();
+            if (jsonResponse.validFrom != null) {
+                const tempDate = this.dateUtils.convertLocalDateFromServer(jsonResponse.validFrom);
+
+                jsonResponse.validFrom = {
+                    year: tempDate.getFullYear(),
+                    month: tempDate.getMonth() + 1,
+                    day: tempDate.getDate()
+                };
+
+            }
+            return jsonResponse;
         });
     }
 

@@ -18,7 +18,7 @@ import {TnAlert} from '../../../tn-components/tn-alert';
 import {TechnologyCard, TechnologyCardFinderComponent} from '../../technology-card';
 import {DrawingFinderComponent} from '../../drawing';
 import {Operation} from '../../operation';
-import {NgForm} from '@angular/forms';
+import {FormGroup, NgForm} from '@angular/forms';
 import {TnModalConfirmComponent} from '../../../tn-components/tn-modal-confirm/tn-modal-confirm.component';
 
 @Component({
@@ -36,7 +36,7 @@ export class NewEstimationComponent implements OnInit, OnDestroy {
     @ViewChild(TnModalConfirmComponent)
     tnModalConfirm: TnModalConfirmComponent;
 
-
+    // editForm: FormGroup;
     estimation: Estimation;
     order: OrderSimpleDTO;
     isSaving: boolean;
@@ -191,7 +191,6 @@ export class NewEstimationComponent implements OnInit, OnDestroy {
 
     save() {
         this.isSaving = true;
-        console.log(this.estimation);
         if (this.estimation.id !== undefined) {
             this.subscribeToSaveResponse(
                 this.estimationService.update(this.estimation));
@@ -208,12 +207,10 @@ export class NewEstimationComponent implements OnInit, OnDestroy {
 
     private onSaveSuccess(result: Estimation) {
         this.eventManager.broadcast({name: 'estimationListModification', content: 'OK'});
-        this.previousState();
-        // this.isSaving = false;
+      //  this.previousState();
+        this.isSaving = false;
+        this.editForm.form.markAsPristine();
 
-        //      this.router.navigate()
-        // this.router.navigate(['estimation']);
-        // this.activeModal.dismiss(result);
     }
 
     private onSaveError(error) {
@@ -307,6 +304,12 @@ export class NewEstimationComponent implements OnInit, OnDestroy {
         console.log('item ', event.item);
     }
 
+    onMachineChanged(operation:Operation){
+        if(operation.machine && operation.machine.defaultTechnologyDesc && operation.machine.defaultTechnologyDesc!==null){
+            operation.description=operation.machine.defaultTechnologyDesc;
+        }
+        this.calculateOperationsTotalCost();
+    }
     calculateOperationsTotalCost() {
         this.operationsTotalCost = 0;
         this.sumOfWorkingHours = 0;

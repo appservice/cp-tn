@@ -182,7 +182,7 @@
 
                             <td style="width: 250px">               <!-- <input class="form-control" />-->
                                 <select class="form-control" id="field_machine_{{rowIndex}}" name="machine_{{rowIndex}}"
-                                        [(ngModel)]="operation.machine" (ngModelChange)="calculateOperationsTotalCost()"
+                                        [(ngModel)]="operation.machine" (ngModelChange)="onMachineChanged(operation)"
                                         required [compareWith]="compareMachine">
 
                                     <option *ngFor="let machineOpt of machines; trackBy: trackMachineById"

@@ -154,7 +154,8 @@
 
                             <td style="width: 250px;">
                                 <select class="form-control" id="field_machine_{{rowIndex}}" name="machine_{{rowIndex}}"
-                                        [(ngModel)]="operation.machine" required [compareWith]="compareMachine" #machineInput="ngModel">
+                                        [(ngModel)]="operation.machine" required [compareWith]="compareMachine" #machineInput="ngModel"
+                                        (ngModelChange)="onMachineChanged(operation)">
 
                                     <option *ngFor="let machineOpt of machines; trackBy: trackMachineById" [ngValue]="machineOpt">
                                         {{machineOpt.name}}
