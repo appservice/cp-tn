@@ -19,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.criteria.Join;
 import javax.persistence.criteria.JoinType;
+import java.time.LocalDate;
 import java.util.List;
 
 /**
@@ -102,11 +103,16 @@ public class EstimationQueryService extends QueryService<Estimation> {
                 specification = specification.and(buildStringSpecification(criteria.getSapNumber(), eu.canpack.fip.bo.estimation.Estimation_.sapNumber));
             }
 
+            if (criteria.getRealizationDateExpired() != null && criteria.getRealizationDateExpired().getSpecified()) {
+                Specification<Estimation> spec = (root, query, builder) -> builder.lessThan(root.get(eu.canpack.fip.bo.estimation.Estimation_.estimatedRealizationDate), LocalDate.now());
+                specification = specification.and(spec);
+            }
+
             if (criteria.getClientId() != null) {
                 Specification<Estimation> spec = (root, query, builder) -> {
                     Join<Estimation, Order> joinToOrder = root.join((eu.canpack.fip.bo.estimation.Estimation_.order), JoinType.INNER);
                     Join<Order, Client> joinToClient = joinToOrder.join(eu.canpack.fip.bo.order.Order_.client, JoinType.INNER);
-                    return builder.isTrue(joinToClient.get(Client_.id).in( criteria.getClientId().getIn()));
+                    return builder.isTrue(joinToClient.get(Client_.id).in(criteria.getClientId().getIn()));
 //                    return builder.or(builder.like(joinToClient.get(Client_.name), "%" + criteria.getClientName().getContains().trim() + "%"),
 //                                      builder.like(joinToClient.get(Client_.shortcut), "%" + criteria.getClientName().getContains().trim() + "%"));
 

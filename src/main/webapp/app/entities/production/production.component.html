@@ -45,6 +45,13 @@
                    (keydown)="onEnterClickFilter($event)">
 
         </div>
+        <div class="col-md-2">
+            <!-- <label>Numer rys.</label>-->
+            <label> <input type="checkbox" class="form-control" name="realizationExpiredDateFilter"
+                           [(ngModel)]="expiredRealization"
+                           (change)="estimationFilter.realizationDateExpired=$event.target.checked ? 'true':'false'">Przeterminowane</label>
+
+        </div>
     </div>
     <div class="row" style="margin-top: 20px">
 
@@ -84,7 +91,7 @@
             </tr>
             </thead>
             <tbody>
-            <tr *ngFor="let productionItem of productionItems;let rowIndex = index">
+            <tr *ngFor="let productionItem of productionItems;let rowIndex = index" [ngClass]="{'table-danger':productionItem.realizationDateExpired}">
                 <td>{{productionItem.estimationId}}</td>
                 <td>{{productionItem.clientName}}</td>
                 <td style="min-width:140px">{{productionItem.itemNumber}}</td>
@@ -100,7 +107,9 @@
                 </td>
                 <td>{{productionItem.sapNumber}}</td>
                 <td>{{productionItem.productionStartDateTime|date:'dd-MM-yyyy HH:mm'}}</td>
-                <td>{{productionItem.estimatedRealizationDate|date:'dd-MM-yyyy'}}</td>
+                <td>{{productionItem.estimatedRealizationDate|date:'dd-MM-yyyy'}}<span *ngIf="productionItem.realizationDateExpired"
+                                                                                       class="fa fa-exclamation-triangle text-danger"></span>
+                </td>
                 <td style="width: 250px;">
                     <a [routerLink]="['/', { outlets: { popup: 'production/'+ productionItem.estimationId+ '/showOperations'} }]" replaceUrl="true"
                        *ngIf="productionItem.showOperationsDetail && productionItem.showOperationsDetail==true">
@@ -128,7 +137,9 @@
                         <span class="fa fa-archive"></span></button>
 
                 </td>
-                <td *jhiHasAnyAuthority="['ROLE_ADMIN']"> <button class="btn btn-outline-danger" (click)="returnToTechnologyVerification(productionItem.orderId)">Cofnij</button></td>
+                <td *jhiHasAnyAuthority="['ROLE_ADMIN']">
+                    <button class="btn btn-outline-danger" (click)="returnToTechnologyVerification(productionItem.orderId)">Cofnij</button>
+                </td>
 
             </tr>
             </tbody>

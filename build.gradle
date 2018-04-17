@@ -47,7 +47,7 @@ dependencyManagement {
 defaultTasks 'bootRun'
 
 group = 'eu.canpack.fip'
-version = '0.6.3'
+version = '0.6.5'
 
 description = ''
 

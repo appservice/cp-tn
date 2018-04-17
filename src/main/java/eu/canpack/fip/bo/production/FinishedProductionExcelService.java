@@ -55,6 +55,7 @@ public class FinishedProductionExcelService {
                 row.createCell(columnNo++).setCellValue("");
             }
 
+            row.createCell(columnNo++).setCellValue(itemDTO.getMpk());
 
 
             rowId++;
@@ -104,6 +105,10 @@ public class FinishedProductionExcelService {
         Cell cell8 = headerRow.createCell(columnNo++);
         cell8.setCellStyle(getHeaderCellStyle(spreadsheet.getWorkbook()));
         cell8.setCellValue("Data przekazania");
+
+        Cell cell9 = headerRow.createCell(columnNo++);
+        cell9.setCellStyle(getHeaderCellStyle(spreadsheet.getWorkbook()));
+        cell9.setCellValue("MPK/Index");
 
 
 

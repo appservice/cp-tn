@@ -44,7 +44,7 @@ export class MachineComponent implements OnInit, OnDestroy {
                 private paginationUtil: JhiPaginationUtil,
                 private dateUtils: JhiDateUtils,
                 private paginationConfig: PaginationConfig,
-                private globals:Globals
+                public globals:Globals
     ) {
         this.itemsPerPage = ITEMS_PER_PAGE;
         this.routeData = this.activatedRoute.data.subscribe((data) => {

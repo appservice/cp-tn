@@ -251,7 +251,7 @@ export class NewEstimationComponent implements OnInit, OnDestroy {
         this.subscription.unsubscribe();
     }
 
-    openModal(content) {
+    openModal() {
         this.showAttachmentDialog();
         // if (this.estimation.drawing) {
         //

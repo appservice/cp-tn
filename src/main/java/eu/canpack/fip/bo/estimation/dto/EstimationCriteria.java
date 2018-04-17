@@ -64,6 +64,8 @@ public class EstimationCriteria implements Serializable {
 
     private StringFilter sapNumber;
 
+    private BooleanFilter realizationDateExpired;
+
 
     public static long getSerialVersionUID() {
         return serialVersionUID;
@@ -139,6 +141,14 @@ public class EstimationCriteria implements Serializable {
 
     public void setSapNumber(StringFilter sapNumber) {
         this.sapNumber = sapNumber;
+    }
+
+    public BooleanFilter getRealizationDateExpired() {
+        return realizationDateExpired;
+    }
+
+    public void setRealizationDateExpired(BooleanFilter realizationDateExpired) {
+        this.realizationDateExpired = realizationDateExpired;
     }
 
     @Override

@@ -52,13 +52,17 @@ public class ProductionItemDTO {
 
     private String sapNumber;
 
+    private String mpk;
+
+    private boolean realizationDateExpired;
+
 
     public ProductionItemDTO() {
     }
 
     public ProductionItemDTO(Estimation estimation) {
         this.estimationId = estimation.getId();
-        this.estimatedRealizationDate=estimation.getEstimatedRealizationDate();
+        this.estimatedRealizationDate = estimation.getEstimatedRealizationDate();
         this.itemName = estimation.getItemName();
         this.itemNumber = estimation.getItemNumber();
         this.amount = estimation.getAmount();
@@ -68,22 +72,29 @@ public class ProductionItemDTO {
         this.productionProgress = calculateProductionProgress(estimation);
         this.actualProductionPlace = getActualProductionPlace(estimation);
         this.nextOperationPlace = this.getNextOperationPlace(estimation);
-        if(this.productionProgress==100 && SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.TEAM_LEADER)){
+        if (this.productionProgress == 100 && SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.TEAM_LEADER)) {
             setReadyForDispatch(true);
         }
-        this.clientName=estimation.getOrder().getClient().getShortcut();
-        if(SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.MANAGER) || SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.TEAM_LEADER)){
-            this.showOperationsDetail=true;
+        this.clientName = estimation.getOrder().getClient().getShortcut();
+        if (SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.MANAGER) || SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.TEAM_LEADER)) {
+            this.showOperationsDetail = true;
         }
-        if(SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.TECHNOLOGIST) || SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.SAP_INTRODUCER)){
-            this.showProductionOrderLink =true;
+        if (SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.TECHNOLOGIST) || SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.SAP_INTRODUCER)) {
+            this.showProductionOrderLink = true;
         }
-        this.createdAt= estimation.getOrder().getCreatedAt();
-        this.productionStartDateTime=estimation.getProductionStartDateTime();
-        this.sapNumber=estimation.getSapNumber();
+        this.createdAt = estimation.getOrder().getCreatedAt();
+        this.productionStartDateTime = estimation.getProductionStartDateTime();
+        this.sapNumber = estimation.getSapNumber();
+        this.mpk = estimation.getMpk();
+        this.realizationDateExpired = checkIfRealizationTimeExpired(estimation);
 
+    }
 
-
+    private boolean checkIfRealizationTimeExpired(Estimation estimation) {
+        if (estimation.getEstimatedRealizationDate() != null) {
+            return estimation.getEstimatedRealizationDate().isBefore(LocalDate.now());
+        }
+        return false;
     }
 
     private int calculateProductionProgress(Estimation estimation) {
@@ -108,6 +119,14 @@ public class ProductionItemDTO {
             .sorted(Comparator.comparing(Operation::getSequenceNumber))
             .filter(o -> o.getOperationStatus() != OperationStatus.FINISHED)
             .findFirst().map(o -> o.getMachine().getName()).orElse(null);
+    }
+
+    public boolean isRealizationDateExpired() {
+        return realizationDateExpired;
+    }
+
+    public void setRealizationDateExpired(boolean realizationDateExpired) {
+        this.realizationDateExpired = realizationDateExpired;
     }
 
     public String getSapNumber() {
@@ -253,6 +272,14 @@ public class ProductionItemDTO {
 
     public void setProductionStartDateTime(ZonedDateTime productionStartDateTime) {
         this.productionStartDateTime = productionStartDateTime;
+    }
+
+    public String getMpk() {
+        return mpk;
+    }
+
+    public void setMpk(String mpk) {
+        this.mpk = mpk;
     }
 
     @Override

@@ -62,6 +62,7 @@ public class ProductionExcelService {
 
             row.createCell(columnNo++).setCellValue(itemDTO.getProductionProgress());
             row.createCell(columnNo++).setCellValue(itemDTO.getNextOperationPlace());
+            row.createCell(columnNo++).setCellValue(itemDTO.getMpk());
 
             rowId++;
         }
@@ -118,6 +119,10 @@ public class ProductionExcelService {
         Cell cell10 = headerRow.createCell(columnNo++);
         cell10.setCellStyle(getHeaderCellStyle(spreadsheet.getWorkbook()));
         cell10.setCellValue("Stanowisko aktualnej operacji");
+
+        Cell cell11 = headerRow.createCell(columnNo++);
+        cell11.setCellStyle(getHeaderCellStyle(spreadsheet.getWorkbook()));
+        cell11.setCellValue("MPK/Index");
 
 
     }

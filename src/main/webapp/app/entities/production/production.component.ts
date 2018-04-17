@@ -36,6 +36,8 @@ export class ProductionStanComponent implements OnInit, OnDestroy {
     estimationFilter: EstimationFilter;
     waitForResponse: boolean = false;
 
+    expiredRealization: boolean = false;
+
 
     constructor(private parseLinks: JhiParseLinks,
                 private alertService: JhiAlertService,
@@ -59,6 +61,7 @@ export class ProductionStanComponent implements OnInit, OnDestroy {
         this.estimationFilter.clientName = activatedRoute.snapshot.params['clientName'] ? activatedRoute.snapshot.params['clientName'] : '';
         this.estimationFilter.orderNumber = activatedRoute.snapshot.params['orderNumber'] ? activatedRoute.snapshot.params['orderNumber'] : '';
         this.estimationFilter.sapNumber = activatedRoute.snapshot.params['sapNumber'] ? activatedRoute.snapshot.params['sapNumber'] : '';
+        this.estimationFilter.realizationDateExpired = activatedRoute.snapshot.params['realizationDateExpired'] ? activatedRoute.snapshot.params['realizationDateExpired'] : 'false';
 
 
     }
@@ -165,6 +168,9 @@ export class ProductionStanComponent implements OnInit, OnDestroy {
 
         if (this.estimationFilter.sapNumber !== null && this.estimationFilter.sapNumber !== '')
             urlSearchParams.append('sapNumber.contains', this.estimationFilter.sapNumber);
+
+        if (this.estimationFilter.realizationDateExpired !== null)
+            urlSearchParams.append('realizationDateExpired.specified', this.estimationFilter.realizationDateExpired);
         return urlSearchParams;
     }
 
@@ -177,6 +183,7 @@ export class ProductionStanComponent implements OnInit, OnDestroy {
                 orderNumber: this.estimationFilter.orderNumber,
                 clientName: this.estimationFilter.clientName,
                 sapNumber: this.estimationFilter.sapNumber,
+                realizationDateExpired: this.estimationFilter.realizationDateExpired,
                 page: this.page,
                 sort: this.predicate + ',' + (this.reverse ? 'asc' : 'desc')
             }]);
@@ -201,6 +208,8 @@ export class ProductionStanComponent implements OnInit, OnDestroy {
         this.estimationFilter.itemNumber = '';
         this.estimationFilter.orderNumber = '';
         this.estimationFilter.sapNumber = '';
+        this.estimationFilter.realizationDateExpired = 'false';
+        this.expiredRealization = false;
         this.page = 0;
         this.router.navigate(['/production', {
             page: this.page,

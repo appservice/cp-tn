@@ -44,6 +44,8 @@ public class ProductionItemDeliveredDTO {
 
     private ZonedDateTime deliveredAt;
 
+    private String mpk;
+
 
     public ProductionItemDeliveredDTO() {
     }
@@ -69,7 +71,7 @@ public class ProductionItemDeliveredDTO {
             this.showProductionOrderLink =true;
         }
 
-
+        this.mpk = estimation.getMpk();
 
     }
 
@@ -189,6 +191,14 @@ public class ProductionItemDeliveredDTO {
         this.deliveredAt = deliveredAt;
     }
 
+    public String getMpk() {
+        return mpk;
+    }
+
+    public void setMpk(String mpk) {
+        this.mpk = mpk;
+    }
+
     @Override
     public String toString() {
         return "ProductionItemDeliveredDTO{" +
@@ -206,6 +216,7 @@ public class ProductionItemDeliveredDTO {
             ", estimatedRealizationDate=" + estimatedRealizationDate +
             ", receiver='" + receiver + '\'' +
             ", deliveredAt=" + deliveredAt +
+            ", mpk='" + mpk + '\'' +
             '}';
     }
 }
