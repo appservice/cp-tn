@@ -5459,6 +5459,10 @@ moment@^2.11.2:
   version "2.18.1"
   resolved "https://registry.yarnpkg.com/moment/-/moment-2.18.1.tgz#c36193dd3ce1c2eed2adb7c802dbbc77a81b1c0f"
 
+moment@^2.19.3:
+  version "2.22.1"
+  resolved "https://registry.yarnpkg.com/moment/-/moment-2.22.1.tgz#529a2e9bf973f259c9643d237fda84de3a26e8ad"
+
 move-concurrently@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/move-concurrently/-/move-concurrently-1.0.1.tgz#be2c005fda32e0b29af1f05d7c4b33214c701f92"
@@ -5584,6 +5588,13 @@ ngx-cookie@2.0.1:
 ngx-infinite-scroll@0.5.1:
   version "0.5.1"
   resolved "https://registry.yarnpkg.com/ngx-infinite-scroll/-/ngx-infinite-scroll-0.5.1.tgz#dd9452c602ff7c3222f0ca168481aa14140286b7"
+
+ngx-moment@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/ngx-moment/-/ngx-moment-2.0.0.tgz#c5795f94a8bcfb0ead38e1050d84bb227ca51085"
+  dependencies:
+    moment "^2.19.3"
+    tslib "^1.9.0"
 
 ngx-mydatepicker@^2.4.4:
   version "2.4.4"
@@ -8297,6 +8308,10 @@ tsickle@^0.25.5:
 tslib@^1.7.1:
   version "1.7.1"
   resolved "https://registry.yarnpkg.com/tslib/-/tslib-1.7.1.tgz#bc8004164691923a79fe8378bbeb3da2017538ec"
+
+tslib@^1.9.0:
+  version "1.9.0"
+  resolved "https://registry.yarnpkg.com/tslib/-/tslib-1.9.0.tgz#e37a86fda8cbbaf23a057f473c9f4dc64e5fc2e8"
 
 tslint-loader@3.5.3:
   version "3.5.3"

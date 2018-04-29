@@ -15,10 +15,10 @@ import {isNullOrUndefined} from 'util';
 import {OrderService} from '../../order';
 import {OrderSimpleDTO} from '../../order/order-simpleDTO.model';
 import {TnAlert} from '../../../tn-components/tn-alert';
-import {TechnologyCard, TechnologyCardFinderComponent} from '../../technology-card';
+import {TechnologyCard} from '../../technology-card';
 import {DrawingFinderComponent} from '../../drawing';
 import {Operation} from '../../operation';
-import {FormGroup, NgForm} from '@angular/forms';
+import {NgForm} from '@angular/forms';
 import {TnModalConfirmComponent} from '../../../tn-components/tn-modal-confirm/tn-modal-confirm.component';
 
 @Component({
@@ -55,7 +55,6 @@ export class NewEstimationComponent implements OnInit, OnDestroy {
 
     @ViewChild('editForm') editForm: NgForm;
 
-
     currencyMaskOpt: CurrencyMaskConfig;
 
     constructor(private alertService: JhiAlertService,
@@ -73,7 +72,6 @@ export class NewEstimationComponent implements OnInit, OnDestroy {
         this.estimation.commercialParts = [];
         this.estimation.cooperationList = [];
         this.order = new OrderSimpleDTO();
-
     }
 
     ngOnInit() {
@@ -111,8 +109,6 @@ export class NewEstimationComponent implements OnInit, OnDestroy {
         };
         this.calculateCommercialPartsTotalCost();
         this.calculateCooperationTotalCost();
-
-
     }
 
     private onError(error) {
@@ -207,7 +203,7 @@ export class NewEstimationComponent implements OnInit, OnDestroy {
 
     private onSaveSuccess(result: Estimation) {
         this.eventManager.broadcast({name: 'estimationListModification', content: 'OK'});
-      //  this.previousState();
+        //  this.previousState();
         this.isSaving = false;
         this.editForm.form.markAsPristine();
 
@@ -253,15 +249,6 @@ export class NewEstimationComponent implements OnInit, OnDestroy {
 
     openModal() {
         this.showAttachmentDialog();
-        // if (this.estimation.drawing) {
-        //
-        //
-        //     this.modalService.open(content, {size: 'lg'}).result.then((result) => {
-        //         this.closeResult = `Closed with: ${result}`;
-        //     }, (reason) => {
-        //         this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
-        //     });
-        // }
     }
 
     private getDismissReason(reason: any): string {
@@ -304,12 +291,13 @@ export class NewEstimationComponent implements OnInit, OnDestroy {
         console.log('item ', event.item);
     }
 
-    onMachineChanged(operation:Operation){
-        if(operation.machine && operation.machine.defaultTechnologyDesc && operation.machine.defaultTechnologyDesc!==null){
-            operation.description=operation.machine.defaultTechnologyDesc;
+    onMachineChanged(operation: Operation) {
+        if (operation.machine && operation.machine.defaultTechnologyDesc && operation.machine.defaultTechnologyDesc !== null) {
+            operation.description = operation.machine.defaultTechnologyDesc;
         }
         this.calculateOperationsTotalCost();
     }
+
     calculateOperationsTotalCost() {
         this.operationsTotalCost = 0;
         this.sumOfWorkingHours = 0;
@@ -347,7 +335,6 @@ export class NewEstimationComponent implements OnInit, OnDestroy {
     compareMachine(m1: Machine, m2: Machine): boolean {
         if (!isNullOrUndefined(m1) && !isNullOrUndefined(m2)) {
             return m1.id === m2.id;
-
         }
     }
 
@@ -364,16 +351,6 @@ export class NewEstimationComponent implements OnInit, OnDestroy {
     }
 
     messages: any[] = ['Message 5'];
-
-    messageMapping: { [k: string]: string } = {
-        '=0': 'No messages.',
-        '=1': '# tydzień',
-        '=2': '# tygodnie',
-        '=3': '# tygodnie',
-        '=4': '# tygodnie',
-        'other': '# tygodni'
-    };
-
 
     exportToTechnologyCard() {
         this.isExporting = true;
@@ -392,10 +369,7 @@ export class NewEstimationComponent implements OnInit, OnDestroy {
                 modalRef.componentInstance.content = 'Błąd podczas eksportu! '
             }
         );
-        //  console.log(response());
     }
-
-
 
     private insertOperationFromTechnologyCard(technologyCard: TechnologyCard): void {
         console.log(technologyCard);
@@ -416,7 +390,6 @@ export class NewEstimationComponent implements OnInit, OnDestroy {
 
         }
 
-
         for (let operation of technologyCard.operations) {
             let newOperation = new Operation();
             newOperation.description = operation.description;
@@ -433,9 +406,7 @@ export class NewEstimationComponent implements OnInit, OnDestroy {
         for (let commercialPart of technologyCard.commercialParts) {
             commercialPart.id = null;
             this.estimation.commercialParts.push(commercialPart);
-
         }
-
 
         for (let cooperation of technologyCard.cooperationList) {
             cooperation.id = null;
@@ -448,15 +419,11 @@ export class NewEstimationComponent implements OnInit, OnDestroy {
         this.calculateCooperationTotalCost();
         this.calculateCommercialPartsTotalCost();
         this.calculateTotal();
-
-
     }
-
 
     openDrawingCardModal() {
 
         const modalRef = this.modalService.open(DrawingFinderComponent, {size: 'lg'});
-
         console.log(modalRef.result);
         modalRef.result.then(result => {
             console.log(result);
@@ -483,23 +450,24 @@ export class NewEstimationComponent implements OnInit, OnDestroy {
         const modalRef = this.modalService.open(TnModalConfirmComponent);
         modalRef.componentInstance.headerText = 'Zapis wyceny';
         modalRef.componentInstance.contentText = 'Czy wyeksportować kartę technologii?';
-        modalRef.result.then((value:any)=>{
+        modalRef.result.then((value: any) => {
             this.exportToTechnologyCard();
             this.onSaveBtnClick();
-        },(rejectValue:any)=>{
+        }, (rejectValue: any) => {
             this.onSaveBtnClick();
 
         });
 
     }
+
     display: boolean = false;
 
     showAttachmentDialog() {
         this.display = true;
     }
 
-    onChooseTechnologyCard(event){
-        console.log("chosed technology card: ", event);
+    onChooseTechnologyCard(event) {
+        console.log('chosed technology card: ', event);
     }
 }
 

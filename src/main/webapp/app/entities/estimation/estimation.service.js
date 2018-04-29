@@ -77,10 +77,10 @@ var EstimationService = (function () {
         this.http.get(this.resourceUrl + "/" + estimation.id + "/technology-card", options)
             .map(function (res) { return res.blob(); })
             .subscribe(function (data) {
-            _this.saveDownload(data, estimation.drawing.number, 'application/pdf');
+            EstimationService.saveDownload(data, estimation.drawing.number, 'application/pdf');
         });
     };
-    EstimationService.prototype.saveDownload = function (responseData, fileName, contentType) {
+    EstimationService.saveDownload = function (responseData, fileName, contentType) {
         var data = new Blob([responseData], { type: contentType });
         var disableAutoBOM = true;
         FileSaver.saveAs(data, 'Karta_obiegowa_' + fileName + '.pdf', disableAutoBOM);

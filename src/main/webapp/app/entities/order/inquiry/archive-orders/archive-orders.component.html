@@ -169,7 +169,7 @@
         </div>
     </div>
 
-    <button *jhiHasAnyAuthority="['ROLE_ADMIN']" class="btn btn-outline-dark" (click)="getEstimationsAsExcelFile()">Pobierz plik excel wycen</button>
+    <button *jhiHasAnyAuthority="['ROLE_ADMIN']" class="btn btn-outline-dark" (click)="getEstimationsAsExcelFile()" [disabled]="downloadingExcelFile">Pobierz plik excel wycen</button>
 </div>
 
 

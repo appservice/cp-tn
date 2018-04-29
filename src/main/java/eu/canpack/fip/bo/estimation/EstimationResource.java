@@ -231,22 +231,12 @@ public class EstimationResource {
     @Transactional
     public byte[] getAllEstimationsInExcel(EstimationCriteria criteria) throws IOException {
         log.debug("REST request to get a page of Orders2");
-//        if (orderCriteria == null) {
-//            orderCriteria = new OrderCriteria();
-//        }
-        // orderCriteria.getOrderType().setEquals(OrderType.ESTIMATION);
-//        OrderCriteria.OrderTypeFilter orderTypeFilter = new OrderCriteria.OrderTypeFilter();
-//        orderTypeFilter.setEquals(OrderType.PRODUCTION);
-//        orderCriteria.setOrderType(orderTypeFilter);
-//        List<OrderListDTO> list = orderQueryService.findByCriteriaAndClient(orderCriteria);//orderService.findAllByClientAndOrderType(pageable, OrderType.ESTIMATION);
 
         List<Estimation> estimations = estimationQueryService.findByCriteria(criteria);
 
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         estimationExcelService.createExcelFile(estimations, outputStream);
 
-        // HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/orders/inquiries");
-
-        return outputStream.toByteArray();//new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+        return outputStream.toByteArray();
     }
 }

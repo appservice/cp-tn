@@ -15,10 +15,13 @@ import eu.canpack.fip.bo.order.enumeration.OrderStatus;
 import eu.canpack.fip.bo.pdf.OrderSummary2PdfCreator;
 import eu.canpack.fip.bo.pdf.PdfUtilService;
 import eu.canpack.fip.bo.pdf.TechnologyCardPdfCreator;
+import eu.canpack.fip.web.rest.errors.CustomParameterizedException;
 import eu.canpack.fip.web.rest.util.PaginationUtil;
 import io.github.jhipster.service.filter.BooleanFilter;
 import io.swagger.annotations.ApiParam;
 import org.hibernate.criterion.Order;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -41,6 +44,8 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/api")
 public class ProductionResource {
+
+    private static final Logger log = LoggerFactory.getLogger(ProductionResource.class);
 
     private final EstimationRepository estimationRepository;
     private final PdfUtilService pdfUtilService;
@@ -70,6 +75,9 @@ public class ProductionResource {
 
         ByteArrayOutputStream[] outputStreams;
         int estNumber=0;
+        if(estimations.isEmpty()){
+            throw new CustomParameterizedException("error.estimationsCanNotBeEmpty");
+        }
         Boolean printSinglePdfSummaryPerOrderItem=estimations.get(0).getOrder().getClient().getPrintSinglePdfSummaryPerOrderItem();
         if (printSinglePdfSummaryPerOrderItem!=null && printSinglePdfSummaryPerOrderItem) {
 

@@ -14,7 +14,6 @@ import {PaginationConfig} from './blocks/config/uib-pagination.config';
 import {TnComponentsModule} from './tn-components/tn-components.module';
 import {NgxMyDatePickerModule} from 'ngx-mydatepicker';
 import {Ng2Webstorage} from 'ngx-webstorage';
-
 // jhipster-needle-angular-add-module-import JHipster will add new module here
 import {ActiveMenuDirective, ErrorComponent, FooterComponent, JhiMainComponent, NavbarComponent, PageRibbonComponent, ProfileService} from './layouts';
 

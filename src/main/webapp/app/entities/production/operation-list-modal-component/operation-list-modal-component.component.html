@@ -13,8 +13,10 @@
             <tr>
                 <th>Id</th>
                 <th>Miejsce op.</th>
+                <th>Plan. czas oper. [h]</th>
                 <th>Status</th>
                 <th>Zdarzenia</th>
+                <th>Czas oper.[h]</th>
 
 
             </tr>
@@ -23,6 +25,7 @@
             <tr *ngFor="let operationReport of operationsReportList;let rowIndex=index">
                 <td>{{operationReport.sequenceNumber}}</td>
                 <td>{{operationReport.machineName}}</td>
+                <td style="width: 50px">{{operationReport.estimatedTime}}</td>
                 <td>
                     <select class="form-control" id="field_client" name="operationStatus[{{rowIndex}}]" [(ngModel)]="operationReport.operationStatus">
                         <option [ngValue]="null" ></option>
@@ -35,13 +38,14 @@
                 </td>
                 <td>
                     <div class="row" *ngFor="let operationEvent of operationReport.operationEvents">
-                        <div class="col-5"><span class="fa fa-clock-o"></span> {{operationEvent.createdAt|date:'HH:mm'}} &nbsp;&nbsp;<span class="fa fa-calendar"></span>
+                        <div class="col-6" ><span class="fa fa-clock-o"></span> {{operationEvent.createdAt|date:'HH:mm'}} &nbsp;&nbsp;<span class="fa fa-calendar"></span>
                             {{operationEvent.createdAt|date:'dd-MM-yyyy'}}
                         </div>
                         <div class="col-4">{{operationEvent.operator.firstName}} {{operationEvent.operator.lastName}}</div>
-                        <div class="col-3">{{operationEvent.operationEventType}}</div>
+                        <div class="col-2">{{operationEvent.operationEventType}}</div>
                     </div>
                 </td>
+                <td style="width: 50px">{{operationReport.operationPeriod}}</td>
 
             </tr>
 

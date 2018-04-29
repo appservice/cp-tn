@@ -10,7 +10,6 @@ import {Observable} from 'rxjs/Rx';
 import {ActivatedRoute, Router} from '@angular/router';
 import {Subscription} from 'rxjs/Subscription';
 import {ModalDismissReasons, NgbModal} from '@ng-bootstrap/ng-bootstrap';
-import {EstimationRemark} from '../../../estimation-remark/estimation-remark.model';
 import {Drawing} from '../../../drawing/drawing.model';
 import {ExcelService} from '../../../../tn-components/excel.service';
 
@@ -63,7 +62,6 @@ export class OrderDetailComponent implements OnInit, OnDestroy {
         this.order.orderType = OrderType.ESTIMATION;
 
         this.subscription = this.route.params.subscribe((params) => {
-            console.log(params);
             if (params['id']) {
                 this.load(params['id']);
 
@@ -81,8 +79,6 @@ export class OrderDetailComponent implements OnInit, OnDestroy {
     }
 
     onWorkingCopyBtnClick() {
-        console.log('save is cliccked');
-        console.log(this.order);
         this.order.orderStatus = 'WORKING_COPY';//OrderStatus.WORKING_COPY;
         this.save();
     }
@@ -134,12 +130,6 @@ export class OrderDetailComponent implements OnInit, OnDestroy {
     load(id) {
         this.orderService.findInquiry(id).subscribe((order) => {
             this.order = order;
-
-            console.log('order status: ', order.orderStatus.toString());
-            console.log('enum status: ', OrderStatus['WORKING_COPY']);
-            console.log('enum 3', order.orderStatus.constructor.name);
-            console.log('order ', order)
-            //     console.log('enum 3', ]);
             this.isReadOnly = order.orderStatus != null && order.orderStatus != 'WORKING_COPY';
 
         });
@@ -180,11 +170,8 @@ export class OrderDetailComponent implements OnInit, OnDestroy {
                 return null;
                 // return new Date( ngBootstrapDate);
             }
-            let date = new Date(ngBootstrapDate.year, ngBootstrapDate.month - 1, ngBootstrapDate.day);
-            // console.log(date);
-            return date;
+            return new Date(ngBootstrapDate.year, ngBootstrapDate.month - 1, ngBootstrapDate.day);
         }
-        console.log('test', ngBootstrapDate);
         return null;
     }
 
@@ -193,9 +180,6 @@ export class OrderDetailComponent implements OnInit, OnDestroy {
         for (let estimation of this.order.estimations) {
             isDisabled = isDisabled || estimation.estimatedCost !== null
         }
-        // if(this.order.orderStatus=='CREATED_PURCHASE_ORDER'){
-        //     isDisabled=false;
-        // }
         return isDisabled;
     }
 
@@ -206,7 +190,6 @@ export class OrderDetailComponent implements OnInit, OnDestroy {
             (error: any) => {
                 this.alertService.error('error.canNotCloneOrder');
                 console.log(error);
-
             });
     }
 

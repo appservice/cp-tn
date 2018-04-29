@@ -34,6 +34,7 @@ currentAccount: any;
     previousPage: any;
     reverse: any;
     orderFilter: OrderFilter;
+    downloadingExcelFile:boolean=false;
 
 
     constructor(
@@ -229,7 +230,17 @@ currentAccount: any;
     }
 
 
-    public  getEstimationsAsExcelFile():void{
-        this.estimationService.getAsExcel();
+    public  getEstimationsAsExcelFile():void {
+        this.downloadingExcelFile=true;
+        this.estimationService.getAsExcel(this.createSearchParams()).subscribe((data: any) => {
+            EstimationService.saveDownload(data, 'Wyceny.xlsx', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+            this.downloadingExcelFile=false;
+        },(error:any)=>{
+            console.log(error);
+            this.downloadingExcelFile=false;
+        });
     }
 }
+// .subscribe((data: any) => {
+//     this.saveDownload(data, 'Wyceny.xlsx', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+// })

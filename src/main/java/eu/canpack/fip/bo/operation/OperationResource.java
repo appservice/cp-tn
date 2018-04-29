@@ -172,7 +172,10 @@ public class OperationResource {
     @PutMapping("/operations/add-operation-event")
     public ResponseEntity<Long> addOperationEvent(@RequestBody OperationEventDTO operationEventDTO){
         log.debug("REST request for add operation event  {}", operationEventDTO);
-        operationEventDTO.setCreatedAt(ZonedDateTime.now());
+        if(operationEventDTO.getCreatedAt()==null){
+            operationEventDTO.setCreatedAt(ZonedDateTime.now());
+
+        }
        Long response= operationService.addOperationEvent(operationEventDTO);
 
         return ResponseEntity.ok(response);

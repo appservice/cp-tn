@@ -1,9 +1,9 @@
-import { Injectable } from '@angular/core';
-import {Http, RequestOptions, Response, ResponseContentType,Headers} from '@angular/http';
-import { Observable } from 'rxjs/Rx';
+import {Injectable} from '@angular/core';
+import {Http, RequestOptions, Response, ResponseContentType, Headers} from '@angular/http';
+import {Observable} from 'rxjs/Rx';
 
-import { Estimation } from './estimation.model';
-import { ResponseWrapper, createRequestOption } from '../../shared';
+import {Estimation} from './estimation.model';
+import {ResponseWrapper, createRequestOption} from '../../shared';
 import * as FileSaver from 'file-saver';
 
 
@@ -13,17 +13,18 @@ export class EstimationService {
     private resourceUrl = 'api/estimations';
     private resourceSearchUrl = 'api/_search/estimations';
 
-    constructor(private http: Http) { }
+    constructor(private http: Http) {
+    }
 
     create(estimation: Estimation): Observable<Estimation> {
-        const copy = this.convert(estimation);
+        const copy = EstimationService.convert(estimation);
         return this.http.post(this.resourceUrl, copy).map((res: Response) => {
             return res.json();
         });
     }
 
     update(estimation: Estimation): Observable<Estimation> {
-        const copy = this.convert(estimation);
+        const copy = EstimationService.convert(estimation);
         return this.http.put(this.resourceUrl, copy).map((res: Response) => {
             return res.json();
         });
@@ -37,8 +38,8 @@ export class EstimationService {
 
     query(req?: any): Observable<ResponseWrapper> {
         const options = createRequestOption(req);
-        return this.http.get(this.resourceUrl+'/to-finish', options)
-            .map((res: Response) => this.convertResponse(res));
+        return this.http.get(this.resourceUrl + '/to-finish', options)
+            .map((res: Response) => EstimationService.convertResponse(res));
     }
 
     delete(id: number): Observable<Response> {
@@ -48,38 +49,35 @@ export class EstimationService {
     search(req?: any): Observable<ResponseWrapper> {
         const options = createRequestOption(req);
         return this.http.get(this.resourceSearchUrl, options)
-            .map((res: any) => this.convertResponse(res));
+            .map((res: any) => EstimationService.convertResponse(res));
     }
 
-    private convertResponse(res: Response): ResponseWrapper {
+    private static convertResponse(res: Response): ResponseWrapper {
         const jsonResponse = res.json();
         return new ResponseWrapper(res.headers, jsonResponse, res.status);
     }
 
-    private convert(estimation: Estimation): Estimation {
+    private static convert(estimation: Estimation): Estimation {
         const copy: Estimation = Object.assign({}, estimation);
         return copy;
     }
 
     download(estimation: Estimation): void {
-        let headers = new Headers({ 'Content-Type': 'application/json'} );
-        let options = new RequestOptions({responseType: ResponseContentType.Blob,headers});
+        let headers = new Headers({'Content-Type': 'application/json'});
+        let options = new RequestOptions({responseType: ResponseContentType.Blob, headers});
 
-        this.http.get(`${this.resourceUrl}/${estimation.id}/technology-card`,options)
+        this.http.get(`${this.resourceUrl}/${estimation.id}/technology-card`, options)
             .map((res: Response) => res.blob())
             .subscribe((data: any) => {
-                this.saveDownload(data, estimation.drawing.number, 'application/pdf');
+                EstimationService.saveDownload(data, estimation.drawing.number, 'application/pdf');
 
             });
     }
 
-    saveDownload(responseData: any, fileName: string, contentType: string) {
+    static saveDownload(responseData: any, fileName: string, contentType: string) {
         const data: Blob = new Blob([responseData], {type: contentType});
-
         const disableAutoBOM = true;
-
-        FileSaver.saveAs(data, 'Karta_obiegowa_'+fileName+'.pdf', disableAutoBOM);
+        FileSaver.saveAs(data, 'Karta_obiegowa_' + fileName + '.pdf', disableAutoBOM);
     }
-
 
 }

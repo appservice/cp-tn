@@ -1,9 +1,9 @@
-import { Injectable } from '@angular/core';
-import { Http, Response,URLSearchParams } from '@angular/http';
-import { Observable } from 'rxjs/Rx';
+import {Injectable} from '@angular/core';
+import {Http, Response, URLSearchParams} from '@angular/http';
+import {Observable} from 'rxjs/Rx';
 
-import { Machine } from './machine.model';
-import { ResponseWrapper, createRequestOption } from '../../shared';
+import {Machine} from './machine.model';
+import {ResponseWrapper, createRequestOption} from '../../shared';
 import {JhiDateUtils} from 'ng-jhipster';
 
 @Injectable()
@@ -13,7 +13,8 @@ export class MachineService {
     private resourceSearchUrl = 'api/_search/machines';
 
     constructor(private http: Http,
-                private dateUtils:JhiDateUtils) { }
+                private dateUtils: JhiDateUtils) {
+    }
 
     create(machine: Machine): Observable<Machine> {
         const copy = this.convert(machine);
@@ -37,7 +38,7 @@ export class MachineService {
 
     findOneWithDetails(id: number): Observable<Machine> {
         return this.http.get(`${this.resourceUrl}/${id}/with-details`).map((res: Response) => {
-            let jsonResponse= res.json();
+            let jsonResponse = res.json();
             if (jsonResponse.validFrom != null) {
                 const tempDate = this.dateUtils.convertLocalDateFromServer(jsonResponse.validFrom);
 
@@ -61,14 +62,10 @@ export class MachineService {
             .map((res: Response) => this.convertResponse(res));
     }
 
-
     getAllNotPageable(): Observable<ResponseWrapper> {
-
-        return this.http.get(this.resourceUrl+'/not-pageable')
+        return this.http.get(this.resourceUrl + '/not-pageable')
             .map((res: Response) => this.convertResponse(res));
     }
-
-
 
     delete(id: number): Observable<Response> {
         return this.http.delete(`${this.resourceUrl}/${id}`);
@@ -90,8 +87,8 @@ export class MachineService {
         return copy;
     }
 
-     getMachineDtlByMachineId(machineId: number): Observable<ResponseWrapper>{
-      return  this.http.get(this.resourceUrl+'/'+machineId+'/get-machine-dtls')
+    getMachineDtlByMachineId(machineId: number): Observable<ResponseWrapper> {
+        return this.http.get(this.resourceUrl + '/' + machineId + '/get-machine-dtls')
             .map((res: Response) => this.convertResponse(res));
     }
 

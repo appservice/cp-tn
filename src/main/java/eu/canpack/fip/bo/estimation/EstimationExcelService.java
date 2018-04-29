@@ -7,6 +7,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.math.BigDecimal;
+import java.text.NumberFormat;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
@@ -57,20 +59,27 @@ public class EstimationExcelService {
             }
 
 
-            if(o.getEstimatedCost()!=null){
-                row.createCell(columnNo++).setCellValue(o.getEstimatedCost().toString());
+            if (o.getEstimatedCost() != null) {
+                row.createCell(columnNo++).setCellValue(o.getEstimatedCost().toString().replace(".", ","));
 
-            }else{
+
+            } else {
                 row.createCell(columnNo++).setCellValue("");
             }
 
 
             row.createCell(columnNo++).setCellValue(o.getOrder().getInternalNumber());
             row.createCell(columnNo++).setCellValue(o.getOrder().getOrderType().getPlName());
+            row.createCell(columnNo++).setCellValue(o.getOrder().getClient().getShortcut());
+            row.createCell(columnNo++).setCellValue(o.getMpk());
+            if (o.getOrder().getCreatedAt() != null) {
+                row.createCell(columnNo++).setCellValue(o.getOrder().getCreatedAt().format(formatter));
 
+            } else {
+                row.createCell(columnNo++).setCellValue("");
+            }
 
-
-
+            row.createCell(columnNo++).setCellValue(o.getOrder().getCreatedBy().getFirstName() + " " + o.getOrder().getCreatedBy().getLastName());
 
 
             rowId++;
@@ -88,47 +97,29 @@ public class EstimationExcelService {
         Row headerRow = spreadsheet.createRow(0);
 
         int columnNo = 0;
-        Cell cell0 = headerRow.createCell(columnNo++);
-        cell0.setCellStyle(getHeaderCellStyle(spreadsheet.getWorkbook()));
-        cell0.setCellValue("Id");
 
-        Cell cell1 = headerRow.createCell(columnNo++);
-        cell1.setCellStyle(getHeaderCellStyle(spreadsheet.getWorkbook()));
-        cell1.setCellValue("Nazwa");
-
-        Cell cell2 = headerRow.createCell(columnNo++);
-        cell2.setCellStyle(getHeaderCellStyle(spreadsheet.getWorkbook()));
-        cell2.setCellValue("Nr rys.");
-
-        Cell cell3 = headerRow.createCell(columnNo++);
-        cell3.setCellStyle(getHeaderCellStyle(spreadsheet.getWorkbook()));
-        cell3.setCellValue("Ilość");
-
-        Cell cell4 = headerRow.createCell(columnNo++);
-        cell4.setCellStyle(getHeaderCellStyle(spreadsheet.getWorkbook()));
-        cell4.setCellValue("Utworzył");
-
-        Cell cell5 = headerRow.createCell(columnNo++);
-        cell5.setCellStyle(getHeaderCellStyle(spreadsheet.getWorkbook()));
-        cell5.setCellValue("Data utworz");
-
-        Cell cell6 = headerRow.createCell(columnNo++);
-        cell6.setCellStyle(getHeaderCellStyle(spreadsheet.getWorkbook()));
-        cell6.setCellValue("Cena [PLN]/szt");
-
-
-        Cell cell8 = headerRow.createCell(columnNo++);
-        cell8.setCellStyle(getHeaderCellStyle(spreadsheet.getWorkbook()));
-        cell8.setCellValue("Nr zlecenia");
-//
-//
-        Cell cell9 = headerRow.createCell(columnNo);
-        cell9.setCellStyle(getHeaderCellStyle(spreadsheet.getWorkbook()));
-        cell9.setCellValue("Typ zlecenia");
+        createHeaderCell(spreadsheet, headerRow, columnNo++, "Id");
+        createHeaderCell(spreadsheet, headerRow, columnNo++, "Nazwa");
+        createHeaderCell(spreadsheet, headerRow, columnNo++, "Nr rys.");
+        createHeaderCell(spreadsheet, headerRow, columnNo++, "Ilość");
+        createHeaderCell(spreadsheet, headerRow, columnNo++, "Wycene utworzył");
+        createHeaderCell(spreadsheet, headerRow, columnNo++, "Data utworz. wyceny/karty techn.");
+        createHeaderCell(spreadsheet, headerRow, columnNo++, "Cena [PLN]/szt");
+        createHeaderCell(spreadsheet, headerRow, columnNo++, "Nr zlecenia");
+        createHeaderCell(spreadsheet, headerRow, columnNo++, "Typ zlecenia");
+        createHeaderCell(spreadsheet, headerRow, columnNo++, "Klient");
+        createHeaderCell(spreadsheet, headerRow, columnNo++, "MPK/Index");
+        createHeaderCell(spreadsheet, headerRow, columnNo++, "Data zapytania/zamówienia");
+        createHeaderCell(spreadsheet, headerRow, columnNo++, "Zapytanie/zamówienie utworzył");
 
 
     }
 
+    private void createHeaderCell(Sheet spreadsheet, Row headerRow, int columnNo, String cellValue) {
+        Cell cell13 = headerRow.createCell(columnNo);
+        cell13.setCellStyle(getHeaderCellStyle(spreadsheet.getWorkbook()));
+        cell13.setCellValue(cellValue);
+    }
 
     CellStyle getHeaderCellStyle(Workbook workbook) {
         CellStyle cellStyle = workbook.createCellStyle();
@@ -140,4 +131,9 @@ public class EstimationExcelService {
     }
 
 
+    private String getFormattedPrice(BigDecimal price) {
+        NumberFormat numberFormat = NumberFormat.getNumberInstance();
+        numberFormat.setMinimumFractionDigits(2);
+        return numberFormat.format(price);
+    }
 }

@@ -14,7 +14,8 @@ export class OperationReportDTO {
                 public operationStatus ?: string,
                 // public machineCost?: number,
                 public operationEvents ?: OperationEventDTO [],
-                public estimationId?: number,) {
+                public estimationId?: number,
+                public operationPeriod?: number) {
     }
 }
 

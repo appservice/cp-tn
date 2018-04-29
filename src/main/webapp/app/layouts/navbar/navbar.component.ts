@@ -17,7 +17,7 @@ import { Http, Response } from '@angular/http';
     templateUrl: './navbar.component.html',
     styleUrls: [
         'navbar.scss'
-    ]
+    ],
 })
 export class NavbarComponent implements OnInit, OnDestroy {
 

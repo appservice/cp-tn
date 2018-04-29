@@ -28,8 +28,7 @@ export class OrderInProductionDetailComponent implements OnInit, OnDestroy {
     clients: Client[];
     order: Order;
     isSaving: boolean;
-    // optionsModel: number[];
-    // selectedAttachments: SelectItem[]=[];
+
     attachments: Attachment[] = [];
     subscription: Subscription;
     optionsMap: Map<number, number[]> = new Map<number, number[]>();
@@ -71,8 +70,6 @@ export class OrderInProductionDetailComponent implements OnInit, OnDestroy {
                 this.load(params['id']);
             }
         });
-
-
     }
 
     private onError(error) {
@@ -97,7 +94,6 @@ export class OrderInProductionDetailComponent implements OnInit, OnDestroy {
     onFileArrayChange(event: Attachment[]) {
         this.attachments = event;
         console.log('event from parent object: ', event);
-
     }
 
     save() {

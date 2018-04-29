@@ -63,7 +63,7 @@ export class HomeComponent implements OnInit {
 
             .map((res: Response) => res.blob())
             .subscribe((data: any) => {
-                OperatorService.saveDownload(data, "Aplikacja.zip", 'application/zip');
+                this.saveDownload(data, "Aplikacja.zip", 'application/zip');
                 this.isButtonDisabled=false;
 
             },error1 => {
@@ -72,7 +72,7 @@ export class HomeComponent implements OnInit {
             });
     }
 
-    static saveDownload(responseData: any, fileName: string, contentType: string) {
+     saveDownload(responseData: any, fileName: string, contentType: string) {
         const data: Blob = new Blob([responseData], {type: contentType});
 
         const disableAutoBOM = true;

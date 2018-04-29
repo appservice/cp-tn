@@ -16,7 +16,6 @@ import {isNullOrUndefined} from 'util';
 import {OrderService} from '../../order/order.service';
 import {OrderSimpleDTO} from '../../order/order-simpleDTO.model';
 import {TnAlert} from '../../../tn-components/tn-alert';
-import {TechnologyCardFinderComponent} from '../../technology-card/technology-card-finder/technology-card-finder.component';
 import {EstimationService} from '../../estimation/estimation.service';
 import {TechnologyCard} from '../../technology-card/technology-card.model';
 import {DrawingFinderComponent} from '../../drawing/drawing-finder/drawing-finder.component';
@@ -286,9 +285,9 @@ export class EmergencyOrderTechnologyEditComponent implements OnInit, OnDestroy 
         console.log('item ', event.item);
     }
 
-    onMachineChanged(operation:Operation){
-        if(operation.machine && operation.machine.defaultTechnologyDesc && operation.machine.defaultTechnologyDesc!==null){
-            operation.description=operation.machine.defaultTechnologyDesc;
+    onMachineChanged(operation: Operation) {
+        if (operation.machine && operation.machine.defaultTechnologyDesc && operation.machine.defaultTechnologyDesc !== null) {
+            operation.description = operation.machine.defaultTechnologyDesc;
         }
         this.calculateOperationsTotalCost();
     }
@@ -400,19 +399,19 @@ export class EmergencyOrderTechnologyEditComponent implements OnInit, OnDestroy 
 
         }
 
-        for (let commercialPart of technologyCard.commercialParts){
-            commercialPart.id=null;
+        for (let commercialPart of technologyCard.commercialParts) {
+            commercialPart.id = null;
             this.estimation.commercialParts.push(commercialPart);
 
         }
 
 
-        for (let cooperation of technologyCard.cooperationList){
-            cooperation.id=null;
+        for (let cooperation of technologyCard.cooperationList) {
+            cooperation.id = null;
             this.estimation.cooperationList.push(cooperation);
 
         }
-       // this.editForm.control.markAsDirty();
+        // this.editForm.control.markAsDirty();
 
         this.calculateOperationsTotalCost();
         this.calculateCooperationTotalCost();

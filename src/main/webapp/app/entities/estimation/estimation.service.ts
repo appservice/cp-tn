@@ -1,13 +1,11 @@
 import {Injectable} from '@angular/core';
-import {Http, RequestOptions, Response, ResponseContentType, Headers, URLSearchParams} from '@angular/http';
+import {Headers, Http, RequestOptions, Response, ResponseContentType, URLSearchParams} from '@angular/http';
 import {Observable} from 'rxjs/Rx';
 
 import {Estimation} from './estimation.model';
-import {ResponseWrapper, createRequestOption} from '../../shared';
+import {createRequestOption, ResponseWrapper} from '../../shared';
 import * as FileSaver from 'file-saver';
 import {JhiDateUtils} from 'ng-jhipster';
-import {letProto} from 'rxjs/operator/let';
-
 
 @Injectable()
 export class EstimationService {
@@ -35,7 +33,7 @@ export class EstimationService {
     find(id: number): Observable<Estimation> {
         return this.http.get(`${this.resourceUrl}/${id}`).map((res: Response) => {
 
-            let jsonResponse = res.json();
+            const jsonResponse = res.json();
             if (jsonResponse.estimatedRealizationDate != null) {
                 const tempDate = this.dateUtils.convertLocalDateFromServer(jsonResponse.estimatedRealizationDate);
 
@@ -77,31 +75,29 @@ export class EstimationService {
         if (copy.estimatedRealizationDate != null) {
 
             copy.estimatedRealizationDate = this.dateUtils.convertLocalDateToServer(copy.estimatedRealizationDate);
-
         }
         return copy;
     }
 
     download(estimation: Estimation): void {
-        let headers = new Headers({'Content-Type': 'application/json'});
-        let options = new RequestOptions({responseType: ResponseContentType.Blob, headers});
+        const headers = new Headers({'Content-Type': 'application/json'});
+        const options = new RequestOptions({responseType: ResponseContentType.Blob, headers});
 
         this.http.get(`${this.resourceUrl}/${estimation.id}/technology-card`, options)
             .map((res: Response) => res.blob())
             .subscribe((data: any) => {
-                this.saveDownload(data, 'Karta_obiegowa_' +estimation.drawing.number+ '.pdf', 'application/pdf');
+                EstimationService.saveDownload(data, 'Karta_obiegowa_' + estimation.drawing.number + '.pdf', 'application/pdf');
 
             });
     }
 
-    saveDownload(responseData: any, fileName: string, contentType: string) {
+    static saveDownload(responseData: any, fileName: string, contentType: string) {
         const data: Blob = new Blob([responseData], {type: contentType});
 
         const disableAutoBOM = true;
 
-        FileSaver.saveAs(data,  fileName , disableAutoBOM);
+        FileSaver.saveAs(data, fileName, disableAutoBOM);
     }
-
 
     exportToTechnologyCard(estimation: Estimation) {
         console.log('class from service');
@@ -109,7 +105,6 @@ export class EstimationService {
         console.log('copy', copy);
         return this.http.post('api/technology-cards/created-from-estimation', copy);
     }
-
 
     findInquiryByCriteria(req?: any, urlSearchParams?: URLSearchParams): Observable<ResponseWrapper> {
         const options = createRequestOption(req);
@@ -129,7 +124,6 @@ export class EstimationService {
             .map((res: Response) => this.convertResponse(res));
     }
 
-
     findEmergencyOrderByCriteria(req?: any, urlSearchParams?: URLSearchParams): Observable<ResponseWrapper> {
         const options = createRequestOption(req);
         if (urlSearchParams) {
@@ -143,22 +137,19 @@ export class EstimationService {
         return this.http.put(`${this.resourceUrl}/${estimationId}/publishPrice`, {'published': isPublished});
     }
 
-    getAsExcel(urlSearchParams?: URLSearchParams): void {
+    getAsExcel(urlSearchParams?: URLSearchParams): Observable<any> {
         // const copy = this.convert(order);
 
-        let headers = new Headers({'Content-Type': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'});
-        let options = new RequestOptions({responseType: ResponseContentType.Blob, headers});
+        const headers = new Headers({'Content-Type': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'});
+        const options = new RequestOptions({responseType: ResponseContentType.Blob, headers});
         if (urlSearchParams) {
-            console.log(urlSearchParams);
             options.params = urlSearchParams;
-
         }
 
-        this.http.get(`api/estimations/to-excel`, options)
-            .map((res: Response) => res.blob())
-            .subscribe((data: any) => {
-                this.saveDownload(data, 'Wyceny.xlsx', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-
-            });
+      return  this.http.get(`api/estimations/to-excel`, options)
+            .map((res: Response) => res.blob());
+            // .subscribe((data: any) => {
+            //     this.saveDownload(data, 'Wyceny.xlsx', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+            // });
     }
 }
