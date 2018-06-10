@@ -81,4 +81,9 @@ export class OperationService {
         return this.http.put(`${this.resourceUrl}/${estimationId}/set-all-operations-finished`, null);
     }
 
+    getCurrentOperations(): Observable<ResponseWrapper>{
+        return this.http.get(this.resourceUrl+'/current-operations', null)
+            .map((res: Response) => this.convertResponse(res));
+    }
+
 }

@@ -19,6 +19,7 @@ import {ArchiveProdPopupService} from './archive-prod-dialog/archive-prod-popup.
 import {FinishedDetailsComponent} from './finished-details-component/finished-details.component';
 import {FinishedItemsPagingParams} from './production.route';
 import {TnTechnologyCardModule} from '../technology-card/technology-card.module';
+import {CurrentOperationsComponent} from './current-operations/current-operations.component';
 
 const ENTITY_STATES = [
     ...productionRoute,
@@ -47,6 +48,7 @@ const ENTITY_STATES = [
         ArchiveProdDialogComponent,
         ArchiveProdDialogPopupComponent,
         FinishedDetailsComponent,
+        CurrentOperationsComponent,
 
 
     ],

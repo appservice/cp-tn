@@ -9,9 +9,10 @@ import {OrdersInProductionComponent} from './orders-in-production/orders-in-prod
 import {OrderInProductionDetailComponent} from './order-in-production-detail/order-in-production-detail.component';
 import {TechnologyEditComponent} from './technology-edit/technology-edit.component';
 import {EmergencyOrderTechnologyEditComponent} from './emergency-order-technology-edit/emergency-order-technology-edit.component';
-import {OperationListModalComponent, OperationListPopupComponent} from './operation-list-modal-component/operation-list-modal-component.component';
+import {OperationListPopupComponent} from './operation-list-modal-component/operation-list-modal-component.component';
 import {ArchiveProdDialogPopupComponent} from './archive-prod-dialog/archive-prod-dialog.component';
 import {FinishedDetailsComponent} from './finished-details-component/finished-details.component';
+import {CurrentOperationsComponent} from './current-operations/current-operations.component';
 
 @Injectable()
 export class ItemsInProductionPagingParams implements Resolve<any> {
@@ -110,6 +111,15 @@ export const productionRoute: Routes = [
         component: EmergencyOrderTechnologyEditComponent,
         data: {
             authorities: ['ROLE_USER'],
+            pageTitle: 'tnApp.production.home.title'
+        },
+        canActivate: [UserRouteAccessService]
+    },
+    {
+        path: 'production/current-operations',
+        component: CurrentOperationsComponent,
+        data: {
+            authorities: ['ROLE_MANAGER', 'ROLE_ADMIN','ROLE_TEAM_LEADER'],
             pageTitle: 'tnApp.production.home.title'
         },
         canActivate: [UserRouteAccessService]

@@ -119,7 +119,9 @@ public class OperationService {
 
         return operationRepository.findOperationReportByEstimationId(estimationId).stream()
             .sorted(Comparator.comparing(Operation::getSequenceNumber))
-            .map(OperationReportDTO::new).collect(Collectors.toList());
+            .map(OperationReportDTO::new)
+            .peek(op -> op.getOperationEvents().sort(Comparator.comparing(OperationEventDTO::getCreatedAt)))
+            .collect(Collectors.toList());
     }
 
     public void updateOperationsStatus(List<OperationReportDTO> operationReportList) {
@@ -170,7 +172,7 @@ public class OperationService {
         Operation operation = oe.getOperation();
         List<OperationEvent> events = operation.getOperationEvents();
         events.sort(Comparator.comparing(OperationEvent::getCreatedAt));
-        if (!events.isEmpty() && !events.get(events.size() - 1).equals(oe)){
+        if (!events.isEmpty() && !events.get(events.size() - 1).equals(oe)) {
             throw new CustomParameterizedException("Deleted could be only last operation event");
         }
 
@@ -203,5 +205,10 @@ public class OperationService {
 
         //operationEventRepository.delete(operationEventId);
 
+    }
+
+    @Transactional(readOnly = true)
+    List<CurrentOperationDTO> findCurrentOperation() {
+        return operationEventRepository.findCurrentOperations();
     }
 }

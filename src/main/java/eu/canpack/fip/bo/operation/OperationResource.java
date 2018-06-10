@@ -1,10 +1,7 @@
 package eu.canpack.fip.bo.operation;
 
 import com.codahale.metrics.annotation.Timed;
-import eu.canpack.fip.bo.operation.dto.OperationDTO;
-import eu.canpack.fip.bo.operation.dto.OperationEventDTO;
-import eu.canpack.fip.bo.operation.dto.OperationReportDTO;
-import eu.canpack.fip.bo.operation.dto.OperationWideDTO;
+import eu.canpack.fip.bo.operation.dto.*;
 import eu.canpack.fip.web.rest.util.HeaderUtil;
 import eu.canpack.fip.web.rest.util.PaginationUtil;
 import io.swagger.annotations.ApiParam;
@@ -189,5 +186,10 @@ public class OperationResource {
 
         return ResponseEntity.noContent().build();
 
+    }
+
+    @GetMapping("/operations/current-operations")
+    public List<CurrentOperationDTO> findCurrentOperaitons(){
+        return operationService.findCurrentOperation();
     }
 }

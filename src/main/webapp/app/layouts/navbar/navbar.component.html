@@ -169,6 +169,13 @@
                             <span>Zlecenia zakończone</span>
                         </a>
                     </li>
+                    <li *jhiHasAnyAuthority="['ROLE_MANAGER','ROLE_TEAM_LEADER','ROLE_ADMIN']">
+                        <a class="dropdown-item" routerLinkActive="active" routerLink="production/current-operations"
+                           [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
+                            <i class="fa fa-fw fa-archive" aria-hidden="true"></i>
+                            <span>Aktulanie w obróbce</span>
+                        </a>
+                    </li>
 
                 </ul>
 
